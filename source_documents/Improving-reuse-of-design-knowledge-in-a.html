@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Improving reuse of design knowledge in a LMS</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2019/01/30/improving-reuse-of-design-knowledge-in-a-lms/">Improving reuse of design knowledge in a LMS</a></h1>
+
+<p>Tags: casa</p>
+
+<p><!-- wp:paragraph -->
+<p>In October last year I started a new position at Griffith University. A role designed to help improve the quality and quantity of use of the institutional learning ecosystem. An ecosystem that includes Blackboard (both 9.1 and soon Ultra), Office365, PebblePad, Echo360 etc. Pretty early on it became apparent that there was some problems with reusing design knowledge. A problem that had some initial solutions. But these solutions weren't built upon. The following tells the story of those problems and how I've be playing with an old idea of <a href="https://djon.es/blog/2010/11/09/scaffolding-context-sensitive-conglomerations-v2-0/">scaffolding, context sensitive conglomerations</a> (aka constructive templates) to help.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The example itself is not earth shattering. However, IMHO it does identify the long-term inability of higher education to create a teaching environment that actively helps improve the quality of learning and teaching while reducing the cost of doing so (you/I could argue institutions have been better at/focused on solving the latter by cost shifting, than the former).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>The initial problem - "ugly" text</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Most of the current digital course learning environments are in Blackboard Learn (9.1). The Blackboard interface hasn't changed much since I last played with it in 2007. Institutional practice is such that most course sites have a menu option <em>Course Content </em>that links to what Blackboard calls a <em>Content Area </em> where students are meant to be able to find the main learning resources and activities for the whole course. At best (arguably), most courses have a <em>Content Area </em>that looks like the following.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46279789112/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46279789112/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>This is from a test course I've set up. A page like this consists of a list of items (four in the above) of various types. Each item has a heading and some HTML text. Depending on the type of item the heading might be a link to another resource/service.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>"Boring" versus "bad"</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The image above shows an interface that is perhaps more boring and old school than bad. However, there are many examples of pages like this that break basic web design principles (e.g. many different font types and size due to copy and paste, reliance on some truly horrendous colour choices etc). For old timers like me these bring back memories of geocities. (If that and the image below don't mean anything to you have <a href="https://mashable.com/2009/10/25/geocities-xkcd/#1eTSXIPHPiqx">a read of this)</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:html -->
+<div><a href="https://www.flickr.com/photos/secretlondon/4046983331/" rel="noopener noreferrer" target="_blank"><img alt="xkcd commemorates the end of Geocities by secretlondon123, on Flickr" border="0" href="http://purl.org/dc/dcmitype/StillImage" rel="dct:type" src="https://farm3.static.flickr.com/2468/4046983331_e5b7bf95a6.jpg" title="xkcd commemorates the end of Geocities by secretlondon123, on Flickr" /></a><br />"<a href="https://www.flickr.com/photos/secretlondon/4046983331/" rel="noopener noreferrer" target="_blank">xkcd commemorates the end of Geocities</a>"&nbsp;(<a href="https://creativecommons.org/licenses/by-sa/2.0/" rel="license noopener noreferrer" target="_blank">CC BY-SA 2.0</a>)&nbsp;by&nbsp;<a href="https://www.flickr.com/people/secretlondon/" rel="cc:attributionurl noopener noreferrer" target="_blank">secretlondon123</a></div>
+<!-- /wp:html -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>While perhaps not as bad as many Geocities sites what has been done with HTML within Blackboard (as with many other LMSes) leans in that direction. It's so common that <a href="https://community.blackboard.com/ideas/2483-allow-html-code-insertion-in-ultra-course-content-editor">this thread</a> in the Blackboard Community site contains quotes from around the world that include words such as "monstrosities". </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Note: the thread mentioned explains how Blackboard's "next gen" environment - Ultra - prevents the monstrosities by preventing the use of HTML, let alone Javascript etc. While this solves the monstrosity problem, it also means that none of the solutions and innovations discussed below are possible in Ultra.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Generic versus specific</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The <em>Content Area</em> feature from Blackboard provides a flexible tool that can be used to implement a variety of designs (i.e. anything HTML). It's that flexibility that causes the "geocities" problem. But there comes a time when you need something more specific. At all the universities at which I've worked the idea of a course site has included a feature going under labels such as study schedule, course map or course overview. The following is an example from a course I taught in Moodle</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/16135176729","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/16135176729
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>This type of interface is intended to help the learner (and teacher) understand the shape of the semester. What will be happening and when will it be happening.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Blackboard doesn't provide any specific support for this type of resource. Hence it is left to the course teaching team to develop something. As a result, many do not. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Those that do are typically creating the study schedule in Word and either: uploading the Word document into the course site; converting it to a PDF; or, copying and pasting the Word document. None of which works all that well. One of the problems with this is that such tables typically include mention of <em>Lecture 1</em> but rarely actually link to <em>Lecture 1 </em>resources. i.e. <a href="https://djon.es/blog/2012/09/07/one-example-of-industrial-e-learning-as-on-the-web-not-of-the-web/">it's only </a><strong><a href="https://djon.es/blog/2012/09/07/one-example-of-industrial-e-learning-as-on-the-web-not-of-the-web/">on </a></strong><a href="https://djon.es/blog/2012/09/07/one-example-of-industrial-e-learning-as-on-the-web-not-of-the-web/">the web, not </a><strong><a href="https://djon.es/blog/2012/09/07/one-example-of-industrial-e-learning-as-on-the-web-not-of-the-web/">of</a></strong><a href="https://djon.es/blog/2012/09/07/one-example-of-industrial-e-learning-as-on-the-web-not-of-the-web/"> the web</a> (at a very simple level).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The other alternative, is that they have some specialist design the study schedule themselves. This approach raises questions of sustainability (not many institutions have the resources for this) and turn-around time (any change typically requires the services of the specialist).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Surprisingly, my current institution actually had another solution to this (and related) problems.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Tweaks and the course theme table</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The solution is called <a href="http://tweaks.github.io/Tweaks/">Blackboard Tweaks</a>. A building block for Blackboard written by folk from the <a href="http://www.qut.edu.au">Queensland University of Technology</a>. Once the building block is installed in a version of Blackboard you are able to choose from a <a href="http://tweaks.github.io/Tweaks/description.html">range of tweaks</a> that will modify your normal Blackboard <em>Content Area</em>. For example, the <em>Dynamic Unit/Course Map Table</em> can be used to generate a course map/study schedule that looks like the following.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image -->
+<figure class="wp-block-image"><img alt="" src="http://tweaks.github.io/Tweaks/images/unitmap.png" /><figcaption>Sample Unit Map produced by Blackboard Tweaks (<a href="http://tweaks.github.io/Tweaks/description.html">source</a>).<br /></figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>This Tweak allows you to supply part of the table above as one of the items in a Content Area. Some of the elements in the table can be left blank. You then make sure that other items in the Content Area (e.g. lecture resources) are named a specific way. When someone views the Content Area, the Tweak uses Javascript to read the other content items and populate the table with appropriate vales.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This tool has been quite successful. A fairly large number of the courses that I've seen make use of this functionality.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Contemporary, responsive and mobile?</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>But it's still so old school. Tables? Ugly HTML? Responsive? <a href="https://www.webalive.com.au/web-design-trends/">Web design</a> is evolving.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>One of the tasks I was allocated was to help with the design of the digital learning environment for a brand new program launching this year. This program is focused on helping develop creative entrepreneurs. The program is edgy, innovative and creative. IMHO, a 90s/00s table doesn't align real well with that intent. What to do?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Designers design - the wrong approach</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Sounds like a job for a web/graphic designer. Get a designer in to talk to the clients and then go away and design a bespoke and beautiful course map. Draw on the design knowledge of the designer to provide something breath taking. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>There is nothing wrong with this approach in terms of the quality of what is produced. The problem is that it's not scalable. The group I work with (one of five at the institution) has hundreds of courses. Even if you take a program approach the numbers are still significant. Especially if you factor in consideration that a course map is at its most useful when it is an appropriately live and dynamic document. A document that can respond quickly to changes in the learning design and intent of the course. i.e. an approach that supports the teacher(s) to re-configure the course map easily and quickly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Constructive templates - a better approach</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This was exactly the problem facing the hypermedia community back in the 1990s. Nanard, Nanard and Kahn (1998) suggest that</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><p>Reducing the design and development cost of new hypermedia documents while improving their quality is an important challenge for the information industry.</p><cite>(p. 11)</cite></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:paragraph -->
+<p>One of the solutions that Nanard, Nanard and Kahn (1998) talk about is <em>constructive templates</em>. A concept developed in response to the difficulty faced by content providers in developing hypermedia structures that followed the known principles of interface and hypermedia design. Constructive templates helped content experts to create well designed hypermedia by capturing and reusing design knowledge (Catlin, Garret et al. 1991). By separating content from hypermedia structure and presentation constructive templates allow the content area expert to provide and change content without needing to understand the the specifics of structure and presentation.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The Blackboard Tweaks approach a form of constructive template. The tweaks allow the teaching staff to provide content in a fairly simple form. The tweaks then use Javascript to transform that into a more appropriate structure and interface.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The problem we face is that they haven't been updated, suggesting that...</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>Introducing the Card Interface Tweak</h3>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Inspired by the Blackboard Tweaks I've written the <a href="https://github.com/djplaner/Card-Interface-Tweak">Card Interface Tweak</a>. A bit of Javascript+HTML that when inserted into a Blackboard Content Area with specific content will translate this "boring" content</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46279789112/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46279789112/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>Into the following responsive and somewhat contemporary interface.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46280738772/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46280738772/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>Or perhaps you're on your mobile phone doing a bit of learning</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46871123302/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46871123302/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>Or perhaps you'd like the cards to be arranged vertically.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46008974515/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46008974515/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>This is what the Card Interface Tweak helps you do.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>How do you do it?</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Well, all you do is (see the README<a href="https://github.com/djplaner/Card-Interface-Tweak/blob/master/README.md">https://github.com/djplaner/Card-Interface-Tweak/blob/master/README.md</a> for some more up-to-date detail)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>Add an item to your existing Blackboard content area and copy and paste into it <a href="https://raw.githubusercontent.com/djplaner/Card-Interface-Tweak/master/cards.js">s</a><a href="https://raw.githubusercontent.com/djplaner/Card-Interface-Tweak/master/tweak.js">ome Javascript</a>.</li><li>Add another item to your content area called <em>Card Interface</em>. </li><li>For each of the existing or new content items you'd like to turn into a card, you add a line that contains</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:code -->
+<pre class="wp-block-code"><code>Card Interface:</code></pre>
+<!-- /wp:code -->
+
+<!-- wp:paragraph -->
+<p>Once that's done the Javascript will insert into the <em>Card Interface</em> cards for each of the content items you've so identified. (While this will work at the moment. It does rely on another <a href="https://github.com/djplaner/Card-Interface-Tweak/blob/master/cards.js">Javascript file</a> currently residing on my server. If you use this tweak in anger, then you should stick this file on your own server and modify the initial Javascript).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>If you'd like to add an image, associate a date etc with a card. You can add a couple of other lines. For example, here's one content item that will be converted into a card.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/46564373241/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/46564373241/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:paragraph -->
+<p>The Javascript will convert this into the following card.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:core-embed/flickr {"url":"https://www.flickr.com/photos/david_jones/45650359455/","type":"photo","providerNameSlug":"flickr","className":""} -->
+<figure class="wp-block-embed-flickr wp-block-embed is-type-photo is-provider-flickr"><div class="wp-block-embed__wrapper">
+https://www.flickr.com/photos/david_jones/45650359455/
+</div></figure>
+<!-- /wp:core-embed/flickr -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Early experiences</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>While this is not an earth shatteringly innovative application of educational technology destined to transform learning, it's gone down well so far. The program I'm working with seem to like it. Other members of the group I work with like it. Someone with only the barest of introductions to the earliest iterations of the tweak has been able to use it. It's also been possible to modify this Tweak to provide new features quite quickly.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>As of yet, no students have had this interface inflicted upon them. Their experience will be key. But what else is missing</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>What's missing?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As it stands this is a very simple and limited example of constructive template. It is limited in terms of support for </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>A more pedagogical important learning design (more learning, less content).</li><li>Distribution across multiple systems.</li><li>A more forward-oriented notion of design for learning.</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":4} -->
+<h4>More learning, less content</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The course map example is pretty much focused on information distribution. On giving an overview of a course and its contents. It's not likely to have a huge direct impact on student learning outcomes, but perhaps may have some affective benefits.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>What would be interesting is to see if and how this approach could be used for a specific learning design. For example, wrapped around a Blackboard discussion forum to support use of the forum for a debate (or role-play etc).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4>Distribution across multiple systems</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>As it stands this works in Blackboard. My current institution - as with many others - no longer use a single application (the LMS) for its digital learning environment. We live in a brave new <a href="https://library.educause.edu/resources/2018/1/7-things-you-should-read-about-ngdle">Next Generation Digital Learning Environment (NGDLE)</a> world. In this world, learning/teaching won't be occurring in a single application. It will be spread across multiple. This will raise new challenges.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Way back Light et al (2001) identified the differences this type of change would generate. For example, they identify that "Integration of applications is time consuming" (Light et al, 2001). It's important to realise that their focus was largely on the efforts required by the IT professionals supporting an organisation's systems. This will be a difficulty faced in developing something like the tweaks that bridge across systems.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>But at the same time, it's possible that such tweaks will become even more needed because in an NGDLE world designing learning experiences will require the ability to integrate across different systems. This will be much more difficult than designing learning experiences within a single system, suggesting that the need for constructive templates will be required all the more</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 id="forward">A forward-oriented approach to design for learning</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Dimitriadis and Goodyear (2013) argue that design for learning needs to be more forward-oriented. This means that when engaged in designing for learning proactive thought needs to be given to what features will be required configuration, orchestration, reflection and re-design. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, <em>orchestration</em> is seen as "providing support for the teacher's work at learntime" (Goodyear and Dimitriadis, 2013, pp 4). In the context of the Card Interface Tweak it could be useful for the teaching staff to be aware of who is accessing the different cards or perhaps their progress through the activities within those cards. To support this, the Card Interface tweak could be linked with the analytics and when cards are viewed by teaching staff display an appropriate representation of use.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, <em>redesign </em>is thinking about what changes will need to be made at a later date. In a university context teaching typically occurs within a semester, trimester, quarter or other fixed time frame. These time frames are defined. Courses are often taught in multiple periods. The card interface includes dates. Teaching a course in a new period will involve changing the dates. Rather than have someone manually change the dates, it should be possible to offer the change to map cards to specific times in a period and <a href="http://djon.es/blog/2015/06/26/and-the-little-one-said-roll-over-roll-over/">automatically change the specific dates</a> based on the defined period.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>References</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Catlin, K. S., &amp; Garrett, L. N. (1991). Hypermedia Templates: an author’s tool (pp. 147–160). Presented at the Proceedings of the third annual ACM conference on Hypertext, ACM. <a href="https://doi.org/10.1145/122974.122990">https://doi.org/10.1145/122974.122990</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Dimitriadis, Y., &amp; Goodyear, P. (2013). Forward-oriented design for learning : illustrating the approach. <em>Research in Learning Technology</em>, <em>21</em>, 1–13.    </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Goodyear, P., &amp; Dimitriadis, Y. (2013). In medias res: reframing design for learning. <em>Research in Learning Technology</em>, <em>21</em>, 1–13. <a href="https://doi.org/10.3402/rlt.v21i0.19909">https://doi.org/10.3402/rlt.v21i0.19909</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Light, B., Holland, C. P., &amp; Wills, K. (2001). ERP and best of breed: a comparative analysis. <em>Business Process Management Journal</em>, <em>7</em>(3), 216–224.    </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Nanard, M., Nanard, J., &amp; Kahn, P. (1998). Pushing Reuse in Hypermedia Design: Golden Rules, Design Patterns and Constructive Templates (pp. 11–20). ACM.    </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><br /></p>
+<!-- /wp:paragraph --></p>
+
+</body>
+</html>

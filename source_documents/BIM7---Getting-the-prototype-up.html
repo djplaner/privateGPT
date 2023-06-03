@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM#7 - Getting the prototype up</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/09/08/bim7-getting-the-prototype-up/">BIM#7 - Getting the prototype up</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p><a href="https://djon.es/blog/2009/09/03/bim-6-learning-weblib-php/">Last time</a> I worked on <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> I got to know weblib.php enough to get the first canned Moodle page generated. The <a href="http://www.flickr.com/photos/david_jones/3882960287/">student details page</a> which lets the student see what BIM knows about their blog contributions for the current course.</p>
+<p>The rationale for this prototype approach includes:</p>
+<ul>
+   <li> let me get to know Moodle programming a bit slowly;<br />Last week was getting to know weblib.php a bit more.  The week or so before it was activity modules and it won't be to long before I dive into that again.</li>
+  <li> get a prototype working within Moodle so I can show folk and get feedback.</li>
+</ul>
+<p>In terms of using the prototype, the current plan (i.e. it might change) is to: produce some screencasts using the prototype, create a discussion forum around the screencasts and encourage people to give feedback both online and offline.</p>
+<p>The aim today is to get more of the student view of BIM put into the prototype.  If I get lucky, I might even start on the academic's view.</p>
+
+<h3>What the student will see</h3>
+
+<p>An <a href="https://djon.es/blog/2009/08/20/bim5-getting-a-prototype-bim-going/">earlier post</a> gave some details of the various screens/operations different users would be doing with BIM.  The following is a simple list of what I need to do with students:</p>
+<ul>
+  <li> the blog registration page; <br /> </li>
+  <li> the blog details page; <strong>DONE</strong></li>
+</ul>
+<p>Gee, I'm further along than I thought.  </p>
+
+<h3>Play with Moodle more</h3>
+
+<p>Given I'm a bit further along and because creating the blog registration page is very straight forward, this should allow me to play around with Moodle a bit more.</p>
+<p>The blog registration page and the blog details page for the students should be the same link.  Before the student has registered a blog with BIM, it should show the registration page. After they've registered, it should show the details page (possibly with an option to change the registration).</p>
+<p>Rather than hard code this, let's play with the Moodle code so that it performs this check and displays the appropriate HTML. Based on this, I'm guessing I'll need to:</p>
+<ul>
+  <li> <del>Ensure that a database table is created that allows BIM to store that a student has registered their blog. </del></li>
+  <li> <del>Ensure that the show details page only appears for students.</del></li>
+  <li> <del>Have the code look at this table and display the appropriate fields.</del> Sort of.</li>
+  <li> When the registration page is submitted, have it update the table to "register the blog".<br />This could either be a dummy value or an actual registration.  At this stage it won't do the checks that are necessary to determine if the URL entered by the student is actually a blog with a feed. </li>
+  <li> Update the details page to allow a change in registration option.<br />Eventually this will have to be configured by the course coordinator.  Yes the students can change their registration, or no they can't. </li>
+</ul>
+
+<h4>The database</h4>
+
+<p>Time to remind myself about the database tables I've created and how in Moodle to create/check these.</p>
+<ul>
+  <li> Go to the admin page on my Moodle install.</li>
+  <li> The XMLDB editor is used to create/edit databases and is under the Miscellaneous menu (I'd forgotten that and had to dig). <li>
+  <li> Currently there is only the <strong>bim</strong> table.  Matches the module name and is used to associate an instance of the activity with a course - and some other stuff. </li>
+</ul>
+<p>What I want to do know is take the BAM_BLOG_STATISITCS table from BAM and put it into the Moodle "schema".  The table stores information about a student blog.  Currently its desc is<pre>
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `COURSE` varchar(10) NOT NULL DEFAULT '',
+  `PERIOD` char(2) NOT NULL DEFAULT '',
+  `YEAR` int(4) NOT NULL DEFAULT '0',
+  `STUD` varchar(12) NOT NULL DEFAULT '',
+  `NUM_ENTRIES` int(4) NOT NULL DEFAULT '0',
+  `LAST_POST` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `BLOG_URL` text,
+  `FEED_URL` text,
+  `A_TITLE` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  KEY `COURSEIDX` (`COURSE`,`PERIOD`,`YEAR`),
+  KEY `COURSESTUDIDX` (`COURSE`,`PERIOD`,`YEAR`,`STUD`),
+  KEY `TermYearIdx` (`PERIOD`,`YEAR`)
+</pre></p>
+<p>The proposed translation shown in the following table</p>
+<table border="1" cellpadding="2">
+  <tr>
+    <th> BAM field</th>
+    <th> BIM field</th>
+    <th> Description </th>
+  </tr>
+
+  <tr>
+    <td valign="top">ID</td>
+    <td valign="top">id bigint(10) unisigned)</td>
+    <td valign="top">Unique ID for this table</td>
+  </tr>
+  <tr>
+    <td valign="top">COURSE,PERIOD,YEAR,A_TITLE</td>
+    <td valign="top">bim bigint(10) unsigned</td>
+    <td valign="top">In BAM this identifies a unique use of BAM. Within Moodle I believe this will be represented by the id from the bim table. The quiz engine seems to use a similar in mdl_quiz_attempts.  </td>
+  </tr>
+  <tr>
+    <td valign="top">STUD</td>
+    <td valign="top">userid bigint(10) unsigned</td>
+    <td valign="top">Unique CQU stud number for BAM.  userid in BIM.  This should allow staff to register blogs as well.  Potentially useful for other uses of BIM.  Will likely have to allow coordinator to configure who can register a blog.</td>
+  </tr>
+  <tr>
+    <td valign="top">NUM_ENTRIES</td>
+    <td valign="top">numentries mediumint(6)</td>
+    <td valign="top">The number of posts in the feed.  Using a Moodle naming approach and the same type as used in quiz_attempts</td>
+  </tr>
+  <tr>
+    <td valign="top">LAST_POST</td>
+    <td valign="top">lastpost bigint(10) unsigned</td>
+    <td valign="top">The date time of the feed's last post. Going by quick look at other tables.  Seems that Moodle uses bigint(10) for dates - UNIX timestamps?</td>
+  </tr>
+  <tr>
+    <td valign="top">BLOG_URL</td>
+    <td valign="top">blogurl varchar(255)</td>
+    <td valign="top">URL for the blog, varchar(255) used for URL in user table</td>
+  </tr>
+  <tr>
+    <td valign="top">FEED_URL</td>
+    <td valign="top">feedurl varchar(255)</td>
+    <td valign="top">See blog url</td>
+  </tr>
+  <tr>
+    <td valign="top">Keys</td>
+    <td valign="top"></td>
+    <td valign="top">Only need the primary key.  The other keys/indexes no longer make sense with the new fields. </td>
+  </tr>
+</table>
+<p>That seems okay and it's been created.  God I hate the XMLDB editor.</p>
+<p>The question now is how to get this update in play. That's right, just update the version number in version.php within the bim folder - that works.</p>
+
+<h4>Only "show details" for students</h4>
+
+<p>The idea is that only a user who is a student in the course that has the bim activity should see the "show details" HTML.  Need to check that this is working.</p>
+<ul>
+  <li> Create users of different types<br /> I have three accounts - the admin account (admin), a teacher (fred) account and a student (david) account  </li>
+  <li> Login as each one and check.</li>
+</ul>
+<p>Yep, that's all working as I'd expect.</p>
+</ul>
+
+<h4>Look for entry in table for student and change display</h4>
+
+<p>Okay, so now I have to check for the existence of an entry in the new bim_student_feeds for the current user and the current bim activity.</p>
+<p>The <a href="http://docs.moodle.org/en/Development:DML_functions_-_pre_2.0">DML functions</a> are what you're supposed to use to get information from the database. There's a nice set of links that points to <a href="http://docs.moodle.org/en/Development:DML_functions_-_pre_2.0#Seeing_if_any_records_exist_match_a_given_criteria">seeing if any records exist match a given a criteria</a>.  Using the function
+<pre>record_exists($table, $field1=, $value1=)</pre></p>
+<p>The forum code seems to use a collection of library functions in forum/lib.php to add additional checks, just not record exists.  I think that's probably a good practice to follow. I can see view.php getting quite large. So we'll start there with a simple one<pre>function bim_feed_exists( $bim, $userid ) {
+  return record_exists( "bim_student_feeds", "bim", $bim, "userid" $userid );
+}
+</pre>
+<p>Of course, have to get the bim and userid values in view.php and call the new function.  No worries.</p>
+<p>Seems to be all working, except I'm getting the message that the mdl_bim_student_feeds table doesn't exist.  And it doesn't. Bugger! I thought that was working.</p>
+<p>I've made sure the XMLDBB stuff is saved.  It is showing that the XML is storing it. The XML file has it there. I've updated the version number, run the "notifications" stuff, it is saying that the database has been updated.  But no mdl_bim_student_feeds table!!!</p>
+<p>Is there something wrong with the naming?  Is there a log telling me something I'm not looking at?</p>
+<p>When in doubt, delete.  That fixed it.  But that will be annoying.</p>
+
+<p>Okay, time to display the registration form</p>
+<p>The obvious thing to come of this is that weblib.php stuff is not what should be used to create the form.  formlibs.php is.  Will have to start there I think.</p>
+
+<h3>Summary and to do</h3>
+
+<p>Okay, I've got bim starting to read and react to content in the database.  Started using the lib file.  Different users are seeing the right information.</p>
+<p>To do</p>
+<ul>
+  <li> Use <a href="http://docs.moodle.org/en/Development:lib/formslib.php_Usage">formslib.php</a> to handle the register process, this includes saving the data in the database - but not checking yet.</li>
+  <li> Move onto the hard-coded prototype stuff for the teaching staff. </li>
+</ul></p>
+
+</body>
+</html>

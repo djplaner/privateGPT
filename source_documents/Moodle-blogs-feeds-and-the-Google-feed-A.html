@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moodle, blogs, feeds and the Google feed API</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/03/03/moodle-blogs-feeds-and-the-google-feed-api/">Moodle, blogs, feeds and the Google feed API</a></h1>
+
+<p>Tags: edc3100, moodle, teaching</p>
+
+<p>Time to tweak the <a href="https://djon.es/blog/2012/02/22/one-moodle-course-design-approach-ad-trade-offs/">course site</a> again. I attempting to encourage the students to engage with technology, to become digital residents. The assumption is that they will really only be able to design great teaching with ICTs, if the use of ICTs is part of their everyday life. One aspect I'm attempting to encourage is blogging.
+
+To make the blogging process a bit more obvious, I wanted to include some aggregated view of the students' blogs on the course site to increase the visibility and hopefully the prevalence of blogging.  Here's how I did it with the Google feed API.
+
+<h3>What does it look like?</h3>
+
+The following image (click on it to see a bigger version) shows what the site looks like now.  The new bit is labelled <strong>EDC3100 blogs</strong>.  Every five seconds the link (e.g. "My Animoto video") scrolls onto the next one.  The links are chosen from the 8 most recent blog posts aggregated by <a href="http://pipes.yahoo.com/pipes/pipe.info?_id=e8cf6c93c932300cde6541842c8fc3fc">this Yahoo pipe</a>.
+
+If you move the mouse over the scrolling blog links, the scrolling pauses. Click on the blog title and you will be taken to the original blog.
+
+<a href="http://www.flickr.com/photos/david_jones/6947694509/" title="3100 page with feed added by David T Jones, on Flickr"><img alt="3100 page with feed added" height="257" src="http://farm8.staticflickr.com/7205/6947694509_3b8a79981b.jpg" width="500" /></a>
+
+<h3>How does it work?</h3>
+
+The process goes something like this
+<ol>
+  <li> I created <a href="http://pipes.yahoo.com/pipes/pipe.info?_id=e8cf6c93c932300cde6541842c8fc3fc">this Yahoo pipe</a> to aggregate the feeds.<br />Currently the pipe is hard-coded with the feeds of the student blogs. In the future I need to connect this with <a href="http://groups.diigo.com/group/icts-and-pedagogy/rss/tag/3100studentBlog">diigo bookmarks the student blogs</a> so I (or anyone in the group) can add their blog. </li>
+  <li> Eventually found <a href="http://code.google.com/apis/ajax/playground/#dynamic_feed_control_-_horizontal">this explanation</a> of Google's feed API.<br /> It transforms the RSS feed into some nice HTML that can be placed on a web page. </li>
+  <li> Stuck an <em>iframe</em> in a Moodle label.<br />It appears that Google feed API wants to change the head of the HTML, something you can't easily do in Moodle. So I had to upload a separate web page onto the Moodle service and then use an iframe to include it on the site page. </li>
+</ol>
+
+<h3>Reflections and work to do</h3>
+
+Time to stop playing with the tech and design some prompts to encourage the students to participate.
+
+Should probably look at putting a "help" or "about" link near the object so students can scratch their itch about what it is.
+
+Need to get the Yahoo pipe interacting with the Diigo group bookmarks.
+
+This was a useful respite from some other work, but in the end the technical aspect won't be enough with additional work.  The work around with the iframe was a bit kludgy. Including the object at the top of the page, does increase scrolling. So I wonder about the value.
+
+I'm also wondering how much of this should be talked about with the students? If feel that an understanding that this form of manipulation of existing systems is important to teachers if they are looking to integrate ICTs into teaching. A bit of the whole Rushkoff, Program or be Programmed ethos.</p>
+
+</body>
+</html>

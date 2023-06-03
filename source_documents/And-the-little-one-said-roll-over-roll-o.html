@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>And the little one said, "roll over, roll over"</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/06/26/and-the-little-one-said-roll-over-roll-over/">And the little one said, "roll over, roll over"</a></h1>
+
+<p>Tags: edc3100, moodle</p>
+
+<p><div style="float: right;"><a href="https://www.flickr.com/photos/david_jones/8142765678" title="Roll over by David Jones, on Flickr"><img alt="Roll over" height="214" src="https://c1.staticflickr.com/9/8470/8142765678_87133ae805_n.jpg" width="320" /></a></div>
+
+It's that time of year again.  The time between semesters when one offering of <a href="http://www.usq.edu.au/course/specification/2015/EDC3100-S1-2015-WEB-TWMBA.html">the main course</a> I teach is still drawing to a close and when I have to think about preparing for the next offering. It's time - for better or worse - to roll over. The following is a description and some thoughts on how and what I do during roll over.
+
+As it happens there is <a href="http://tabitharoder.blogspot.co.nz/2015/06/imoot15-and-mootau15.html">some discussion going on</a> in the Moodle community about "roll over", but at the institutional level. The following is very much focused on the course level.
+
+<h3>The process</h3>
+
+The high level steps I use are:
+<ol>
+  <li> Use the Moodle/institutional roll over process. </li>
+  <li> Update my "macros". </li>
+  <li> Check for broken links. </li>
+  <li> Other manual changes </li>
+</ol>
+
+Overall, the tools provided by the institution to roll over a course from one semester to the next do a reasonable job.  However, if you have a fair amount of structure and content to a course site there is a hole. The tools don't yet know enough about the institutional context (dates, weeks). Nor is this information provided in a way that helps teaching staff integrate the information in a way that responds to those changes.  The problem gets worse the more you get into the unique course context (e.g. names of weekly topics).
+
+<h3>Moodle/institutional roll over</h3>
+
+I log an IT request (using a god awful interface) and in a little while some magic happens and the content from Semester 1 (S1) is copied into the Semester 2 (S2) course.  The image below (click on it to see it larger) is of the newly rolled over S2 course site. As it shows - for better or worse - the course has quite a collection of resources that make up each weekly learning path (originally called and based on the idea of a <a href="https://davidtjones.wordpress.com/2012/02/19/designing-the-weekly-ramble/">weekly ramble</a>). The interconnections between each of the elements is quite convoluted. e.g. the "Introduce yourself" book links to the "Share your introductions" discussion forum and vice versa.
+
+The Moodle/institutional roll over process does a really good job of updating the interconnections between elements. This is good.
+
+But there's a problem. Can you see the problem in the following image?
+
+<a href="https://www.flickr.com/photos/david_jones/18976620828" title="s2 2015 by David Jones, on Flickr"><img alt="s2 2015" height="285" src="https://c1.staticflickr.com/1/338/18976620828_8111df3667.jpg" width="500" /></a>
+
+Semester 2 runs from late July through to October/November. The dates in the above image are different. They are for Semester 1.  The Moodle roll over process doesn't know anything about USQ dates. This causes problems because dates are littered throughout the course site. Such as the <a href="https://www.flickr.com/photos/david_jones/18543806373/">assessment overview page</a>, each <a href="https://www.flickr.com/photos/david_jones/19164401855/">individual assignment page</a>, the <a href="https://www.flickr.com/photos/david_jones/18543805803/">study schedule</a>, and any of <a href="https://www.flickr.com/photos/david_jones/18976768220/">the learning path pages</a> that mention dates.
+
+The suggestion is that I need to manually search (remember there's typically no search engine on a Moodle course site) and replace all occurrences of dates and any other information that may change from offering to offering. Information that might include:
+<ul>
+  <li> the details of the teaching staff;
+        e.g. the assessment information contains directions to "email <a href="mailto:">the course examiner</a>" with extension requests.  Who is the course examiner may change from offering to offering.</li>
+  <li> names of weeks/topics; and
+       In the above image, week 1 goes under the title "ICT, PLNs and You". I may wish to change that topic name in Semester 2 (e.g. add in the missing comma "ICT, PLNs, and You") and the course material uses the topic names throughout. </li>
+  <li> the weeks of the semester for each topic.
+       For some historical reason, when it numbers the weeks of semester my institution includes weeks that are holidays in the count. Since holidays are never at the same time each semester, it means for some topics their week of semester changes.  In Semester 1, the "Finishing your UoW" topic is in Week 8. In semester 2, it will be Week 6. </li>
+</ul>
+
+<h3>"Macros" - my solution to this problem</h3>
+
+Last semester I implemented <a href="https://davidtjones.wordpress.com/2015/02/03/concrete-lounge-1-helping-learners-find-correct-up-to-date-course-information/#macro">a "macro" system</a>. Initial implementation had it working just for the semester 1 site.  Time to update it to work with both sites.  The Javascript code will no need to
+<ol>
+  <li> Identify which course site (S1 or S2) the user is viewing. </li>
+  <li> Replace all the "macro" variables with values appropriate to the course site. </li>
+</ol>
+
+What I need to do know is enter appropriate information for the new offering, this includes
+<ul>
+  <li> links to books within the course site;
+        <p>Assessment, study schedule etc. </p>
+  </li>
+  <li> Assignment due date - course profile. </li>
+  <li> Professional experience dates - PE calendar </li>
+  <li> Weeks and dates - academic calendar.
+        This also involves moving the holidays and week numbers around.
+  </li>
+</ul>
+
+With the script updated viewing the S2 course site now reveals the following.  Dates and weeks updated.
+
+<a href="https://www.flickr.com/photos/david_jones/19139130106" title="S2 2015 by David Jones, on Flickr"><img alt="S2 2015" height="312" src="https://c1.staticflickr.com/1/525/19139130106_d12254d64e_n.jpg" width="320" /></a>
+
+<h3>Broken links</h3>
+
+The institution has a "check course" tool that performs a range of checks. Problems it picked up in the newly rolled over course included
+<ul>
+  <li> Cross-course references </li>
+  <li> Reference to missing activity </li>
+</ul>
+
+22 problems were identified, all to be fixed manually.  Most were due to the tweaking of paths I did last semester which broke links.
+
+<h3>Other manual changes</h3>
+
+<strong>Teaching team details</strong> - need to remove the folk who aren't teaching in S2.  The institutional system for "teaching team" does this automatically, but it has some missing functionality, including
+<ul>
+  <li> No space to add a "Advice on specific request" section.
+        i.e. when students are looking for how to contact the teaching team, they often want to ask the same question. A section like this allows some additional advice and scaffolding. </li>
+  <li> No space for "personalisation".
+       The institutional version only offers the standard contact details and qualification information that is present in the institutional database.  It doesn't allow a staff member to personalise their part of the course site. e.g. to explain exactly what they do in the course and more importantly take a small step in creating a relationship with the students. </li>
+</ul>
+
+<strong>Week order for study schedule and "jump to"</strong> - the change in week numbers for specific topics needs to be manually adjusted.  That's done, but a problem
+
+<h3>Build the scaffolds</h3>
+
+A number of the activities are based around discussion forums.  Students have to complete an activity and share the end result in a forum. Many of these includes example responses (often only seen after the student posts their response). Most of these come from other students in the offering, but a small number are provided by me.  I need to manually copy these over from the last offering.
+
+But it appears that the institutional SSO is playing silly buggers.  Will have to complete that task later.</p>
+
+</body>
+</html>

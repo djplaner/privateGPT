@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM 2.0 - cleaning up issues - Part 1</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/01/01/bim-2-0-cleaning-up-issues-part-1/">BIM 2.0 - cleaning up issues - Part 1</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>While <a href="davidtjones.wordpress.com/research/bam-blog-aggregation-management/">BIM 2.0</a> is largely working there remains a <a href="https://github.com/djplaner/BIM/issues">list of 30 open issues</a> to be addressed. 19 of these are "future" issues. i.e. changes that would be really nice but aren't necessary for the immediate release of BIM 2.0.  The following is the first part of working on the 11 that are of immediate interest.
+
+Of initial interest will be
+<ul>
+  <li> Ensuring deleting a BIM activity removes all data from the bim tables <a href="https://github.com/djplaner/BIM/issues/55">issue #55</a> </li>
+  <li> Error on releasing a marked post - <a href="https://github.com/djplaner/BIM/issues/54">issue #54</a> </li>
+</ul>
+
+<h2>Deleting a BIM activity</h2>
+
+The mod/bim/lib.php file has a method forum_delete_instance that is meant to do this. The error is a little obvious
+
+[sourcecode language="lang="php"]
+    if ( ! $DB-&gt;delete_records( 'bim_group_allocation', array('id'=&gt;$bim-&gt;id))) {
+       $result = false;
+    }
+[/sourcecode]
+
+It should be looking for the field id.  The field in the other tables for the BIM id is 'bim'.  This is actually a problem that appears to extend back to BIM 1.
+
+Changed. Tested. Fixed.
+
+<h2>Error releasing a post</h2>
+
+This is a problem when gradebook integration is turned on (why it hasn't shown up previously). The SQL statement used to extract marks to update the gradebook doesn't work with Moodle 2.x.  Update this and it should work.
+
+That seems to have worked. No more problem.  The status has been updated.  Time to check if the gradebook has been updated appropriately.  Yep.  Gradebook updated correctly.  Can close this one off.</p>
+
+</body>
+</html>

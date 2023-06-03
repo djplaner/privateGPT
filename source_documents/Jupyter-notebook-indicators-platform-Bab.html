@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Jupyter notebook indicators platform: Baby step #1 - Finding an ORM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2017/03/12/jupyter-notebook-indicators-platform-baby-step-1-finding-an-orm/">Jupyter notebook indicators platform: Baby step #1 - Finding an ORM</a></h1>
+
+<p>Tags: indicators</p>
+
+<p><a href="http://djon.es/blog/2017/03/12/playing-with-python-and-jupyter-notebooks-for-analytics/">The last post</a> documented early explorations of Jupyter notebooks ending with a simple query of a Moodle database. This post takes the first baby steps toward some sort of indicators platform using Jupyter notebooks, Python and github. The focus here is to find some form of ORM or other form of database independent layer.
+
+<strong>Problem:</strong> the code from the last post was specific to Postgresql. If you're Moodle database is based on another database that code won't work. The aim here is to enable some level of sharing of code/analysis/indicators. This means needed a way to keep the code independent of database specifics. This is where <a href="https://www.fullstackpython.com/object-relational-mappers-orms.html">object relational mappers (ORMS)</a> enter the picture.  See <a href="http://danielweitzenfeld.github.io/passtheroc/blog/2014/10/12/datasci-sqlalchemy/">this</a> for an argument why this is a good idea.
+
+<h2>Pandas and SQLAlchemy</h2>
+
+<a href="https://books.google.com.au/books?id=f1F1CgAAQBAJ&amp;pg=PA124&amp;lpg=PA124&amp;dq=python+pandas+database+independent&amp;source=bl&amp;ots=2Pg2BCCJTd&amp;sig=rRj_Rbd9CWOsH8l-1Jlqf6nwXKU&amp;hl=en&amp;sa=X&amp;redir_esc=y#v=onepage&amp;q=python%20pandas%20database%20independent&amp;f=false">This book</a> offers some examples using sqlalchemy with pandas.  A likely combination.  <a href="https://github.com/crazyguitar/pysheeet/blob/master/docs/notes/python-sqlalchemy.rst">This sqlalchemy cheatsheet</a> offers some useful examples.
+
+Need to install sqlalchemy, it appears.  Actually just updated
+<pre lang="sh">
+conda install -c anaconda sqlalchemy
+</pre>
+
+Oh dear, time wasted.  Needed to restart the notebook server after that.
+
+Process is
+<ol>
+  <li> Modify the config stuff to create an <a href="http://docs.sqlalchemy.org/en/latest/core/engines.html">sqlalchemy engine</a>. </li>
+  <li> Read the data </li>
+</ol>
+
+Ends up with the following code
+<pre lang="python">
+import json
+
+# Put the config outside the Indicators directory, keep it out of git
+with open('../config.json') as f:
+    conf = json.load(f)
+    
+from sqlalchemy.engine.url import URL 
+from sqlalchemy import create_engine
+
+engine = create_engine(URL(**conf))
+
+df = pd.read_sql('select id,username,firstname,lastname ' +
+                 'from moodle.mdl_user where id<100 ',engine)
+df
+</pre>
+
+The <em>config.json</em> file looks something like the following. The current plan is that this sits above this directory, as this directory and its contents will eventually end up in github
+<pre lang="json">
+{
+  "drivername": "postgresql",
+  "database": "someDbaseName",
+  "username": "user", 
+  "host": "localhost",
+  "port": "5432",
+  "password": "myPassword"
+}  </pre>
+
+<h2>What's next?</h2>
+
+That works and seems a reasonable.  Some ideas for the next step
+<ul>
+  <li> Figure out how to remove/handle the <em>moodle</em> schema that's in the SQL above, not to mention the <em>mdl_</em> prefix on the table. 
+       <p>Linked to allowing the code to be run across different institution's easily.</p> </li>
+  <li> Move the config code into a library for this work? </li>
+  <li> Set up the github repository, get this code shared and start working with @beerc on this. </li>
+  <li> Experiment with how the assumptions built into the Perl code I was using can be translated appropriately into this environment.
+       <p>How to develop the class hierarchy (or if) using sqlalchemy.</p>
+       <p>How the perl idioms translate into python, sqlalchemy and pandas.  Pandas has some nice features that might eliminate some practices.</p>
+  </li>
+</ul></p>
+
+</body>
+</html>

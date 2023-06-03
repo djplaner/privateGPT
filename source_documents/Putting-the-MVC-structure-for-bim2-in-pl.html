@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Putting the MVC structure for bim2 in place</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/12/24/putting-the-mvc-structure-for-bim2-in-place/">Putting the MVC structure for bim2 in place</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>So, bim2 is up and going, <a href="https://djon.es/blog/2010/12/20/adding-a-bim2-activity-development-progress/">at least in terms of being able to create an instance of the activity within a course</a>. The trouble is that it can't do anything. This post starts the process of implementing the design of the user interactions with bim2.  The intent is to go with a Model-View-Controller type structure in the hope that this will improve flexibility and reuse.
+
+The plan is to reuse some of the very early work that was done with the <a href="https://djon.es/blog/2010/05/26/adding-multiple-visualisation-approaches-to-indicators-block/">indicators module</a> (work that has yet to be completed). The plan here is hopefully to have the basic structure of the MVC approach working in bim2, however, it won't actually do anything real.  The idea is that once the structure is in place, I can work on each of the user groups separately.
+
+<h3>Users and state machines</h3>
+
+The fundamental assumption of this approach is that the way in which a user can interact with bim2 can be described as a state machine. The idea is that there are a given set of web pages any user can see and a specific set of possible transitions from one web page to the next. In addition, with bim2 there are groups of users. The state machine used by a user depends on the group they belong to and perhaps where they are up to in using bim2.
+
+For example, initially a student must complete the "register a feed" process (state machine).  Once that's complete, they will be able to view details. A staff member marking blogs has one process to go through while the staff member in charge of the course has another.
+
+The intent is to model the state machines for each group of users as a separate controller implemented using some simple models and views. The student state machine is the simplest, so I'll start with it.  By doing so most of the structure will be put in place.
+
+<h3>Controller factory</h3>
+
+But first, before doing that I need to put in place the structure to create the controllers. At the moment, the <em>view.php</em> script for bim has the following code at the core
+[sourcecode lang="php"]
+if ( has_capability( 'mod/bim:coordinator', $context)) {
+    // administrator can the configure stuff
+    show_coordinator( $bim, $userid, $cm, $course );
+}else if (has_capability('mod/bim:student', $context)) {
+    // student can see details of their registered blog
+    show_student($bim, $userid, $cm, $course );
+} else if ( has_capability( 'mod/bim:marker', $context )) {
+    show_marker( $bim, $userid, $cm, $course );
+} else {
+  error( "No capability to access this page" );
+}
+[/sourcecode]
+
+All this basically does is check to see what type of user is trying to use the activity and if this is determined, call an appropriate function to handle what they may want to be doing.
+
+I'm hoping I can change this, and much of what precedes it (in total view.php in bim has 108 lines of code) into something much smaller, something like this.
+
+[sourcecode lang="php"]
+$factory = bimtwo_ControllerFactory::create( $context );
+if ( $factory !== NULL ) {
+    $factory-&gt;process();
+}
+[/sourcecode]
+($context in the above may not make sense in a Moodle module.) Also need to identify how error checking should be done properly, doubt that testing for NULL is the way to go.
+
+<h3>Coding standards</h3>
+
+All of the above work was done yesterday while I was without a network connection. So some of it probably doesn't follow the <a href="http://docs.moodle.org/en/Development:Coding_style#Classes_2">Moodle coding style</a>.  Time to revisit the work so far and bring it into line.  This includes the error checking/exceptions.
+
+First off is that class names should be lower-case english words separate by underscores.
+
+Ahh, class member variables need to be declared. Also passing in DB, OUTPUT etc should probably be done via global.
+
+<h3>Capabilities - identifying type of user</h3>
+
+The type of user within a bim2 activity is determined by the bim2 capabilities the user has. So, first I need to become familiar with how capabilities have changed in Moodle 2 (if they have) and then figure out what changes need to be done to bim2 in order to get the appropriate controller being created.
+
+Yea, have got the old bim capabilities working fine within bimtwo. No changes required from Moodle 2.0.  Just had to update for the new name of bimtwo. After lunch, shall use this to get the various controllers going - it's just doing "prints" at the moment.
+
+<h3>Getting the controller stuff working</h3>
+
+So, a touch more tweaking and the controller structure appears to be working. I'll describe it below. There is a strong chance that the first reaction of many will be along the lines of "Isn't that all just a waste of time, adding yet more abstraction/indirection?". I'd be lying if I said it doesn't feel like that at times. I wonder if I'm wasting my time. However, my prior experience was positive with this approach, so I remain hopeful. Time will tell.
+
+The main <em>view.php</em> file, this is what Moodle calls when a user clicks on the bim2 activity, looks like this now.
+
+[sourcecode lang="php"]
+
+require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(__FILE__).'/lib.php');
+
+require_once( $CFG-&gt;dirroot.'/mod/bimtwo/factory/controller.php' );
+
+$factory = new bimtwo_controller_factory();
+$controller = $factory-&gt;produce();
+$controller-&gt;process();
+[/sourcecode]
+
+That's it, and that's all it should ever be.
+
+The idea is that the <em>bimtwo_controller_factory</em> examines the input and determines what type of user is making the request. Based on the type of user it then creates a <em>$controller</em> appropriate for that user.  The <em>process</em> function for each controller then examines the input a bit more to figure out what the user is trying to do. It then calls the appropriate functions - implemented through a model and controller - to carry out that activity.
+
+Determining what type of user is done using capabilities in the <em>produce</em> function of the factory class. It looks like this.
+
+[sourcecode lang="php"]
+public function produce() {
+
+    global $CFG;
+    $path = $CFG-&gt;dirroot."/mod/bimtwo";
+
+    if ( has_capability( 'mod/bimtwo:coordinator', $this-&gt;context)) {
+        // administrator can the configure stuff
+        require_once "$path/coordinator/controller.php";
+        return new bimtwo_coordinator_controller( $this );
+    } else if (has_capability('mod/bimtwo:student', $this-&gt;context)) {
+        // student can see details of their registered blog
+        require_once "$path/student/controller.php";
+        return new bimtwo_student_controller( $this );
+    } else if ( has_capability( 'mod/bimtwo:marker', $this-&gt;context )) {
+        require_once "$path/marker/controller.php";
+        return new bimtwo_marker_controller( $this );
+    } else {
+        require_once "$path/factory/controller_error.php";
+        return new bimtwo_error_controller( $this );
+    }
+[/sourcecode]
+
+At the moment, the controllers for each group of user simply produces some simply output indicating what type of user it thinks it is.
+
+The next major task will be getting some models and views working, perhaps for the student as its the simplest class of user.  But before that, I should probably return to some of the outstanding prior work.
+
+Ahh, help files and help strings.   Changes committed to git, onto help.</p>
+
+</body>
+</html>

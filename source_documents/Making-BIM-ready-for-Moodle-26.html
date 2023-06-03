@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Making BIM ready for Moodle 2.6</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/05/19/making-bim-ready-for-moodle-2-6/">Making BIM ready for Moodle 2.6</a></h1>
+
+<p>Tags: bim</p>
+
+<p>The very nice folk from my institution's ICT group warned me back in March that<blockquote>I have started work on the moodle 2.6 upgrade that will be happening midyear and have come across some deprecation warning from BIM. Just giving you plenty of notice that an updated version will be needed before release.</blockquote>
+
+That was just as my first use of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> on the institution's servers was getting underway.  That's gone reasonably well and it will be continuing (and hopefully expanding as I learn more about what's required and possible with the approach) next semester, so I better get BIM playing nicely with 2.6.  That's what this post is reporting on.
+
+BIM for Moodle 2.6 (and also 2.5) is available from <a href="https://moodle.org/plugins/pluginversions.php?plugin=mod_bim">the BIM plugin database entry</a> and also <a href="https://github.com/djplaner/moodle-mod_bim">from GitHub</a>.
+
+<h3>Get Moodle 2.6 running</h3>
+
+Let's get the latest version of Moodle 2.6 - 2.6.3 - and install that.
+
+So that's <a href="http://docs.moodle.org/26/en/admin/environment/php_setting/opcache.enable">the first change</a>.  PHP setting for caching.  Not that I'll need that for testing.  Looks like I can ignore it for now.
+
+<h3>Get BIM installed</h3>
+
+I'm doing this so irregularly now it's good that I actually documented this <a href="https://djon.es/blog/2014/02/07/bim-testing-and-fixes/">last time</a>.
+
+That all appears to be working.  Ahh, but I haven't turned the debugging all the way up to annoying yet.
+
+That's better<blockquote>get_context_instance() is deprecated, please use context_xxxx::instance() instead.</blockquote>
+
+And about this stage it was always going to be time to....
+
+<h3>Check the Moodle 2.6 release notes</h3>
+
+The <a href="http://docs.moodle.org/dev/Moodle_2.6_release_notes">Moodle 2.6 release notes</a> and then the developer notes.  Nothing particularly related to this warning.
+
+<h3>Do it manually</h3>
+
+As outlined in <a href="https://github.com/marxjohnson/moodle-block_quickfindlist/issues/10">this message</a> it appears that this particular usage has been deprecated for a few versions.  The deprecatedlib.php suggests this gets removed in 2.8.
+
+So the changes I'm doing appear like this
+[code language="javascript"]
+#$context = get_context_instance( CONTEXT_COURSE, $course-&gt;id );
+$context = context_course::instance( $course-&gt;id );
+[/code]
+
+I can see this is needed in the following
+<ul>
+  <li>./coordinator/allocate_markers.php</li>
+  <li> ./coordinator/find_student.php  </li>
+  <li> ./index.php **done?** </li>
+  <li> ./lib/groups.php</li>
+  <li> ./lib/locallib.php</li>
+  <li> ./marker/view.php</li>
+  <li> <del>./view.php</del> - this one had actually been done earlier
+#$context = get_context_instance( CONTEXT_MODULE, $cm-&gt;id );
+$context = context_module::instance( $cm-&gt;id );
+  </li>
+</ul>
+
+That all seems to be working.
+
+<h3>Do a big test</h3>
+
+Will back up a large BIM activity with a temp course from my Moodle 2.5 instance and restore it under Moodle 2.6.
+
+
+<h3>Some more issues</h3>
+
+print_container() is deprecated. Please use $OUTPUT-&gt;container() instead. Done</p>
+
+</body>
+</html>

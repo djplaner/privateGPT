@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploring Moodle&#039;s API</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/09/13/exploring-moodles-api/">Exploring Moodle&#039;s API</a></h1>
+
+<p>Tags: bad, e-learning, elearning</p>
+
+<p><div style="float: right;"><a href="https://www.flickr.com/photos/crcedinburgh/10155924084/" target="_blank"><img alt="Biblia (German), f.40r, detail by CRC, University of Edinburgh, on Flickr" border="0" src="https://farm4.static.flickr.com/3682/10155924084_207fe9c6ba_m.jpg" title="Biblia (German), f.40r, detail by CRC, University of Edinburgh, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-nd/2.0/" rel="license" target="_blank"><img align="left" alt="Creative Commons Creative Commons Attribution-Noncommercial-No Derivative Works 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-nd/2.0/80x15.png" title="Creative Commons Creative Commons Attribution-Noncommercial-No Derivative Works 2.0 Generic License" /></a>&nbsp; &nbsp;by&nbsp;<a href="https://www.flickr.com/people/crcedinburgh/" target="_blank">&nbsp;</a><a href="https://www.flickr.com/people/crcedinburgh/" rel="cc:attributionurl" target="_blank">CRC, University of Edinburgh</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+<a href="http://apigee.com/about/blog/technology/api-centric-architecture-all-development-api-development">API centric architecture</a> is a coming thing in technology circles. It's the way vendors and central IT folk will build systems. It is also going to be manna from heaven for institutionalised people who are <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">breaking a little BAD</a>.
+
+Moodle has a growing <a href="https://docs.moodle.org/dev/Web_services_API">web services API</a>. The following documents some initial exploration of how and if you can "break BAD" with those APIs.
+
+<h2>Background</h2>
+
+<h3>Web services API</h3>
+
+Moodle has a capability for plugins to define <a href="https://docs.moodle.org/dev/Web_services_API">a Web services API</a>.  The question is, how many plugins provide this and how much of Moodle core has exposed APIs.  It's likely to be quite large given APIs are increasingly used for mobile devices.
+
+A quick check of my basic Moodle 2.9 install reveals
+[code lang="bash"]
+dj:moodle david$ find . -name services.php
+./admin/mnet/services.php
+./enrol/manual/db/services.php
+./enrol/self/db/services.php
+./lib/db/services.php
+./message/output/airnotifier/db/services.php
+./mod/assign/db/services.php
+./mod/forum/db/services.php
+./mod/lti/services.php[/code]
+
+Not a huge number, but at least enough to start playing with (assign and forum are likely to be particularly useful) and there may well be more.
+
+Of course, I should be looking to add a Web services API to <a href="https://davidtjones.wordpress.com/research/bam-blog-aggregation-management/">BIM</a>. <a href="https://docs.moodle.org/dev/Adding_a_web_service_to_a_plugin">This page</a> will apparently help with that.
+
+<a href="https://docs.moodle.org/dev/Adding_a_web_service_to_a_plugin">That page</a> also includes a template with a test client.  Could be useful later on.
+
+<h3>What about the Core APIs</h3>
+
+Moodle defines a <a href="https://docs.moodle.org/dev/Core_APIs">number of Core APIs</a> that are used within Moodle.  Are these available via Web services?  Some (all?) wouldn't make sense, but  maybe...
+
+<h3>External functions API</h3>
+
+The <a href="https://docs.moodle.org/dev/External_functions_API">external functions API</a> apparently "allows you to create fully parameterised methods that can be accessed by external programs (such as Web services API)".  Searching for evidence of that in my Moodle install is a little more heartening
+
+[code lang="bash"]
+dj:moodle david$ find . -name externallib.php
+./calendar/externallib.php
+./cohort/externallib.php
+./course/externallib.php
+./enrol/externallib.php
+./enrol/manual/externallib.php
+./enrol/self/externallib.php
+./files/externallib.php
+./grade/externallib.php
+./group/externallib.php
+./lib/external/externallib.php
+./lib/externallib.php
+./message/externallib.php
+./message/output/airnotifier/externallib.php
+./mod/assign/externallib.php
+./mod/forum/externallib.php
+./notes/externallib.php
+./user/externallib.php
+./webservice/externallib.php[/code]
+
+Just have to figure out if the presence of these implies connections with a Web services API and the ability to access from a client.
+
+<h3>Web Services</h3>
+
+Which brings me to <a href="https://docs.moodle.org/dev/Category:Web_Services">the Web Services category page</a>.  There's also <a href="http://moodle.org/mod/forum/view.php?id=6971">a web services forum</a> and <a href="https://docs.moodle.org/29/en/Web_services_FAQ">a related FAQ</a>, which includes:
+<ul>
+  <li> <a href="https://docs.moodle.org/29/en/Web_services_FAQ#Where_is_the_Web_Service_API_documented.3F">Details of where to see the available API</a> for your Moodle install. </li>
+  <li> A pointer to the <a href="https://docs.moodle.org/dev/Web_service_API_functions">Web services roadmap</a> which indicates that it's still a work in progress.
+      It does give a list of what has been implemented. Bingo, activity completion data (at least in 2.9) is included.
+  </li>
+  <li> Includes details of <a>how to create a new web service</a> with the advice of using a local plugin.
+        This might be a possible kludge where Moodle hasn't yet provided what might be needed. </li>
+  <li> A pointer to <a href="https://docs.moodle.org/dev/Creating_a_web_service_client#How_to_get_a_user_token">how to get a user token</a> for a script. </li>
+</ul>
+
+
+
+<h3>Security</h3>
+
+<a href="https://docs.moodle.org/dev/External_services_security">External services security</a> outlines various ways services can be called and how security is handled.
+
+<h2>Using web services on my Moodle instance</h2>
+
+As per <a href="https://docs.moodle.org/29/en/Using_web_services">these instructions</a> and elsewhere
+<ol>
+  <li> <a href="https://docs.moodle.org/29/en/Using_web_services#Enabling_web_services">Enabling web services.
+  </li>
+  <li> <a href="https://docs.moodle.org/29/en/Using_web_services#Enabling_protocols">Enabling protocols</a> <p>Appears REST is enabled by default (don't think I did this earlier). </p></li>
+</ol>
+
+Explore - Site administration / Plugins / Web Services - and its range of options<ol>
+  <li> Overview.
+        Includes directions on steps for enabling web services for mobile devices and for external systems to control Moodle.
+  </li>
+  <li> User.
+        Need to allocate permission to use web services to specified users.</li>
+  <li> Add services to be used.
+        Which web services can the user use.  In this case, a range of "built-in services" were already enabled for "all users" (assuming they have the required capabilities).  This might be interesting to test and explore.  Includes a broad array of interesting functionality (mod_assign_get_???) but not overly long.
+
+        Adding a service requires specification of the functions to be enabled.
+    </li>
+  <li> Each service can be configured to a particular user or multiple users. </li>
+  <li> Create a token - select a user and the service. </li>
+  <li> And then there's a test client embedded in Moodle.
+        Which only allows testing of a small subset.  Looks like having to write a client will be required.
+        Tried a function via the test API.  Got a security error.  Added it to the functions in the service I'd set up, and hey presto it worked.
+</li>
+</ol>
+
+<h3>Writing a client</h3>
+
+There's a github repo with <a href="https://github.com/moodlehq/sample-ws-clients">sample-ws-clients</a>.  I'll use the &lt;a href="https://github.com/moodlehq/sample-ws-clients/tree/master/PHP-REST"PHP-REST</a> code.
+<ol>
+  <li> Clone the repository </li>
+  <li> Modify the token, URL, etc. </li>
+  <li> Use the API documentation to figure out the correct format for the request.
+        Which was quite straight forward
+[code lang="php"]
+$functionname = 'moodle_user_get_users_by_id';
+$restformat = 'xml';
+$userids = array( 489, 2 );
+$params = array('userids' =&gt; $userids);
+[/code]
+  </li>
+  <li> Change the format to json and it works just as well, but of course different format in the data returned. </li>
+</ol>
+
+The JSON option (from 2.2 onwards) means that planned use within the browser should work fine.
+
+<h3>Exploring functions of interest</h3>
+
+In the short term, I'm particular interested in whether there are existing functions for the following tasks
+<ul>
+  <li> Get all enrolled users (and perhaps just students) in a course.
+         course_enrol_get_enrolled_users( $course_id )
+      Also accepts:
+[code lang="php"]
+options =&gt; array(
+    withcapability =&gt; string,
+    groupid =&gt; int,
+    onlyactive =&gt; int,
+    userfields =&gt; Array( string, string..),
+    limitfrom =&gt; int,
+    limitnumber =&gt; int )
+[/code]
+  </li>
+  <li> Get a user's activity completion details.
+         Appears to be implemented in 2.9.  Will update my version and see if it appears. Yes.
+          core_completion_get_course_completion_status( int courseid )
+           Returns a list of statuses including: comment id (cmid), activity module name (modname), instance ID (instance), state (0 incomplete, 1 complete, 2 complete pass, 3 complete fail), timecompleted, tracking (0 none, 1 manual, 2 automatic) )
+  </li>
+  <li> Get information about status and results of assignments.
+      <ul>
+          <li> mod_assign_get_assignments( array of course ids )
+             Returns a list of courses, but also a list of assignment details.</li>
+          <li> mod_assign_get_grades( array of assignment ids )
+              Returns a list of assignments and a list of grades for each assignment. Grades include the userid, attemptnumber, timecreated, timemodified, grader and grade. </li>
+          <li> mod_assign_get_submissions( array of assignment ids )
+               Similar to get grades but includes status, also submission plugin, list of files and additional information </li>
+          <li> mod_assign_get_user_flags( array of assignment ids )
+               Flags include workflowstate, allocated marker, and extension date.</li>
+      </ul>
+  </li>
+</ul>
+
+
+<h3>Some longer term services</h3>
+
+Longer term some other areas of interest might include
+<ul>
+  <li> Adding web services to BIM. <p>A job for me at a later date.</p> </li>
+  <li> core_message - list of services around the messaging services, perhaps as a way to intervene? </li>
+</ul></p>
+
+</body>
+</html>

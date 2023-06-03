@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Mocking up a search facility for the Moodle book module</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/07/19/mocking-up-a-search-facility-for-the-moodle-book-module/">Mocking up a search facility for the Moodle book module</a></h1>
+
+<p>Tags: moodle, moodleopenbook</p>
+
+<p>Time to start generating a mock up of one of the itches identified in <a href="http://www.slideshare.net/davidj/can-the-book-module-be-open-and-other-enhancements-what-would-you-like-to-see">this presentation</a> and from the <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">Moodle "open" book project</a>. Perhaps best summed up from this comment from a past EDC3100 student<blockquote>It is impossible to go back and remember where to find information…At least on a PDF I can use the Find function</blockquote>
+
+There is no search facility for the Moodle book module.
+
+<strong>Update:</strong> It does appear that there was <a href="https://moodle.org/mod/forum/discuss.php?d=130569">some work done</a> on this. <a href="https://github.com/stronk7/moodle-block_search_books">Some working code</a> as a block, but doesn't appear to have made it into the Moodle plugins database. Will need to chase this up.
+
+The question here is whether one can one be added using the existing <a href="https://docs.moodle.org/29/en/Search_forums_block">search forums block</a> as the model?
+
+This post is an attempt to mock up and explore how this might work.  The following is intended to provide sufficient ideas to generate feedback and suggestions.
+
+<h2>Search book block</h2>
+
+The start would be the option to include a "Search Book Block" on a Moodle course page. Current plan would that it would function exactly like the Search Forum block.
+
+<a href="https://www.flickr.com/photos/david_jones/19196124183/in/dateposted-public/" title="001_SearchBooks"><img alt="001_SearchBooks" height="201" src="https://farm1.staticflickr.com/370/19196124183_54971e07a7_o.jpg" width="370" /></a>
+
+Just type in the words you wanted to search for and by default it would search all books in the current course site (results of the search shown below).  If you wanted to be more advanced, use the Advanced Search link.
+
+<h2>Advanced Search</h2>
+
+The advanced search functionality would also mirror the Search forum block.  Click on the "Advanced Search" link and you get a page like the following.
+
+<a href="https://www.flickr.com/photos/david_jones/19196124143/in/dateposted-public/" title="002_Search"><img alt="002_Search" height="373" src="https://farm4.staticflickr.com/3765/19196124143_cf9b416c2a.jpg" width="500" /></a>
+
+The extra options being
+<ol>
+  <li> Search for an exact phrase. </li>
+  <li> Search for books that don't include a specific search phrase. </li>
+  <li> Search for whole words. </li>
+  <li> Refine the search to only specific books (more on this below). </li>
+  <li> Search for words within the titles of chapters.
+       <strong>Addition:</strong> should also perhaps have the option to only search for words in the title and the description of the whole book, rather than within chapters. </li>
+  <li> Search for books written by an author.
+       This is a little strange and somewhat borrowed from the Search forum block. Originally the intent was that the Book module might be used by students to create content on a Moodle site.  I'm not sure many people use this, but the ability to search only in books written by a particular author might be useful. </li>
+</ol>
+
+Given that a course may have quite a few books (e.g. one of mine has 70+) the ability to select which books to search might be useful. You might wish to search all the books, a few books, or all books within a given topic/module.  Hence the change in how to select which books to search in the following.
+
+<a href="https://www.flickr.com/photos/david_jones/19791024836/in/dateposted-public/" title="003_searchShowingBooks.tiff"><img alt="003_searchShowingBooks.tiff" height="499" src="https://farm1.staticflickr.com/561/19791024836_c51305ddbb.jpg" width="500" /></a>
+
+The idea is that you would be able to select multiple books.  All the books in the course would be displayed and would be grouped based on the topics/modules that they belong to.
+
+
+
+<h3>The search results</h2>
+
+The search forum block returns a list of matching forum posts grouped on separate pages (if needed).  For each post it displays both the "header" - the author details, the forum, date posted, and the subject line - and the content. The search Book block could mirror that, but instead showing each chapter that matched the search and the book from which those chapters belonged.  Something like the following.
+
+<a href="https://www.flickr.com/photos/david_jones/19195121204/in/dateposted-public/" title="004_results"><img alt="004_results" height="397" src="https://farm1.staticflickr.com/313/19195121204_5d57647079.jpg" width="500" /></a>
+
+Some of the minor suggested changes are
+<ul>
+  <li> Have the results summary count the number of chapters and books that were found in the search. </li>
+  <li> The header of each search result will provide the full path to the specific chapter. i.e. Topic/module -&gt; Book -&gt; chapter.
+        This might be better displayed using the standard display approach used within the Book module, but with the addition of links so that the searcher can go directly to the topic, book, or chapter.
+  </li>
+</ul>
+
+
+
+That will do for now.  Time to explore the technical feasibility of it all.
+
+
+
+<h3>Ad hoc notes</h3>
+
+<ul>
+  <li> Probably want to treat titles of books as a special search and result.
+        e.g. be clear is a search string appears in the book title and allow to only search (or not include) book titles. </li>
+  <li> Should the results show the entire contents of a chapter, or just a subset?</li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Allocating markers</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/24/bim-allocating-markers/">BIM - Allocating markers</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>I had sort of hoped that most of the new BIM development was finished.  However, after a bit of research at the local institution it becomes obvious that I'll have to implement a marker allocation screen.  Hopefully, it won't require that much work.</p>
+
+<h3>Requirement</h3>
+
+<p>The aim is to allow the coordinating teacher to specify which groups of students will be marked by which staff.  In my head the aim will be to:</p>
+<ul>
+  <li> Get and show a list of all the teaching staff currently allocated to a course. </li>
+  <li> Get a list of all the current groups allocated for a course. </li>
+  <li> Show a list of the groups in a multi-select box against each staff member. </li>
+  <li> Allow the coordinator to select and update as required. </li>
+  <li> Provide a pointer to the Moodle tools/links to allocating users and adding/managing groups. </li>
+</ul>
+<p>The plan is to implement this as another tab for the coordinator.</p>
+<p>Once this is implemented will need to modify the existing <code>bim_get_markers_students</code> and related functions to use the new method.</p>
+<p>Should also look at providing away to make teaching staff coordinators - or is this simply done by capabilities?</p>
+
+<h3>groupslib</h3>
+
+<p><a href="http://docs.moodle.org/en/Development:Groups">Developement docs</a> for groups in Moodle.  Somewhat limited, but does appear to have some important point re: the use of groupings.</p>
+<p>Would appear that <code>groupslib.php is the place to find functions associated with Moodle groups.  The following list summarises some of those that might be of interest to this task.</p>
+<ul>
+  <li> groups_get_groupname( $gid ) </li>
+  <li> groups_get_group_by_name<br />The implementation of this suggests that the <code>groups</code> table includes courseid as a field. </li>
+  <li> groups_get_group( $gid ) - return the record for the group </li>
+  <li> groups_get_all_groups( $courseid, $userid=0, $groupingid=0 ) - will use this one </li>
+  <li> groups_get_user_groups( $courseid, $userid ) </li>
+  <li> groups_get_members( $gid...) </li>
+</ul>
+<p>There is something called groupmode applied to activity and course setting.  Will need to look at that.</p>
+<p>There are also some functions apparently creating menus</p>
+<ul>
+  <li> groups_print_course_menu( $course, $urlroot, $return=false) </li>
+  <li> groups_print_activity_menu( $cm, $urlroot, $return=false, $hideallparticipants=false )</li>
+</ul>
+
+<h3>Get the data</h3>
+
+<p>To implement this will need to retrieve:</p>
+<ul>
+  <li> Details of all teaching staff in a course. </li>
+  <li> List of all groups associated with a course. </li>
+  <li> How best to do multi-select boxes in Moodle. </li>
+  <li> Eventually, how to get members of a group. </li>
+</ul>
+
+<h3>Implementation</h3>
+
+<h4>Add the extra tab</h4>
+
+<p>Get the structure going and start doing some testing. Added new allocate_markers.php.  Basically done.</p>
+
+<h4>Testing with groups</h4>
+
+<p>My initial though was a simple moodleform to implement this.  However, to some extent the existing functions that show menus, might be the way to go?</p>
+<p>groups_get_user_groups is currently returning an empty array.  Probably because there are no groups configured for this course.  Yep, no groups created.  Let's create one and see what happens.</p>
+<p>Group created, but no-one assigned to it.  It still shows up as empty.  But I am asking specifically for groups that the user is a member of.  What if I go more general?</p>
+<p>Yes, groups_get_all_groups for the course, gives me all the groups. Let's allocate the user and see that get_user_groups change.  Yep, when allocated, groups_get_user_groups returns the id of the group, but no other information.  What is returned from groups_get_all_groups includes full information keyed on id.</p>
+<p>I think I will try the Moodle form approach.</p>
+
+<h4>Getting all teaching staff</h4>
+
+<p>In reality, the point is not to get all the teaching staff, but to get all the staff that have the capabilities associated with marking students. For BIM, I've specified these as <code>mod/bim:marker</code> and <code>mod/bim:coordinator</code>.  I'm interested in all users with those capabilities.</p>
+<p>There's a <code>get_users_by_capability</code> function in accesslib.php - but there's a warning about performance.  It <a href="http://tracker.moodle.org/browse/MDL-16300">seems the advice</a> is to use it just once per page load.</p>
+
+<h4>Nutting out the life-cycle</h4>
+
+<p>In terms of the life-cycle for group allocation for BIM, I can see the following stages:</p>
+<ul>
+  <li> No groups at all in the course.<br />Need to advise the coordinator to go and create some groups. </li>
+  <li> No teaching staff won't happen, at least the coordinator should be listed.</li>
+</ul>
+
+
+<h3>Add the database table</h3>
+
+<p>The aim of this form is to allocate staff members to particular groups of students for marking purposes.  Am going to need a table to track which groups a staff member has been allocated to.  Am thinking of something fairly simple.<pre>
+CREATE TABLE mdl_bim_group_allocation (
+    id BIGINT(10) unsigned NOT NULL auto_increment,
+    bim BIGINT(10) unsigned NOT NULL,
+    userid BIGINT(10) unsigned NOT NULL,
+    groupid BIGINT(10) unsigned NOT NULL,
+CONSTRAINT  PRIMARY KEY (id)
+);</pre></p>
+
+<h3>Creating the form</h3>
+
+<p>The form will essentially be a list of the markers with a multi-select box containing course groups. From here it becomes a moodle form process.</p>
+<p>Basically done, but am not pleased with the layout.  Will eventually have to play with the CSS.  It's workable as it stands.</p>
+
+<h3>Processing the form</h3>
+
+<ul>
+  <li> Set the values from the existing allocations. </li>
+  <li> Display the form. </li>
+  <li> On submission, compare the allocations with those already in the database.  </li>
+</ul>
+<p>Question here about the best way to proceed:</p>
+<ul>
+  <li> Simply delete all entries for the bim and insert the new ones. </li>
+  <li> Loop through each marker and add or delete as required? </li>
+</ul>
+<p>I'm leaning towards the latter.  The plan is</p>
+<ul>
+  <li> Loop through each marker
+       <ul>
+           <li> if there's an allocation in the form, that's not in the dBase - add it. </li>
+           <li> if there's an allocation in the dBase, but not in the form - delete it.</li>
+       </ul>
+  </li>
+</ul>
+<p>The question now is whether there's a way in Moodle to execute multiple SQL statements, or whether I should do it one, by one? </p>
+<p><code>delete_records_sql</code> seems to be the way to delete records and can do multiples. <code>insert_record</code> will insert one at a time.</p>
+<p>Okay, after some "issues" with setting the data.  All is done.</p>
+
+<h3>What was done</h3>
+
+<p>The marker allocations screen is complete.  </p></p>
+
+</body>
+</html>

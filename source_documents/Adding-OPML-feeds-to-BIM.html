@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding OPML feeds to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/06/01/adding-opml-feeds-to-bim/">Adding OPML feeds to BIM</a></h1>
+
+<p>Tags: bim, moodle, Uncategorized</p>
+
+<p><p>The following describes the process of adding support for the provision of <a href="http://en.wikipedia.org/wiki/OPML">OPML</a> files to the Moodle activity module <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>.</p>
+
+<h3>Requirement</h3>
+
+<p><a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> allows students to register external blogs with Moodle and provides support for teaching staff to track, manage and mark the student blogs. Rather than use BIM and Moodle to find out which students have posted recently, it would nice to allow teaching staff (initially) to download an OPML file for all their students. This file could be imported into most newsreaders and used to track student submissions.</p>
+<p>The aim is to start simple and only provide an OPML file for each teaching staff member's "your students".  Given the nature of OPML, if the staff wanted to share this with students, they could simply give them the file, but that's their choice.</p>
+<p>Longer term there's a range of additional feeds that would be cool for BIM to generate (the top 10 marked posts in an RSS file etc.).</p>
+
+<h3>How to generate OPML files in PHP</h3>
+
+<p>I've been wondering if there are any way of generating OPML in PHP or Moodle.  A search of the moodle.org site reveals <a href="http://moodle.org/mod/forum/discuss.php?d=41299">this forum post</a> which mentions <a href="http://feedcreator.org/">feedcreator</a>, which seems to fit the bill. </p>
+<p>Questions. Is feedcreator already part of Moodle? Is it the best option? It appears to be quite old (2005).  Seems like it is still being used by some and isn't in Moodle.  So, let's go for that - I'm after easy wins at the moment.</p>
+<p>First, let's write a little php script to test out feedcreator's generation of OPML feeds.</p>
+<p>Mmm, not good, it doesn't appear to generate OPML that is recognised by my newsreader.  Wonder if this is a problem with it only supporting OPML 1.0?</p>
+
+<h3>Writing my own functions</h3>
+
+<p>Given that OPML is a fairly straight forward format, I think the solution will have to be writing my own.</p>
+<p>Plan is to have two types of OPML function:</p>
+<ul>
+  <li> generate_opml - which given a hierarchical structure with the data generate a valid OPML file. </li>
+  <li> generate_structure - given various BIM/Moodle variables, construct the structure that can be passed to generate_opml</li>
+</ul>
+<p>The structure will be an array with two elements - head and items.  items will be an array of items - the feeds for each student.</p>
+<p>generate_opml is done and fairly simple.  Now to figure out what's need to generate the structure.</p>
+
+<h3>The user perspective</h3>
+
+<p>The idea is that when visiting the "Your students" tab the teaching staff member should see a link 'Your students OPML file".  Click on that link and they get an OPML file to download.  So that means a unique/new script to call - marker/generateOpml.php.  </p>
+<p>Okay, still want to do various checks, so have to go through normal BIM process.   Trouble is that it currently always displays the Moodle header and footer - need to be a little more discerning. i.e. don't do either for the OPML feed.</p>
+<p>Need a help file, some lang entries.  Cleaning things up. Done.  Looks like the following</p>
+<a href="http://www.flickr.com/photos/david_jones/4658306149/" title="BIM with opml generation added by David T Jones, on Flickr"><img alt="BIM with opml generation added" height="132" src="http://farm5.static.flickr.com/4058/4658306149_32b3098c3f_m.jpg" width="240" /></a></p>
+
+</body>
+</html>

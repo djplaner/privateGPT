@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Software engineering for computational science : past, present, future</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2018/05/10/software-engineering-for-computational-science-past-present-future/">Software engineering for computational science : past, present, future</a></h1>
+
+<p>Tags: 4paths, bricolage, casa</p>
+
+<p>Following is a summary of <a href="https://ieeexplore.ieee.org/abstract/document/8254315/">Johanson and Hasselbring (2018)</a> and an exploration of what, if anything, it might suggest for learning design and learning analytics.  Johanson and Hasselbring (2018) explore why scientists whom have been developing software to do science (computational science) haven't been using principles and practices from software engineering to develop this software. The idea is that such an understanding will help frame advice for how computational science can be improved through application of appropriate software engineering practice (**assumption**).
+
+This is interesting because of potential similarities between learning analytics (and perhaps even learning design in our now digitally rich learning environments) and computational science. Subsequently, lessons about if and how computational science has/hasn't been using software engineering principles might provide useful insights for the implementation of learning analytics and the support of learning design. I'm especially interested due to my observation that both practice and research around learning analytics implementation isn't necessarily exploring all of the possibilities.  
+
+In particular, Johanson and Hasselbring (2018) argue that it is necessary to examine the nature of computational science and subsequently select and adapt software engineering techniques that are better suited to the needs of computational scientists. For me, this generates questions such as:
+<ol>
+  <li> What is the nature of learning analytics? </li>
+  <li> What is the nature of learning design?</li>
+  <li> What happens to the combination of both?
+         <p>Increasingly it is seen as necessary that learning analytics be tightly aligned with learning design. Is the nature/outcome/practice of this combination different? Does it require different types of support?</p> </li>
+  <li> For all of the above is there a difference between the nature espoused in the research literature and the nature experienced by the majority of practitioners? </li>
+  <li> What types and combination of software engineering/development principles and practices are best suited to the nature of learning analytics and learning design? </li>
+</ol>  
+
+<h2>Summary of the paper</h2>
+
+<ul>
+  <li> <strong>Question of problem</strong>
+          <p>The development of software with which to do science is increasing, but this practice isn't using software engineering practices. Why? What are the underlying causes? How can it be changed? </p> </li>
+  <li> <strong>Method</strong>
+        <p>Survey of relevant literature examining software development in computational science. About 50 publications examined. A majority case studies, but some surveys. </p> </li>
+  <li> <strong>Findings</strong>
+        <p>Identify 13 key characteristics (divided into 3 groups) of computational science that should be considered (see table below) when thinking about which software engineering knowledge might apply and be adapted.</p><p>Examines some examples of how software engineering principles might be/are being adapted.</p> </li>
+</ul>
+
+<h2>Implications for learning analytics</h2>
+
+<a href="https://ieeexplore.ieee.org/abstract/document/8254315/">Johanson and Hasselbring (2018)</a> argue that the chasm between computational scientists and software engineering researchers arose from the rush on the part of computer scientists and then software engineers to avoid the "stigma of all things applied". The search for general principles that applied in all places. Leading to this problem
+<blockquote>Because of this ideal of generality, the question of how specifically computational scientists should develop their software in a well-engineered way, would probably have perplexed a software engineer and the answer might have been: “Well, just like any other application software.</blockquote>
+
+In learning analytics there are people offering more LA specific advice. For example, <a href="http://solaresearch.org/hla-17/hla17-chapter1">Wise & Vytasek (2017)</a> and just this morning via Twitter <a href="https://drive.google.com/file/d/1aCKgTzOQBZ8lltUoWHdnrBrpIJWUX-0Z/view">this pre-print</a> of looming BJET article. Both focused on providing advice that links learning analytics and learning design.
+
+But I wonder if this is the only way to look at learning analytics? What about learning analytics for reflection and exploration? Does the learning design perspective cover it?
+
+But perhaps a more interesting question might be whether or not it is assumed that the learning analytics/learning design principles identified by these authors should then be implemented using traditional software engineering practices?
+
+<table>
+    <colgroup>
+       <col style="width: 30%;" />
+       <col style="width: 70%;" />
+   </colgroup>
+	<thead>
+		<tr valign="top">
+			<th>
+				<p>Category</p>
+			</th>
+			<th>
+				<p>Characteristics</p>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr valign="top">
+			<td style="width: 30%;">
+				<p>Nature of scientific challenges</p>
+			</td>
+			<td>
+            <ol>
+                <li> <b>Requirements are not known up front</b>
+				<ul>
+						<li></li>
+<p>uses software to make novel discoveries and further
+						understanding, software is “deeply embedded” in an
+						<b>exploratory process</b></p>
+						<li></li>
+<p>
+						to produce software but to obtain scientific results”.  Segal
+						(2005) scientific people say they are “programming
+						experimentally”</span></p>
+						<li></li>
+<p>design
+						and requirements rarely seen as distinct steps</p>
+				</ul>
+                </li> 
+					<li></li>
+<p><b>Verification and validation is difficult and
+					strictly scientific</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p><i>verification</i><span>
+						demonstrate that the implementation of models is correct</span></p>
+						<li></li>
+<p><i>validation</i><span>
+						demonstrate software captures the real world</span></p>
+						<li></li>
+<p><span>Validation is hard
+						because models are being used “precisely because the subject
+						at hand is ‘too complex, too large, t</span><i><!-- This has connection to learning analytics.  We use analytics because other means are too difficult in someway --></i><span>oo
+						small, too dangerous, or too expensive to explore in the real
+						world’ (Segal and Morris, 2008)</span></p>
+						<li></li>
+<p>Problems arise from four
+						different dimensions/combinations (Carver et al, 2007)</p>
+						<ul>
+							<li></li>
+<p>Model of reality is
+							insufficient</p>
+							<li></li>
+<p>Algorithm used to
+							discretise the mathematical problem can be inadquate</p>
+							<li></li>
+<p>Implementation of the
+							algorithm is wrong</p>
+							<li></li>
+<p>Combination of models can
+							propagate errors</p>
+						</ul>
+						<li></li>
+<p>Testing methods could help,
+						but rarely used</p>
+					</ul>
+				</ul>
+				<ol start="2">
+					<li></li>
+<p><b>Overly formal software processes restrict research</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>Easterbrook and Johns (2009) big up front design “poor
+						fit” for computational science – deeply embedded in the
+						scientifical model</p>
+						<li></li>
+<p>there is a need for the flexibility to quickly
+						experiment with different solution approaches (Carver et al,
+						2007)</p>
+						<li></li>
+<p>Use a very iterative process, iterating over both the
+						software and the underlying scientific theory</p>
+						<li></li>
+<p>Explicit connections with agile software development
+						established in the literature but even those lightweight
+						processes are largely rejected</p>
+					</ul>
+				</ul>
+				<p>Representation shown in figure</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td>
+				<p>Limitations of computers</p>
+			</td>
+			<td>
+              <ol>
+                  <li> 
+                  <p> <strong>Development is driven and limited by hardware </strong></p>
+                  </li>
+                  <ul>
+						<li></li> <p>scientific software not limited by the science theory, but by the available computing resources</p>
+                            </li>
+                            <li> <p>Computationl power is an issue</p> </li>
+                    </ul>
+                   </li>
+              <li> <b>Use of “old” programming languages and
+					technologies</b>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>Some communities moving
+						toward python, but typically non-technical disciplines
+						(biology/psychology) and only for small scale projects</p>
+					</ul>
+				</ul>
+				<ol start="3">
+					<li></li>
+<p><b>Intermingling of domain logica and implementation
+					details</b></p>
+					<li></li>
+<p><b>Conflicting software quality requirements
+					(performance, portability and maintainability)</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>interviews of scientific
+						developers rank requirements as</p>
+						<ul>
+							<li></li>
+<p>Functional correctness</p>
+							<li></li>
+<p>Performance</p>
+							<li></li>
+<p>Portability</p>
+						</ul>
+					</ul>
+				</ul>
+				<p>Maintainability</p>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td>
+				<p>Cultural environment</p>
+			</td>
+			<td>
+				<ol>
+					<li></li>
+<p><b>Few scientists are trained in software engineering</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>Segal (2007) describe them
+						am “professional end user developers”...develop software to
+						advance their own professional goals</p>
+						<li></li>
+<p>“In contrast to most
+						conventional end user developers, however, computational
+						scientists rarely experience any difficulties learning
+						general-purpose languages”</p>
+						<li></li>
+<p>But keeping up with sw eng
+						is just too much for people who are already busy writing grants
+						etc.</p>
+						<li></li>
+<p>Didn’t want to delegate
+						development as often required a PhD in the discipline to be
+						able to understand and implement the softare</p>
+					</ul>
+				</ul>
+				<ol start="2">
+					<li></li>
+<p><b>Different terminology</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>e.g. computational
+						scientists speak of “code” not “software”</p>
+					</ul>
+				</ul>
+				<ol start="3">
+					<li></li>
+<p><b>Scientific software in itself has no value but still
+					it is long-lived</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>Code is valued because of
+						the domain knowledge captured within it</p>
+					</ul>
+				</ul>
+				<ol start="4">
+					<li></li>
+<p><b>Creating a shared understanding of a “code” is
+					difficult</b></p>
+				</ol>
+				<ul>
+					<ul>
+						<li></li>
+<p>preference for informal,
+						collegial ways of knowledge transfer, not documentation</p>
+						<li></li>
+<p>“scientists find it
+						harder to read and understand documentation artifacts than to
+						contact the author and discuss”</p>
+					</ul>
+				</ul>
+				<ol start="5">
+					<li></li>
+<p><b>Little code re-use</b></p>
+				</ol>
+				<p>Disregard of most modern software engineering methods</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<h2>A model of scientific software development</h2>
+
+Johanson and Hasselbring (2018) include the following figure as a representation of how scientific software is developed. They note its connections with agile software development, but also describe how computational scientists find even the light weight discipline of agile software development as not a good fit.
+
+<a href="https://www.flickr.com/photos/david_jones/28133964008/in/dateposted-public/" title="Model of Scientific Software Development"><img alt="Model of Scientific Software Development" height="374" src="https://farm1.staticflickr.com/830/28133964008_2ae6691ef4_z.jpg" width="640" /></a>
+
+Anecdotally, I'd suggest that the above representation would offer a good description of much of the "learning design" undertaken in universities. Though with some replacements (e.g. "develop piece of software" replaced with "develop learning resource/experience/event").
+
+If this is the case, then how well does the software engineering approach to the development and implementation of learning analytics (whether it follows the <a href="https://en.wikipedia.org/wiki/Systems_development_life_cycle">old SDLC</a> or agile practices) fit with this nature of learning design?
+
+<h2>References</h2>
+
+Johanson, A., & Hasselbring, W. (2018). Software Engineering for Computational Science: Past, Present, Future. Computing in Science & Engineering. https://doi.org/10.1109/MCSE.2018.108162940
+
+Wise, A., & Vytasek, J. (2017). Learning Analytics Implementation Design. In C. Lang, G. Siemens, A. F. Wise, & D. Gaševic (Eds.), The Handbook of Learning Analytics (1st ed., pp. 151–160). Alberta, Canada: Society for Learning Analytics Research (SoLAR). Retrieved from http://solaresearch.org/hla-17/hla17-chapter1</p>
+
+</body>
+</html>

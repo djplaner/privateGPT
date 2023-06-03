@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>More problems with BIM and special characters</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/09/05/more-problems-with-bim-and-special-characters/">More problems with BIM and special characters</a></h1>
+
+<p>Tags: bim, bimErrors, Uncategorized</p>
+
+<p><p>The following is a record of some work to investigate some more apparent problem with BIM mirroring blog posts that contain "special" characters due to a bit of copying and pasting from Word into Wordpress.</p>
+
+<h3>An aside on supporting a tool like BIM</h3>
+
+<p>All of my previous software support has been around software that I (or the team I work for) have developed and for which we are also responsible for hosting and supporting the people using it.  i.e. we knew exactly what was going on where.</p>
+<p>With BIM the development, support and hosting are all separated.  I write BIM, but I don't host of support it.  Which means I don't know what the folk who are doing the hosting/supporting have done (or haven't done).  Which adds all sorts of complexity to the process.</p>
+<p>This sort of separation is increasingly common and is often aimed at saving resources/money.  But I do wonder whether or not that if viewed from an overall perspective it is adding more cost (in the broadest possible sense i.e. including the hassle and inefficiency caused by the difficulty but which doesn't typically show up in anyone's budget bottom line) into the whole task of supporting systems.</p>
+
+<h3>The problem</h3>
+
+<p>There are at least two, almost invariably related, problems:</p>
+<ul>
+  <li> Special characters that aren't being translated safely. </li>
+  <li> Some situations where Moodle/BIM on Postgres is not able to insert student posts. </li>
+</ul>
+
+<h3>The postgres problem</h3>
+
+<p>There appears to a problem with Postgres/Moodle/PHP/BIM falling over when attempting to insert some posts.  Maybe because of special characters.  The only way I have of testing this at the moment is black box, i.e. re-creating it on a Postgres-based Moodle install.  First step is to identify where this is happening and see if something can be done to make it not so catastrophic a failure.</p>
+
+<h4>Fail all posts, if one post fails</h4>
+
+<p>The error I'm seeing is<blockquote>bim_process_feed: inserting bim_marking  **url here**</blockquote>Ok, that seems to match this bit of code</p>
+[sourcecode lang="php"]
+if ( ! insert_record( "bim_marking", $safe ) ) {
+    mtrace( get_string( 'bim_process_feed_error', 'bim', $entry-&gt;link ) );
+    return false;
+}
+[/sourcecode]
+<p>Ok, the first thing here is that the "return false" should go.  This breaks out of the whole insert process. What should happen is simply move onto the next entry and try to insert that.</p>
+<p>Ok, that's updated and into github.</p>
+
+<h4>Why are posts/inserts failing</h4>
+
+<p>The above was causing a problem because Postgres would report a failure when blog posts with certain characters were being inserted.  The same posts are not causing a problem with MySQL.</p>
+<p>Is this a known problem with Postgres? Are there solutions from the Postgres community that might help out here?</p>
+<p>Doesn't seem to be too much via Google, at least with what I was searching for.  Guess I turn to exploring more the special characters in the posts that are causing problems.</p>
+
+<h3>More special character problems</h3>
+
+<p>The process here is to repeat what I did last time, modify my version of BIM to be somewhat explicit about the characters in posts it is inserting, find out which aren't being handled, and then add some code to handle them.</p>
+<p>The list of potentially problematic characters are:</p>
+<ul>
+  <li> a bullet point<br />Turns out that this is a <a href="http://www.tedmontgomery.com/tutorial/htmlchrc.html">middot (search for 183</a>.  So, I've added a translation for this.  This works, however, it does highlight a problem with "bad handling" described in the next section.</li>
+</ul>
+
+<h3>Bad handling</h3>
+
+<p>At least on MySQL, some of the changes seem to be introducing some rather weird translations.  For example, a middot and some white space is translated into similar looking characters but with each surrounded by a single quote.  This needs to be fixed.</p>
+<p>Ahh, some code I lifted is using ereg_replace, which according to <a href="http://www.rdeeson.com/weblog/61/using-multi-byte-character-sets-in-php-unicode-utf-8-etc.html">this</a> is not multi-byte safe.  Replace it with mb_ereg_replace, and all is good.</p>
+<p>This seems to be the major problem.</p>
+<p>Will see how it goes when testing with other problem data.</p></p>
+
+</body>
+</html>

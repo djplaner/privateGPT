@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bringing github and the Moodle book module together - step 1</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/08/14/bringing-github-and-the-moodle-book-module-together-step-1/">Bringing github and the Moodle book module together - step 1</a></h1>
+
+<p>Tags: moodle, moodleopenbook, openbook</p>
+
+<p>The following is the first step in actually implementing some of the ideas outlined in <a href="https://davidtjones.wordpress.com/2015/08/13/how-might-github-and-the-moodle-book-module-work-together/">an earlier post</a> about bringing <a href="http://github.com/"> and the <a href="https://docs.moodle.org/29/en/Book_module">Moodle Book module</a> together.  The major steps covered here are
+<ol>
+  <li> Explore the requirements of a book tool. </li>
+  <li> Name and set up an initial book tool. </li>
+  <li> Figure out how to integrate github. </li>
+</ol>
+
+<h2>A book tool</h2>
+
+The Moodle book module is part of core Moodle. Changing core Moodle is (understandably) hard. Recently, I discovered that there is a notion of a <a href="https://moodle.org/plugins/browse.php?list=category&amp;id=56">Book tool</a>. This appears to be a simple "plugin" architecture for the Book module.  People can add functionality to the Book module without it being part of core. The current plan is that the github work here will be implemented as a Book tool.
+
+What does that mean?  My very quick search doesn't reveal any specific information. The <a href="https://docs.moodle.org/dev/Book_tool">book tool page</a> within the list of plugin types in the Developer documentation is missing.  Suggesting that perhaps what follows should be added to that page.
+
+The <a href="https://docs.moodle.org/dev/Plugin_types">plugin types page</a> describes book tools as<blockquote>Small information-displays or tools that can be moved around pages </blockquote> Which is perhaps not the best description given the nature of the <a href="https://moodle.org/plugins/browse.php?list=category&amp;id=56">available Book tools</a>.
+
+<h3>The tool directory</h3>
+The book tools appear to reside in ~/mod/book/tool.  Each tool has it's own directory. Apparently, with all the fairly common basic requirements in terms of files
+<ul>
+  <li> <a href="https://docs.moodle.org/dev/Plugin_files#version.php">version.php</a>
+[code lang="php"]$plugin-&gt;component = 'booktool_pluginname';[/code]
+  </li>
+  <li> <a href="https://docs.moodle.org/dev/Plugin_files#lang.2Fen.2Fplugintype_pluginname.php">lang/en/booktool_pluginname.php</a>
+</ul>
+etc.
+
+The Book module's lib.php has various calls to <em>get_plugin_list('booktool')</em> in various places
+<ul>
+  <li> book_get_view_actions </li>
+  <li> book_get_post_actions </li>
+  <li> book_extend_settings_navigation </li>
+</ul>
+
+The first two look for matching functions (e.g. book_<em>plugin</em>_get_post_actions) in the book tool's lib.php which get called and then used to modify operations.
+
+The settings navigation is where the changes to the settings/administration block get made and from there that's how the author gets access to the booktool's functionality.
+
+<h2>Naming and getting it started</h2>
+
+The plan seems to be to
+<ol> <li> Create a new github repository for the new book tool </li>
+  <li> Copy and edit an existing book tool to get started. </li>
+  <li> Figure out how to slowly add github functionality. </li>
+</ol>
+
+<h3>Creating the booktool github repository</h3>
+
+The repository will need to be called moodle-booktool_<em>pluginname</em>. What should the plugin name be?
+
+I'll start with github.  Existing tools tend to include a verb e.g. print, exportepub, importepub, exportimscp. So this may be breaking a trend, but that can always be fixed later.
+
+And then there was <a href="https://github.com/djplaner/moodle-booktool_github">a repository</a>.
+
+Clone a local copy.
+
+Copy the contents from another book tool and start editing
+
+And take a note of work to do on <a href="https://github.com/djplaner/moodle-booktool_github/issues">the issues section</a> of the github repository.
+
+Updated the icon.  Wonder if that will work as is?
+
+Login to local moodle.  It has picked up the new module and asking to install. That appeared to work.  Now what happens when I view a book resource?  Woohoo that works.
+
+Doesn't do anything useful beyond display the availability of GitHub (with the nice icon).
+
+<a href="https://www.flickr.com/photos/david_jones/20556006825/in/dateposted-public/" title="Early success"><img alt="Early success" height="500" src="https://farm6.staticflickr.com/5737/20556006825_8c11d6b4d3.jpg" width="478" /></a>
+
+Push that code back to the repository.
+
+<h2>How to integrate github</h2>
+
+Time to actually see if it can start talking to GitHub and how that might be achieved.
+
+Initial plan for this is
+<ol>
+  <li> Hard code details of github repository and credentials for a single Book module. </li>
+  <li> Implement the code necessary to update the link in the settings block based on whether the book is up-to-date with the repository. </li>
+  <li> Implement index.php function to display various status information about current repository and book. </li>
+  <li> Implement the fetch and push functions. <p>From here on a lot more thought will need to be given to the workflow.</p></li>
+  <li> Implement the interface to configure the repository/credentials </li>
+</ol>
+
+Which all beg the question.
+
+<h3>How to talk to the GitHub API</h3>
+
+The assumption underpinning all of this is that the tool will use <a href="https://developer.github.com/v3/">GitHub API</a> to access it's services.  Moodle is written in PHP, so I'm looking for a PHP-based method for talking to the GitHub API.
+
+There's no clear winner, so time to do a comparison
+<ul>
+  <li> <a href="https://github.com/Scion-Framework/GitHubAPI">Scion: Wrapper</a> - initial impressions good. Does use cURL.  But requires other "scion" based code </li>
+  <li> <a href="https://github.com/KnpLabs/php-github-api">KnpLabs API</a> - requires another library for the HTTP requests.  Not a plus. </li>
+  <li> <a href="https://github.com/tan-tan-kanarek/github-php-client">tan-tan-kanarek version</a> - looks ok. No mention of other requirements. </li>
+</ul>
+
+Let's try the latter.  Installation and it's all working.  Now only need to grok the API and how to use it from PHP.
+
+The focus here is on an individual file.  The book will be connected to an individual file.
+
+Most of these request seem linked to the <a href="https://developer.github.com/v3/repos/contents/">Contents part of the API</a> - part of Repositories.
+
+Actions required
+<ol>
+  <li> Does the file exist in the repo?
+Getting the content should return a 200 status code and "type: file" if it is a file, but it will also return the content of the file.
+  </li>
+  <li> Create a new file
+<a href="https://developer.github.com/v3/repos/contents/#create-a-file">API</a>: PUT /repos/:owner/:repo/contents/:path </li>
+  <li> (fetch) Get the content for the file.
+<a href="https://developer.github.com/v3/repos/contents/#get-contents">API</a> - GET /repos/:owner/:repo/contents/:path
+  </li>
+  <li> (push) Update the file with new content.
+<a href="https://developer.github.com/v3/repos/contents/#update-a-file">API:</a> PUT /repos/:owner/:repo/contents/:path
+</li>
+  <li> What is the status of the file in the repo? </li>
+  <li> What is the relationship between the content/status of the file in the repo and the content in the book. </li>
+</ol>
+
+Running out of time.  Will have to come back to this another day for Step 2.</p>
+
+</body>
+</html>

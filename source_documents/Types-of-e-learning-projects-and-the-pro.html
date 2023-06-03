@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Types of e-learning projects and the problem of starvation</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/06/16/types-of-e-learning-projects-and-the-problem-of-starvation/">Types of e-learning projects and the problem of starvation</a></h1>
+
+<p>Tags: 4paths, bad, elearning</p>
+
+<p>The last assignment for the course <a href="http://www.usq.edu.au/course/specification/2015/EDC3100-S1-2015-ONC-TWMBA.html">EDC3100, ICT and Pedagogy</a> was due to be submitted yesterday. Right now the Moodle assignment activity (a version somewhat modified by my institution) is showing that 193 of 318 enrolled students have submitted assignments.
+
+This is a story of the steps I have to take to respond to the story these figures (they're not as scary as they seem) tell.
+
+It's also a story about the different types of development projects that are required when it comes to institutional e-learning and how the institutional approach to implementing e-learning means that certain types of these projects are inevitably starved of attention.
+
+<a href="https://www.flickr.com/photos/david_jones/18846380361" title="Assignment overview by David Jones, on Flickr"><img alt="Assignment overview" height="180" src="https://c2.staticflickr.com/6/5445/18846380361_c9ed310517_n.jpg" width="320" /></a>
+
+<h3>Don't forget the extensions</h3>
+
+193 out of 318 submitted suggests that almost 40% of the students in the course haven't submitted the final assignment. What this doesn't show is that a large number of extensions have been granted. Would be nice for that information to appear on the summary shown above.  To actually identify the number of extensions that have been granted, I need to
+<ol>
+  <li> Click on the "View/grade all submissions" link (and wait for a bit). </li>
+  <li> Select "Download grading worksheet" from a drop down box. </li>
+  <li> Filter the rows in the worksheet for those rows containing "Extension granted" (sorting won't work)</li>
+</ol>
+
+This identifies 78 extensions. Suggesting that just under 15% (48) of the students appear to have not submitted on time.
+
+<h3>Getting in contact with the non-submits</h3>
+
+I like to get in contact with these students to see if there's any problem. If you want some support for this practice the #1 principle of the <a href="http://www.aahea.org/articles/sevenprinciples1987.htm">"7 Principles of Good Practice for Undergraduate Education"</a> is<blockquote>1. Encourages Contact Between Students and Faculty
+Frequent student-faculty contact in and out of classes is the most important factor in student motivation and involvement. Faculty concern helps students get through rough times and keep on working.</blockquote>
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/ictspedagogy/17217349786" title="Weather from my bedroom window by technology in learning, on Flickr"><img alt="Weather from my bedroom window" height="240" src="https://c2.staticflickr.com/8/7590/17217349786_0587e21fd9_n.jpg" width="320" /></a></div>
+
+Since my students are spread across the world (see the image to the right) and the semester ended last week, a face-to-face chat isn't going to happen. With 48 students to contact I'm not feeling up to playing phone tag with that number of students. I don't have easy access to the mobile phone numbers of these students, nor do I have access to any way to send text messages to these students that doesn't involve the use of my personal phone. An announcement on the course news forum doesn't provide the type of individual contact I'd prefer and there's a question about how many students would actually see such an announcement (semester ended last week).
+
+This leaves email as the method I use. The next challenge is getting the email addresses of the students who haven't submitted AND don't have extensions.
+
+The Moodle assignment activity provides a range of ways to filter the list of all the students. One of those filters is "Not submitted".  The problem with this filter is that there's no way (I can see) to exclude those that have been given an extension.  In this case, that means I get a list of 126 students. I need to ignore 78 of these and grab the email addresses of 48 of them.
+
+Doing this manually would just be silly. Hence I save the web pages produced by the Moodle assignment activity onto my laptop and run a Perl script that I've written which parses the content and displays the names and email addresses of the students without extensions.
+
+Another approach would have been to use the grading worksheet (a CSV file) I used above. But I've gone down the HTML parsing route because I've already got a collection of Perl scripts parsing Moodle HTML files due to a range of other screen scraping tasks I've been doing for other reasons.
+
+<h3>Excluding the won't submits</h3>
+
+I now have the list of students who haven't submitted and don't have extensions. But wait, there's more. There are also some students I know who will, for a variety of reasons, never submit. If possible, I'd prefer not to annoy them by sending them an email about them not submitting Assignment 3.
+
+This information is not in any database.  It's mostly a collection of email messages from various sources stored in the massive 2Gb of space the institution provides for email.  I have to manually search through those to find the "won't submits".
+
+<h3>Send the email</h3>
+
+Now it's time to send the email. In a perfect world I would like to send a personalised email message.  A message that includes the student's name and perhaps other details about their participation in the course.  Moodle doesn't appear to <a href="https://davidtjones.wordpress.com/2010/05/28/one-potential-approach-to-provide-a-moodle-email-merge-facility/">provide an email merge facility</a>. In theory Office provides some functionality this way but I use a Mac and the Office stuff never seems to work easily on the Mac (and I'm biased against Office).
+
+So I don't send out a personalised email. Just the one email message to these specific students but with only generic content. Many still appear to appreciate the practice. For example, this is a response from one of the students who received one of these emails for a prior assignment (emphasis added)<blockquote>Thank you for contacting me in regards to the submission. <em>You're the first staff member to ever do that so I appreciate this a lot</em>. </blockquote>
+
+<h3>Some questions</h3>
+
+Which makes me wonder how many teaching staff do something like this? Why/why not?
+
+Of the staff who don't do this, is that because
+<ol type="a">
+  <li> They don't think it's important or appropriate for their course? </li>
+  <li> They've never thought of doing it? </li>
+  <li> It's too difficult to do? </li>
+</ol>
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/david_jones/18656913650" title="Norman on affordances by David Jones, on Flickr"><img alt="Norman on affordances" height="240" src="https://c4.staticflickr.com/4/3911/18656913650_b2a17f2513_n.jpg" width="320" /></a></div>
+
+And, if it were easier, would they do it? What impact might this have?
+
+Moodle is an open source project used by huge numbers of institutions across the world. In addition, over the last year or so my institution has spent some time <a href="https://mootau15.moodlemoot.org/mod/data/view.php?d=1&amp;rid=339">customising the Moodle assignment activity</a>. I'm fairly certain that I'm not the first person using Moodle to have wanted to contact students who haven't submitted.
+
+So why all the limitations in the affordances of the Assignment activity?
+
+<h3 id="types">Types of e-learning projects</h3>
+
+In some discussions with @beerc and @damoclarky we've identified five separate types of e-learning projects that an institution faces.
+<ol>
+  <li> External/system driven projects.
+       <p>Projects that have to be done because of changes in the external environment. e.g. there's a new version of Moodle and we need to roll that out or we'll fall behind and be running a non-supported version.</p> </li>
+  <li> Strategic projects approved by the institution.
+        <p>The institution has decided that a project is important and should be funded and used by the entire institution. e.g. the decision my institution made to modify <a href="https://mootau15.moodlemoot.org/mod/data/view.php?d=1&amp;rid=339">the Moodle assignment activity</a> in order to transition from a locally built system and not lose functionality.</p>
+  <p><strong>Note:</strong> there's a line here between these projects and those below. Typically projects above this line are those that will be used by all (or perhaps most) of the institution.</p>
+  </li>
+  <li> Projects that might scale, but waiting for them to happen creates problems.
+     <p>This is where parts of the institution recognise that there is a problem/need (e.g. the story above) that might scale to the entire institution. But the problem/need has not yet made it across the line above into a strategic project. Meaning that there is a period of time when people know they want to do something, but can't.  They have to wait for the scarce resources of the institution to be allocated.</p>
+      <p>In these situations, a few people don't wait. They develop workarounds like the above. If the need is particularly important, everyone develops their workarounds. Leading to large inefficiencies as the solution is re-created in numerous different ways.</p> </li>
+  <li> Projects that will only ever be of interest to a program or a particular set of courses.
+       <p>For example, all the courses in the Bachelor of Education might benefit from a <a href="https://en.wikipedia.org/wiki/Single-page_application">single page application</a> lesson template that is integrated with the Australian Curriculum. This isn't something that any other set of courses is going to desire. But it's possibly of great importance to the courses that do.</p> </li>
+  <li> Course or pedagogical design specific projects.
+       <p>These are projects that are specific to a particular pedagogical design. Perhaps unique to a single course. e.g. the <a href="https://davidtjones.wordpress.com/2014/11/13/adding-more-student-information-to-a-moodle-course/">"more student details" Greasemonkey script</a> (see more recent screenshot below) that I've implemented for EDC3100. The pedagogical design for this course makes use of both Moodle's <a href="https://docs.moodle.org/29/en/Activity_completion">activity completion facility</a> and the <a href="https://moodle.org/plugins/view/mod_bim">BIM module</a>. </p>
+     <p>I'm willing to bet large amounts of money that my course is currently the only course that uses this particular combination. This specific version of the tool is unlikely to be valuable to other people. It won't scale (though the principles behind it might). There's no point in trying to scale this tool, but it provides real benefit to me and the students in my course.</p> </li>
+</ol>
+
+<a href="https://www.flickr.com/photos/david_jones/18657245938" title="MoreStudentDetails by David Jones, on Flickr"><img alt="MoreStudentDetails" height="254" src="https://c4.staticflickr.com/4/3715/18657245938_225d364f57.jpg" width="500" /></a>
+
+<h3>The problem of starvation</h3>
+
+If you ask any University IT Director they will complain about the fact that they don't have sufficient resources to keep existing systems running and effectively deal with project types #1 and #2 from the list above. The news is even worse for project types 3, 4 and 5.
+
+#5 projects never get implemented at the institutional level. They only ever get done by "Freds-in-the-shed" like me.
+
+#4 projects might get implemented at the institutional level, but typically only if the group of courses the project is for has the funds. If your degree has small numbers, then you're probably going to have to do it yourself.
+
+#3 projects might get implemented at the institutional level. But that does depend on the institution become aware of and recognising the importance of the project. This can take a loooong time, if at all.  Especially if the problem requires changes to a system used by other institutions.  If it's a commercial system it may never. But even with an open source system (like Moodle) it can take years. For example, Costello (2014) says the following about a problem with the Quiz system in Moodle (p. 2)<blockquote>Despite the community reporting the issue to the Moodle developers, giving multiple votes for its resolution and the proposal of a fix, the issue had nonetheless languished for years unfixed.</blockquote> and (p. 1)<blockquote>Applying this patch to DCU’s own copy of Moodle was not an option for us however, as the University operated a strict policy of not allowing modifications, or local customisations, to its Moodle installation. Tinkering with a critical piece of the institutional infrastructure, even to fix a problem, was not an option.</blockquote>
+
+<h3>Ramifications</h3>
+
+I suggest that there are at least four broad results of this starvation of project types 3, 4 and 5
+<ol>
+  <li> The quality of e-learning is constrained.
+        <p>Without the ability to implement projects specific to their context, people bumble along with systems that are inappropriate. The systems limit the quality of e-learning.</p> </li>
+  <li> Feral or shadow systems are developed.
+         <p>The small number of people who can, develop their own solutions to these projects.</p> </li>
+  <li> Wasted time.
+      <p>The people developing these solutions are typically completing tasks outside their normal responsibilities. They are wasting their time. In addition, because these systems are designed for their own particular contexts it is difficult to share them with other people who may wish to use them. Either because other people don't know that they exist, or because they use a unique combination of technologies/practices no-one else uses. This is a particular problem for project types 3 and 4.</p>
+  </li>
+  <li> Lost opportunity for innovation and strategic advantage.
+      <p>Some of these project types have the potential to be of strategic advantage, but due to their feral nature they are never known about or can't be easily shared.</p> </li>
+</ol>
+
+<h3>So what?</h3>
+
+My argument is that if institutions want to radically improve the quality of their e-learning, then they have to find ways to increase the capacity of the organisation to support all five project types. It's necessary to recognise that supporting all five project types can't be done by using existing processes, technologies and organisational structures.
+
+<h3>Responses</h3>
+
+I sent the email to the students who hadn't submitted Assignment 3 at 8:51 this morning.  It's just over two hours later. In that time, 8 of the 36 students have responded.
+
+<h3>References</h3>
+
+Costello, E. (2014). Participatory Practices in Open Source Educational Software : The Case of the Moodle Bug Tracker Community. University of Dublin. Retrieved from http://www.tara.tcd.ie/handle/2262/71751
+
+Norman, D. A. (1993). Things that make us smart: defending human attributes in the age of the machine. Cambridge, Mass: Perseus. Reading, MA: Addison Wesley.</p>
+
+</body>
+</html>

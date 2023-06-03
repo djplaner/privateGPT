@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Another BAM problem - awarding mark of 0</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/05/20/another-bam-problem-awarding-mark-of-0/">Another BAM problem - awarding mark of 0</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>Following on from <a href="https://djon.es/blog/2009/05/19/diagnosing-and-recording-a-problem-with-bam/">yesterday's start</a> of using the blog to record fixes to software, here comes another one.</p>
+
+<h3>Problem</h3>
+
+<p>Awarding a student a mark of 0 for a post, doesn't work</p>
+
+<h3>Identify the cause</h3>
+
+<p>First, re-create the problem, log in and try and give the student a mark of 0 - yep doesn't work.</p>
+<p>Check the database, there is a mark of 0 recorded.  However the textbox in which the mark should be displayed, is empty.</p>
+<p>Let's try changing it to a non-zero mark and then back again - I'm wondering if 0 is the default mark. Ahh, giving the student a mark of 5 and then changing it back to 0 results in the 0 appearing in the box. Seems to be some screwy code.</p>
+<p>Looking further it seems that the following is happening</p>
+<ul>
+  <li> A post's database entry starts with a mark of 0 and a status of Submitted. </li>
+  <li> When displaying this type of entry the 0.000 in the database is modified to the empty string by the view code. <br />I'm assuming this is to stop the marker thinking that a mark of 0 has already been awarded.</li>
+  <li> The code processing the submitted form (i.e. I've entered a mark of 0 and hit submit) is comparing fields in form to data in database.  If a mark of 0 is awarded in the form it will equal the default value in the database and hence not spark a change. </li>
+</ul>
+
+<h3>Solution</h3>
+
+<p>If the mark in the form is 0 and not empty, then a change must be made.</p></p>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A little bim2 status and planning</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/06/a-little-bim2-status-and-planning/">A little bim2 status and planning</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>The purpose of this post is to make concrete the status and future plans around bim2. The update of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">bim</a> for Moodle 2.0.
+
+<h3>Current status</h3>
+
+I have missed the initial deadline (31/01/2011) for a working bim2. &lt;excuses&gt;A combination of <a href="https://djon.es/blog/research/phd-thesis/">the PhD</a> being more important, <a href="http://www.amazon.com/Girl-Dragon-Tattoo-Stieg-Larsson/dp/0307454541/">procrastination</a> and a post-thesis malaise.&lt;/excuses&gt;
+
+I've just finished the first major stage of bim2 development tonight.  The <a href="http://github.com/djplaner/bim2">code for bim2 on github</a> will
+<ul>
+  <li> Support creation of a bim2 activity.<br />Though I've just discovered a minor bug.  Will fix that.</li>
+  <li> Implements the complete student interface including registering and processing a new blog and viewing details. Some images follow (click on the images to see a larger version).</li>
+</ul>
+
+<a href="http://www.flickr.com/photos/david_jones/5420817243/" title="Activity details by David T Jones, on Flickr"><img alt="Activity details" height="197" src="http://farm6.static.flickr.com/5055/5420817243_8d2744874c_m.jpg" width="240" /></a>
+
+<a href="http://www.flickr.com/photos/david_jones/5420817593/" title="Questions by David T Jones, on Flickr"><img alt="Questions" height="105" src="http://farm6.static.flickr.com/5172/5420817593_50536864c3_m.jpg" width="240" /></a>
+
+<a href="http://www.flickr.com/photos/david_jones/5421424240/" title="Posts by David T Jones, on Flickr"><img alt="Posts" height="207" src="http://farm6.static.flickr.com/5100/5421424240_a0ec5d67ee_m.jpg" width="240" /></a>
+
+This doesn't sound much, that's because the more important stuff is what has gone on behind the scenes, including
+<ul>
+  <li> Design and implementation of a new OO design for bim2.<br />This is perhaps the most questionable part of the changes for bim2. In theory, the changes should make it easier to evolve, but the ad hoc, half-forgotten OO design skills employed may put pay to that. </li>
+  <li> Get bim2 to use the Moodle 2 version of simplepie.<br />The biggest problem reported by folk hosting Moodle is that bim required an external module called simplepie which was quite large. Moodle 2 has simplepie baked in. bim2 is using that version.</li>
+  <li> Feed processing.<br />Beyond the use of Simplepie, bim has to be able to process and mirror student feeds. This has been done as part of the student interface and will be re-used elsewhere. </li>
+  <li> Get around changes in Moodle 2.<br />Mostly fairly minor, but still changes to become aware of.</li>
+</ul>
+
+What's important is that the rest of bim2 will essentially be re-using all of the above. There's little brand-new to learn. Hopefully this means things will go quickly from here.
+
+<h3>Planning</h3>
+
+In terms of getting a reasonable working version of bim2 available for folk, the major steps are
+<ol>
+  <li> Implement the coordinator interface.<br />The coordinator is responsible for a bim2 activity and is able to configure the activity, manage questions, allocate markers, manage marking, search for students and mark students.  </li>
+  <li> Implement the marker interface.<br />Markers are teaching staff who can't do some of the more advanced coordinator tasks, just the subset of marking students. This task should simply be a "re-badging" of the coordinator code. </li>
+  <li> Look at the various background/support tasks.<br />The main one is probably going to be the backup and restore process.</li>
+  <li> Clean up and test.<br />There are some minor, fiddly tasks I'm leaving until this stage (beyond a detailed testing of the code) such as getting all of the help text working well.</li>
+  <li> Add new features.<br />There are plans to add a range of features to bim2 that were not in bim (e.g. working with Moodle groupings etc.). These additions will be left to last. </li>
+  <li> Get feedback from others.<br />There are a couple of groups eager to test out the mess I've made of bim2. They will almost certainly have good feedback that will need to be incorporated. </li>
+  <li> Work out how to release bim2 more formally.<br />Mostly this is to do with the Moodle plugins database and/or its replacement.</li>
+</ol>
+
+The plan is that the first 4 tasks will be done sequentially. The last three might happen in parallel or in different orders.  It might take me a good week of work to get the coordinator interface going, but it might go much faster. All depends on how quickly the porting of bim into bim2 OO goes. After that, however, the marker interface should just about write itself. The background stuff might drag or might go quick, don't know enough yet.
+
+So, it's probably 3 or 4 weeks.  Time to get cracking.</p>
+
+</body>
+</html>

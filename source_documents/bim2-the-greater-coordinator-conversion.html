@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: the greater coordinator conversion</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/06/bim2-the-greater-coordinator-conversion/">bim2: the greater coordinator conversion</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>This tells the story of the conversion of the bim coordinator code into the new OO design being used for bim2.
+
+<h3>Design</h3>
+
+The theory is that the code design should share a lot of similarity with the student interface and also some code.
+
+First, a recap of how it works (solely for my benefit).
+
+The main <em>view.php</em> entry point for bim2 contains 3 lines of code
+[code lang="php"]
+$factory = new bimtwo_controller_factory();
+$controller = $factory-&gt;produce();
+$controller-&gt;process();
+[/code]
+
+The factory determines which of three types of user has requested the activity
+<ol>
+  <li> coordinator;</li>
+  <li> marker; or</li>
+  <li> student.</li>
+</ol>
+
+Each user type has a controller object, the factory creates the appropriate object and <em>view.php</em> calls that object's <em>process</em> method.
+
+The controller defines a hash called methods which associates a parameter called <em>tab</em> (passed in from the URL) with a method in the controller.  For students, it looks like this
+[code lang="php"]
+$this-&gt;methods = array(
+    "default" =&gt; array( "default" =&gt; "activity_details" ),
+    "activity" =&gt; array( "default" =&gt; "activity_details" ),
+    "questions" =&gt; array( "default" =&gt; "questions" ),
+    "posts" =&gt; array( "default" =&gt; "posts" )
+);
+[/code]
+
+Typically, there is a connection between the values of <em>tab</em> and a tabbed interface for the user.
+
+Typically, that method will create a model object that will generate some data and then create a view object. It will pass the model to the view and the view will display some output.
+
+For example, here's the method for showing the questions for the activity to the students
+[code lang="php"]
+    function questions() {
+        require_once "$this-&gt;view_path/student/question_details.php";
+        $this-&gt;model = new question_details( $this );
+        $this-&gt;model-&gt;gather_data();
+        require_once "$this-&gt;view_path/student/question_details_view.php";
+        $this-&gt;view = new question_details_view( $this );
+        $this-&gt;view-&gt;display( $this );
+    }
+[/code]
+
+In theory, the <em>question_details</em> model object should be able to be re-used by the coordinator interface.  Maybe even the view.
+
+<h3>Creating the dummy coordinator design - views</h3>
+
+So the plan is to initially create a coordinator controller that displays the tabs etc, but simply displays "hello world" type messages for each tab.  Once that's working, it's a matter of implementing the model and view objects for each tab - and also implementing the forms interface where required.
+
+So, the simple first step is to copy the student controller and edit it. Done. So, now login as a coordinator and see if it works?
+
+Yep, after a couple of syntax errors it is working.  The coordinator controller methods are the bare minimum e.g.
+[code lang="php"]
+    function configure() {
+        print "&lt;h1&gt; Configure &lt;/h1&gt;";
+    }
+
+    function manage_questions() {
+        print "&lt;h1&gt; Manage questions &lt;/h1&gt;";
+    }
+[/code]
+
+So, there are no proper Moodle header/footer and no proper tabbed interface.  The construction of these is controlled by the views.  So the next step is to create view classes for each of the methods that handle the header/footer/tabs but still only display the "hello world" type message.  There is one view per controller method.  Time to get that working.
+
+The configure tab is a little different, in that it is meant to re-use a standard form/process for Moodle.  Will leave that for later and get the other views working first.  Manage questions first.  Copy the student/posts_view.php class over and edit that.
+
+Yep, that all works.  It does, however, reveal a couple of points to check, including:
+<ul>
+  <li> Currently, the view object has a <em>view_header</em> function that is repeated in each view object. I believe this can be inherited. <br />Actually, it can quite easily.  Add a few lines to the parent view class and hey presto.</li>
+  <li> The order in which the tabs being displayed is not in the order I'd prefer. Need to find out how to order tabs.<br />Leave this for now. </li>
+</ul>
+
+So, with the views relying on the parent for view_header this is working for Manage questions.  Now just to add it for all the others.  Yep, that's all working, except for configure (and the order of the tabs which is annoyingly incorrect).
+
+Apart from that, this has gone quite smoothly and quickly.
+
+<h3>Calling configure</h3>
+
+Ahh, had a vague recollection that there was a specific edit form for configuration, and there is. But the solution adopted in bim (and to be repeated for bim2) is that the configure tab for the coordinator will show the details of the current configuration for this activity and include a link to the Moodle defined edit form to change the configuration.
+
+The point to remember is that when a bim2 activity is first created, Moodle directs appropriately permitted users to the edit form. once configure it shows what I'm working on here.
+
+Short story is that the configure tab is now different from the others in terms of view.
+
+<h3>Order of tabs</h3>
+
+Ahh, a little bit of digging reveals that this is not a Moodle core problem.  It's doing what should be done and retaining the order.  It's the Moodle theme I was using that wasn't putting the tabs in the right order.  Will have to let @rolley know.
+
+Of course, the next step is to find a theme that does it properly. first attempt did it, but had too narrow a column and didn't handle the wrapping well. Somewhat influenced by my practice of keeping fairly narrow browser windows.
+
+<h3>Models and views</h3>
+
+At this stage, the basic structure for the coordinator interface is there and working (if not doing anything useful).
+
+The next step is to go through each controller method and
+<ul>
+  <li> Implement the model that gets the required data.</li>
+  <li> Modify the view to display that data appropriately.</li>
+  <li> Add the "form handling" extras where required.<br />For the coordinator, most of the methods will require some form handling, this makes things a little more complex.</li>
+</ul>
+
+I'll leave these for tomorrow.  Each of these will take a bit of time, so will probably do them as separate posts.
+
+<h3>Update the student views</h3>
+
+Before I finish, however, I need to update the student views to remove their specific <em>view_header</em> method and instead rely on the parent class based on what I added above.
+
+Done, however, the activity_details_view is a little more complicated.</p>
+
+</body>
+</html>

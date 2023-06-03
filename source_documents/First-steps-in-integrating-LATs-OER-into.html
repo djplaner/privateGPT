@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>First steps in integrating LATs OER into Moodle open book</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/04/02/first-steps-in-integrating-lats-oer-into-moodle-open-book/">First steps in integrating LATs OER into Moodle open book</a></h1>
+
+<p>Tags: bad, moodleopenbook, oep, oer, Uncategorized</p>
+
+<p>The following documents initial explorations into leveraging the <a href="http://activitytypes.wm.edu/shortcourse/">two Learning Activity Types (LATs) short courses</a> that have been released as Open Educational Resources (OERs) by <a href="https://www.academicexperts.org/conf/site/2016/papers/49080/">Hofer and Harris (2016)</a>. As outlined in a <a href="https://davidtjones.wordpress.com/2016/03/26/lats-oer-tpack-and-github/">prior post</a> my plan is to use these OERs as a test case for <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">the Moodle open book project</a>. The aim being to
+<ol>
+	<li>Test and identify areas for improvement for the Moodle open book code using a real OER.</li>
+	<li>See how/if this OER could be leveraged for <a href="http://www.usq.edu.au/course/specification/2016/EDC3100-S1-2016-ONC-SPRNG.html">the course</a> I teach and related courses coming down the line.</li>
+	<li>Eventually exploring how and if this work might connect with broader work around OERs, potential work here around <a href="https://davidtjones.wordpress.com/2016/03/18/oep-and-initial-teacher-education-moving-on-from-the-horsey-horseless-carriage/">Open Educational Practices and teacher education</a>, and work to encourage adoption and adaptation of the LAT OER.</li>
+</ol>
+<h3>What's<strong> been done</strong><em><strong>
+</strong></em></h3>
+<ol>
+	<li>The <a href="http://activitytypes.wm.edu/shortcourse/learning-activities-taxonomies-elementary-export.imscc">Elementary Short Course LMS package</a> (IMS) has been successfully imported into Moodle (first image below)</li>
+	<li>The <a href="http://latselemteachered.weebly.com/">Web-based Elementary course</a> has been converted into a Moodle Book resources (second image below).</li>
+	<li>The Moodle Book version of the Elementary course has been <a href="https://github.com/djplaner/edc3100/blob/master/LAT_OER/Elementary_Course.html">exported to GitHub</a> using <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">the Moodle open book tool</a> (third image below).</li>
+</ol>
+All that was done quite easily. A couple of minor bugs to report, but nothing major.
+
+Next steps are (not necessarily in order)
+<ol>
+	<li>Improve the structure/scaffolding of some of the pages with multiple videos.</li>
+	<li>Explore if the video transcripts can be usefully integrated into the pages.</li>
+	<li>Modify the Moodle book tool to produce a HTML version that is more immediately usable (e.g. a nice "book" interface, rather than a single long web page).</li>
+	<li>Figure out when/if we might use this in EDC3100.</li>
+</ol>
+<h3>Random questions, outcomes, and future work</h3>
+<ol>
+	<li>Could a resource like this be integrated into multiple courses within the BEdu?
+Hofer and Harris (2016) suggest that this is a possibility with the LAT OER.</li>
+	<li>How might the collection of student written lesson plans be more broadly contributed to and used?</li>
+	<li>Can the experience students go through be captured, shared, and leveraged in some useful way?</li>
+</ol>
+<h2>What's in the LAT short course OERs?</h2>
+First step is to figure out the content and format of the LAT OERs to gain some idea of how and if it fit with the Moodle open book and my course.
+
+The aim of the broader <a href="http://activitytypes.wm.edu/s">Learning Activity Type (LAT) work</a> and the OER short courses is to help pre-service teachers develop the knowledge required to integrate digital technologies into their teaching. Learning Activity Types offer a taxonomy of learning activities that are linked to specific learning areas that are used during lesson planning.
+
+One short course each for primary (elementary) and secondary pre-service teachers. Each  course is divided into eight sequential modules that includes videos and transcripts. Sequence is
+<ol>
+	<li>Reflect on prior experience with digital technologies in learning and teaching and what worked/didn't.</li>
+	<li>Select three lessons from a collection of lesson plans written by other pre-service teachers.</li>
+	<li>Analyse these sample lessons and their learning objectives, learning activities used, student assessment, and use of digital and non-digital technologies.</li>
+	<li>Given a single demonstration lesson plan, replacing learning activities that don't match the objectives with those that do.</li>
+	<li>Consider and explain the replacement of technologies in the demonstration lesson plan with others.</li>
+	<li>Review portions of interviews with experienced teacher when making similar activities.</li>
+	<li>Returning to the sample lessons, chose the LAT taxonomy that matches and explore.</li>
+	<li>Use that to think about substitution of learning activities and technologies in the sample lessons, considering a range of factors and engaging in discussions.</li>
+	<li>Create their own lesson plan based on a range of considerations.</li>
+	<li>Evaluate their lesson plan with two self-tests called "Is it worth it?"</li>
+</ol>
+Related resources include
+<ol>
+	<li>Blackboard produced content package file - <a href="http://activitytypes.wm.edu/shortcourse/learning-activities-taxonomies-elementary-export.imscc">Elementary</a> and <a href="http://activitytypes.wm.edu/shortcourse/learning-activities-taxonomies-secondary-export.imscc">secondary</a>.</li>
+	<li>Websites with the short courses - <a href="http://activitytypes.wm.edu/shortcourse/learning-activities-taxonomies-secondary-export.imscc">Elementary</a> and <a href="http://latssecteachered.weebly.com/">secondary</a>.</li>
+	<li>Various media files - <a href="http://activitytypes.wm.edu/shortcourse/elementarymodules.html">Elementary</a> and secondary.
+This includes powerpoint, video, caption, script, sample lesson, and various student guide files.</li>
+	<li><a href="http://activitytypes.wm.edu/shortcourse/LATShortCourseInstructorGuide.doc">Instructor guide</a>.</li>
+	<li>Related <a href="http://activitytypes.wm.edu/shortcourse/share-alikematerials.html">share-alike materials</a>.</li>
+	<li>Collection of student written lesson plans.</li>
+</ol>
+<h3>Let's try the IMS package</h3>
+The LAT OER are provided as IMS packages, these should import directly into Moodle.  Not exactly what I want to do here, but worth a look.
+
+<img alt="Screen Shot 2016-04-02 at 9.51.40 am.png" class="alignnone size-full wp-image-10014" height="628" src="https://davidtjones.files.wordpress.com/2016/04/screen-shot-2016-04-02-at-9-51-40-am.png" width="1353" />
+
+Well that worked quite smoothly.  Add the resource, import the file and there it is.
+
+The layout/interface isn't that nice (very subjective and I'm likely biased).  Starts with an introductory video with context/background on the courses.   The interface (at least in Moodle hides the "play" button.
+
+Nice, video makes mention of instructor provided discussion forums.  Mmm, video play back issue, is the video remote or local?
+
+Ahh, broken link.  The IMS version links back to Blackboard.  The <a href="http://latssecteachered.weebly.com/3-analyze-lessons.html">equivalent web version</a> has the open link.  That seems to apply for all of the pages.
+
+Each page has a video. The transcript is available. Wonder if I can do integrate both and whether there's any value in doing so.  I know I've probably prefer the text version.
+
+The <a href="http://latssecteachered.weebly.com/7-lesson-design.html">lesson design page</a> is a bit busy
+
+<strong>Tasks and questions</strong>
+<ol>
+	<li>Where are the videos located here? Part of the Moodle LMS?
+Perhaps same as the web site versions?</li>
+	<li>Is the "hidden" play button a Moodle interface problem? Can it be fixed?</li>
+	<li>Report the UMW Blackboard link for the sample lesson plan on "Analyse existing lessons" in elementary</li>
+	<li>Do some form of automated link check etc?</li>
+	<li>Can/should the various guides be converted into HTML?</li>
+	<li>Might some of the pages (e.g. lesson design) be better scaffolded/labelled?</li>
+</ol>
+<h2>What might it look like?</h2>
+Converting the two courses into a Moodle book looks like it would be fairly straight forward.  Each book could be integrated into the EDC3100 study desk fairly easily. One modification might be the integration of the script of the videos into each page to support those who want to read, but also to enable use of search engines.
+<h3>Initial plan - straight cut-and-paste</h3>
+Create a bog standard Moodle book with just the current content of <a href="http://latselemteachered.weebly.com/">the elementary course</a>.
+
+Provide a better feel for the content and how it goes in the book. Identify any issues and ideas. Provide a concrete version on github for later experimentation.
+<h3>Add the video transcripts</h3>
+Can this be done?
+<h2>Did it work?</h2>
+<h3>Straight cut-and-paste</h3>
+Process is
+<ol>
+	<li>Use Firebug to copy and paste the content from <a href="http://latselemteachered.weebly.com/">the Elementary course</a>.</li>
+	<li>Import it into the Book module</li>
+	<li>Link it to github.</li>
+</ol>
+Here's the Moodle book equivalent of the above.
+
+<img alt="Screen Shot 2016-04-02 at 11.05.59 am.png" class="alignnone size-full wp-image-10078" height="840" src="https://davidtjones.files.wordpress.com/2016/04/screen-shot-2016-04-02-at-11-05-59-am.png" width="1376" />
+
+Misc observations
+<ul>
+	<li>HTML isn't using headings.
+Welcome page changes font size.</li>
+	<li>Nor is it using paragraphs, lots of line break tags</li>
+	<li>The web versions and the IMS version use different titles for pages</li>
+	<li>Do I need to include the welcome? If so, need to fix the images for the college and license</li>
+	<li>Fix the warnings with the github tool.</li>
+	<li>Couldn't create a folder with a space.</li>
+</ul>
+<h3>GitHub version</h3>
+Background: The <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">Moodle open book tool</a> enables the <a href="https://docs.moodle.org/28/en/Book_module">Moodle Book module</a> to export/import content to/from GitHub. Adding all the benefits of GitHub. It does this by combining all the pages in a Moodle book into a single HTML file that is placed onto GitHub. A file that can be split up again and used to modify a Moodle book.
+
+The tool is still under development, but it does work.
+
+Here's <a href="https://github.com/djplaner/edc3100/blob/master/LAT_OER/Elementary_Course.html">the GitHub HTML file</a> produced by the Moodle open book tool that contains the LAT Elementary course. It's based entirely on the Moodle Book version of the course I created in the previous step. You can see the file as <a href="https://htmlpreview.github.io/?https://github.com/djplaner/edc3100/blob/master/LAT_OER/Elementary_Course.html">a web page via this link</a>. The image below is a screenshot of that web page. You  can just see the second page (Identify existing lessons) peeking up below.
+
+<img alt="Screen Shot 2016-04-02 at 11.26.17 am.png" class="alignnone size-full wp-image-10115" height="764" src="https://davidtjones.files.wordpress.com/2016/04/screen-shot-2016-04-02-at-11-26-17-am.png" width="936" /></p>
+
+</body>
+</html>

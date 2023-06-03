@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM #4: Re-jigging how BIM works</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/17/bim-4-re-jigging-how-bim-works/">BIM #4: Re-jigging how BIM works</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>The <a href="https://djon.es/blog/2009/08/13/bim-3-getting-the-module-work-making-some-progress/">last post in this series</a> saw me struggling - the long way around - to the realisation that the implementation model I had in my head wasn't going to work. At least not with the constraints of the model adopted by Moodle.</p>
+<p>This post is about me struggling to come up with a implementation model that will actually fit the Moodle model and hoepfully also the students and teaching staff that will use BIM.</p>
+
+<h3>Getting in the Moodle model more</h3>
+
+<p>Perhaps part of the problem, is that I'm not familiar enough with the Moodle model to feel how it works.  So, let's play with some of the standard modules and add activities.</p>
+<ul>
+  <li> Quiz
+       <ul>
+           <li> First page is the main configuration page, lots of options. But nowhere to specify the questions or question bank.</li>
+           <li> View the page (as the admin user) and you get to see the question bank editing/adding interface.  Also see a range of other buttons.</li>
+          <li> A student view doesn't include the whole question bank interface, just a message "no questions yet" </li>
+          <li> The update interface returns back to the original configuration page. </li>
+          <li> Once a question is answers, the student sees an "Attempt quiz now" button</li>
+         <li> Each of the different operations draw on different php script in the mod/quiz directory. </li>
+       </ul>
+  </li>
+</ul>
+
+<h3>Quiz inspired BIM model</h3>
+
+<p>Based on the above, the BIM model might become:</p>
+<ul>
+  <li> A BIM activity is added to the course. </li>
+  <li> This brings up the BIM configure page. <br />This covers everything need to set it up initially. Including the HTML/text to explain to the student the purpose of the assignment and how it works.  i.e. not a URL<p>This  might also include an option to change the use of "blog".  i.e. if they want BIM to aggregate something other than a blog, just some RSS etc.</p>
+</li>
+  <li> The configure page becomes what is shown for the "update" <br />So this means that there is no need for a configure activity.</li>
+  <li> A student would then have the following options if they were to view the BIM activity
+       <ul>
+          <li> View background information i.e. what it's all about. </li>
+          <li> Register their blog and/or see information about their blog. </li>
+          <li> View progress. <br />This would include a list of the questions they are meant to answer and indications of which they have answered.</li>
+       </ul>
+  </li>
+  <li> A staff member would see
+       <ul>
+            <li> Details - list of all students, who are registered, who is not etc. </li>
+            <li> Post summary - list of all matched answers for each student. </li>
+             <li> Questions - a list of all the questions<br />The coordinator would be able to configure these.  Normal teacher would just see the details.  The code would be much the same as that for the view progress for the students.
+        </ul>
+  </li>
+</ul>
+ <p>That seems more doable, probably need the block at a later stage.</p>
+
+<h3>Get going</h3>
+
+<p>So, let's not rest and do some design.  Let's get coding.  Start with the configure/update/add option.  This is essentially a modification and play with the dummy function provided by the NEWMODULE template.  First step should be to identify what configuration data will be needed - at least at a minimum. Here's the first list:</p>
+<ul>
+  <li> Name for the bim activity. <br />This becomes the name displayed on the course page. </li>
+  <li> Instructions for students.<br />This is the background/instructions for the students about the BIM activity. </li>
+  <li> Mirror<br />Should the feed for students in this course be mirrored? </li>
+  <li> Register<br />Can students register their feeds.</li>
+  <li> Change<br />Can students change their feed.</li>
+</ul>
+<p>That's probably enough for now.  Some of the obvious ideas for later would include:</p>
+<ul>
+  <li> Dates for when students can register. </li>
+</ul>
+
+<h4>Config form</h4>
+
+<p>So let's get going on modifying this thing:</p>
+<ul>
+  <li> Uses the <a href="http://docs.moodle.org/en/Development:lib/formslib.php">formslib stuff</a> from Moodle.<br />Various PHP functions to automate setting up the HTML form and having it play nicely with the Moodle checks etc.</li>
+  <li> Draws on the language files lang/*/bim.php to specify various strings that are used in the interface. </li>
+  <li> Seems to be a standard to start with "General" settings, then specific activity settings,  then some more specific ones. </li>
+  <li> Mirror, Register and Change are all essentially booleans, they need to be checkboxes.<br />Quiz uses these a lot.  So might steal the examples.  Probably not the best approach.  How are the docs? Probably better to start with the more <a href="http://www.midnighthax.com/quickform.php">generic ones</a><p>So the code goes something like <pre>        $mform-&gt;addElement('advcheckbox', 'register',
+                    get_string('register', 'bim'), '' );
+        $mform-&gt;addElement('advcheckbox', 'change',
+                    get_string('change', 'bim'), '' );
+        $mform-&gt;addElement('advcheckbox', 'mirror',
+                    get_string('mirror', 'bim'), '' );
+</pre>Will need to do some additional checks as we go along, but that's working in terms of display at the moment.</li>
+  <li> Add help links for the BIM settings. <br />This makes use of the setHelpButton method of the form class.  Need to create an appropriate HTML file within the lang/*/bim/help/bim directory that matches the string name used in lang/*/bim.php.  Then various parameters make the link<pre>$mform-&gt;setHelpButton( 'register', array( 'register',
+      get_string( 'register', 'bim' ), 'bim' ));
+$mform-&gt;setHelpButton( 'mirror', array( 'mirror',
+      get_string( 'mirror', 'bim' ), 'bim' ));
+$mform-&gt;setHelpButton( 'change', array( 'change',
+      get_string( 'change', 'bim' ), 'bim' ));</pre></li>
+  <li> Get it stored in the database. <br />Done the simple interface stuff, now to get it stored in the database.  I'm assuming this is going to related to update_instance in lib.php<p>The intro and other standard stuff in the form is handled by default in the mdl_bim table. And by some fairly simple code.</p><p>And if I do a print_r( $bim ) in the function I can see that the form data is all passed in as expected.  All nicely put into 1s and 0s for the checkboxes so it can be put straight into the mdl_bim_configure table I set up earlier.  All I have to do now is to figure out how it works.</p></li>
+</ul>
+
+<h4>Working with the database</h4>
+
+<p>Most of the example modules I'm looking at seem to be accessing the global $DB, retrieving data from the form object, doing some checks/manipulationg and then calling various methods of $DB to stick it in the database.  So, probably just means getting a grasp on $DB and its methods.</p>
+<p>So this is one area where a move to Moodle 2.0 will need a change.  The DML for pre-2.0 is different than for 2.0 onwards.  Pre-2.0 <a href="http://docs.moodle.org/en/Development:DML_functions_-_pre_2.0">docs</a></p>
+
+<p>Tasks to do</p>
+<ul>
+  <li> Change the config of mdl_bim_configure to use bim id rather than course id.
+    <ul>
+       <li>Of course this is when I discover the "change" is a reserved name by XMLDBB.  Have to change this and the other code. </li>
+       <li> In the end, rather than figure out how to upgrade, I just deleted the module and reinstalled - blowing away the old dbase </li>
+   </ul>
+  <li> Modify add_instance to insert initial default values in mdl_bim_configure
+      <ul>
+           <li> Need to get the id for the entry in the mdl_bim table, used as field for the mdl_bim_configure table<br /> The insert_record function is meant to return the id. </li>
+           <li> Create a default record and then insert it into mdel_bim_configure. </li>
+      </ul>
+    <p>Well that works ok.  Should I be putting error checking in?  Maybe eventually.  Still working on the prototype.</p>
+  </li>
+  <li> Modify the form so that it retrieves the information from bim_configure and shows it
+       <ul>
+          <li> I'm assuming this implies mod_form.php needs updating? </li>
+       </ul>
+  </li>
+  <li> <strong>Wrong</strong> - much simpler way is to modify bim table to include what's necessary.  Much smarter and more Moodle approach. </li>
+</ul>
+<p>Yes, well that works much better.</p>
+
+<h3>Status</h3>
+
+<p>Have other things to do.  Today's seen some progress, mostly in terms of getting a better understanding of the Moodle model and figuring out how BIM might fit within that.  The main measurable outcome of the day is that a BIM module exists and it can be used to add an activity to a Moodle course.</p>
+<p>Of course, it won't do anything, but all the other stuff is there.</p>
+<p>At this stage, I think next Tuesday's task will be to implement some hard-coded HTML to develop a prototype.  However, that's not likely to look too Moodle like.  I might look at going a step further and having it be able to use an existing set of tables.  Almost hard-coded but with some real data....</p></p>
+
+</body>
+</html>

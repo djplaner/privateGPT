@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - cron and view student details screen</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/22/bim-cron-and-view-student-details-screen/">BIM - cron and view student details screen</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>In the <a href="https://djon.es/blog/2009/12/22/bim-creating-the-test-data-completing-dbase-design/">last bit of BIM work</a> I'd successfully created some test data and laid out some rough plans for what is next.</p>
+<p>The aim of this post is to document the bit of work done on the show details screen up and going.  The initial work on the screen was <a href="https://djon.es/blog/2009/12/20/bim-savingmanipulating-rss-files/">documented here</a>.  This post draws on the test data, adds some support functions to manipulate it and improves the screen.  </p>
+<p>Should be fairly simple.</p>
+
+<h3>What's to be done - testing the test data</h3>
+
+<p>First, things first.  There's an error when I view a BIM as the old student I was using for testing.  Perhaps it is time to test out one of the new students.</p>
+<p>Choose one of the students enrolled in one of the courses, use the dummy password and we're away. Get into the course, click on the bim activity and get an "error getting feed for" error.</p>
+<p>This error comes about because the feeds aren't getting automatically updated/mirrored yet.  So the attempt to look at the local RSS file fails.</p>
+<p>At this stage, I could probably kludge this up and/or write the section of BIM that should do the updating - i.e. run from cron.  That's what we'll do.</p>
+
+<h3>Moodle, activity modules and cron</h3>
+
+<p>So now begins the trawl through the Moodle resources to find out how to run/define cron activity from an activity.</p>
+<p>The <code>version.php</code> file in each activity defines a cron value, which appears to identify how regularly to do something.  The question is what?</p>
+<p>This appears to be answered <a href="http://moodle.org/mod/forum/discuss.php?d=139341">here</a> with the details being that this value specifies how regularly (in seconds) to run the <em>modulename</em>_cron method defined in the lib.php file.</p>
+
+<h3>What to do?</h3>
+
+<p>The <code>bim_cron</code> function basically has to check all the current bim activities that are being mirrored, for all registered student feeds, it has to attempt to do a mirror on the feed URL and the copy of the feed on disk. Some pseudo-code</p>
+<p><pre>
+$mirrored = get_mirrored_bims()
+foreach ( $mirrored as $bim )
+{
+  $students = get_registered_feeds( $bim );
+  foreach ( $students as $student )
+  {
+    mirror the feed;
+  }
+}</pre></p>
+<p>One of the problems in writing this is the testing of the code for the above.  Running from cron complicates the testing, so I'm going to run it from the show student details screen while under development.</p>
+<p>Most of that is all working.  Just working on the question of doing the mirroring process.</p>
+
+<h3>Implications</h3>
+
+<p>Looking into this has led me down the path of using the SimplePie caching mechanism for maintaining the local versions of the RSS files, rather than the original method.  This has resulted in a few other changes in how the rss is retrieved, but it's all working.</p>
+<p>As a result some of the necessary changes to the show details screen happen automatically.</p>
+
+<h3>What's next</h3>
+
+<p>Some minor tasks related to the show details screen to do:</p>
+<ul>
+  <li> Do something about the link between the question ID and the question name in both Marked answers and All posts sections. </li>
+  <li> Double check the display of the "All posts". </li>
+  <li> Add in the link to posts for Marked Answers. </li>
+  <li> Re-do the interface to be Moodle like. </li>
+</ul></p>
+
+</body>
+</html>

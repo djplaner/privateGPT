@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Learning journal, activity completion and nudge analytics</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/07/31/learning-journal-activity-completion-and-nudge-analytics/">Learning journal, activity completion and nudge analytics</a></h1>
+
+<p>Tags: edc3100</p>
+
+<p>Week 2 of 2nd semester. Time to start checking how students are going and checking in with those that haven't started  yet.  For EDC3100, this means putting in place the various "shadow systems" that bridge what's provided by the institution and what I need in order to enact the practices I deem appropriate. What follows is a record of the ongoing evolution of <a href="https://djon.es/blog/2013/06/10/the-kludge-for-marking-learning-journals/">this idea</a>.
+
+Extending things a bit this semester is that EDU8117 will leverage some of the same system. So it will all have to be a bit more general. Also hoping to tweak it solve some issues from last semester.
+
+<h3>BIM backups - bring user details in</h3>
+
+A request for backups of the BIM activities for the two courses brings the user data in I believe.  Will need to do this once more.
+
+<h3>Figure out which users belong to a course</h3>
+
+I'm kludging this with Perl.  So no friendly Perl APIs.  A kludge with groups perhaps - that's what was used last semester.  So identify the groups that apply.
+
+mdl_groups: [ id, courseid, name, description etc. ]
+mdl_group_members : [ groupid, userid...]
+
+Courseids for
+<ul>
+  <li> EDC3100 - 4 - gives the right set of groups it appears.  46 is the group I'm after for EDC3100 </li>
+  <li> EDU8117 - 5 - only 1 group 68
+</ul>
+
+There is also a role for dropped students that should perhaps be checked at some stage.
+
+Given new use of MoodleUsers-&gt;new_all( COURSE =&gt; "EDC3100", TERM =&gt; "2014_S2" ) and then do the translation.
+
+That's working.
+
+<h3>BlogStatistics</h3>
+
+Relies on two classes.  One is hard coded to the ID for the BIM activity. Both are.  So same kludge as for the MoodleUsers. A simple hash to translate COURSE/TERM into a BIM activity.
+
+Actually Marking only needs updating to take a BIM id.
+
+Done.  It's a bit of a bugger that Webfuse is dead.  Quite like the flexibility of the class system. Perfect for bricolage/tinkering.
+
+<h3>Importing activity completion</h3>
+
+It's currently done with activityCompletion/import.pl
+<ol>
+  <li> Reads the CSV file with Activity Completion data,<p>Biggest kludge here is the student ID number which is missing leading 00s. </p>
+  </li>
+  <li> Arbritarily creates a base course module ID for each activity starting from a common, hard-coded base.</li>
+  <li> Compares that data with the Moodle user data to get a match up, Currently done on USQ student number (ID). </li>
+  <li> Inserts the course completion data for each user into mdl_course_modules_completion : [ id, coursemoduleid, userid, completionstate, viewed, timemodified ]
+     <p>Currently does this by deleting all the data in mdl_course_modules_completion - perhaps overkill. </p>
+[code lang="perl"]
+foreach $student ( @enrolled ) {
+    foreach $activity ( @csv_activity_records ) {
+         # create a database record for course_modules_completion that activity
+         push @rows, $activity
+    }
+    # insert into database
+}
+[/code]
+</ol>
+
+Got that all fixed up. Finally.
+
+<h3>Identify the students slow getting going</h3>
+
+Next step is to identify those students who have been a bit slow getting going.
+
+Each week has a "learning path" of activities to complete.  The idea is that given any particular week it would be useful to identify those students who are "slow".
+
+Perhaps something like
+<ol>
+  <li> Class that takes the course code, term and the week of term. </li>
+  <li> Generates a CSV file with student details (email address, name) and the percentage of activities that have been completed up until this week. </li>
+  <li> This can be manipulated with Excel and emails sent as a result. </li>
+</ol>
+
+Raising questions
+<ul>
+  <li> How to know which activities apply to which week?
+       <p>Current approach is to hard code the start and end pretend CMIDs for activities for a period.  Could extend this to each week.  ActivityCompletion class does something like this based on START/END for hard coded CMIDs.</p>
+       <p>Convert this class to use COURSE PERIOD WEEK instead.</p>
+  </li>
+</ul>
+
+Done.  And first email sent to students who have yet to complete 50% of the tasks from last week.  A very primitive nudge.
+
+Will need to send out a reminder about registering blogs so I can send out a learning journal report.</p>
+
+</body>
+</html>

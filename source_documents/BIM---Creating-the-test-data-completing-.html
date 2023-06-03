@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Creating the test data, completing dbase design</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/22/bim-creating-the-test-data-completing-dbase-design/">BIM - Creating the test data, completing dbase design</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>The <a href="https://djon.es/blog/2009/12/20/bim-savingmanipulating-rss-files/">last bit of BIM work</a> resulted in getting the show student details screen up and going, mostly. Any more of these screens will draw on, at least in part, other data from other tables.  Time to get those populated.  This will be done using data from BAM currently being used.  </p>
+
+<h3>Creating the table</h3>
+
+<h3>Dummy data</h3>
+
+<p>Will need some good data for testing.  So the plan is to convert some existing data from BAM into the BIM format.  Here are the steps.</p>
+
+<h4>Get the BAM data</h4>
+
+<p>Need to update local versions of the BAM data as a first step.  Getting some recent data likely to be most useful.</p>
+
+<h4>Complete the creation of all BIM database tables</h4>
+
+<p>Need to have these set up before I can convert all the data.  Due to the linkages between tables, the conversion process will have to know something about these tables. Last one to be converted is bim_questions.  Back to the XMLDB editor. <code>bim_questions</code> will have the following fields (initially)</p>
+<ul>
+  <li> id bigint(10) </li>
+  <li> bim bigint(10)</li>
+  <li> title varchar(255)</li>
+  <li> body text</li>
+  <li> min_mark int(5)</li>
+  <li> max_mark int(5)</li>
+</ul>
+<p>Done.</p>
+<p>However, <strong>Marker allocations:</strong> is still a problem.  BAM relies on a Webfuse database to track which markers are responsible for marking which students.  My current institution is still figuring out/potentially changing how they do this. I could figure out how Moodle does this currently, however, not sure if that will change + it will take more work.</p>
+<p>At this stage, the plan is:</p>
+<ul>
+  <li> Convert the existing Webfuse <code>MARKERS_STUDS</code> database into a Moodle/BIM table. </li>
+  <li> Write a support function or two that allows BIM to use (but not manipulate) the data in that table in a way that is independent of representation/format.</li>
+  <li> Use those functions in BIM to get the data. </li>
+  <li> At a later date, modify the support function(s) to work with whatever is decided. </li>
+</ul>
+<p>So, <code>bim_markers_students</code> will have the fields:</p>
+<ul>
+  <li> id bigint(10)<br />ID for the table. </li>
+  <li> course bigint(10)<br />The course ID for uniquely identifying the Moodle course for which the marker allocations hold. </li>
+  <li> marker bigint(10)<br />The user id for the marker. </li>
+  <li> student bigint(10)<br />The user id for the student. </li>
+</ul>
+<p>To populate <code>bim_markers_students</code> with the data from MARKERS_STUDS will require the need to read MARKERS_STUDS, expand out the place markers (ALL, campus names etc), get user ids from Moodle, combine the two into SQL. <strong>DONE</strong></p>
+<p>This will require the entry of student and staff information into Moodle for the staff/students associated with the courses being tested.  This has been done with a bulk upload of a CSV file generated from Webfuse code.</p>
+
+<h4>Convert BAM into BIM data</h4>
+
+<p>Due to the various connections between the different data, this is probably not going to be straight forward.  Here's a first attempt at the process I think I'll need to follow:</p>
+<ul>
+  <li> Select the course offerings to bring over.  I'm thinking at least 2 courses, currently only have permissions for 1 (but two different offerings of it). </li>
+  <li> Create Moodle courses for those offerings.<br />I'm only talking about 2 to start with, so manual creation will do. Done. </li>
+  <li> Create accounts for both the students and the markers.<br />This will involve a couple of hundred students.  So will have to do the bulk upload thing. So, need to create a CSV file from local data.  Here's an example from the help screen<blockquote>username, password, firstname, lastname, email, lang, idnumber, maildisplay, course1, group1, type1<br />
+jonest, verysecret, Tom, Jones, jonest@someplace.edu, en, 3663737, 1, Intro101, Section 1, 1<br />
+reznort, somesecret, Trent, Reznor, reznort@someplace.edu, en_us, 6736733, 0, Advanced202, Section 3, 3<br /></blockquote>
+        <p>Need to extract all student accounts from local data and have username=student number, contact data and populate the course information (<strong>DONE</strong>).  Staff will be much the same but different username.(<strong>DONE</strong>).</p>
+ </li>
+  <li> Enrol the accounts in the courses. <br /><strong>DONE</strong> as part of the bulk upload.</li>
+  <li> Convert the BAM_CONFIGURE (bim) data for the offerings I'm going to include. -- Actually, this will be creating bim activities in the courses.<br /><strong>DONE</strong></li>
+  <li> Convert the BAM_QUESTIONS (bim_questions) table.<br /><strong>DONE</strong> </li>
+  <li> Convert the BAM_BLOG_STATISTICS (bim_student_feeds) table. <br /> <strong>DONE</strong></li>
+  <li> Convert the BAM_BLOG_MARKING (bim_marking) table. <br />Need to know the question ID for a given question in Moodle.  i.e. translation from what question ID is currently in Webfuse and what has been created in Moodle.  Hard code a hash will probably be the quickest way.  Webfuse doesn't use ID, it uses the title of the question.  So, somewhat of change there.  <strong>DONE</strong></li>
+</ul>
+
+<h3>Where to now</h3>
+
+<p>So, I think that means I now have a good collection of test data on which to build the rest of the screens.  The task now is to start working my way through those screens and getting them implemented/tested with the current data.  Thinking the order should probably be:</p>
+<ul>
+  <li> Get the show student details screen working as much as possible. </li>
+  <li> Get the show posts and show details screens working for staff. </li>
+  <li> Get the marking screen done. </li>
+  <li> Get the re-allocation screen done. </li>
+  <li> Get the configuration screen for coordinator done. </li>
+</ul>
+<p>That should get BIM very close to completion.</p></p>
+
+</body>
+</html>

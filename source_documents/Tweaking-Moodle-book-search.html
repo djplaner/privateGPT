@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Tweaking Moodle book search</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/12/15/tweaking-moodle-book-search/">Tweaking Moodle book search</a></h1>
+
+<p>Tags: moodleopenbook, thesis</p>
+
+<p>A couple of weeks ago I gave <a href="https://davidtjones.wordpress.com/2015/11/30/opening-up-and-enhancing-moodle-books-with-github-epub-etc/">a presentation</a> showing off some work from the <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">Moodle open Book project</a>. The middle of the presentation was a live demonstration of the Moodle Book and various features. At one point in the presentation members of the audience (including a number of academics who used the Book module in their Moodle sites) gave an audible gasp. This occurred when I showed off <a href="https://github.com/stronk7/moodle-block_search_books">the search block</a> for the Book module. A tool that allows the user to search the contents of all the books in a Moodle course. The gasp indicated just how much teachers and students desire this feature. A feature I've been <a href="https://davidtjones.wordpress.com/2013/03/07/the-absence-of-a-search-function-my-current-big-problem-with-a-moodle-installation/">calling out</a> for quite some time.
+
+The <a href="https://github.com/stronk7/moodle-block_search_books">GitHub repository</a> has been around for 2 years. So why isn't this block more widely available in Moodle sites? There's a security flaw in the code and is somewhat unfinished.
+
+The <a href="https://docs.moodle.org/dev/Security:SQL_injection">Moodle SQL injection page</a> outlines at least two broad steps that Moodle code should take to prevent a nefarious person from gaining inappropriate access. These are
+<ol>
+	<li>Using appropriate parameter cleaning mechanisms on data coming from outside of Moodle (e.g. search terms entered into a form).</li>
+	<li>Using provided Moodle functions to retrieve data from the database (e.g. search the database for content in a Moodle book)</li>
+</ol>
+The Moodle book search block currently meets #1, but fails #2.
+
+The following aims to explore and hopefully remedy this problem.
+
+Current status is that some initial changes have been made to a local version of the block that borrows lessons from the forum search.  Need to spend a bit more time on this, but it's on the way.
+<h3>The form</h3>
+The form for the block currently passes the following information.
+
+Added by the block code
+<ul>
+	<li><strong>courseid</strong>; and</li>
+	<li><strong>page</strong>.</li>
+</ul>
+The user is able to enter data into: <strong>bsquery</strong>
+<h3>The processing</h3>
+Apart from standard processing the main searching is done in a function named <strong>search</strong> which
+<ul>
+	<li>Deals with some apparent differences between flavours of SQL between databases.
+Seeming to point to a problem in how it's engaging with databases. <strong>DOES FORUM SEARCH DO THIS</strong></li>
+	<li>Focuses attention on books the user is allowed to read.</li>
+	<li>Generates strings containing SQL statement
+See below for the format.
+<ul>
+	<li>Supports + and -</li>
+</ul>
+</li>
+	<li>Uses get_records_sql to retrieve any matches
+Not using placeholders, which is a problem.</li>
+</ul>
+A search for "copyright" generates a SQL statement similar to the following
+<pre id="yui_3_17_2_2_1450157531021_32">SELECT DISTINCT bc.* FROM mdl_book_chapters bc, mdl_book b
+        WHERE b.course = 12 AND b.id IN (<em>..long list of book ids</em>)
+        AND bc.bookid = b.id AND bc.hidden = 0 AND
+        (( bc.title ILIKE '%copyright%' ) OR
+         ( bc.content ILIKE '%copyright%' ) )
+        ORDER BY bc.bookid, bc.pagenum</pre>
+Each word added to the search phrase adds options to the "ilikes"
+<p id="yui_3_17_2_2_1450157678423_32">( bc.title ILIKE '%copyright%' AND bc.title ILIKE '%creative%'
+AND bc.title ILIKE '%commons%' )</p>
+Questions include
+<ul>
+	<li>Can get_records_sql be replaced with get_records</li>
+	<li>Can the database dependency be removed</li>
+	<li>Can placeholders be used</li>
+</ul>
+<h3>Comparison with forum search</h3>
+The forum search is an accepted part of Moodle.  Checking how it works might provide some inspiration to copy.
+
+Has a slight be compartmentalised structure
+
+[code lang="php"]   $forums = forum_get_readable_forums($USER-&amp;gt;id, $courseid);[/code]
+
+Has to deal with a lot more complexity than the book search.
+
+Uses $DB-&gt;get_in_or_equal
+
+Makes use of a method search_generate_SQL to do as the name suggests.  This is something that should be worked into the Book search block.
+
+Initial testing and that is working.  Dig a bit and it makes sense.  Also seems to tidy up the code a fair bit.
+
+&nbsp;</p>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: manage marking support services</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/17/bim2-manage-marking-support-services/">bim2: manage marking support services</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>As per <a href="https://djon.es/blog/2011/02/16/bim2-coordinators-manage-marking-tab/">the last post</a> time to complete some support services for manage marking.
+<ul>
+  <li> Releasing marked posts.</li>
+  <li> Displaying student details that match certain criteria.</li>
+  <li> Registering a blog.</li>
+</ul>
+
+<h3>Getting the controller going</h3>
+
+First step is to set up the controller to start processing.
+
+The current plan is that the processing will be done within the manage marking function, so tab is the same. The parameter op specifies which of the three services to execute. The view base class is already set up to allow sub-operations via the methods hash
+which originally looks like this for manage marking
+[code lang="php"]
+"marking" =&gt; array( "default" =&gt; "manage_marking" ),
+[/code]
+which suggests only the one method.  If the op URL parameter is set, then it will look for alternatives, so it changes to
+[code lang="php"]
+"marking" =&gt; array( "default" =&gt; "manage_marking",
+"view" =&gt; "view_details",
+"release" =&gt; "release_posts",
+"register" =&gt; "register_blog" ),
+[/code]
+
+All that's left is to define the methods such as <strong>view_details</strong>. Initially all with simply print statements, but subsequently with models and views.
+
+Done.
+
+<h3>View details</h3>
+
+So, this should be a standard model/view combination
+
+<h4>Model</h4>
+
+The process here is
+<ul>
+  <li> Check the additional parameters which specify which group of students to display. </li>
+  <li> Get the data for those students. </li>
+  <li> Display the details for those students. </li>
+</ul>
+
+There's already a class that gets details for all students, seems to make sense to modify that to handle the ops.
+Now have to get list of students for a marker, there is already a markers class, but it does it for all.  Can it be made to work for just a single marker?  Yep, that works, much the same approach as above.
+
+So, the basic model is working.  Needs a bit more work on the missing value, but will do for now.
+
+<h4>View</h4>
+
+The idea is to display the student details that match the chosen values.  Students can be either registered or unregistered, so treat them differently.
+
+While I wish to display it as part of manage marking, this display will also be required elsewhere.  So, will implement with two views
+<ol>
+  <li> bimtwo/coordinator/view_details_view.php - responsible for the header/footer and getting the navigation to fit within manage marking. </li>
+  <li> bimtwo/lib/students_view.php - to display the actual body of the page, the student data. This can be re-used elsewhere.</li>
+</ol>
+
+In fact, there is already a bimtwo_unreg_students_view class that takes care of the unregistered students.
+
+Add in a bimtwo_reg_students_view and we're just about there. However, it's a little more complex as it wants to show information about the student's feeds (how many marked, how many posted etc) and also progress against each question for the activity. This will take some time, however, it will be re-used as it serves a major component of the next tab to be implemented.
+
+There is a bimtwo_posts class that gets all the posts for an activity, this could be modified to do the same
+
+So, that's basically working.  It's displaying information for both unregistered and registered students.  But there's a problem. It's only showing details for one student and he is being listed as both registered and unregistered.  Indicates a bug somewhere in the model code.
+
+So, the model is passed to the view. It is a bimtwo_students class. This is passed to two separate views
+<ul>
+ <li> unreg_students_view - which loops through an array unregistered to display details </li>
+  <li> reg_students-view  - which loops through an array feed_details to display student details. </li>
+</ul>
+
+This is the correct behaviour.  So, these are being populated incorrectly.  Yep, the user is appearing in both.  They shouldn't be in the unregistered array.  Ahh, unregistered is formed by this bit of code
+[code lang="php"]
+$this-&gt;unregistered = array_diff_key( $this-&gt;user_details, $this-&gt;feed_details );
+[/code]
+
+The problem is that the keys for the two different arrays (user_details and feed_details) are the ids for different objects.  So, construct a hash with the right keys, use it and hey presto it's working.
+
+Time to put in the criteria blurb at the top, basically tells the user what criteria is being used to search for students.  So, that's working.  Here's an example, the breadcrumb navigation will need looking at.
+
+<a href="http://www.flickr.com/photos/david_jones/5452716083/" title="bim2: View details by David T Jones, on Flickr"><img alt="bim2: View details" height="170" src="http://farm6.static.flickr.com/5052/5452716083_e2129e08cf_m.jpg" width="240" /></a>
+
+<h3>What's next</h3>
+
+Will post this, still have to implement
+<ul>
+  <li> Releasing marked posts.</li>
+  <li> Registering a blog.</li>
+</ul></p>
+
+</body>
+</html>

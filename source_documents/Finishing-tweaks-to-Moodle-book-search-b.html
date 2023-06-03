@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Finishing tweaks to Moodle book search block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/01/17/finishing-tweaks-to-moodle-book-search-block/">Finishing tweaks to Moodle book search block</a></h1>
+
+<p>Tags: moodleopenbook, thesis</p>
+
+<p>A <a href="https://davidtjones.wordpress.com/2015/12/15/tweaking-moodle-book-search/">previous post</a> recorded some early exploration of what tweaks might be necessary to be made to the Moodle book search block. The <a href="https://github.com/stronk7/moodle-block_search_books">original code</a> for the block and the <a href="https://github.com/djplaner/moodle-block_search_books">tweaks I've made</a> are available via GitHub.
+<h3>Current status</h3>
+This is something I started before Xmas. Coming back to it in 2016, I've finished off item #1 of the todo list below. What I've done is described in more detail below.
+
+In essence, I've replaced the old Book search method with the method used in the forum search mechanism.  This
+<ol>
+	<li>Removes the SQL injection problem;</li>
+	<li>Improves support for standard search approaches (e.g. use of double quotes); and</li>
+	<li>Slight changes the default treatment of title and content.
+i.e. Old search mechanism returned a match only if all parts of the search string appeared in either the title of the book chapter OR the content of the book chapter. (A book chapter equates more closely to a page in the book, than a collection of pages).   e.g. a search for <strong>copyright creative</strong> would only find pages where both words appear in either the title or the content.The new search mechanism returns a match if all parts of the search string are find in the title or the content. e.g. a search for <strong>copyright creative </strong>would find pages that had copyright in the title and creative in the content; copyright in the content and creative in the title; both copyright and content in the title; and, both copyright and content in the content.</li>
+</ol>
+<h3>Giving back to github</h3>
+Bugger, didn't have these changes managed via git.  Stick it back in <a href="https://github.com/djplaner/moodle-block_search_books">my repository</a> for this block and create <a href="https://github.com/stronk7/moodle-block_search_books/pull/1">a pull request</a> for <a href="https://github.com/stronk7/moodle-block_search_books">the original</a>.
+<h2> Original to do list</h2>
+The to do list I'm working from includes:
+<ol>
+	<li>Remove the sql injection problem;  <strong>DONE.</strong></li>
+	<li>Improve the search results format;  <strong>DELAYED</strong>
+e.g. as illustrated <a href="https://farm1.staticflickr.com/313/19195121204_5d57647079.jpg">in this image</a>.</li>
+	<li>Provide a bit more scaffolding about how to use the search mechanism (e.g. use of " + and - etc) <strong>DELAYED</strong></li>
+	<li>Provide an advanced search form/mechanism; <strong>DELAYED</strong>
+e.g. as shown <a href="https://farm4.staticflickr.com/3765/19196124143_cf9b416c2a.jpg">in this image</a> which is a modification of Forum search interface.</li>
+</ol>
+<h2>Remove the sql injection problem</h2>
+As of yesterday, an initial modification had been made to the block to adopt the approach used by the Forum search block.  This needs to be further tweaked, tested and improved.  Steps include:
+<ol>
+	<li>Install a vanilla version of the Book search block for testing</li>
+	<li>Move the "get identifiable" books into a function.</li>
+	<li>Finalise and test the move to the "Forum search" approach.</li>
+	<li>Explore what other changes might be possible</li>
+</ol>
+<h3>Vanilla book search for testing</h3>
+Clone a version of the block straight from the original, stick it in a v_search_books directory and update the code to use this slightly different name (v = vanilla)
+
+Can it install?  Yes.
+
+Can I add it as a block?  Yes
+
+Does it work? Not yet
+<ul>
+	<li>Change the hard-coded URL to put to new location</li>
+	<li>The language strings aren't working. Why? Need to rename the language file.</li>
+</ul>
+Working and it appears that they are producing the same output.  My tweaks yesterday were better than I thought.
+<h3>Relocate "get identifiable" books</h3>
+This is basically a cosmetic/personal preference change.
+<h3>Finish the move to the "Forum search" approach</h3>
+Parameters &amp;&amp; get_in_or_equal - this is done and working.
+
+The old search block when searching for "copyright creative" generates the following (partial) SQL
+<p style="padding-left: 30px;">(
+( bc.title ILIKE '%copyright%' AND bc.title ILIKE '%creative%' ) OR
+( bc.content ILIKE '%copyright%' AND bc.content ILIKE '%creative%' )
+)</p>
+The forum search method (that I've adapted for searching books) for the same string generates the following SQL  (I've manually replaced the parameters with the actual string)<strong>
+</strong>
+
+OLD    ( TITLE = A &amp;&amp; TITLE = B ) or ( CONTENT = A &amp;&amp; CONTENT = B )
+
+NEW ( TITLE = A or CONTENT = A ) AND ( TITLE = B or CONTENT = B ) -- possibly more inclusive and better
+<pre style="padding-left: 30px;">(
+ (bc.title ILIKE "%copyright%" ESCAPE E'\') OR (bc.content ILIKE '%copyright%' ESCAPE E'\')
+ ) AND
+ (
+ (bc.title ILIKE '%creative%' ESCAPE E'\') OR (bc.content '%creative' ESCAPE E'\')
+ )</pre>
+Support for - and +: the existing block supports the following searches
+<ul>
+	<li><strong>"copyright creative"</strong> - search for whole strings. Old doesn't support it. New does. <strong>NEW is better</strong>
+<ul>
+	<li>
+<pre><strong>old - </strong>(( bc.title ILIKE '%"copyright%' AND bc.title ILIKE '%creative"%' ) OR ( bc.content ILIKE '%"copyright%' AND bc.content ILIKE '%creative"%' ) )</pre>
+This is actually including the double quotes.</li>
+	<li><strong>new - </strong>((bc.title ILIKE '%copyright creative%' ESCAPE E'\')
+OR (bc.content ILIKE '%copyright creative%' ESCAPE E'\'))This is what is expected from a normal search.</li>
+</ul>
+</li>
+	<li><strong>copyright</strong> <strong>+creative </strong>- to ensure that it's a word - new is using "proper" Postgresql approach. Old is using a regular expression kludge. <strong>NEW is better</strong>
+<ul>
+	<li><strong>old
+</strong>
+<pre> (( bc.title ILIKE '%copyright%' AND
+       bc.title <strong>~* '(^|[^a-zA-Z0-9])</strong>creative<strong>([^a-zA-Z0-9]|$)</strong>' )
+OR ( bc.content ILIKE '%copyright%' AND
+    bc.content ~* '<strong>(^|[^a-zA-Z0-9])</strong>creative<strong>([^a-zA-Z0-9]|$)</strong>' ) )</pre>
+</li>
+	<li>
+<pre><strong>new
+
+</strong>((bc.title ILIKE "%copyright%" ESCAPE E'\') OR
+     (bc.content ILIKE "%copyright%" ESCAPE E'\'))
+AND ((bc.title ~* "[[:&lt;:]]creative[[:&gt;:]]") OR
+         (bc.content ~* "[[:&lt;:]]creative[[:&gt;:]]" ))</pre>
+</li>
+</ul>
+</li>
+	<li><strong>copyright -creative</strong> - has copyright but not creative<strong>  - largely the same. </strong>
+<ul>
+	<li><strong>old </strong>
+<pre id="yui_3_17_2_2_1450242647253_573">(( bc.title ILIKE '%copyright%' AND
+    bc.title <strong>!~*</strong> '(^|[^a-zA-Z0-9])creative([^a-zA-Z0-9]|$)' )
+OR ( bc.content ILIKE '%copyright%' AND
+    bc.content !~* '(^|[^a-zA-Z0-9])creative([^a-zA-Z0-9]|$)' ) )</pre>
+</li>
+	<li><strong>new</strong>
+<pre>((bc.title ILIKE "%copyright%" ESCAPE E'\') OR
+    (bc.content ILIKE "%copyright%" ESCAPE E'\'))
+AND (NOT ((bc.title ILIKE "%creative%" ESCAPE E'\') OR
+     (bc.content ILIKE "%creative%" ESCAPE E'\')))<strong> 
+</strong></pre>
+</li>
+</ul>
+</li>
+</ul>
+&nbsp;
+<h3>Explore other changes</h3>
+&nbsp;
+
+&nbsp;
+<h2>Improve results format</h2>
+This particular task includes the following sub-tasks
+<ol>
+	<li>Rewrite the interface using a renderer
+I haven't used the rendered approach and no bugger all about it.  Might be too much work for now.</li>
+	<li>Improve the interface.</li>
+</ol>
+&nbsp;
+<h3>Improve the interface</h3>
+The current search results look like this
+
+<a href="https://www.flickr.com/photos/david_jones/23485445450/in/dateposted-public/" title="Book search (existing)"><img alt="Book search (existing)" height="103" src="https://farm6.staticflickr.com/5815/23485445450_0fe28bd436.jpg" width="500" /></a>
+
+The earlier mock up I produced looks like this
+
+<a href="https://www.flickr.com/photos/david_jones/19195121204/in/dateposted-public/" title="004_results"><img alt="004_results" height="397" src="https://farm1.staticflickr.com/313/19195121204_5d57647079.jpg" width="500" /></a>
+Some possible improvements include:
+<ul>
+	<li>Nest book and chapter titles
+As shown above, the current search interface repeats the name of the book "Copyright and what you can use" for each chapter.  A different interface might be to next book, chapter, and sub-chapters.</li>
+	<li>Include the module/topic name in the hierarchy
+Book's typically fit within a module/topic. Including that in the search response would likely help the user orient themselves to where the discovered books reside on the broader site.</li>
+	<li>Show some of the matching content.
+Provide a snippet of the content matching the search for each chapter. In much the same way that Google does.</li>
+</ul>
+<h2>Advanced search form</h2></p>
+
+</body>
+</html>

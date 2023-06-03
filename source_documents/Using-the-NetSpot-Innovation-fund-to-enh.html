@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Using the NetSpot Innovation fund to enhance bim</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/08/07/using-the-netspot-innovation-fund-to-enhance-bim/">Using the NetSpot Innovation fund to enhance bim</a></h1>
+
+<p>Tags: bim</p>
+
+<p>So the <a href="http://netspot.com.au/innovationfund.html#Register12interest">2013 NetSpot Innovation Fund</a> has been announced. You can read more on that prior link but my summary is that NetSpot will contribute their human resources (with significant expertise around Moodle development, QA etc.) to improving  an existing innovation with the aim of making it more sustainable. In the words of the <a href="http://netspot.com.au/NetSpot%20Innovation%20Fund%20Guidelines%202013.pdf">guidelines</a><blockquote>it is essentially a software development project</blockquote> It sounds like a perfect opportunity to enhance <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> - Blog Aggregation Management Into Moodle - plugin. The following provides soem ideas for what shape that expansion/enhancement might take and serves the purpose of seeing if there's broader buy in for some of this work and also make suggestions that I've missed.
+
+If you are interested in this, let me know.
+
+<h3>The foundation</h3>
+
+The assumption here is that I have finished porting BIM into Moodle 2.x.  This would form the starting point for any work the NetSpot folk might do.  From this foundation, I can see two broad categories of work
+<ol>
+  <li> The enhancements.<br />
+       These improve or expand the functionality of BIM but keep it within the fairly traditional paradigm of a teacher led/managed process for assessment purposes. </li>
+  <li> The expansion.<br />
+        Intended to move serve as a basis for an exploration of different - more "networked/connectivism" type - paradigms. </li>
+</ol>
+<p>Yes, I'm aware that there could be significant questions about how you could explore different paradigms within the constraints of an institutional LMS. There are inherent constraints.</p>
+<p><a href="http://www.leighblackall.com/">Leigh Blackall</a> and I <a href="https://djon.es/blog/2010/04/25/inside-out-outside-in-or-both/">had this conversation a while ago</a>. There are minuses in this approach, but there are some plusses as well and there aren't many opportunities of getting access to some experienced developers the other way.</p>
+
+<h3>The enhancements</h3>
+
+<ul>
+  <li> A general QA check and associated improvements.<br />
+        My initial port to Moodle 2.x will have flaws. Having the NetSpot crew double check this and make improvements where possible makes it more likely for institutions to feel safe adopting BIM. </li>
+  <li> Interface enhancements.<br />
+       This could be as simple as adding support for the more advanced types of tables that Moodle supports. mainly to improve handling large lists of students details.
+  </li>
+  <li> Copy ("plagiarism") detection. <br />
+       There are some issues around this, but I know that there are folk in large classes for whom the ability to run copy detection over blog posts would be a plus.
+  </li>
+  <li> The question of "multiple activities" ? <br />
+        When you create a BIM activity at the moment, you can have multiple posts that the students need to complete. The one link to this activity occurs once in the Moodle course design.  Which can cause some issues in courses where the teaching staff want to remind students of what they should be doing this week. Someway to have multiple links to the activity, or group together multiple BIM activities into one management interface seems to be needed.
+  </li>
+  <li> Activity completion.<br />This follows on from the above. Linking BIM with the new activity completion  features in Moodle could be useful.
+  </li>
+  <li> Private posts?<br />I'm still somewhat uncertain about this one.  But there are an increasing number of Allied Health folk asking students to keep journals while on prac. And BIM's a good fit. But they want the information restricted. So, why not use a Moodle blog? Some way to support the aggregation of private blog posts might be useful.
+  </li>
+  <li> Support for groupings.<br />As per <a href="https://github.com/djplaner/BIM/issues/20">this request</a> </li>
+  <li> And addressing <a href="https://github.com/djplaner/BIM/issues">other known issues</a> for BIM </li>
+  <li> A complete collection of unit tests etc. <br />Perhaps improving sustainability could be enhanced by having a complete collection of testing for BIM.  So that changes could be made more quickly and with greater confidence. </li>
+  <li> Enable students to allocate posts.<br />A BIM activity generally as a sequence of writing prompts/questions that students are meant to respond to on their blog. BIM will attempt to automatically associate a student post with the particular prompt/question. It also allows staff members to associate manually.  Allowing students to allocate posts <strong>and</strong> allowing them to allocate multiple posts to a particular prompt/question would allow approaches where students are gathering or providing evidence against a particular standard, KPI etc. </li>
+  <li> Mirroring of embedded media.<br />One of the perceived advantages of BIM is that it keeps a copy of what the student posts on a university server. Assuaging fears about losing data but at the same time allowing the student to have their own space. However, it only keeps a copy of what is in the feed, which in terms of blog posts is just the text. Any embedded media is not copied onto the institutional server, hence more fears about losing data. Though this does tend to rise the issue of resource consumption. </li>
+  <li> Closer examination of BIM functionality and Moodle core.<br />Theoretically, Moodle 2.x allows the integration of an external blog for users. There's some apparent overlap there. At the moment, I don't believe it goes anywhere near serving the same purpose or the same functionality.  But a closer examination and discussion of this with people who know - especially with any future plans for the Moodle core - could be useful. </li>
+</ul>
+
+<h3>The expansion</h3>
+
+This is where my own interests lay and I need to think more about these as I'm still too stuck in the traditional education mindset.
+
+The following are leaning more to adding features to support more connectivist/social constructivist pedagogies
+<ul>
+  <li> Significant improvements to the feed forward functionality in BIM.<br />At the moment, it's pretty much limited to an OPML file that lists all the feeds for students allocated to a staff member. There's a lot more scope here, some possibilities
+       <ul>
+         <li> Aggregated RSS feeds, rather than OPML, where aggregation is very flexible and configurable: e.g. aggregate all posts that have been given a certain mark, that are responses to a certain question, from certain students or groups of students, posted within certain date ranges. </li>
+         <li> Modifying the posts before aggregation.<br />Rather than aggregating exact copies of the blog posts there might be some plusses in modifying the posts. e.g. anonymising the source. </li>
+       </ul>
+  </li>
+  <li> Tracking and distribution of comments some how.<br />As students are encouraged to comment on other blog posts (on the actual blogs) the ability to track or mirror those within BIM, perhaps to support some form of marking. </li>
+  <li> Allows student comments on posts within BIM.<br />
+  </li>
+  <li> Self and peer assessment.<br />Starting to tread on the toes of other systems, but allowing students and their peers evaluate each others work has some value and would build on some of the earlier features. </li>
+  <li> Allow student creation of prompts/questions.<br />Rather than have the prompts set by teaching staff, allow</li>
+  <li> Construction of learning paths/concept maps from aggregated posts.<br />This is moving beyond BIM, I think. But the idea that any user could construct a visual representation of a collection of posts (including some derived from other sources e.g. diigo feeds etc) encapsulating their view of a particular topic. A visual representation that could be used by others. </li>
+</ul>
+
+The following are some ideas intended to explore how e-learning systems can be improved by embedding more explicit cognitive support for the designer (i.e. teaching academic) into the system. These are probably really starting to get outside the scope of the NetSpot innovation fund - at least in the short term - but a solid BIM being widely used might help spread this type of work.
+<ul>
+  <li> SNAPP-like visualisations. <br /><a href="http://research.uow.edu.au/learningnetworks/seeing/snapp/index.html">SNAPP</a> produces network visualisations of interactions in LMS discussion forums. A similar feature in BIM might be useful and could be used by teaching staff (or students themselves) to understand what is going on and take action. </li>
+  <li> Analytics?<br />Which leads to the broader consideration of how to gather and display useful analytics and visualisations of what's going on in a BIM activity. </li>
+  </li> Embedded galleries of BIM use.<br />A method by which uses of BIM can be shared between all users of BIM and that is embedded within BIM itself. </li>
+  <li> A "game-like" introduction interface.<br /> Not gamification itself (that will get a mention later) but rather something <a href="https://djon.es/blog/2011/09/23/can-e-learning-tools-be-more-like-plants-vs-zombies/">more like I talked about here</a>. Designing a good BIM activity is hard. The current interface doesn't really help. Large-scale computer games are hard. But you can often get going in the game without referring to a manual. Can we design something for BIM that gives the same sort of learning experience for staff (and students?). </li>
+  <li> Badges.<br />There are some minuses with this idea. But integrating BIM with a badging infrastructure (e.g. <a href="http://openbadges.org/en-US/">Mozilla's Open Badges</a>) might open up some space for interesting experiments. </li>
+  <li id="skins"> Pedagogical "skins".<br />In it's default state, the BIM interface is mostly focused on tool configuration. It doesn't really embed a great deal of pedagogical support. The academic using BIM has to translate their pedagogical aims into configuration options in BIM. This is difficult. A pedagogical "skin" could act as a re-imagining of the BIM interface to offer direct scaffolds for a particular pedagogical view. </li>
+</ul></p>
+
+</body>
+</html>

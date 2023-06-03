@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM, blog posts and special characters</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/08/26/bim-blog-posts-and-special-characters/">BIM, blog posts and special characters</a></h1>
+
+<p>Tags: bim, bimErrors, Uncategorized</p>
+
+<p><p>The following is a summary/explanation of a common problem with BIM and its mirroring of blog posts and a common solution. The problem is generally caused by folk creating their blog posts in Word and then copying and pasting them into the blog post. For various reasons this process brings along some "special" characters which, while they work fine in Word, screw up royally within more constrained textual representations, like those of Web browsers and XML/RSS parsing libraries.</p>
+
+<h3>Reported problem</h3>
+
+<p>A student has made a post to their blog, the teacher can see it on the student's blog, but it's simply not present within BIM.  BIM isn't picking it up.</p>
+
+<h3>Diagnosis of the problem</h3>
+
+<p>Steps to diagnosing the source of the problem were:</p>
+<ul>
+  <li> Login to the Moodle course site and confirm the problem.<br /> Yes, student has posted it to his blog, but BIM not picking it up.</li>
+  <li> Register the student blog with a local copy of BIM.<br />Ahh, the blog post shows up on my local copy, but only the first dozen or so characters. </li>
+  <li> Look at the feed for the student blog.<br />Find the tell-tale signs of special characters exactly where my local copy of BIM cuts off the post. </li>
+</ul>
+<p>Okay, BIM currently attempts to handle special characters, obviously it is missing something.</p>
+
+<h3>Common solution</h3>
+
+<p>This appears likely to be an on-going problem, so am going to leave a bit of commented code in place that I use to implement this "solution".  The "solution" is basically get BIM to print out each individual character in a blog post along with its ASCII value.  Use this ASCII value to modify the bim_clean_content function to remove the offending special character.</p>
+<p>The code that implements this character by character display looks like this</p>
+[sourcecode lang="php"]
+# KLUDGE: simple test to find out which special characters are
+#  causing problems
+$contenta = str_split( $content);
+print "&lt;h1&gt; $title &lt;/h1&gt;";
+foreach ( $contenta as $char ) {
+       echo "$char .. " . ord( $char ) . "&lt;br /&gt;";
+}
+[/sourcecode]
+<p>For this particular problem the offending character is 189. So add the following to the function bim_clean_content.  It appears that character 189 is some sort of dash.</p>
+[sourcecode lang="php"]
+$post = ereg_replace( chr(189), "-", $post );
+[/sourcecode]
+<p>Re-register a student with the same blog and 189 has been replaced. Remove the kludge and it all appears to be registered correctly.</p></p>
+
+</body>
+</html>

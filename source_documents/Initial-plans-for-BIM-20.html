@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Initial plans for BIM 2.0</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/11/09/initial-plans-for-bim-2-0/">Initial plans for BIM 2.0</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>I'm slowly getting out from under the thesis, which means I am starting to have some time to think about the next version of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>. The following is an attempt to lay out some of the ideas I have for the next version of BIM. Beyond helping me gather my thoughts, I'm hoping it will generate some comments and ideas from others. I doubt I will be able to implement all of the suggestions, so I'm hoping to get a sense for what others think is most important.</p>
+<p>Currently, I can think of the following categories of potential BIM improvements:</p>
+<ol>
+  <li> <a href="#moodle2">Work with Moodle 2.0</a>; <br />This is the main driver for an upgrade. <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes">Moodle 2.0</a> will be out real soon now, and BIM will have to be modified to work with Moodle 2.0.</li>
+  <li> <a href="#maintain">Maintaining BIM 1.0</a>;<br />Not sure that everyone will be moving directly to Moodle 2.0. Suggests a need to maintain BIM 1.0 for a bit.</li>
+  <li> <a href="#contrib">Get BIM into CONTRIB;</a><br />Good practice would see BIM in the Moodle contrib area.</li>
+  <li> <a href="#misc">Miscellaneous improvements</a>;<br />Various <a href="https://github.com/djplaner/BIM/issues">ideas</a> for how BIM can be improved have arisen from use of the current version. Would be good to action some of these. </li>
+  <li> <a href="#code">Improving the code design</a>; and<br />I'm shocked by just how spaghetti like the procedural code used in some of the Moodle modules (including BIM). It's so inflexible, gets in the way of reuse, and just basically ugly and error prone. Surely there are nicer ways to code a Moodle module. A MVC framework? </li>
+  <li> <a href="#conglomerations">Scaffolding conglomerations</a>.<br />This is perhaps where my main research interest resides. The interest comes from the thesis and the idea that e-learning systems need to improve. One suggestion for how this might be done is <a href="https://djon.es/blog/2010/09/03/scaffolding-context-sensitive-conglomerations-in-e-learning-systems/">scaffolding conglomerations</a>.  Borrowing ideas from <a href="https://djon.es/blog/2010/10/06/making-the-lms-more-like-the-globe-theatre-distributed-cognition-the-extended-mind-and-moodle/">distributed cognition</a> to move these systems from simple configuration interfaces into scaffolding that helps teachers and students teach/learn.</li>
+</ol>
+
+<a name="moodle2"></a>
+<h3>Work with Moodle 2.0</h3>
+
+<p>Moodle 2.0 brings with it numerous changes to the various APIs which BIM relies upon. According to <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes#For_developers:_API_changes">release notes</a>, looks like the changes that will need to happen include: database queries, file handling, and perhaps some display code.  </p>
+<p>There are also other sections of Moodle that BIM does (or could) rely upon which have also undergone changes. This may also suggest a need for updates. Possible areas of interest include:</p>
+<ul>
+  <li> <a href="http://docs.moodle.org/en/Plagiarism_Prevention">Plagiarism prevention</a>;<br />Adding this support is one of the existing <a href="https://github.com/djplaner/BIM/issues#issue/6">issues for BIM</a> and it appears that Moodle 2.0 might provide this service. </li>
+  <li> <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes#Backup_and_restore">Backup and restore</a>;<br />Apparently there is an entirely new format, improved interface etc. Suggests a need to update.</li>
+  <li> <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes#Blogs">blogs</a>;<br />Now includes support for external blog feeds. From scuttlebutt it sounds like this is done with SimplePie, which means BIM 2.0 probably won't need to include it. For some this native support within Moodle raises questions about the requirement for BIM. The difference is (I think) what BIM does with the feeds in terms of management and marking support. Something I don't think is done with Moodle 2.0, but should check. </li>
+  <li> <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes#Comments">Comments</a>;<br />Am wondering if this might offer an opportunity for students to comment within Moodle on other blog posts. Alternatively, as a way for staff to comment (mark) student blog posts, rather than BIM maintain its own record.  This is probably the most questionable idea so far.</li>
+</ul>
+
+<h4>Installing and playing with Moodle 2.0</h4>
+
+<p>Much of the above is based on a skim of the Moodle 2.0 release notes. I'm sure to have missed important changes/additions and/or misunderstood the implications of other additions. <strong>Feel free to point out implications I've missed or misunderstood.</strong></p>
+<p>To remedy this I need to install Moodle 2.0 and start playing. Seems I already meet the <a href="http://docs.moodle.org/en/Moodle_2.0_release_notes#System_requirements">system requirements</a>. One less thing to do.</p>
+
+<a href="maintain"></a>
+<h3>Maintaining BIM 1.0</h3>
+
+<p>I'm guessing that at least some universities will be a bit slow in moving to 2.0.  The final release of Moodle 2.0 is not yet out, it's supposed to be any day now. At least in Australia, that means most IT departments won't seriously consider it until March or April next year since most Australian Universities essentially shut down for summer and then rush to get the first term going. Which suggests for some, it will be June/July before any decision about running a Moodle 2.0 trial, perhaps over summer term 2011.  So it is likely to be 2012 before some move to Moodle 2.0.</p>
+<p>Which suggests a need to maintain and evolve BIM v1.0. Actually, this is somewhat connected to <a href="#code">improving the code design</a>. If done well, an improved BIM code design could make it much less effort to maintain the two different versions. But it still means extra work.</p>
+<p><strong>At the moment, I'm leaning towards minimising updates to BIM 1.0 and focusing development on v2.0.  If you think otherwise, let me know.</strong></p>
+
+<a href="contrib"></a>
+<h3>Get BIM into CONTRIB</h3>
+
+<p>All the best Moodle plugins are in <a href="http://docs.moodle.org/en/Development:contrib">contrib</a>. For various reasons I haven't followed through on getting BIM into contrib. This needs to change.</p>
+<p>However, I'm going to lean towards producing code first. i.e. I plan to use the <a href="https://github.com/djplaner/BIM">BIM github area</a> for development, work on getting v2.0 out, and along the way start the process of moving BIM into contrib.</p>
+<p><strong>Are there negative implications of not being in CONTRIB that I'm unaware of? Should I push this a little harder?</strong></p>
+
+<a name="misc"></a>
+<h3>Miscellaneous improvements</h3>
+
+<p>There are currently <a href="https://github.com/djplaner/BIM/issues">13 open issues</a> (there is a 14th one which is migrate BIM to Moodle 2.0) associated with BIM v1.0. Most of these are ideas for improvement from folk using BIM or solutions to problems experienced. The following is a quick and dirty attempt at ranking/grouping those issues. Feel free to express dismay at the mis-categorisation of your favourite issue.</p>
+<ul>
+  <li> Not required;<br />The <a href="https://github.com/djplaner/BIM/issues#issue/16">simplepie issue</a> should not be required as I understand Moodle 2.0 includes Simplepie.</li>
+  <li> Unimportant;<br />I just can't get excited about <a href="https://github.com/djplaner/BIM/issues#issue/2">the perceived need</a> to open student blog posts in a new window.</li>
+  <li> Nice and might happen;<br />
+       <ul>
+          <li> <a href="https://github.com/djplaner/BIM/issues#issue/6">Copy detection</a> - as mentioned above Moodle 2.0 support for copy detection might enable this.</li>
+      </ul>
+  </li>
+   <li> Important improvements; and<br />
+       <ul>
+          <li> Support for <a href="https://github.com/djplaner/BIM/issues#issue/8">"deleting"</a> student posts from BIM's consideration.</li>
+           <li> Better integration with the "Moodle way" - e.g. support for <a href="https://github.com/djplaner/BIM/issues#issue/3">grade scales</a>, better <a href="https://github.com/djplaner/BIM/issues#issue/25">integration with the gradebook</a>, and <a href="https://github.com/djplaner/BIM/issues#issue/20">support for groupings</a> </li>
+           <li> Misc. additional BIM improvements: associate a <a href="https://github.com/djplaner/BIM/issues#issue/7">due date</a> with a question; and, recording <a href="https://github.com/djplaner/BIM/issues#issue/27">who released a post</a>
+      </ul>
+  </li>
+  <li> Important interface improvements.
+       <ul>
+         <li> Re-design and expand the <a href="https://github.com/djplaner/BIM/issues#issue/26">student interface</a> </li>
+         <li> Improve the <a href="https://github.com/djplaner/BIM/issues/#issue/21">marker allocation</a> interface, including showing <a href="https://github.com/djplaner/BIM/issues/#issue/32">missing allocations</a></li>
+          <li> Improve the <a href="https://github.com/djplaner/BIM/issues/#issue/28">marking interface</a> </li>
+        </ul>
+  </li>
+</ul>
+
+<a name="code"></a>
+<h3>Improving the code design</h3>
+
+<p>The BIM code is ugly. This is partially (mostly?) due to me learning both PHP and "Moodle coding" during the implementation of BIM. But it is also due to the primitive procedural coding approach used by most Moodle plugins. Even for someone coming from using a <a href="https://djon.es/blog/2010/06/07/the-wf-framework/">somewhat limited, home-grown MVC framework</a>, it was depressing and frustrating to have to step back to what I now see as the dark ages. Surely there has to be a better way?</p>
+<p>It looks like it <a href="http://moodle.org/mod/forum/discuss.php?d=6842#p36429">has been talked about briefly</a> and <a href="http://moodle.org/mod/forum/discuss.php?d=66331">not always well</a> within the Moodle community. I recognise the difficulty of adopting such a radically different approach for Moodle as a whole. But I am wondering if anyone has done this within a plugin. I played <a href="https://djon.es/blog/2010/05/26/adding-multiple-visualisation-approaches-to-indicators-block/">around with this</a> earlier on and it seems to go okay. I guess performance would be one issue.</p>
+<p>Will have to look at this further, but am likely to use an MVC approach within BIM v2.0. <strong>Is this a good idea? A bad one? What have I missed in the Moodle community?</strong></p>
+
+<a name="conglomerations"></a>
+<h3>Scaffolding conglomerations</h3>
+
+<p>If I had to be doing more research, this is the area in which I'd be doing it.  Just finished <a href="http://bit.ly/cEPm70">another blog post</a> trying to re-explain the ideas behind scaffolding conglomerations.  I'd really like to try and incorporate these ideas into BIM v2.0.  What follows are some concrete ideas. Sadly, they are still early ideas and need to be thought through a bit more.</p>
+
+<h4>Making BIM help collaborative</h4>
+
+<p>One of the principles for <a href="https://djon.es/blog/2010/11/09/scaffolding-context-sensitive-conglomerations-v2-0/">scaffolding conglomerations</a> is<blockquote>Embed opportunities for collaboration and interaction into conglomerations</blockquote> In the context of BIM, this doesn't mean what BIM already does in terms of blog posts etc. It has to do with how academics and students access help around using BIM.</p>
+<p>BIM v1.0, like most Moodle plugins, includes some canned help pages. There are links to these pages in the BIM interface. Essentially these pages provide definitions/explanations (written by me) of basic BIM constructs and operations. These are not very good since I often write them as an after-thought and also because my familiarity with BIM (since I am its designer) almost certainly means that I see BIM very differently from other people. Nor do these help files enable any form of collaboration. They don't leverage the collection of people using BIM. </p>
+<p>I'd like to expand/extend the help pages into some sort of collection of services that enables the complete collection of BIM users to collaborate. And by complete, I don't mean just within a Moodle instance. I mean across all Moodle instances that are using BIM.</p>
+<p>Some possible examples:</p>
+<ul>
+  <li> Replace help pages with external wiki/blog;<br />A wiki would allow anyone to edit the help pages or perhaps add comments. For some, going external might be seen as a problem. Might also confuse some people who are used to the standard process of using the institutional helpdesk.</li>
+  <li> Integrate the issues page from github;<br />Provide some visible connection within the BIM interface to the BIM <a href="https://github.com/djplaner/BIM/issues/#list">issues list</a>. There's a problem here of balancing local institutional problem solving and assistance (being directed to an institutional helpdesk service) with the global BIM community.</li>
+  <li> Supplement help pages with RSS feeds;<br />Rather than replace the institutional/Moodle help processes, supplement them with the addition of feeds from more global collaboration areas.</li>
+  <li> Sharing designs; and<br />I wonder if it would be possible to implement an approach were BIM designs could be shared. Currently, this would be limited to just the questions. But later versions could include other configuration options. Not sure how useful this would be.</li>
+  <li> Incorporate related literature.<br />There's a growing body of literature around the use of blogs in higher education. Would be useful to include links to this literature and reflections upon it within BIM. However, rather than hard-code this and make it something only I or some other technician can change. It would be more appropriate for it to be something people could collaborate around.  Perhaps using functionality from <a href="www.mendeley.com">Mendeley</a> or del.icio.us. </li>
+</ul>
+<p>So, not easy. More thought given. <strong>What other strategies are there for making the BIM help services more collaborative.</strong></p>
+
+<h4>Pro-active help</h4>
+
+<p>An existing <a href="https://github.com/djplaner/BIM/issues/#issue/32">BIM issue</a> gives a concrete example. There are times when not all students using a BIM activity have been allocated a marker. BIM doesn't highlight this at the moment. If BIM were more pro-active, it would raise a warning or show a summary of the total number of students and the number that are allocated markers. This could be done via email or via the web interface. There are numerous other examples of similar common problems, including: students who haven't registered their blog, or posted a required post, or Markers who haven't used BIM yet. </p>
+<p>A more complete approach might involve some type of <a href="http://tomazlasic.net/2010/10/moodle-wizard/">Moodle wizard</a>. A step by step process that guides the designer of the BIM activity through the decisions and trade-offs they have to make when setting up the activity.</p>
+
+<h4>Analytics</h4>
+
+<p>It looks like <a href="https://djon.es/blog/2010/09/04/light-weight-analytics-tools-as-part-of-scaffolding-context-sensitive-conglomerations/">analytics</a> (of some description) will play an increasing part in e-learning, especially in large classes. Analytics could form the basis for some form of scaffolding in BIM and not just for teachers. For example, some form of analytics that shows how the student is going with the BIM activity compared with other students. Potentially as some form of encouragement. e.g. the <a href="http://www.sci.usq.edu.au/staff/deraadt/progressBar.html">progress bar block</a>. </p>
+
+<h4>Conglomerations and conglomerations</h4>
+
+<p>This raises the question of how much should BIM do itself? Short answer is that BIM shouldn't reinvent the wheel. Where possible it should integrate with existing tools, like the progress bar. And this brings up the other aspect of conglomerations. A conglomeration is not meant to be just something like BIM. It's conceptualised as a combination of different services that are designed to act together. </p>
+<p>So, someone who decides to use BIM, may not be aware of the progress bar block. BIM should perhaps actively inform them of that block (or other useful tools) and be able to work both with and without the progress bar block.  Which raises the question of how/if BIM might use services provided by the progress bar block to provide scaffolding.</p>
+<p>I think this is getting close to a problem I have with <a href="http://it.toolbox.com/blogs/irm-blog/stepwise-refinement-25007">stepwise refinement</a> and which somewhat arises from the modular design of Moodle. If I focus too much on BIM, I miss the overall whole of Moodle. I miss the opportunities to work with the progress bar block.</p>
+<p>However, it's more than me being aware of the whole of Moodle. It's the assumptions within the APIs etc of Moodle and the mindsets of the other plugin developers. If they are focused too much on stepwise refinement, they focus too much on what their module does. Not on what might be possible by enabling different plugins to leverage off each other.</p>
+<p>This is an idea that needs further thought.</p></p>
+
+</body>
+</html>

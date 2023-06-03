@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM: another restart?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/12/19/bim-another-restart/">BIM: another restart?</a></h1>
+
+<p>Tags: bim</p>
+
+<p>The following is essentially an activity log/diary or the first steps of getting back into work on <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>. I'm hoping to have it ready to work with some <a href="https://djon.es/blog/2012/12/14/4668/">course redesign</a> I'm working on, but timelines may make that difficult.
+
+The aim of this is to get the current version of BIM for Moodle 2.x up and running with Moodle 2.4+.  The next step will be to determine what work needs to be completed on BIM and what new features might be useful.
+
+In summary, it's surprisingly functional as is, much more than I remembered.
+
+<h2>Download and install Moodle 2.4</h2>
+
+Moodle 2.4+ <a href="http://download.moodle.org/">downloaded from here</a>
+
+Stick it in an m24 directory under xampp and <a href="http://docs.moodle.org/24/en/Installing_Moodle">follow the instructions</a>.
+
+All installed.
+
+<a name="installing"></a>
+<h2>Installing bim2</h2>
+
+And now to get bim2 off <a href="https://github.com/djplaner/BIM/tree/bim2">github</a>.  Mm, 8 months since I worked on the code. Not good.
+
+[code lang="bash"]mkdir bim
+cd bim
+git clone https://github.com/djplaner/BIM.git
+mv BIM/* .
+mv BIM/.git .
+rm -rf BIM
+[/code]
+
+<strong>Task:</strong> I really need to look into the naming of that folder and using of git so there's no need to play with the file structure.
+
+Visit the local Moodle website, picks up BIM ready to install. Oops, error.<blockquote>Plugin "mod_bim" is defective or outdated, can not continue, sorry.<br />
+Debug info: Missing mandatory en language pack.
+Error code: detectedbrokenplugin</blockquote>
+
+That's because I didn't clone the bim2 branch
+
+[code lang="bash"]sudo git clone -b bim2 https://github.com/djplaner/BIM.git[/code]
+
+And that has updated successfully. Now does it actually work?
+
+<h2>Testing it out</h2>
+
+Ohh, pretty new interface for Moodle 2.4.  Looks like the BIM icon will need to updated to work with the slightly bigger and different design for the module icons. (Click on the following images to see bigger versions)
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284658119/" target="_blank"><img alt="Add a BIM activity by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8352/8284658119_07c5bc4fb9_m.jpg" title="Add a BIM activity by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+After adding the activity you need to enter the basic configuration details
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285717244/" target="_blank"><img alt="Filling in some BIM details by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8083/8285717244_1392ba8f41_m.jpg" title="Filling in some BIM details by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Add some questions that the students will blog in response to.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284657421/" target="_blank"><img alt="Questions being added by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8077/8284657421_127c73e260_m.jpg" title="Questions being added by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+What about allocating markers to mark the influx of posts?
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284657843/" target="_blank"><img alt="BIM markers screen by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8198/8284657843_49f2103fe8_m.jpg" title="BIM markers screen by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+No users allocated to the course, so nothing there. Nice to see I'd thought of this condition. Time to allocate some students and teaching staff.  So staff enrolled in the course. Can I manage marking now?
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285798776/" target="_blank"><img alt="No groups by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8063/8285798776_d940cacfab_m.jpg" title="No groups by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Not yet.  I need to create some groups for the course. Markers aren't allocated individual students within BIM. They are allocated groups.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285799732/" target="_blank"><img alt="Groups by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8065/8285799732_758277e547_m.jpg" title="Groups by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+So with groups allocated, I can allocate a marker.  Can I manage the markers? The coordinating teacher can see a list of all the markers and what they have (or haven't) marked yet.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285799460/" target="_blank"><img alt="Manage marking has an error by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8070/8285799460_e2bec760f1_m.jpg" title="Manage marking has an error by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Oops, that's the first error in the code.  Will have to revisit that.
+
+Can I see the students I have to mark as a marker?  This is the overview. It shows which of my students have registered their blogs (and for which I can mark something) and which haven't yet.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285798614/" target="_blank"><img alt="Your students by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8479/8285798614_772b7a2d7b_m.jpg" title="Your students by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Now, let's see if I can do some marking.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285799322/" target="_blank"><img alt="Mark posts by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8081/8285799322_76ce1acc84_m.jpg" title="Mark posts by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Not really because none of the posts from this single student have been allocated to one of the set questions. I'll need to allocate one of his posts to a question using the "allocate question" screen.
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284740141/" target="_blank"><img alt="Allocating posts by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8224/8284740141_183caf08d1_m.jpg" title="Allocating posts by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Now I should be able to mark that allocated question
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285799122/" target="_blank"><img alt="Marking a post by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8076/8285799122_8e83204da7_m.jpg" title="Marking a post by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+<h3>Student perspective</h3>
+
+So, does it work from the student's perspective.  Does the activity show up when they login to the course?
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284692223/" target="_blank"><img alt="Course view by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8060/8284692223_fcf0ab4f40_m.jpg" title="Course view by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Can the register their blog?
+
+<div><a href="http://www.flickr.com/photos/david_jones/8284692093/" target="_blank"><img alt="Register the blog by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8065/8284692093_b993397227_m.jpg" title="Register the blog by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+Does it actually work as expected?
+
+<div><a href="http://www.flickr.com/photos/david_jones/8285751550/" target="_blank"><img alt="Successful registration by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8503/8285751550_f2488d02b5_m.jpg" title="Successful registration by David T Jones, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/david_jones/" target="_blank">&nbsp;David T Jones</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+<h2>What's next?</h2>
+
+Time for a road trip. So no progress for a few days, after that it will be revisiting what outstanding tasks are left to make this truly useful.  Gradebook integration is probably the top of the list.  Backup/restore may be the next step.</p>
+
+</body>
+</html>

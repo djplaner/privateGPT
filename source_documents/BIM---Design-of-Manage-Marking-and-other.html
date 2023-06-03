@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Design of "Manage Marking" and other features for Coordinators</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/09/bim-design-of-manage-marking-and-other-features-for-coordinators/">BIM - Design of "Manage Marking" and other features for Coordinators</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p><a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BAM/BIM</a> has initially been designed for use at <a href="http://www.cqu.edu.au/">CQU</a>. In that time it has been used in 29 course offerings with 13 of those averaging around 200 students per offering.  i.e. BAM/BIM is originally designed for large offerings and hence needs to provide support for the teaching staff in charge of those large offerings.</p>
+<p>I'm currently implementing the "coordinator" (at CQU the "coordinator" is the academic in charge of the course) interface for BIM (initial <a href="https://djon.es/blog/2010/01/09/bim-getting-navigation-bread-crumbs-and-tabs-working/">work here</a>). The purpose of this post is to generate feedback from current and past coordinators about what features might be useful.</p>
+<p>The post has the following sections:</p>
+<ul>
+  <li> <a href="#how">How will it work?</a><br />A very brief summary of how BIM will work. </li>
+  <li> <a href="#what">What will it look like?</a><br />A description of what it will look like.  This introduces the basic functionality. </li>
+  <li> <a href="#manage">Ideas for manage marking</a><br />Describes some initial new ideas to add into BIM. </li>
+  <li> <a href="#requests">A request for your ideas.</a> </li>
+</ul>
+
+<a name="how"></a><h3>How will it work?</h3>
+
+<p>The basic process will be something like this</p>
+<ul>
+  <li> Your Moodle course is created via the normal institutional means. </li>
+  <li> You can add a BIM activity in the same way you add any other activity to a Moodle course.<br />There will be support, if you desire, to have multiple BIM activities in your course.  When you add a BIM activity you will configure the activity.</li>
+  <li> Once added there will be a link in your Moodle course as shown in the following image. (<strong>Click on the images to see larger versions</strong>)<br />
+<a href="http://www.flickr.com/photos/david_jones/4183145931/" title="BIM link from dummy moodle course by David T Jones, on Flickr"><img alt="BIM link from dummy moodle course" height="132" src="http://farm3.static.flickr.com/2708/4183145931_66d39b489f_m.jpg" width="240" /></a>
+  </li>
+  <li> Students and staff will use this page to access BIM related services.</li>
+</ul>
+<p>Depending on the type of person using BIM, they will see different information.  More information about what students and other staff will see will be outlined later.  The rest of this will focus on what the coordiantor will see.</p>
+
+<a name="what"></a><h3>What will it look like?</h3>
+
+<p>As above, this focuses on what BIM will look like for staff who are coordinating the course.</p>
+
+<h4>3 main sections</h4>
+
+<p>The coordinator interface for BIM will consist of at least 3 main sections:</p>
+<ol>
+  <li> Configure - allows modification of the configuration of BIM. </li>
+  <li> Manage marking - services associated with managing and releasing the marking of student posts. </li>
+  <li> Show details - provides the coordinator with access to the normal BAM screens showing details of students, posts, allocating posts and marking of their students. </li>
+</ol>
+<p>The default Moodle page will look something like the following.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/4258409714/" title="Configure BIM by David T Jones, on Flickr"><img alt="Configure BIM" height="101" src="http://farm5.static.flickr.com/4005/4258409714_0f7e97da3d_m.jpg" width="240" /></a>
+
+<p>Note the three tabs that allow the coordinator to navigate between sections/services.  At this point, only the Show Details section has been implemented. </p>
+
+<h4>Show details</h4>
+
+<p>This is essentially what coordinators see at the moment with BAM.  It's also what markers will see.  There are four main pages in show details.</p>
+<ol>
+  <li> Show student details - shows details about the students. <br />
+<a href="http://www.flickr.com/photos/david_jones/4258409814/" title="Show student details by David T Jones, on Flickr"><img alt="Show student details" height="214" src="http://farm5.static.flickr.com/4009/4258409814_12f70ed683_m.jpg" width="240" /></a>
+        <p>The tables here will be sortable.</p>
+  </li>
+  <li> Show post details - shows the summary of all the posts for students. <br />
+<a href="http://www.flickr.com/photos/david_jones/4258409852/" title="Show post details by David T Jones, on Flickr"><img alt="Show post details" height="195" src="http://farm5.static.flickr.com/4062/4258409852_a335347303_m.jpg" width="240" /></a>
+  </li>
+  <li> Allocate posts - this is how the marker manually changes the allocation of a student post as an answer.<br />
+<a href="http://www.flickr.com/photos/david_jones/4258409902/" title="Allocate posts by David T Jones, on Flickr"><img alt="Allocate posts" height="202" src="http://farm5.static.flickr.com/4037/4258409902_b1cf39e685_m.jpg" width="240" /></a>
+  </li>
+  <li> Mark post - how you mark an individual post (not currently implemented). </li>
+</ol>
+
+<a name="manage"></a><h3>Ideas for manage marking</h3>
+
+<p>The main aim of this post is to ask for suggestions for the Manage Marking section for the coordinator.  I'm currently suggesting the following as possibilities (might get included in the initial release of BIM) or requirements (will be included in the initial release of BIM):</p>
+<ul>
+  <li> Ability to release marked posts (Requirement)<br />When posts are marked by markers, they are not visible to the student.  To be visible to the student they will have to be released by the coordinator.   My intent for this interface is to duplicate some of the functionality from OASIS.  This means that it should allow the coordinator to release marked posts:</p>
+      <ul>
+        <li> For all students. </li>
+        <li> For groups of questions (e.g. all marked posts for "Week 5"). </li>
+        <li> For all students of particular markers (e.g. all Fred's and all Ginger's students) </li>
+       </ul>
+  </li>
+  <li> Ability to get an overview of marking progress of all markers. (Possibility)<br />Again, an idea borrowed from OASIS.  As coordinator you should be able to see a list of all the markers and a summary of the progress in marking/submitting posts for each question by their students.</li>
+  <li> Ability to dig down into the marking progress view to see the details (Possibility).<br />e.g. if you see that Fred has 15 student posts not marked, enable you to click on the 15 and see the details of those 15 students. </li>
+</ul>
+
+<a name="requests"></a><h3>A request for your ideas</h3>
+
+<p>That's a fairly limited selection.  Due to this and because BAM has never really provided this functionality, I'd like to hear any suggestions you may have.  Let me know.</p></p>
+
+</body>
+</html>

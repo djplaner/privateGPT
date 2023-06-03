@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Identifying some immediate changes to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/02/05/identifying-some-immediate-changes-to-bim/">Identifying some immediate changes to BIM</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>I have until the 21st of February to get <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> tested and ready for installation into the institutional Moodle instance. The following is some initial planning of what I'd like to get done in that time frame. A list that will then need to be further whittled away to what I can get done in that time frame.  There are three categories of changes
+<ol>
+  <li> Changes to better support the pedagogy I'm currently using. </li>
+  <li> Changes from the BIM issues list. </li>
+  <li> Changes to ensure correct functioning. </li>
+</ol>
+
+<h2>Better support the pedagogy</h2>
+
+The pedagogy/learning design that informed the initial design of BIM is fairly limiting. The learning design/pedagogy I'm currently using isn't directly supported by BIM.  I found myself last year doing a range of programming kludges to get it to work.  This won't work in the second half of this year when a non-technical academic takes over as course coordinator.  BIM better fitting the current learning design saves me time and enables other people to use this approach.
+<ul>
+  <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/60">Allow more than one post to be allocated to a question</a><p>Already had this as an issue.  Would allow "questions" to be though of as modules (in EDC3100 speak) or time periods.</p> </li>
+  <li> Allow student allocation of posts to a question.
+       <p>Mentioned in <a href="https://github.com/djplaner/moodle-mod_bim/issues/26">this issue</a> (amongst other extensions). </p>
+  </li>
+  <li> The student interface would also need to be changed to handle the display of multiple posts to a question. </li>
+  <li> Have BIM generate statistics about length of posts, number of links and number of links to other student posts. Display this to the student and generate a CSV file for the marker.</li>
+  <li> Also seems to suggest some sort of auto mark generation based on the statistics. </li>
+  <li> Have a default allocation of posts to questions/topics based on the date OR just have it set to a particular value (i.e. all posts should now be allocated - by default - to Module 1). </li>
+</ul>
+
+The basic idea behind these changes is that students are required to make a number of posts per Module in the course (one module = about 3 weeks). Students mark for the posts for each module is based solely on the number of posts and that the posts meet a certain set of statistics (length of posts, links etc). These marks are added as part of the bigger assignment that is associated with the module.
+
+Students need to be able to see their progress. Markers need to be able to access the statistics to mark assignments.
+
+Changes required would likely include
+<ol>
+  <li> Changes to student interface
+      <ol type="a">
+        <li> Show question allocation as a row (not a column). </li>
+        <li> Replace the "Status" column with a "Statistics" column that includes the number of words, links etc statistics </li>
+        <li> What options exists with parsing HTML and extracting links in PHP and in Moodle. </li>
+        <li> Show unallocated posts together in a separate set of rows - perhaps even a special form - where the questions allocation drop box is available. </li>
+      </ol>
+  </li>
+  <li> Changes to the coordinator interface
+      <ol type="a">
+        <li> Configuration option for multiple questions
+             <p><strong>database change required</strong></p> </li>
+        <li> Change the default allocation of posts. </li>
+        <li> Some how deal with questions that aren't questions. </li>
+        <li> How to specify statistics for auto marking. </li>
+        <li> What if any changes are required for the "Manage Marking" page. <p>May not need it. As this page simply shows counts.  With multiple posts to a question, the count should still work.</p> </li>
+        <li> What to do about the workflow and the idea of marked/suspended/released if posts aren't being marked, simply analysed. </li>
+      </ol>
+  </li>
+  <li> Changes to the marker interface
+      <ol type="a">
+        <li> "Mark posts" will still need to be used to allocate posts (or should this feature be added to "View student details") even though "marking" may not make sense. </li>
+        <li> "Mark posts" cell with a question would need to show the number of posts for that question implying no way to mark directly.  Or perhaps list each post? <strong>Needs thought here</strong> </li>
+        <li> "Allocate posts" page will need to retain all question names in the "Choose one" drop box. </li>
+        <li> "Allocate posts" page should also have an additional heading to group multiple posts to the one question -- this may enable doing without the database change for the new configuration option. </li>
+        <li> May need to add to "Allocate posts" a link to "mark this post" so that "Mark posts" page can point to a list of posts and one can be chosen for marking.  Mmmm. </li>
+        <li> One of these pages should have a link to export a CSV file containing marks for students against posts. </li>
+     </ol>
+  </li>
+</ol>
+
+<h2>From the BIM issues list</h2>
+
+The BIM source code is <a href="https://github.com/djplaner/moodle-mod_bim/">hosted on github</a> and I've been using the associated <a href="https://github.com/djplaner/moodle-mod_bim/issues?labels=bim25&amp;state=open">issue list</a> to record any ad hoc improvements/fixes.  The following are the issues that would be nice
+<ul>
+  <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/81">No response to find student</a> - a bug, has it been fixed yet? <p>Seems to specific to Moodle 2.5, so not directly applicable to the institutional context. </p></li>
+  <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/76">Warn of summary feeds</a><p>Problem from last year, blogs configured to just showing the first few lines of posts, not the whole post.  </p> </li>
+  <li> A couple of issues about updating posts - allow students/markers to update posts stored in BIM (mostly to fix errors or recent changes). </li>
+</ul>
+
+<h2>Correct functioning</h2>
+
+<ul>
+  <li> Check out any and all warnings being generated by BIM now. </li>
+  <li> Bulk email
+      <p>Used in a number of places.  This is not working.  Either on mootest or my box.  A missing parameter. Not sure when this cropped up.</p>
+  </li>
+  <li> User search
+     <p>Search for a student within BIM isn't working on mootest, it does work on my box. My initial guess is some SQL type queries in BIM that are MySQL specific.</p>
+  </li>
+  <li> All teaching staff are coordinators
+       <p>The distinction between coordinator and marker isn't kicking in as it should.</p> </li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixes to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/25/fixes-to-bim/">Fixes to BIM</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Prior to <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> being installed and used at my current institution it had to be checked by folk at NetSpot.  The following details what I've had to do in response to that.</p>
+<p>All of the changes are fairly minor, some won't be changed as I don't see the point and don't have the time.  Shall be interesting to see how that goes down.</p>
+<p>Especially, given that the evaluation response to the following two questions</p>
+<ul>
+  <li> Can the plugin be deployed in its current state without first applying fixes? </li>
+  <li> Considering any Security/Maintenance issues identified above would the decision to install and support this plugin contain acceptable risks to NetSpot or the client? </li>
+</ul>
+<p>Was YES!</p>
+
+<h3>Left over debug stuff</h3>
+
+<ul>
+  <li> <del>references to localhost</del> </li>
+  <li> <del>reference to brisbane</del> </li>
+</ul>
+
+<h3>Getting a list of students</h3>
+
+<p>The advice is<blockquote>Getting a list of students should be extended to a selectable select of roles instead of hard code role</blockquote></p>
+<p>Actually moved this to using get_users_by_capability.</p>
+
+<h3>Paging</h3>
+
+<p>Essentially, where lots of database records are going to be displayed the request is to "page" the results to minimise load.</p>
+<p>In particular, the suggestion is to introduce paging for</p>
+<ul>
+  <li> Find student -  There is a hard-coded limit within the code that restricts find student to getting 200 student records. </li>
+  <li> Your student - Limited to what staff are allocated to.  Could, theoretical be the entire course, which could be large. </li>
+</ul>
+<p>Will leave this as is.  This is only getting a few records of data per student.  Shouldn't be a great load and will take a fair bit to modify the code.</p>
+
+<h3>Logging</h3>
+
+<p>Apparently my use of "add_to_log" is somewhat off.  Not surprisingly as it was a learning process and a bit of cut and paste went on.</p>
+<p>Two problems are currently apparent:</p>
+<ul>
+  <li> <del>a missing $ sign for cm-&gt;id </del></li>
+  <li> <del>possible wrong parameters being sent to the URL related to this.</del></li>
+</ul>
+
+<h3>Custom HTML</h3>
+
+<p>A couple of the forms I use have some custom HTML in them.  i.e. rather than use the Moodle forms constructs it outputs some HTML.</p>
+<p>I can see the point in having this, but it's not a strong point.  It's using HTML tables for layout which does break one of the aims of Moodleform.  But I also would like to save the time it takes me to figure out how to achieve the look I need for these forms with just the Moodleform stuff for other tasks that are a little important.</p>
+<p>However, I can see some folk being anal about this.  May have to come back to it.</p>
+
+<h3>Backup and restore</h3>
+
+<p>As per an earlier post this is not 100% complete.  Will have to complete it, eventually. At the moment back up of questions does work.  This is the main functionality required to roll over courses, the immediate need.</p>
+
+<h3>The zip file</h3>
+
+<p>The zip file I uploaded was a bit confused in terms of having two copies of the bim code, one in a sub-directory.</p></p>
+
+</body>
+</html>

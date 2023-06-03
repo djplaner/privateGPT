@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reflections and Implications from Webfuse - Domain languages</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/01/07/reflections-and-implications-from-webfuse-domain-languages/">Reflections and Implications from Webfuse - Domain languages</a></h1>
+
+<p>Tags: paperIdeas, Uncategorized, WebfuseReflectionsImplications</p>
+
+<p><p>
+As I am currently <a href="https://djon.es/blog/research/phd-thesis/">writing up the PhD</a> I have banned myself from working on any new papers. However, as I work through the PhD I will get ideas for papers so rather than waste time writing them in full and even worse forget about them I'm going to try and write about them on the blog and categorise them appropriately.  With the hope that post PhD I can come back and have a large collection of papers to write.  Alternatively, I'll have a collection of dribble to laugh at.
+</p>
+<p>
+First cab off the rank is the idea of a "webfuse reflections and implications" paper.  To some extent this would come from the last chapter of my thesis and capture some of the lessons, reflections etc learned from the 12 or so years working on the thesis and Webfuse (the artifact that arose from/created the thesis).
+</p>
+<p>
+In part the idea for this paper is to capture the messy bits that you have to solve in practice that are typically overlooked by researchers and the enterprise folk implementing e-learning. The hope is that these reflections/implications could spark off ideas for future research projects.
+</p>
+<p>
+Some of the initial ideas which will be expanded upon include
+</p>
+<ul>
+  <li> Domain langauges and the mismatch between enterprise software and institutional practice. </li>
+  <li> The need for "loose joining" between e-learning systems and other institutional databases. </li>
+  <li> Limitations of traditional IT governance and other forms of hierarchical division of labour and responsibilities.</li>
+</ul>
+
+<h3>Domain languages and LMS mismatches</h3>
+
+<p>The idea for this one was sparked by <a href="http://www.37signals.com/svn/posts/1507-iphoto-09-and-domain-language">this post on iPhoto and Domain Languages</a> and some <a href="https://djon.es/blog/publications/how-to-live-with-erp-systems-and-thrive/">previous work</a>.
+</p>
+<p>
+The definition of domain language <a href="http://www.37signals.com/svn/posts/1507-iphoto-09-and-domain-language">given on the 37signals blog</a> is
+<blockquote>
+A domain language is the set of words that reflect the way you cut up a domain. It consists of the pieces you sliced and the names you chose to give them. This language defines an application and makes it special.</blockquote>
+</p>
+<p>
+Universities have domain languages. Actually, university sectors in different countries have different domain languages and to some extent different universities within the same country can have different domain languages.
+</p>
+<p>
+For example, in the mid-1990s the institution I worked at then had a domain language that consisted of the following terms
+</p>
+<ul>
+  <li> Unit - an individual course/subject that a student enrols in (e.g. Programming I etc.) </li>
+  <li> Course - a collection of units that make up a student's entire study for a degree (e.g. bachelor of information technology). </li>
+  <li> Student number - the unique identifying number (actually combination of letters and numbers) for a particular student (e.g. C0101010X)
+</ul>
+<p>
+As the 37signals post suggests software applications have to encapsulate a domain language. The designers of those applications have to make choices about how they divide up the application space, what objects are sensible and what to call those objects.
+</p>
+<p>
+Around the turn of the century the institution I worked with adopted the Peoplesoft enterprise resource planning (ERP) system for some aspects of its work, in particular its student administration system. Peoplesoft is from the North American university sector and had a domain language that made sense for that sector.  It also originally started in the Human Resource management sphere and so aspects of its domain language showed its origins.
+</p>
+<p>For example, the institution, its students and staff had to change the language they used from the above to the following
+</p>
+<ul>
+  <li> Unit became Course.<br />
+       This re-use of a term that meant something completely different in the previous domain language was particular confusing. </li>
+  <li> Course became Program. </li>
+  <li> Student number, while still used in normal conversation, became EMPLID (emploee ID) in the database and some aspects of the interface.
+</ul>
+<p>
+The change in domain language made the adoption of the software more difficult. It required significant changes to a broad array of practices and documentation that normally would not have been required. It also resulted in my institution (and the others who adopted Peoplesoft) started using a domain language that was different from many other Australian universities.
+</p>
+<p>
+The Blackboard e-learning system we've been using over the last few years has also show this sort of problem.  The main one has been the difference between the names given to teaching staff.
+</p></p>
+
+</body>
+</html>

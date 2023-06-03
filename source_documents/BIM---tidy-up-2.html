@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - tidy up #2</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/27/bim-tidy-up-2/">BIM - tidy up #2</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Some more tidying up of BIM to get it ready for release.</p>
+
+<h3>Error messages on student details</h3>
+
+<p>When one student views the details, we're getting error messages.</p>
+<p>Okay, need another check.  That's done.</p>
+
+<h3>Check the group usage</h3>
+
+<p>Have got the allocate groups stuff working, is it actually being used by the support functions that return lists of students associated with markers?</p>
+<p>No.</p>
+<p>So, the get_records_select for the tmp table bim_markers_students needs to get replaced with something that goes via bim_group_allocation and then group_members to get the userids.</p>
+<p>That means changing the signature of the bim_get_markers_students function - take bim now, not course. My, the comments actually said course was temporary.</p>
+<p>Update the  calls to records select to go via the other tables.</p>
+<p>Done.</p>
+
+<h3>Fix up the display of last post in the student details screen</h3>
+
+<p>This is a hang over of the change from datetime in BAM to unix timestamps in Moodle.  There are at least 2 contributing problems to this :</p>
+<ul>
+  <li> Test data from BAM into BIM put in just a year, not the unixtime. <br />So need to modify the lastpost entry in my test bim_student_feeds to be using unixtime. All entries changed to the same value.</li>
+  <li> The display of the timestamp in BIM isn't doing the right conversion.<br />Already doing this in the allocation and marking form using the PHP date function.  Done.</li>
+</ul>
+<p>Ahh, but that's the rub.  What is actually needed here is how long ago the last post was. That's a different method.</p>
+<p>Used function <a href="http://www.charles-reace.com/PHP_and_MySQL/Time_Difference/">from here</a> to implement.</p>
+
+<h3>Removed sortable links on tables</h3>
+
+<p>Haven't groked how to do the flexible_table sorting.  Will leave that for later.</p></p>
+
+</body>
+</html>

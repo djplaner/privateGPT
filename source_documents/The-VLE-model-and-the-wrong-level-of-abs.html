@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The VLE model and the wrong level of abstraction</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/07/04/the-vle-model-and-the-wrong-level-of-abstraction/">The VLE model and the wrong level of abstraction</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, moodle, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>I'm currently trying to formalise the information systems design theory for e-learning that is meant to be the contribution of <a href="https://djon.es/blog/research/phd-thesis/">my thesis</a>. i.e. what is the model, set of principles etc that I think is important.</p>
+<p>As it happens, I recently came across <a href="http://vle.barkingcollege.ac.uk/techblog/?p=3312">this post</a> on models around the use of VLEs/LMS from Barking College.  It's part of a discussion involving a group of folk (<a href="http://elearningstuff.wordpress.com/2010/03/20/a-five-stage-model-for-using-the-vle/">James Clay</a>, <a href="http://eduvel.wordpress.com/2010/06/09/building-vles/">David Sugden</a>, and <a href="http://loujak78.wordpress.com/2010/02/19/from_repository_to_interactivity/">Louise Jakobsen</a>) talking about models for getting academics to use the complete functionality of the VLE/LMS.</p>
+<p>This is interesting for two reasons.  First, it helps me see what others are thinking in this sphere. Second, it provides a spark for me to think about my "model". As an example there is an interesting point made on the <a href="http://vle.barkingcollege.ac.uk/techblog/?p=3312">Barking College post</a> that I want to pick up on in the following.</p>
+<p>The basic idea is that the functionality of a bog-standard VLE/LMS - like Moodle - embodies the wrong level of abstraction.  At least in terms of encouraging and enabling effective use of the VLE/LMS within a university by academics.  A traditional VLE model is at a very low level of abstraction which means lots of flexibility, but also lots of problems. I think there is some value (also some dangers) in moving the level of abstraction up a few notches.</p>
+
+<h3>Moodle document management and the wrong level of abstraction</h3>
+
+<p>The <a href="http://vle.barkingcollege.ac.uk/techblog/?p=3312">post from Barking College</a> makes the point that uploading and maintaining document content on Moodle "is one of the most round-about and time consuming things anyone can do". I agree.  But it doesn't end there. Even when academics understand and engage in the uploading process, their are more problems.<blockquote>Then we teach staff to upload files to the VLE … and in no time they  have transferred their heap and bad habits onto the file areas of VLE courses. If, in addition to their own unique ways of filing things, they are not the only editing teacher on a course  then total chaos is almost guaranteed.</blockquote></p>
+<p>There are some exceptions. There are folk who are well organised and anally retentive enough that they have their files organised into well thought out directory structures with meaningful file names. But most academics don't.  As pointed out, this causes enough problems when it is just that originating academic having to deal with the resulting chaos, but when a course is taught by multiple academics....</p>
+<p>This highlights one of the major flaws I see in most VLEs/LMS.  They are design at the wrong level of abstraction. The file upload capability is very basic, it simply provides the ability to manage files. It provides no additional cognitive support for structuring content and certainly none that connects with the act of learning and teaching. The file management capability can't tell the difference between a course synopsis, a tutorial sheet, a trial exam, a set of solutions or a set of lectures. Most can't even tell you if it's a PDF file, a Powerpoint file or a Word document.</p>
+<p>This low level of abstraction is necessary to enable the broadest possible flexibility in use. The more abstraction you build into a system, the more specific you make it.</p>
+
+<h3>The CQU eStudyGuides</h3>
+
+<p>One example of what I mean here is the <a href="https://djon.es/blog/2009/07/28/bam-into-moodle-7-an-estudyguide-block/">CQU eStudyGuide Moodle block</a> I played with last year. Some brief context:</p>
+<ul>
+  <li> <a href="http://www.cqu.edu.au/">CQU</a> has a long history of being a print-based distance education provider.</li>
+  <li> A print-based study guide was a standard component of the package of materials traditionally provided to distance education students. </li>
+  <li> The study guide was written by CQU academics and intended to guide the distance education student through the learning materials and activities they were meant to complete. </li>
+  <li> The production of the study guides was a formal process involving a central "desktop publishing unit" which would produce "professional" quality documents that were then printed. </li>
+  <li> The "desktop publishing" group is part of the <a href="http://cddu.cqu.edu.au/">unit</a> I work with.</li>
+  <li> Back in 2007/2008 the unit modernised the study guide production process so that it improved the quality of the final document and produced both a print and electronic version. </li>
+</ul>
+<p>The electronic version was long over due. For a long time academic staff wanted to provide electronic versions of the course study guide on the course website. Some had done this via an ad hoc, manual process, but it was time for something better.</p>
+<p>Producing the electronic version of the study guide was only the first step. We also had to produce an automated process that would allow academics place the eStudyGuide on their course website. Requiring academics to do this manually was inefficient and likely to result in less than professional outcomes. This connects with the observation about file management made in the <a href="http://vle.barkingcollege.ac.uk/techblog/?p=3312">Barking College post</a> about file management.</p>
+<p>So, we implemented the automatic generation of an eStudyGuide web page for every course.  The following image is one example, click on it to see it in a bigger size. </p>
+
+<a href="http://www.flickr.com/photos/david_jones/4759051690/" title="CQU eStudyGuide web page by David T Jones, on Flickr"><img alt="CQU eStudyGuide web page" height="166" src="http://farm5.static.flickr.com/4100/4759051690_02ca45e78b_m.jpg" width="240" /></a>
+
+<p>The eStudyGuide page for a course was produced by a script. The script was aimed at a much higher level of abstraction. The script knew about CQU courses, it knew about the format we used for the eStudyGuide and it was able to use that knowledge to produce the file.  e.g. it pulled the title of each part of the eStudyGuide from the eStudyGuide.
+
+<h3>The CQU eStudyGuide Moodle block</h3>
+
+<p>By 2010 CQU had moved to Moodle as its LMS. As part of learning Moodle development I played with the creation of an Moodle eStudyGuide block. A block that would embody the same greater level of knowledge about CQU's eStudyGuide than a more general Moodle block.  Consequently, significantly simplifying the process of uploading an eStudyGuide to a Moodle course site.  The following table compares and contrasts the eStudyGuide block approach with the more traditional manual appproach.</p>
+<table border="1" cellpadding="2">
+  <tr>
+     <th> eStudyGuide block </th>
+     <th> Moodle file upload </th>
+  </tr>
+  <tr>
+    <td valign="top">
+       <ol>
+           <li> Login to Moodle and go to course site. </li>
+           <li> Turn editing on. </li>
+           <li> Choose "eStudyGuide" block from "Add a block menu" </li>
+           <li> Position it where you want. </li>
+        </ol>
+    </td>
+    <td valign="top">
+       <ol>
+           <li> Get a zip file containing the eStudyGuide from somewhere. </li>
+           <li> Login to Moodle and go to course site. </li>
+           <li> Go to the "Files" link under administration. </li>
+           <li> Create a directory for the eStudyGuide. </li>
+           <li> Upload the zip file containing the eStudyGuide. </li>
+           <li> Unzip it. </li>
+           <li> Return to the course site. </li>
+           <li> Turn editing on. </li>
+           <li> For each of the chapters (usually 10 to 12) of the eStudyGuide
+                   <ul>
+                      <li> Manually add a link to the chapter </li>
+                      <li> To make sure each link is meaningful you may have to open the chapter PDF to remember what the title of the chapter was. </li>
+                    </ul>
+            </li>
+            <li> Add another link to the PDF containing the entire eStudyGuide. </li>
+            <li> Add the blurb about how to use PDF files and where to get a copy of Acrobat or other PDF viewer.</li>
+        </ol>
+    </td>
+  </tr>
+</table>
+
+<h3>The trade-off</h3>
+
+<p>There isn't a perfect solution. Both low and high levels of abstraction involve a tradeoff between different strengths and weaknesses.</p>
+<p>A low level of abstraction means the solution is more flexible, can be used in more institutions and for unexpected uses (good and bad). It also means that the user need to have greater knowledge. If they do, then good things happen.  If they don't, it's not so good. It also means that the user has to spend a lot more time doing manual activities, which increases the likelihood of human error.</p>
+<p>A high level of abstraction, especially one that connects with practices at a specific institution reduces workload on the part of the users, reduces the chance of errors and perhaps allows users to focus on other more important tasks. But, it also limits portability of the practice. i.e. the CQU eStudyGuide process probably wouldn't work elsewhere.  Which means it requires additional resources to implement and maintain. </p>
+<p>A greater level of abstraction also removes some flexibility from what the user can do. The simple solution to this is not to mandate the higher level of abstraction.  e.g. at CQU we provided the automated eStudyGuide page, but academics weren't required to use it.  They could do their own thing if they wanted to. Most didn't.</p>
+
+<h3>Other examples</h3>
+
+<p>Providing a high level of abstraction to the VLE is almost certainly going to be a component of my ISDT, of my model.  This is exactly what the <a href="https://djon.es/blog/2010/06/25/default-course-sites-and-wizards-version-2-0/">default course site</a> approach attempted to do.  Provide a much higher level of abstraction on top of the VLE.</p>
+<p>Into the future, it's also a key part of what I'm interested in investigating. I think the addition of a "default course site" approach to Moodle, especially one that increases the level of abstraction but at the same time can be used at multiple institutions, is especially interesting.</p></p>
+
+</body>
+</html>

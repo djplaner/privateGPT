@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How curriculum mapping in Moodle might work</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/19/how-curriculum-mapping-in-moodle-might-work/">How curriculum mapping in Moodle might work</a></h1>
+
+<p>Tags: alignment, Uncategorized</p>
+
+<p><p>The purpose of this post is to provide a concrete description of how curriculum mapping of a Moodle course might work. The hope is that this will enable a broader array of people to comment on the approach and, in particular, identify flaws or problems. So, please comment.</p>
+<p>This is being done as part of the <a href="https://djon.es/blog/2010/05/13/more-thinking-about-the-alignment-project/">alignment project</a> and picks up from some <a href="https://djon.es/blog/2010/03/23/first-step-in-moodle-curriculum-mapping/">earlier examination</a> of Moodle's existing outcomes feature.</p>
+
+<h3>Overview</h3>
+
+<p>The aim is to modify Moodle (as little as possible) to enable teaching staff to perform two tasks:</p>
+<ol>
+  <li> Map how well the activities, resources and assessment within their Moodle course aligns with a set of outcomes.<br />Related to this task is the ability to maintain this mapping as the course is modified.</li>
+  <li> Use the alignment information about their course (and other courses) to enhance their course. </li>
+</ol>
+<p>Each of those two tasks is expanded below.</p>
+
+<h3>Implementation</h3>
+
+<p>The implementation suggested below is based on ideas from Moodle's <a href="http://docs.moodle.org/en/Outcomes">existing support for Outcomes</a>. Some of the following screen shots are using that existing support, some are slightly modified. Moodle's existing support for outcomes (or competencies) is in terms of tracking how students are going in achieving specific outcomes or competencies.  Rather than individual students, this project is mapping the activities, resources and assessments against outcomes. But the principle is basically the same.</p>
+
+<h3>Mapping</h3>
+
+<p>This task has the following steps (which are explained below):</p>
+<ul>
+  <li> <a href="#specifying">Specifying the outcomes</a>. </li>
+  <li> <a href="#mapping">Mapping an activity/assessment/resource against outcomes</a>. </li>
+  <li> <a href="#maintaining">Maintaining the mapping</a>. </li>
+</ul>
+<p>There is also the problem of whether or not a Moodle course site can be used to <a href="#mapeverything">map everything about a course</a>.</p>
+
+<a name="specifying"></a>
+<h4>Specifying the outcomes</h4>
+
+<p>The first step is specify which outcomes courses will be mapped against.  Moodle supports two "types" of outcomes:</p>
+<ul>
+  <li> "standard" outcomes; and<br />These would be created at the institution level and able to be used across all Moodle course sites for that installation. </li>
+  <li> course outcomes.<br />These are added to a specific course and can only be used within that course.</li>
+</ul>
+<p>Outcomes are placed into Moodle by direct entry via the Moodle interface or uploading a CSV file.  Important or interesting values for an outcome include:</p>
+<ul>
+  <li> Both a  full and short name. </li>
+  <li> A description of the outcome. </li>
+  <li> The scale to be used for measuring the outcome. </li>
+</ul>
+<p><a href="http://docs.moodle.org/en/Scales">Scales</a> are used by Moodle to evaluate or rate performance. By default this is a numeric value, however, Moodle supports the creation of custom scales. For example, the <a href="http://docs.moodle.org/en/Scales">scales Moodle page</a> talks about the cool scale that consists of the the values: Not cool, Not very cool, Fairly cool, Cool, Very cool, The coolest thing ever!</p>
+<p>My <a href="http://www.cqu.edu.au/">current institution</a> is currently rolling out its graduate attributes. There are eight graduate attributes, each of those could be loaded as a standard outcome in Moodle.  The institution is currently using three levels - introductory, intermediate and graduate - and has created descriptions of these levels for each attribute.  These could form the basis for a scale for each attribute/outcome.</p>
+<p>The following is an example CSV file that can be uploaded into Moodle to achieve this.</p>
+[sourcecode lang="text"]
+outcome_name;outcome_shortname;outcome_description;scale_name;scale_items;scale_description
+Communication;comm;"Described here http://dmai.cqu.edu.au/FCWViewer/view.do?page=7949";"CQU Graduate Attributes (Communication)";"Introductory - Use appropriate language to describe/explain discipline-specific fundamentals/knowledge/ideas (C2), Intermediate - Select and apply an appropriate level/style/means of communication (C3), Graduate - Formulate and communicate views to develop an academic argument in a specific discipline (A4)";
+Problem solving;ps;"Described here http://dmai.cqu.edu.au/FCWViewer/view.do?page=7949";CQU Graduate Attributes (Problem solving);"Introductory - Manage time and prioritise activities within the University’s framework for learning (C3), Intermediate - Make decisions to develop solutions to given situations/questions (C5), Graduate - Formulate strategies to identify, define and solve problems including, as necessary, global perspectives (P5)";
+[/sourcecode]
+
+<a name="mapping"></a>
+<h4>Mapping against outcomes</h4>
+
+<p>Let's start with an example Moodle course site with "editing turned on". With "editing turned on" you get a collection of additional icons next to just about every element of the site.  See the following image (click on it to see a larger version).  </p>
+<a href="http://www.flickr.com/photos/david_jones/4620896622/" title="Moodle course page - editing on by David T Jones, on Flickr"><img alt="Moodle course page - editing on" height="193" src="http://farm5.static.flickr.com/4053/4620896622_7a24a047bc_m.jpg" width="240" /></a>
+<p>Can you see the icon that looks like a hand holding a pen? This is the "edit" icon. If you click on this icon you get taken to the edit page for that item of the Moodle course site.  An edit page for a Moodle item contains a number of components specific to the item, and a number of components common to all items.  The following image is a portion of the edit page for a Moodle discussion forum with some additional labels added to show the specific and common components.</p>
+<a href="http://www.flickr.com/photos/david_jones/4620284085/" title="Moodle edit page - outcomes by David T Jones, on Flickr"><img alt="Moodle edit page - outcomes" height="198" src="http://farm4.static.flickr.com/3332/4620284085_d0b3f2e6b5_m.jpg" width="240" /></a>
+<p>Did you spot the "Outcomes" component of the above edit page?  It showed a list of "outcomes" which match the graduate attributes of my <a href="http://www.cqu.edu.au/">current institution</a>. Against each "outcome" there was a check box. To "map" this discussion forum against a graduate attribute, you simply check the appropriate box. It would be not a great stretch to think that "Communication" and "Team work" might be appropriate.</p>
+<p><strong>Important:</strong> This is all in Moodle now.  No additions needs.</p>
+<p>The "on" or "off" nature of the check box is very limited. This is due to the purpose Moodle's current outcome support is meant to fulfill. For curriculum mapping you would want something more like the following.</p>
+<a href="http://www.flickr.com/photos/david_jones/4620350585/" title="Example curriculum mapping outcomes by David T Jones, on Flickr"><img alt="Example curriculum mapping outcomes" height="138" src="http://farm5.static.flickr.com/4016/4620350585_336bb27a99_m.jpg" width="240" /></a>
+<p>The above has two main changes:</p>
+<ol>
+  <li> Addition of the question mark icon.<br />In Moodle practice clicking on the question mark gives you help. In terms of outcomes for curriculum mapping I would expect that at the least this would explain the outcome (in this case a graduate attribute) and the scale being used. It might include examples and might include a link to talk to a real person.</li>
+  <li> Replace the checkbox with the scale.<br />In this case it's showing a drop box next to each outcome/attribute. These drop boxes, as shown by the box next to "Communication", contains the three level scale being used by my current institution. </li>
+</ol>
+<p>There is a lot more you could do with this particular interface, but the basic point is that when a teacher is editing or creating a new item for a Moodle course site, they can map that item against the course outcomes at the same time.</p>
+
+<a name="maintaining"></a>
+<h4>Maintaining the mapping</h4>
+
+<p>Following on from the last point, the fundamental idea of this project is that a mapping of the alignment within a course site is maintained all of the time.  It's not something done every now and then because an accrediting body is visiting.  The idea is that once a course site is mapped, maintaining the mapping fits into normal academic practice.  For example, common practice at my institution is that each offering of a course does not start with a brand new, empty Moodle course site.  Instead, the previous course offering is copied over for the next term and then edited.</p>
+<p>With the suggested changes, the copying of the course site would also copy the mapping. So rather than mapping the entire course site all over again, the teacher only needs to map the new items added to the site or modify the mappings of any items they might change.</p>
+<p>The new "mapping" features of Moodle should encourage/warn the teacher when the alignment is no longer correct.  The following image is an example of what a teacher might see if they have changed the Moodle item, but not updated the outcomes/alignment mapping.</p>
+<a href="http://www.flickr.com/photos/david_jones/4620394457/" title="Out of date mapping by David T Jones, on Flickr"><img alt="Out of date mapping" height="76" src="http://farm5.static.flickr.com/4036/4620394457_fc769269aa_m.jpg" width="240" /></a>
+<p></p>
+
+<a name="mapeverything"></a>
+<h4>Map everything?</h4>
+
+<p>There's an assumption in the above that by mapping everything item in a Moodle course site you are considering everything about the course. It's a somewhat faulty assumption because most Moodle course sites are at best a supplement to what happens face-to-face or via other media.  If this idea is to work, then thought would have to be given to how you design a Moodle course site that captures all aspects of a course.</p>
+<p>This is by no means a simple task or one without potential problems. However, I do think that supporting people to collaborate about this question in the context of considering overall course alignment will allow interesting and useful approaches to develop.  Approaches that could potentially improve the quality of Moodle course sites.</p>
+<p>But this is something that would need to be tested.</p>
+
+<h3>Using the information</h3>
+
+<p>The previous section gave an overview of how the mapping of course alignment would be performed. This is only the first part of this project.  The next, and potentially more interesting, step is what happens when people start using the availability of this information to inform quality enhancement of courses. </p>
+<p>What people might do with this information is not something I think you can predict. The way the project was initially framed was to allow these potential uses to flow from action research cycles.  However, there have been some initial ideas proposed.  The following describes those which I think are some of the possibilities that are the most generative.  i.e. the following ways of using this information will generate more interesting applications of or response to this information.</p>
+<p>The three uses I talk about below are:</p>
+<ul>
+  <li> <a href="#visualise">Visualising the alignment</a>. </li>
+  <li> <a href="#share">Sharing the alignment</a>. </li>
+  <li> <a href="#context">Contextualise L&amp;T support</a>. </li>
+</ul>
+
+<a name="visualise"></a>
+<h4>Visualising the alignment</h4>
+
+<p>The simplest use would be for a teacher taking on a course to be able to see how aligned (or not) a course is. The following is the type of visualisation that might be used. It's taken from <a href="http://www.ascilite.org.au/conferences/perth04/procs/lowe-k.html">Lowe and Marshall</a> (2004) and a tool developed at Murdoch University.  Each graduate attribute has 4 graphs representing objectives, learning activities, assessments and contents, the size of the graph represents how often/much the attribute is covered by those course elements.</p>
+<img alt="GAMP visualisation of course alignment" height="459" src="http://www.ascilite.org.au/conferences/perth04/procs/lowe-k2.gif" width="461" />
+<p>In the above image it's visible that the "Ethics" graduate attribute is quite heavily covered in course objectives, somewhat in course contents, a bit less in assessment, but is not covered at all by learning activities.  One of the propositions underpinning the project is that explicit representations of alignment problems is likely to encourage teaching staff to fix the problem (see the <a href="#context">contextualise L&amp;T support</a> section for more on this). This type of visualisation could be especially helpful for new or casual teaching staff who taken on a new course for the first time.</p>
+<p>A Moodle implementation could be modified to send reminders to teaching staff about apparent misalignment.</p>
+
+<a name="share"></a>
+<h4>Share the alignment</h4>
+
+<p>Making the level of alignment within a course explicit to the staff teaching the course is only the first step. A common problem being faced by degree programs is preventing duplication of content or content holes. If all courses within a program are using this feature then it's fairly simple to share the alignment of multiple courses into a form that can be shared.  The following is another example from Lowe and Marshall (2004) and shows a visualisation for multiple courses.</p>
+<img alt="GAMP program visualisation" height="482" src="http://www.ascilite.org.au/conferences/perth04/procs/lowe-k4.gif" width="494" />
+<p>This type of visualisation could be factored into quality assurance processes for a program at the start of a term. The program's teaching group could adopt a collaborative process at the start of term to address any holes or duplications.</p>
+<p>The sharing could also be more ad hoc.  The visualisation of the course (the first image from Lowe and Marshall) could be extended to provide links to examples.  i.e. when you see a visualisation like the above that shows that the Ethics graduate attribute is not covered by any learning activities there could be a link to other courses that do have activities covering the ethics graduate attribute.  Teaching staff could follow these links to view those activities as a way of getting ideas.  Which courses show up via these links could be chosen via a number of ways.</p>
+<p>The alignment could also be shared with students.  Adding the ability to view the contents of a site structured using the outcomes would be quite easy.  Lots more interesting applications could be developed.</p>
+
+<a name="context"></a>
+<h4>Contextualise L&amp;T support</h4>
+
+<p>Above it was suggested that the visualisations of alignment could, when problems are identified, provide links to courses that can be used as examples. The visualisations could also provide links to documents, presentations, discussions and people who could provide specific support. This could help curriculum designers and related L&amp;T support folk contextualise their assistance in a very specific way. An approach that moves towards achieving Boud's (1999) argument that L&amp;T support needs to be embedded within the context of academic work, that it needs to occur in or close to the teaching academics sites of practice.</p>
+
+<h3>References</h3>
+
+<p>Boud, D. (1999). Situating academic development in professional work: Using peer learning  International Journal for Academic Development, 4(1), 3-10.</p>
+<p>Lowe, K., &amp; Marshall, L. (2004). Plotting renewal: Pushing curriculum boundaries using a web based graduate attribute mapping tool. Paper presented at the 21st ASCILITE Conference, Perth.</p></p>
+
+</body>
+</html>

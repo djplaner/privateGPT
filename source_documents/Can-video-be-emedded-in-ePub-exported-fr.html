@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Can video be emedded in ePub exported from #moodle book?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/02/17/can-video-be-emedded-in-epub-exported-from-moodle-book/">Can video be emedded in ePub exported from #moodle book?</a></h1>
+
+<p>Tags: bad, Uncategorized</p>
+
+<p>Last year my institution installed the <a href="https://moodle.org/plugins/view/booktool_exportepub">Lucimoo epub export tool</a> for the <a href="https://docs.moodle.org/28/en/Book_module">Moodle Book module</a>. I did some of <a href="https://davidtjones.wordpress.com/2015/08/18/testing-the-lucimoo-epub-export-book-tool/">the testing of it</a>. I'm particularly interested (but not overly) in its ability to export a book resource as an ePub file (see I'm innovative, I support the kiddies and their fancy new mobile devices). While the export basically works, the testing identified a number of problems. I've fixed most of those (mainly tidying up my hand-crafted HTML and that produced by a few tools I use).
+
+The one remaining problem is
+<p style="padding-left: 30px;">The videos don't show</p>
+The following is an exploration of if and how this problem can be fixed. I haven't solved the problem. I am no expert. Feel free to point out flaws and recommend improvements.
+
+In summary
+<ul>
+	<li>It is possible to use the epub export tool to produce ePub files that contain videos that will play in some ePub readers on computers.</li>
+	<li>These ePub files don't appear to work on mobile devices but this needs to be confirmed.</li>
+	<li>For this to work you need to get direct access to the video file and for that file to be in a format that is linked by the HTML 5 video tag and the device/reader being used.</li>
+	<li>To do this on Vimeo, you need a Pro account.</li>
+</ul>
+In my context, if I had access to a Vimeo Pro account I could in theory convert most of my "video embeds" over to using the Video tag and help enhance the experience of the ePub user. They would be able to play the video in iBooks on a computer, but not the phone. However, at least on the phone they would see some evidence of a video being present, rather than an empty space.
+
+Beyond the cost of the Vimeo Pro account, that would also require converting all the embedded videos. There's enough to be annoying.
+<h3>Initial explanation of the problem</h3>
+I assumed that the problem was due to my use of Vimeo to host most of my videos. In particular, that ePub readers (iBooks is what I test with) didn't like the default Vimeo embed HTML.  Possibly because the ePub reader doesn't have sufficient smarts to parse and do something with the iframe etc.
+<h3>It can work</h3>
+This 2010 blog post provides proof that you can play video within <a href="http://www.elizabethcastro.com/pgw_extras/video.epub">an ePub file</a> on a computer (MacOSX/iBooks) and a mobile (iOS/iBooks). Some level of proof given in the image below. If I hit the play button, the video plays quite nicely thank you.
+
+<a href="https://www.flickr.com/photos/david_jones/24982660661/in/dateposted-public/" title="ePub file playing video"><img alt="ePub file playing video" height="500" src="https://farm2.staticflickr.com/1449/24982660661_af508d4d3a.jpg" width="281" /></a>
+<h3>Let's try this with vimeo</h3>
+Woo hoo! Sadly my quick initial skim (late last week) thought I'd found the solution. The <a href="https://en.wikipedia.org/wiki/HTML5_video">"video" tag</a>. Use that and all is good. (I was missing a few things because I only skimmed the article last week).
+
+First question, can you use the HTML 5 video tag?
+
+An answer to <a href="http://stackoverflow.com/questions/18426410/vimeo-video-not-working-with-html5-tag">this question</a> on Stack Overflow suggests that it is indeed possible and it provides an example.
+
+In essence, you can find a direct link to an mp4 version of your Vimeo movie and use that with the video tag.
+<h3>First problem with vimeo and the video tag</h3>
+As pointed out by one of the comments on the answer to the Stack Overflow question, you have to have a pro Vimeo account to find the direct link to an mp4 version of your Vimeo movie.
+
+A <a href="https://vimeo.com/pro">Vimeo pro account</a> costs $USD219 a year.  A little beyond the price I'm prepared to change. Wonder if there's an institutional solution?
+<h3>Second problem with vimeo and the video tag</h3>
+The price is a bit of a bugger, but let's test this with the Moodle Book module and the Lucimoo epub tool.
+
+So I create a Moodle Book resource that contains three pages (chapters in Moodle Book speak) each of which embeds a video via different means:
+<ol>
+	<li>the video tag to embed the video from <a href="http://www.pigsgourdsandwikis.com/2010/05/html5-video-works-on-ibooks-on-ipad.html">the original tutorial,</a> to demonstrate it working;</li>
+	<li>use the standard vimeo player to embed one of my videos; and,</li>
+	<li>the video tag to embed the "direct vimeo video" from the answer to <a href="http://stackoverflow.com/questions/18426410/vimeo-video-not-working-with-html5-tag">the Stack Overflow question</a>.</li>
+</ol>
+Success, it works as expected when viewed on iBooks on the Mac. In addition, when viewing the Book via Moodle all the videos are playable.
+
+The video tag embed from the original tutorial works and I can play the video of the kittens playing.
+
+<a href="https://www.flickr.com/photos/david_jones/24958110342/in/dateposted-public/" title="Video tag embed working"><img alt="Video tag embed working" height="500" src="https://farm2.staticflickr.com/1501/24958110342_f9356111a1.jpg" width="457" /></a>
+
+As expected the standard Vimeo player embed did not work. Just an empty page. No indication that there was meant to be a video embedded.
+
+<a href="https://www.flickr.com/photos/david_jones/24708596189/in/dateposted-public/" title="Vimeo embed not working"><img alt="Vimeo embed not working" height="500" src="https://farm2.staticflickr.com/1626/24708596189_8f1921bcf8.jpg" width="344" /></a>
+And very interestingly the embed of a Vimeo video using the video tag did work.
+<h3><a href="https://www.flickr.com/photos/david_jones/24958111662/in/dateposted-public/" title="Vimeo embed working (video tag)"><img alt="Vimeo embed working (video tag)" height="379" src="https://farm2.staticflickr.com/1466/24958111662_07d59d0ac2.jpg" width="471" /></a>
+But not on the phone</h3>
+The problem is that it doesn't work on the phone.
+
+The first page from the original tutorial will display a "play" button indicating that a video is there. But nothing happens when the button is pressed.
+<a href="https://www.flickr.com/photos/david_jones/25050031286/in/dateposted-public/" title="IMG_4052"><img alt="IMG_4052" height="500" src="https://farm2.staticflickr.com/1543/25050031286_7c49bf5097.jpg" width="281" /></a>
+
+&nbsp;
+
+The standard Vimeo embed doesn't work, as expected. But the use of the video tag to embed a Vimeo video shows a "play" button crossed out. Indicating some major problem.
+
+<a href="https://www.flickr.com/photos/david_jones/25050031506/in/dateposted-public/" title="IMG_4053"><img alt="IMG_4053" height="500" src="https://farm2.staticflickr.com/1473/25050031506_503a5b29d2.jpg" width="281" /></a>
+<h3>It works if you embed the video in the ePub file</h3>
+<a href="http://www.elizabethcastro.com/pgw_extras/video.epub">The ePub file</a> from the original tutorial actually embeds the video file in the ePub file.  It's local. That's why it works on the mobile phone.
+
+For this to work with the Book export tool the videos would all have to be local to the book etc. Not likely to happen anytime soon.
+<h3>Other readers</h3>
+The <a href="http://www.pigsgourdsandwikis.com/2010/05/html5-video-works-on-ibooks-on-ipad.html">original tutorial post</a> is titled "HTML5 Video Works on iBooks on iPad!!". In addition, I've only tested this in iBooks, not other readers. The comments include mention that this approach is not "standard" and that the video playing will not work when viewing the ePub using "Adobe Digital Editions".
+
+Something that I can confirm. I can view the textual content, but not the video.
+
+Not surprisingly it will work using the <a href="https://addons.mozilla.org/en-US/firefox/addon/epubreader/">Firefox EPUBReader extension</a>.
+
+&nbsp;</p>
+
+</body>
+</html>

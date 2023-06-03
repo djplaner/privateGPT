@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FedWiki 7, 8 and 9 - Moving, catching up and engaging</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/12/26/fedwiki-7-8-and-9-moving-catching-up-and-engaging/">FedWiki 7, 8 and 9 - Moving, catching up and engaging</a></h1>
+
+<p>Tags: thesis</p>
+
+<p>Thanks to the good folk of @reclaimhosting I know have a FedWiki working as part of my own domain - <a href="http://fedwiki.djon.es/">http://fedwiki.djon.es/</a>. That's the good news. The bad news is that the move creates two problems
+<ol>
+  <li> A small loss of data.
+       In setting up the new fedwiki there was a need to copy over the old one. However, just after that copy (of which I was clueless due to ignoring email) I got inspired and added something.  Not a big problem, but something to explore how I might remedy this within the fedwiki model.  </li>
+  <li> Re-connecting with the neighbourhood.
+       With a new home, I have to explore how best to reconnect with the #fedwikihappening neighbourhood. </li>
+</ol>
+
+Beyond those, I just have to catch up and delve a bit deeper.
+
+<h2>Recovering the lost data?</h2>
+
+A brainstorm whilst laying in bed on Sunday morning led to the creation of <a href="http://djones.federatedwiki.org/view/welcome-visitors/view/paper-ideas">this page</a> on ideas for future papers and the creation of the first paper idea page.  Nothing earth-shaking in either and I could perhaps just re-create them manually on my new FedWiki.  But I want to see if there's a more "fedwiki way" of doing this.
+
+One approach is the one I stumbled <a href="https://davidtjones.wordpress.com/2014/12/18/starting-to-write-for-fedwiki-daily-4-and-5/">across earlier</a>
+<ol>
+  <li> Visit <a href="http://djones.federatedwiki.org/view/welcome-visitors/view/paper-ideas">the page</a> and get the URL - http://djones.federatedwiki.org/view/welcome-visitors/view/paper-ideas </li>
+  <li> Construct a new URL that combines aspects of that URL with my new FedWiki site.
+      The format is my fedwiki's "home page" http://fedwiki.djon.es/view/welcome-visitors/ followed by the <em>page slug</em> for the paper ideas page.  The page slug is the
+          <ul> <li> hostname - <em>http://djones.federatedwiki.org</em> - plus </li>
+              <li> article title from the url - <em>paper-ideas</em> </li>
+           </ul>
+         Which gives
+          http://fedwiki.djon.es/view/welcome-visitors/djones.federatedwiki.org/paper-ideas
+       </li>
+    <li> Visit that URL </li>
+    <li> Fork the page to my new fed wiki </li>
+    <li> Visit the first paper idea and fork that page. </li>
+</ol>
+
+Done.
+
+<h2>Updating your icon</h2>
+
+Have been replying to <a href="https://davidtjones.wordpress.com/2014/12/16/initial-steps-with-the-fedwikihappening-happening/#comment-7086">this comment</a> on an earlier post and have noticed folk have figured out how to change the icon used to indicate forking etc.
+
+<a href="https://www.flickr.com/photos/david_jones/15889765170" title="Happening Folks and fancy icons by David Jones, on Flickr"><img alt="Happening Folks and fancy icons" height="116" src="https://farm8.staticflickr.com/7573/15889765170_bd1d548df7.jpg" width="447" /></a>
+
+Will have to figure out/come across how to do that in this session.  Documented toward the end of <a href="http://blog.jasongreen.net/2014/08/personal-wikis-a-how-to-including-better-icons/">this blog post</a>.  Requires access to the file system and using that to replace an icon.
+
+Question: Do I have this access?  Probably not. Would rely on @reclaimhosting having installed a single FedWiki instance within the file system I have access to, not likely.
+
+But the neighbourhood to the rescue. Alex North has shared an <a href="http://fedwiki.djon.es/view/welcome-visitors/view/recent-changes/catherine.uk.fedwikihappening.net/question-can-i-replace-this-opaque-coloured-square-with-a-picture-of-myself/alex.au.fedwikihappening.net/changing-your-flag">interesting kludge</a> that I should be able to replicate.  Here's the process
+<ol>
+  <li> Find a new icon.
+       Possibly the step I'll have the most trouble with. Hate taking/choosing selfies.  Will stick with my <a href="https://pbs.twimg.com/profile_images/3167763216/c60c5bdbacfbd62fdeeb2809daf843b1_bigger.jpeg">Twitter profile image</a>. Not the best representation, but hopefully distinctive. </li>
+  <li> Convert to PNG and right size.
+         Seashore on the MAC to the rescue. </li>
+  <li> Find the values for a PUT request using Chrome. </li>
+  <li> Use curl to make the change.
+</ol>
+
+       <em>Problem:</em> Would have liked to copy and paste the curl comment from Alex's wiki page, but SFW supports drag and drop. Trying to drag the mouse over the page moves the paragraph, it doesn't allow you to select.  Would have to be a work around for that.
+
+     So the command is the following.  Appears to be leveraging SFW's reliance on JSON to communicate to send it the new icon.  This is a great example of the <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">BAD mindset</a> - a bit of bricolage leveraging the affordance of technology and relying on distribution.
+[code lang="sh"]
+curl -X "POST" "http://fedwiki.djon.es/favicon.png" -H "Cookie: YOUR_COOKIE" -H "Content-type: application/json" -d "{"image:": "`base64 &lt; ~/Desktop/flag.png`"}"
+[/code]
+
+Sadly I'm getting a <a href="http://en.wikipedia.org/wiki/HTTP_403">403 response</a>. Verbose output of curl seems to suggest that the cookie is accepted. Appears that the server is saying "can't do that".  Perhaps something with the way my server has been configured.  The icon is at the <a href="http://fedwiki.djon.es/favicon.png">expected location</a>, perhaps the ownership on the image file is such it can't be over-written?
+
+Oh well, no great loss.  Bugger it, lets annoy the reclaim hosting folk and see if they can help remedy this.
+
+Time to try again.
+
+So, first problem is user error.  Missed a vital point through existing schema/expectations.
+
+Not getting the 403 error anymore, moving onto a 500 Internal Server Error.  Reporting as a type error.
+
+On the plus side, @reclaimhosting have come to the rescue. The version of SFW they are using to provide me with my bit of fedwiki space has its own space on github. By which I can gain access to the "file system" of my wiki and replace the icon (via a pull request).  All done.  Great example of the BAD mindset.  Have to blog about this separately.
+
+And my new icon is showing up other places in FedWiki space.
+
+<h2>Catching up with the neighbourhood</h2>
+
+Was going to leave a comment on Alex's page sharing the 403 problem, but that raises a question about my profile page and the moving of my SFW. If I use the practice of starting my comment with [[David Jones]] is it going to point to my old profile?
+
+Actually, it appears to have worked. i.e. pointing to the new site.  But is this because I'm logged in as me and [[David Jones]] points at the new site? What if I view these pages via the old site?
+
+Yep, looks like it does connect back to the old site.  Bugger.
+
+Enough time thinking about the technology and implications of the move, time to engage in the neighbourhood. Of course, the wrong profile link has the potential to limit neighbourhood connections.
+
+Ahh, <a href="http://fedwiki.djon.es/view/welcome-visitors/view/recent-changes/jenny.uk.fedwikihappening.net/movable-furniture">others have linked</a> to the concrete lounge article, which of course points to the old site. *sigh*
+
+Perhaps if I just fork the page with the new server and perhaps modify the new concrete lounge article to point to it?  It's now a few days later, this seems to be working but can't be sure.
+
+It's now Boxing Day and enjoying the traditional (for some) Australian past-time of watching the Boxing Day test match and doing a bit of catch up.
+
+Started with creating an initial article on pattern entrainment and related articles on adaptive stretch and psychological dissonance.  The latter articles sparked by articles from others on incremental caging and impostor syndrome.
+
+More later.</p>
+
+</body>
+</html>

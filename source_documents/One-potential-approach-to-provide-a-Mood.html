@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>One potential approach to provide a Moodle email merge facility</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/28/one-potential-approach-to-provide-a-moodle-email-merge-facility/">One potential approach to provide a Moodle email merge facility</a></h1>
+
+<p>Tags: bim, moodle, Uncategorized</p>
+
+<p><p>One of the issues I have to address with the <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM Moodle module</a> is the provision of an <a href="http://github.com/djplaner/BIM/issues#issue/4">email merge facility</a>.  I (and a couple of other people I know) haven't been able to find how to do this within Moodle. The following outlines one proposal for how this might be done within Moodle 1.9.</p>
+<p>I'm very keen to hear from more experience Moodle folk about whether or not this type of service already exists within Moodle.  </p>
+<p>It's likely that I will attempt to implement aspects of this approach in the next week to extend BIM.</p>
+
+<h3>What is email merge</h3>
+
+<p>Essentially it is a method to send the same message to multiple recipients, however, each message can be customised to include information specific to each recipient. There are two/three main tasks to email merge:</p>
+<ul>
+  <li> Selecting the recipients.<br />Specify the list of folk you want to send the message to.</li>
+  <li> Create the message.<br />Enter the message, including support for specifying the information that will be specific to each person.</li>
+  <li> Manage the sending/re-sending of the message.<br />Tracking who has received the message, specifying whether to try again automatically etc.</li>
+</ul>
+<p>The following is a screen shot (click on it to see a bigger version) of the manage message screen from the Webfuse email merge facility originally implemented by <a href="http://au.linkedin.com/pub/nathaniel-fitzgerald-hood/11/263/2b2">Nathaniel</a> in 2002.</p>
+<a href="http://www.flickr.com/photos/david_jones/4646252528/" title="Email merge by David T Jones, on Flickr"><img alt="Email merge" height="216" src="http://farm5.static.flickr.com/4061/4646252528_4d532369bb_m.jpg" width="240" /></a>.  It has a simple textbox for the message and supports attachments.  The "Add tag to message" component allows the user to select some "tags" from a drop box. In Webfuse the tags include parts of the students' name, email address, student id,
+and program they were studying.</p>
+
+<h3>Why use it</h3>
+
+<p>For most teaching staff using Webfuse email merge was used to send messages to groups of students to welcome and orient them to the course, remind them that the assignment was due soon and pointing to resources, and asking them why they didn't submit the assignment. In my experience, an email merge appears to be more personal and that generates a greater level of connection with the student. Many, if not all, of the students realised it was a bulk email, but the private touch helped.</p>
+
+<h3>What's available in Moodle?</h3>
+
+<p>I'm still fairly new to Moodle from a user perspective, and the only functionality I've been able to find that comes close is the "Message course users" functionality that is available under course participants.  When you view the participants in a course you can select some of them and then choose to "add /send message" - see the following.  </p>
+<a href="http://www.flickr.com/photos/david_jones/4646283166/" title="Moodle select participants by David T Jones, on Flickr"><img alt="Moodle select participants" height="160" src="http://farm5.static.flickr.com/4067/4646283166_c2581b2a74_m.jpg" width="240" /></a>
+<p>Then you see a typical HTML editor with some additional guidance, plus a list of selected users which you can further edit.  See the following.</p>
+<a href="http://www.flickr.com/photos/david_jones/4646283576/" title="Moodle send message by David T Jones, on Flickr"><img alt="Moodle send message" height="180" src="http://farm5.static.flickr.com/4037/4646283576_786118a932_m.jpg" width="240" /></a>
+<p>In terms of the main tasks for email merge there are some limitations:</p>
+<ul>
+  <li> Selecting the recipients.<br />You can only select the recipients from the entire list of people within a course.  This is limiting in two ways.  First, you may wish to include recipients that cross a course boundary. Second, you may wish to start with an existing list of recipients, not select from the entire list of course participants.<p>  For example, you may wish to use email merge to send a message to all students who haven't completed an assignment. Hence, from the gradebook you'd like to be viewing those students and have a link "Mail merge" that allows you to select all those students.</p>
+  </li>
+  <li> Create the message.<br />Two limitations here, no support for attachments, and no support for personalisation.  Though it does have the HTML editor.</li>
+  <li> Manage sending.<br />Doesn't appear to have support for this. So, you can't schedule the message to be sent at a specific time or on a specific event. </li>
+</ul>
+
+<h3>Improving recipient selection</h3>
+
+<p>Going beyond a course boundary is a little more difficult, however, improving selection within a course could be possible.  The form that displays the message takes the list of recipients as a parameter - it appears in session data - theoretically it might be possible for other Moodle extensions to generate this session data and call the form.</p>
+
+<h3>Improving message creation</h3>
+
+<p>The main missing piece here is the ability to include "tags" and get them replaced with   personal information for each recipient.  There are three broad tasks here:
+<ul>
+  <li> Specifying the tags and where the information is. </li>
+  <li> Providing an interface that allows message senders to include tags in a message. </li>
+  <li> As each message is being sent, replace the tags with the actual personal information for the specific recipient. </li>
+</ul>
+<p>The last two will likely require modifications to the file moodle/user/messageselect.php which seems to implement most of this</p>
+<ul>
+  <li> message edit screen;<br />Need to add support to describe the available tags and allow the user to insert them in the message.</li>
+  <li> preview screen;<br />Allows the user to see the message before it is sent. Add to this the ability to see the tags replaced with specific information from a user.</li>
+  <li> sending the message.<br />i.e. where the tags get replaced with each recipients' information.</li>
+</ul>
+
+<h4>Specifying the tags</h4>
+
+<p>Two ways to do this, simple and complex.</p>
+<p>The simplest way to do this would be to restrict it to just standard Moodle system information about users such as name, email address and more standard extensions such as the gradebook. This would mean a "simple" change to to moodle/user/messageselect.php</p>
+<p>A more complicated approach would be to allow greater support for Moodle's extensibility. i.e. allow each activity/block define it's own set of tags and have moodle/user/messageselect.php be able to handle those.  For example, </p>
+<ul>
+  <li> BIM could define it's own set of tags (e.g. REGISTERED_FEED for the student's registered blog feed).</li>
+  <li> When a user clicks on email merge from BIM, it would call messageselect and pass the list of users selected from BIM (e.g. all students with unregistered blogs). </li>
+  <li> messageselect will know which extension called it and check to see if that extension defines its own tags. </li>
+  <li> messageselect would then use those tags (and how to get the information for each user) to modify the edit screen, the preview screen and the sending of the message. </li>
+</ul></p>
+
+</body>
+</html>

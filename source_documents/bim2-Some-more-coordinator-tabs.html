@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: Some more coordinator tabs</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/13/bim2-some-more-coordinator-tabs/">bim2: Some more coordinator tabs</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>The <a href="https://djon.es/blog/2011/02/13/bim2-starting-on-the-coordinator-models/">last work</a> on bim2 ended up with the first 2 of 5 tabs for the coordinator interface completed. This post continues on with that development.
+
+<h3>Allocate markers</h3>
+
+This is the tab which allows the coordinator to allocate different teaching staff to different groups of students. This structure arises from the context of the first institution to use BIM/BAM. In that context, it was not unusual for a course to have 10+ academic staff teaching the course, each responsible for a different cohort.
+
+The basic algorithm for this tab is/was
+<ul>
+  <li> If there are no teaching staff listed for the course, display a message and stop here. </li>
+  <li> If there are no groups for the course, display a message and stop here. </li>
+  <li> Otherwise, get all of the current bim marker allocations (stored in a bim table). </li>
+  <li> Display a form that contains a select menu for each marker. The menu contains all groups and highlights those that are allocated to the marker. </li>
+  <li> On submission, check the allocation to each marker and update database appropriately.</li>
+</ul>
+
+
+To a large extent this follows the same structure as the manage questions tab developed in the <a href="https://djon.es/blog/2011/02/13/bim2-starting-on-the-coordinator-models/">last post</a>. This implies I'll need to implement the following classes:
+<ol>
+  <li> allocate_markers - model.<br />The data needed includes
+        <ul>
+           <li> List of all teaching staff for the course. </li>
+           <li> List of groups for the course. </li>
+            <li> List of bim2 marker allocations for this activity. </li>
+       </ul>
+  </li>
+  <li> allocate_markers_view - view.<br />Which will implement much the same "structure" as the manage markers view in terms of displaying and processing the form. </li>
+  <li> marker_allocations - object.<br />Simple class to retrieve list of current marker allocations.</li>
+  <li> bimtwo_allocation_form - the form.<br />Moodle form class extension that implements the form.</li>
+  <li> bimtwo_process_allocation_form - object.<br />Processes the form on submission. </li>
+</ol>
+
+<em>To do:</em> The intent is that bim2 will recognise groupings, an aspect of Moodle's operations that I have yet to grok. For now, I plan to ignore this and get a version of bim2 up and going.  Given the OO structure, in theory it should not be difficult to come back and add support or groupings at a latter date.
+
+Okay, that looks like it is working.  The initial Allocate Markers page is very simple
+
+<a href="http://www.flickr.com/photos/david_jones/5441623392/" title="Allocate markers by David T Jones, on Flickr"><img alt="Allocate markers" height="127" src="http://farm6.static.flickr.com/5175/5441623392_da92fbf1c2_m.jpg" width="240" /></a>
+
+Just a list of teaching staff with a select menu full of course groups.  The results of any processing are given a simple unordered list.
+
+<a href="http://www.flickr.com/photos/david_jones/5441018155/" title="Allocate markers processing by David T Jones, on Flickr"><img alt="Allocate markers processing" height="131" src="http://farm6.static.flickr.com/5051/5441018155_8efa5c5416_m.jpg" width="240" /></a>
+
+There is a small problem with these images in that there are some missing images from the theme. They weren't missing in the Manage questions dumps from earlier in the day. So I'm assuming there is some minor problem with the theme rather than a fundamental mistake in how I'm doing something in Moodle.
+
+<h3>What's next?</h3>
+
+Hopefully tomorrow will see the last two coordinator tabs completed.  Manage marking is a fairly simple in terms of form processing. "Your Students" is more complex, but it also serves as the interface for markers.
+
+So, I'm hoping that the complete staff interface should be finished by Tuesday.  i.e. most of bim2 will be working.
+
+Then I move onto backups and other background tasks. Won't be able to predict deadlines for those tasks until I take a closer look at the changes in backups for Moodle 2.</p>
+
+</body>
+</html>

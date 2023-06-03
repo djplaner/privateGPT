@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - getting navigation bread crumbs and tabs working</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/09/bim-getting-navigation-bread-crumbs-and-tabs-working/">BIM - getting navigation bread crumbs and tabs working</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>In the <a href="https://djon.es/blog/2010/01/07/bim-allocate-questions-screen/">last bit of work</a> on BIM I got the Allocate Posts page working.  This created the issue of getting the navigation/bread crumbs trail work in a useful way.  I made an initial start on that, this post tries to get it complete.  It will also be an attempt to get the "tabbed" screen for the coordinator working.</p>
+<p>Work to do includes:</p>
+<ul>
+  <li> Get them working for a student. </li>
+  <li> Get bread crumbs working for marker. </li>
+  <li> Start work on the coordinator screens - tabs and breadcrumbs. </li>
+  <li> Maybe do some re-factoring for the bread crumbs code. </li>
+</ul>
+
+<h3>Student bread crumbs</h3>
+
+<p>Have made various changes to view.php while getting the markers stuff to work.  Need to check that and get the breadcrumbs working.</p>
+<p>First, there is now no header being shown for the student.  That's due to the new header function.  Fixed.  Bread crumbs are working.</p>
+
+<h3>Bread crumbs for the marker</h3>
+
+<p>Basically an extension of yesterday's work, checking it fits and fixing any errors.  Work to do includes:</p>
+<ul>
+  <li> Add a link/some description about the show post details screen on the show student details screen. <strong>DONE</strong></li>
+</ul>
+
+<h3>Coordinator screens</h3>
+
+<p>The use of bread crumbs for the coordinator is in large part tied to the use of navigation tabs for the interface.  A coordinator will be able to perform the following tasks:</p>
+<ul>
+  <li> Configure the bim activity.<br />This is the initial task and is probably going to include:
+       <ul>
+           <li> Details about the activity (name etc). </li>
+           <li> Specifying the questions for bim. </li>
+        </ul>
+  </li>
+  <li> View student details.<br />Essentially the same as a normal teacher. </li>
+  <li> Manage the release of marking.<br />Only the coordinator can authorise the release of marks/comments back to students.  Eventually this should be able to be devolved and worked into the view student details, in someway. </li>
+</ul>
+<p>Might also be good to provide some details about marker progress - which markers done what. </p>
+<p>So, initially, let's try for three tabs: Configure, Manage Marking (include details about marker progress and release of results), and View Student Details.</p>
+<p>mod/quiz/tabs.php seems to be an accessible way to understand the use of tabs.  Let's start with that.  The process seems to be:</p>
+<ol>
+  <li> Create an array of tabobjects with at least three values: unique string id, link and textual name (to be displayed?). </li>
+  <li> Call <code>print_tabs</code> and pass in: list of all tabs, the current one, any that are inactive, those that are activated.<br />The current one uses the id of the tabobject. The other two parameters are an array of ids.</li>
+</ol>
+<p>Okay, it seems that the list of all tabs, is actually a nested list.  That was one of the barriers I was facing.  It's actually an array of arrays of tabobjects.  Not an array of tabobjects.</p>
+<p>Bugger, that limited understanding has held me up a bit.  Easy to move on now.</p>
+
+<h3>What's to be done</h3>
+
+<p>To complete the coordinators stuff there are three main tasks:</p>
+<ol>
+  <li> Implement the form and processing for the configuration of BIM.<br />This will need to
+            <ul>
+               <li> Work properly from the start (i.e. no configuration). </li>
+               <li> Ensure that any changes to configuration once use of the BIM activity has started is done safely. </li>
+              </ul>
+  </li>
+  <li> Design and implement the manage marking page. <br />Aim here to allow the coordinator to :
+            <ul>
+              <li> view a summary of what markers have marked what </li>
+              <li> release marked results/comments </li>
+              <li> view the details of a markers students </li>
+            </ul>
+  </li>
+  <li> See how the existing student/post details screens can be harnessed to show up in the coordinators "Show details" tab.</li>
+</ol>
+<p>I'm going to leave the first two to other posts.  These are new functionality.  Will look at reuse for the last point now.</p>
+
+<h3>Matching coordinator with Moodle stuff</h3>
+
+<p>Moodle has the following roles in courses (at the moment): administrator, course creator, teacher, non-editing teacher, student, guest. Not 100% clear where CQU is going with the conversion of local roles into Moodle, will have to ask.  But theoretically teacher might be equivalent to coordinator, and that's not currently working that way. </p>
+<p>This is set up in db/access.php.</p>
+<p>This is finally set up and working and the capabilities are better named now as well.</p>
+
+<h3>Coordinator's show details</h3>
+
+<p>The coordinator of a course is also likely to be a marker.  So they need to be able to see the same details about students and posts as other markers.  That code is already implemented.  The aim here is to reuse that code for the coordinator and make the output appear as part of the coordinator's tabs.</p>
+<p>Basically working simply by adding in the appropriate calls to the functions via the coordinator function.  One limitation is that the bread crumbs aren't working for the coordinator.  This is in part due to the overuse of the screen parameter. Suggestion</p>
+<ul>
+  <li> Rename the screen parameter for the coordinator tabs.<br />It's no been changed to "tab".  Should also change the value so it matches in the id for the tab in bim_build_coordinator_tabs. Done. </li>
+  <li> Add a screen parameter.<br /> Make sure the param for the show student details is used appropriately. </li>
+  <li> Update the bim_print_header function to work with coordinator.<br />Improved the navigation for both groups. </li>
+  </ul>
+
+<h3>What's been done</h3>
+
+<p>First major steps in the coordinator screen have been taken.  The tabs work.  They can see details about their students.  When I implement marking for other teachers, it will work for the coordinator.</p>
+
+<h3>What's to be done?</h3>
+
+<p>The two remaining screens for coordinator need completion</p>
+<ol>
+  <li> Configure BIM - this needs connection with the "normal" Moodle configure aspect.  The use of formslib should ease this.  I hope. </li>
+  <li> Manage marking - need to think about how to design this and what to put in.  May need to ask the coordinators for suggestions.</li>
+</ol>
+<p>Also need to implement the marking screen.  Once that is done.  There is some tidying up to do and it is just about there.</p></p>
+
+</body>
+</html>

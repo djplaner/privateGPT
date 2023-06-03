@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Examining feature adoption - slightly better approach</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/07/01/examining-feature-adoption-slightly-better-approach/">Examining feature adoption - slightly better approach</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, indicators, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>I'm in the throws of finalising the second last bit of data analysis <a href="https://djon.es/blog/research/phd-thesis/">for the thesis</a>. For this I'm trying to examine the level of feature adoption within courses supported by the Webfuse system (the main product for the the thesis).  The following describes an attempt to formalise the process for this evaluation.</p>
+<p>This has been under construction for almost a week. It's complete. The following just documents what was done.  Probably not all that interesting. Will present some results in the next post.</p>
+<p>The main outcome of the below, is that I now have a database that has abstracted Webfuse feature adoption data from 1997 through 2009.</p>
+
+<h3>Rationale</h3>
+
+<p>There are three reasons to do this:</p>
+<ol>
+  <li> Improve the process;<br />So far, I've been doing this with a collection of UNIX scripts and commands, text files and the odd bit of a database.  It works, but is not pretty.</li>
+  <li> Record what I do; and<br />I need to document what I'm doing so that I can re-create/check it later on.  I could do this in a Word document but this way I can share what I'm doing. </li>
+  <li> Move the <a href="http://indicatorsproject.wordpress.com/">Indicators project</a> along a bit.<br />Given contextual reasons, not sure how much further the project might go, but this might help a little.</li>
+</ol>
+
+<h3>The problem</h3>
+
+<p>The aim is to understand what features of an e-learning system are being used. i.e. how many courses are using the discussion forum, the quiz system etc. The aim is not to just understand this in the context of a single term, single institution or a single e-learning system. The idea is to examine feature adoption across systems, time and institutions in order to see if there are interesting patterns that need further investigation. This is the underlying aim of the <a href="http://indicatorsproject.wordpress.com/">Indicators project</a> and more immediately important for me, what I have to do for my thesis around the Webfuse system.</p>
+<p>So, I need to gather all the information about Webfuse feature adoption and turn it into a form that can be compared with other systems.  I've done this before. It was first <a href="https://djon.es/blog/2009/08/28/comparisons-between-lms-the-need-for-system-independence/">blogged about</a> and then became part of an <a href="http://indicatorsproject.wordpress.com/2009/10/09/the-indicators-project-identifying-effective-learning-adoption-activity-grades-and-external-factors/">ASCILITE paper</a> (Beer et al, 2009)</p>
+<p>But since that work, I've gotten some additional Webfuse data and also had the opportunity to revisit the design and implementation of Webfuse through writing this second last chapter.  I've also come up with a slightly different way to interpret the data. This means I need to revisit this usage data with some new insights.</p>
+<p>One of the problems is that the original calculations in the ASCILITE paper did not draw on the full set of Webfuse features that fit into the Malikowski et al (2007) categories (represented in the diagram below).  I need to add a bit more in and that means trawling a range of data sources.  I need to have this done through a single script.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3858116950/" title="Reworked Malikowski model by David T Jones, on Flickr"><img alt="Reworked Malikowski model" height="180" src="http://farm3.static.flickr.com/2512/3858116950_aa68b05446_m.jpg" width="240" /></a>
+
+<p>In some ways, this need to have a "single script" encapsulates a key component of what the indicators project needs, an LMS independent computer representation of feature adoption of e-learning systems.  A representation that can be queried and analysed quickly and easily.  </p>
+<p>What follows is my first attempt. I believe I'll learn just by doing this. Hopefully, this means that when/if the indicators project does this in anger, it will be better informed.</p>
+
+<h3>The plan</h3>
+
+<p>I'm essentially going to create a couple of very simple database tables</p>
+<ul>
+  <li> courses: period, year, course, lms<br />Which courses were offered in which period by which LMS.  I'm using a very CQU centric period/year combination as I'm not going to waste my time and cognition establishing some sort of general schema.  That's for the next step, if it ever comes. I want to solve my problem first.</li>
+  <li> feature_adoption: period, year, course, category, feature <br />Which features (in terms of specific feature and the Malikowski feature category) have been used in which courses. </li>
+</ul>
+<p>It's neither pretty, complex or technically correct (from a relational database design perspective), but it should be simple and effective for my needs.</p>
+<p>To populate this set of tables I am going to write a collection of scripts that parse various databases, course website archives and Apache system logs to generate feature adoption figures.</p>
+<p>Once populated, I should be able to write other scripts to generate graphs, CSV files and various forms of analysis to suit my purpose or that of others.</p>
+<p>The rest of this post documents the implementation of these plans.</p>
+
+<h3>Create the tables</h3>
+
+<h4>courses</h4>
+
+<p>Simple (simplistic?), straight-forward.  Have used an enum of LMS and included the list I'm likely to use at my current institution.</p>
+[sourcecode lang="sql"]
+create table courses
+(
+  period char(2) not null,
+  year int(4) not null,
+  course varchar(10) not null,
+  lms enum ( 'webfuse', 'blackboard', 'moodle' ),
+  index offering (period,year,course)
+)
+[/sourcecode]
+
+<h4>feature_adoption</h4>
+
+<p>Another simple one, the category values "match" the 5 categories proposed by Malikowski et al (2007)</p>
+
+[sourcecode lang="sql"]
+create table feature_adoption
+(
+  period char(2) not null,
+  year int(4) not null,
+  course varchar(10) not null,
+  category enum ( 'transmitContent', 'interactions', 'evaluateStudents', 'evaluateCourses', 'cbi' ) not null,
+  feature varchar(20) not null,
+  index offering (period,year,course)
+)
+[/sourcecode]
+
+<h3>Fill the database tables</h3>
+
+<p>With the database tables in-place it is now time to fill them with data representing feature adoption within courses using Webfuse.  I'm going to do this via Perl scripts because Webfuse is written in Perl and so, I'm very comfortable with Perl and Webfuse provides some classes that will help make this process a bit simpler.  Am going to work through this Malikowski category by category.  Will leave out the computer-based instruction category as Webfuse never provided this feature. But first, have to populate the courses table.</p>
+
+<h4>courses</h4>
+
+<p>There is an existing database table that tracks Webfuse course sites, however, I'm going to use a slightly different track based on some existing text files I've generated for earlier analysis. These text files contain lists of Webfuse course sites per year.  I'm simply going to use vi to turn them into SQL commands and insert them into the database.  This took three commands in vi and is working.</p>
+<p>Done.</p>
+
+<h4>Interactions</h4>
+
+<p>
+<p>For each of these following sections, the process is:</p>
+<ul>
+  <li> Identify the features within Webfuse that fit this category. <br />Webfuse provides features via two means: page types and Wf application. Calculating usage of each is somewhat different.  They'll need to be considered differently.
+         <ul>
+           <li> Page Types - WebBBS, YaBB, Etutes, CourseGroup, EwgieChat, WWWBoard. <strong>DONE</strong><br />For some years, splitting page types into categories has already been done.  Just a matter of doing the vi translation into SQL. </li>
+            <li> Wf applications - EmailMerge :  </strong>DONE</strong><br />The problem with email merge is that while it generally originates from a specific course, it is implemented via list of student ids. This makes it hard to associate emailmerge usage with a course.  Attempts to find a solution to this is described below.</li>
+         </ul>
+  </li>
+  <li> Identify percentage adoption of these features per year. </li>
+  <li> Stick it in the database</li>
+</ul>
+<p>The attempt to associate use of EmailMerge with a course used the following steps:</p>
+<ul>
+  <li> Look at referer in Apache log<br />This gives a range of courses that have used email merge.  So, some data could be retrieved.  There's also mention of JOBID - i.e. mail merge stores information about jobs in a database table.
+  </li>
+  <li> Look at email merge database tables;<br />One has the username of the staff member associated with the job and the date created.  This could be used to extract the course, but a bit ad hoc.</li>
+</ul>
+<p>Solution is to parse out the refers that mention course/period/year and convert that into SQL for insertion.  This should capture some of the uses of MailMerge, but won't get them all. </p>
+
+<h4>Evaluating students</h4>
+
+<ul>
+  <li> page types <strong>DONE</strong><br />All done using the  </li>
+  <li> Wf applications <strong>DONE</strong><br />Need to write a script to extract info from various databases and updates stats.  The additional Wf applications are:
+       <ul>
+          <li> BAM - EAST:BAM_CONFIGURE </li>
+          <li> IROG - DATA:IROG</li>
+          <li> AES - EAST:REQUEST</li>
+           <li> AMD - Plagiarism:PlagCase</li>
+        </ul>
+    </li>
+</ul>
+
+<h4>Evaluating courses</h4>
+
+<ul>
+  <li> page types: UnitFeedback, FormMail and Survey </li>
+  <li> Wf applications: Barometer </li>
+</ul>
+
+<h4>Transmitting content</h4>
+
+<p>This category is a bit more difficult. All Webfuse course sites transmit content, there's a basic level incorporated into all sites. What I need to calculate here is the percentage of courses that have additional content, beyond the default, added by the teaching staff.  Evidence of this could include used of the following by teaching staff (not support staff):</p>
+<ul>
+  <li> course updates <strong>DONE</strong> <br />This generates an RSS file, which I think is mostly put into CONTENT file of the course site. Each element as a dc:creator tag with the name of the user.  <p>One approach would to be find all updates content files, grep for creator (including course/period), remove creators that are support staff.  From 2002, this is done in a separate RSS file, but all good.</p></li>
+  <li> fm <strong>DONE</strong><br />This is recorded in the apache logs.  Will need to parse that. </li>
+  <li> page update<br />Again, parsing of apache log files </li>
+</ul>
+
+<h3>Calculating adoption</h3>
+
+<p>Once the data is in the database, the next step is to calculate the adoption rate, which is essentially:</p>
+<ul>
+  <li> Get the total # of courses in a year. </li>
+  <li> For each Malikowski category
+          <ul>
+             <li> calculate percentage of courses adopting features in the category</li>
+           </ul>
+  </li>
+</ul>
+
+<p>Show the results in the next post</p>
+
+<h3>References</h3>
+
+<p>Beer, C., D. Jones, K. Clark. (2009). <a href="http://indicatorsproject.wordpress.com/2009/10/09/the-indicators-project-identifying-effective-learning-adoption-activity-grades-and-external-factors/">The indicators project identifying effective learning, adoption, activity, grades and external factors.</a> ASCILITE'2009. Auckland, NZ.</p>
+<p>Malikowski, S., M. Thompson, et al. (2007). "A model for research into course management systems: bridging technology and learning theory." Journal of Educational Computing Research 36(2): 149-173.</p></p>
+
+</body>
+</html>

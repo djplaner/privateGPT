@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How do you develop a cross-LMS usage comparison?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/09/09/how-do-you-develop-a-cross-lms-usage-comparison/">How do you develop a cross-LMS usage comparison?</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, evaluation, indicators, lmsEvaluation, phd, thesis, Uncategorized</p>
+
+<p><p>I <a href="https://djon.es/blog/2009/08/28/comparisons-between-lms-the-need-for-system-independence/">recently posted</a> about the need to develop an approach that allows for the simple and consistent comparison of usage and feature adoption between different Learning Management Systems (aka LMS, Virtual Learning Environments - VLEs - see <a href="https://djon.es/blog/2009/08/21/what-is-an-lms/">What is an LMS?</a>).  That <a href="https://djon.es/blog/2009/08/28/comparisons-between-lms-the-need-for-system-independence/">last post on the need</a> didn't really establish the need. The aim of this post is to explain the need and make some first steps in identifying how you might go about enabling this sort of comparison.</p>
+<p>The main aim is to get my colleagues in this project thinking and writing about what they think we should and how we might do it.</p>
+
+<h3>What are you talking about?</h3>
+
+<p>Just to be clear, what I'm trying to get at is a simple method by which University X can compare how its staff and students are using its LMS with usage at University Y. The LMS at University Y might be different to that at University X. It might be the same.</p>
+<p>They might find out that more students use discussion forums at University X. More courses at University Y might use quizzes. The could compare the number of times students visit course sites, or whether there is a correlation between contributions to a discussion forum and final grade.</p>
+
+<h3>Why?</h3>
+
+<p>The main reason is so that the university, its management, staff, students and stakeholders have some idea about how the system is being used. Especially in comparison with other universities or LMSes.  This information could be used to guide decision making, identify areas for further investigation, as input into professional development programs or curriculum design projects, comparison and selection processes for a new LMS, and many other decisions.</p>
+<p>There is a <a href="http://ceise.iscap.ipp.pt/lmsproj/">research project</a> coming out of Portugal that has <a href="http://ceise.iscap.ipp.pt/lmsproj/index.php?option=com_content&amp;view=article&amp;id=49&amp;Itemid=53">some additional questions</a> that are somewhat related.</p>
+<p>The main reason is that there currently appears to be no simple, effective method for comparing LMS usage between systems and institutions. The different assumptions, terms and models used by systems and institutions get in the way of appropriate comparisons.</p>
+
+<h3>How might it work?</h3>
+
+<p>At the moment, I am thinking that you need the following:</p>
+<ul>
+  <li> a model; <br />An cross-platform representation of the data required to do the comparison. In the <a href="https://djon.es/blog/2009/08/28/comparisons-between-lms-the-need-for-system-independence/">last post</a> the model by Malikowski et al (2007) was mentioned.  It's a good start, but has doesn't cover everything. <p>As a first crack the model might include the following sets of information:</p><ul>
+       <li> LMS usage data;<br />Information about the visits, downloads, posts, replies, quiz attempts etc. This would have to be identified by tool because what you do with a file is different from a discussion forum, from a quiz etc.</li>
+        <li> course site data;<br />For each course, how many files, is there a discussion forum, what discipline is the course, who are the staff, how many students etc.</li>
+        <li> student characteristics data;<br /> How were they studying, distance education, on-campus.  How old were they? </li>
+     </ul>
+  </li>
+  <li> a format; <br />The model has to be in an electronic format that can be manipulated by software. The format would have to enable all the comparisons and analysis desired but maintain anonymity of the individuals and the courses.</li>
+  <li> conversion scripts; and<br />i.e. an automated way to take institutional and LMS data stick it into the format. Conversion scripts are likely to be based around LMS and perhaps student records system.  e.g. a Moodle conversion script could be used by all the institutions using Moodle.  </li>
+  <li> comparison/analysis scripts/code.<br />Whatever code/systems are required to take the information in the format and generate reports etc. that help inform decision making.</li>
+</ul>
+
+<h4>Format</h4>
+
+<p>I can hear some IT folk crying out for a data warehouse to be used as the format.  The trouble is that there are different data warehouses and not all institution's would have them. I believe you'd want to initially aim for a lowest common denominator, have the data in that and then allow further customisation if desired.</p>
+<p>When it comes to the storage, manipulation and retrieval of this sort of data, I'm assuming that a relational database is the most appropriate lowest common denominator.  This suggests that the initial "format" would be an SQL schema.</p>
+
+<h3>How would you do it?</h3>
+
+<p>There are two basic approaches to developing something like this:</p>
+<ul>
+  <li> big up front design; or<br />Spend years analysing everything you might want to include, spend more time designing the perfect system and finally get it ready for use.  Commonly used in most information technology projects and I personally think it's only appropriate for a very small subset of projects.</li>
+  <li> agile/emergent development.<br />Identify the smallest bit of meaningful work you can do.  Do that in a way that is flexible and easy to change. Get people using it. Learn from both doing it and using it to inform the next iteration.</li>
+</ul>
+<p>In our case, we've already done some work from two different systems for two different needs.  I think discussion forums are shaping up as the next space we both need to look at, again for different reasons. So, my suggestion would be focus on discussion forums and try the following process:</p>
+<ul>
+  <li> literature review;<br />Gather the literature and systems that have been written analysing discussion forums. Both L&amp;T and external. Establish what data they require to perform their analysis.</li>
+  <li> systems analysis;<br />Look at the various discussion forum systems we have access to and identify what data they store.</li>
+  <li> synthesize; <br />Combine all the requirements from the first two steps into some meaningful collection. </li>
+  <li> peer review;<br />If possible get people who know something to look at it.</li>
+  <li> design a database;<br />Take the "model" and turn it into a "format".</li>
+  <li> populate the database;<br />Write some conversion scripts that will take data form the existing LMSes we're examining and populate the database.</li>
+  <li> do some analysis; <br />Draw on the literature review to identify the types of analysis/comparison that would be meaningful.  Write scripts to perform that role.</li>
+  <li> reflect on what worked and repeat; <br />Tweak the above on the basis of what we've learned.</li>
+  <li> publish;<br />Get what we've done out in the literature/blogosphere for further comment and criticism.</li>
+  <li> attempt to gather partners.<br />While we can compare two or three different LMS within the one institution. The next obvious step would be to work with some other institutions and see what insights they can share.
+</ul>
+<p>The knowledge and experience gained this for "discussion forums" could  then be used to move onto other aspects.</p>
+
+<h3>What next?</h3>
+
+<p>We probably need to look at the following:</p>
+<ul>
+  <li> See if we can generate some outside interest.</li>
+  <li> Tweak the above ideas to get something usable. </li>
+  <li> Gather and share a bibliography of papers/work around analysing discussion forum participation. </li>
+  <li> Examine the discussion forum data/schema for Blackboard 6.3 and Webfuse. </li>
+</ul>
+
+<p>That's probably enough to be getting on about.</p>
+
+<h3>References</h3>
+
+<p>Malikowski, S., M. Thompson, et al. (2007). "A model for research into course management systems: bridging technology and learning theory." Journal of Educational Computing Research 36(2): 149-173.</p></p>
+
+</body>
+</html>

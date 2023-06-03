@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How hard is it to get a personalised class timetable?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/16/how-hard-is-it-to-get-a-personalised-class-timetable/">How hard is it to get a personalised class timetable?</a></h1>
+
+<p>Tags: journey, teaching, Uncategorized, webfuse</p>
+
+<p>Apparently, it is <a href="https://djon.es/blog/2011/02/15/getting-an-overview-of-the-term-ahead/#comment-3835">too complex</a> to create a personalised class timetable for students at the institution I'm attending. I have <a href="https://djon.es/blog/2011/01/30/institutional-information-systems-and-the-problems-of-service-provision/">previously described</a> what I (as a student) have to currently do to create my class timetable as well as explaining that I helped implement a personalised class timetable system at the same institution about 10 years ago.
+
+The purpose of this post is to find out just how difficult it would be to do it today.
+
+<h3>The context</h3>
+
+The institutional context includes:
+<ol>
+  <li> A collection of <a href="http://timetabling.cqu.edu.au/FCWViewer/view.do?page=9894">static web pages</a> that contain class timetabling information. </li>
+  <li> A newly introduced Google Apps for Education for students (i.e. students all have institutionally provided individual Google calendars). </li>
+</ol>
+
+<h3>The plan</h3>
+
+The <a href="https://djon.es/blog/2011/01/30/institutional-information-systems-and-the-problems-of-service-provision/">previous personalised timetable system</a> at this institution was a stand-alone web application. With some input it created a one week summary timetable as a single HTML page. Given the change in context, in particular the availability of Google calendar, the plan is to respond to this change. Rather than having a stand-alone institutional application, the plan is to integrate with what students are using.
+
+That is, the plan is
+<ol>
+  <li> <a href="http://en.wikipedia.org/wiki/Web_scraping">Web scrape</a> the institutional web page to get the data. </li>
+  <li> Use the data to create an <a href="http://en.wikipedia.org/wiki/ICalendar">iCalendar</a> file or similar with the timetable information. </li>
+</ol>
+
+The idea is that the student can then important the iCal file into Google Calendar or any other calendar program that supports that file format (which is most). If this were an institutional system, it might be able to automatically pre-populate all students' individual Google calendars with their class timetable.
+
+<h3>Missing access</h3>
+
+The last time I implemented a system like this I was within the institution, this time I'm not. This means I don't have access to information such as
+<ul>
+  <li> The list of courses a student is enrolled in.<br />For the test I'll hard-code it with the four courses I'm enrolled in. Wouldn't be hard to taken any list of courses and generate a calendar. </li>
+  <li> The dates for each week in the University calendar (e.g. week 1 is Feb ?? to Mar ??)<br />I'll also have to hard-code this. </li>
+  <li> Assessment due date information which could be added to the file.<br />I'll leave this data out of this little test. </li>
+  <li> Ability to automatically import information into the institutional Google calendar.<br />Not sure if this is possible. If it were the institution could automatically insert into a student's Google calendar their timetable.</li>
+</ul>
+
+<h3>Web scaping</h3>
+
+I don't think the web page format for the timetable has changed too much. Am hoping that I still have the code that can easily web scape the appropriate web pages.
+
+Yep, there's a bit of code from a couple of years ago, let's see if that will work.
+
+I think the hardest part here will be getting this ancient Perl code to run on my new computer when I haven't done anything with it for years. Yep, get that working and hey presto it is extracting the information.
+
+One of the limitations of the old Perl install is that the database stuff isn't working. This is okay as I don't need it for this little exercise.  So, remove the database stuff and create a hashed data structure that allows manipulation.
+
+Done.
+
+<h3>Create an iCalendar file</h3>
+
+Can this be done in Perl? Yes, a quick Google reveals <a href="http://search.cpan.org/~alexmv/Data-ICal-0.16/lib/Data/ICal.pm">the Data::ICal Perl module</a> and some code that used Data::ICal to do something similar as I've planned (though only for the 2010 FIFA World Cup).
+
+Say what you like about Perl, but CPAN rocks. Simple single statement and Data::ICal and all other necessary files are installed and working.
+
+A couple of hours later (including a stop for lunch) and I have produced an ical file that will get imported into Google calendar.  Main problem at the moment is that the timezone isn't quite correct.  Google calendar is showing the events 10 hours after they should have been - I think this is timezone related.
+
+The big question now, "is there an easy way to delete all these entries?". A google search reveals an option under setting for Google calendar.
+
+Yep, slight change in the timezone setting and the times are okay. What about the dates?
+
+Oops, week 12 dates showing up early (typo in hard-coded start date).  Week 8 on a Tuesday, not Monday. Ahh, public holiday that Monday. So official week start date is the Tuesday. My code assumes the Monday. A more detailed version of this would need to figure out the public holidays.  Same for week 9.
+
+<h3>It's all working</h3>
+
+So, what's been implemented is a script that
+<ul>
+  <li> Automatically scrapes the institutional web page with timetabling information. </li>
+  <li> Extracts only the courses being taken by a student. </li>
+  <li> Generates an iCal file with the weekly personal class timetable. </li>
+</ul>
+
+Week 1 for me looks like the following. Click on the images to see a larger version.
+
+<a href="http://www.flickr.com/photos/david_jones/5450048034/" title="Week 1 by David T Jones, on Flickr"><img alt="Week 1" height="203" src="http://farm6.static.flickr.com/5294/5450048034_cac65d44cc_m.jpg" width="240" /></a>
+
+The monthly view on Google calendar, with one of the events highlighted looks like this
+
+<a href="http://www.flickr.com/photos/david_jones/5450068514/" title="Monthly by David T Jones, on Flickr"><img alt="Monthly" height="221" src="http://farm6.static.flickr.com/5173/5450068514_6ed66fc60b_m.jpg" width="240" /></a>
+
+<h3>Concept proven, work to do</h3>
+
+It took me just over 3 hours to complete this. There was a break for lunch and most of the time was spent remembering how to interact with Perl and the Webfuse code.
+
+This is not an "enterprise" solution, not yet. But it wouldn't be that difficult to do.  It's certainly not impossible.
+
+If you have followed some of <a href="http://www.slideshare.net/davidj/alternatives-for-the-institutional-implementation-of-elearning-lessons-from-12-years-of-webfuse">my previous work</a> or <a href="https://djon.es/blog/2011/02/13/on-the-potential-flexibility-of-open-source-lms-and-its-limits/">blog posts</a> it will not be a surprise that I believe there are significant barriers in the processes around institutional IT systems that limit the possibility of these types of innovations.</p>
+
+</body>
+</html>

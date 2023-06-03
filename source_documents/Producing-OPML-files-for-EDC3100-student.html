@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Producing OPML files for EDC3100 student blogs</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/03/06/producing-opml-files-for-edc3100-student-blogs/">Producing OPML files for EDC3100 student blogs</a></h1>
+
+<p>Tags: bad, edc3100, Uncategorized</p>
+
+<p>EDC3100 tries to get students engaged with writing their own blogs and following the blogs of others via a feed reader. Yes, just a bit old fashioned.
+
+But then one of the problems with doing something a bit different is that it takes a fair bit of extra work to implement. Once you automate this bit of extra work it creates a bit of inertia that prevents change. Not only because I don't want to lose the effort that went it into automating the process. But also because I know that if I did something different that was more modern, I'd have to invest more time in automating that process (i.e. working around the limitations of the current institutional learning environments.
+
+So documenting the process.
+<h3>Students create and register their blog on the LMS</h3>
+About 250 have done this so far. Another 100 to go.  But can't wait, need to get the OPML files out to students so they can start making connections.
+<h3>Get the data that identifies students by specialisation</h3>
+By default the institutional learning environment doesn't provide this. That's why I had to spend Friday <a href="https://davidtjones.wordpress.com/2016/03/04/preparing-my-digital-learning-space/">doing this</a>.
+
+Though I do now have to update the data
+<ul>
+	<li>Get the most recent participants.</li>
+	<li>Get the most recent registered blogs.</li>
+	<li>Double check "can't find data" students.
+<ul>
+	<li>Find a buggy example</li>
+	<li>Check the local course enrolment - shows up</li>
+	<li>Check users_extras - not there.  That's the problem. Don't have the extra data from student records for students who weren't enrolled a couple of weeks before the start of semester.</li>
+</ul>
+</li>
+</ul>
+<h3>Run the script</h3>
+Once the data is available, I can configure and run a script that will produce the OPML files.
+<ul>
+	<li>Fix the configuration settings</li>
+	<li>Do something with the NOPLAN students</li>
+	<li>Modify the script to handle change in data format and the dirty data</li>
+</ul>
+<h3>Test the OPML files</h3>
+All appears to be good.
+<h3>Write the instructions for students</h3>
+That's the next task.</p>
+
+</body>
+</html>

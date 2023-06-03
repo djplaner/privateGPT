@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploring Moodle Book usage - Part 5 - more staff and student use</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/09/03/exploring-moodle-book-usage-part-5-more-staff-and-student-use/">Exploring Moodle Book usage - Part 5 - more staff and student use</a></h1>
+
+<p>Tags: exploring, moodleopenbook, Uncategorized</p>
+
+<p>Continuing the exploration of how the Moodle Book module is being used, this post picks up from the <a href="https://davidtjones.wordpress.com/2016/08/23/exploring-moodle-book-usage-part-4-students-and-initial-use/">last</a> and will
+<ul>
+	<li>Revisit the who is updating/creating posts, including data from the second half of 2015.</li>
+	<li>Explore the balance of all actions (print/view/update) by staff.</li>
+	<li>Explore the balance of all actions by students.</li>
+</ul>
+<h3>Who is updating/creating posts</h3>
+The last post included a graph that showed generally (apart from two course offerings) that the core teaching staff appear to be doing the creation of books.  That graph had a few problems, including
+<ul>
+	<li>Limited data from the 2nd half of 2015.
+Due to the switch in how Moodle logged events.  Need to handle the new log format.</li>
+	<li>Didn't handle all roles.
+Appears there are some non-standard Moodle roles that the previous query didn't handle.</li>
+	<li>Handling deleted books and chapters.
+I believe this is an issue for the new logging process which has connections back into the book and book chapters table. Which works nicely until books/chapters are deleted.</li>
+</ul>
+With those changes fixed, the following graph emerges show how many times each of the roles updated a Book resource in every course.  The changes between the following and the same graph in <a href="https://davidtjones.wordpress.com/2016/08/23/exploring-moodle-book-usage-part-4-students-and-initial-use/">the last post</a>, includes:
+<ul>
+	<li>Significant increase in the number of updates for most roles (e.g. examiner up from 21968 to 31343; assistant examiner has almost doubled from 5144 to 10708)</li>
+	<li>Addition of the UNKNOWN role not in the previous graph</li>
+</ul>
+It should be noted that the following graphs do not include ~20K updates that I did in one course in one semester.
+
+<a href="https://www.flickr.com/photos/david_jones/29114140780/in/dateposted-public/" title="All book updates by role"><img alt="All book updates by role" height="340" src="https://c5.staticflickr.com/9/8037/29114140780_dd02bb63ab.jpg" width="500" /></a>
+
+And I thought it would be interesting to break down the updates by year to see what if there was any growth. Given the growth in the number of courses using the Book (17 in 2012 to 152 in 2015) there should always have been some growth.
+
+<a href="https://www.flickr.com/photos/david_jones/29402519415/in/dateposted-public/" title="Book updates by role by year"><img alt="Book updates by role by year" height="299" src="https://c8.staticflickr.com/9/8436/29402519415_70efc9bdbc.jpg" width="500" /></a>
+
+The graph above shows examiners making 2152 updates in 2012 and 13649 in 2015.  That's a 6.3 times growth in number of updates for 12.6 times growth in the number of updates. Or, alternatively in 2012 a course examiner (on average) made 179 updates. In 2015 a course examiner (on average) made 90 updates.
+
+Suggesting that the examiners are making less updates. Perhaps farming out the updating to other staff. The growth in edits by moderator and assistant examiner roles in 2014 and 2015 suggest that.  But more exploration is required.
+<h3>Role balance of actions</h3>
+Updating/creating is not the only action that can be done with a Book, you can also view and print parts or all of a Book resource. This step aims to explore what balance of actions each of the roles are involved with
+
+For this purpose I've grouped log events into the following actions someone can perform on a Book
+<ul>
+	<li>view - view a chapter or the entire book online</li>
+	<li>print - print a chapter or entire book</li>
+	<li>modify - delete or update a chapter/book</li>
+	<li>create - create or add a chapter or book</li>
+	<li>export - use the export to IMS option</li>
+</ul>
+The above updating/creating graphs including both modify and create actions.
+
+The table shows the total events on all books by all roles from 2012 through 2015. It shows how viewing the book is by far the most prevalent action, accounting for 97.6% of actions.
+
+Interestingly, at least for me, is that the percentage of modifications (1.1%) exceeds the percentage for printing (0.9%). I assume this is due to my outlier behaviour in 2015 in modifying a huge number.  Indeed it does.  The numbers in brackets in the table indicate a recalculation taking out that outlier.
+<table style="border: 1px;">
+<tbody>
+<tr>
+<th>Action</th>
+<th># actions</th>
+<th>%</th>
+</tr>
+<tr>
+<td>View</td>
+<td style="text-align: right;">5040285</td>
+<td style="text-align: right;">97.6  (98)</td>
+</tr>
+<tr>
+<td>Print</td>
+<td style="text-align: right;">46162</td>
+<td style="text-align: right;">0.9 (0.9)</td>
+</tr>
+<tr>
+<td>Modify</td>
+<td style="text-align: right;">56754 (35867)</td>
+<td style="text-align: right;">1.1 (0.7)</td>
+</tr>
+<tr>
+<td>Create</td>
+<td style="text-align: right;">18537</td>
+<td style="text-align: right;">0.4 (0.4)</td>
+</tr>
+<tr>
+<td>Export</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.9373E-05</td>
+</tr>
+</tbody>
+</table>
+Given the preponderance of viewing, the graphs tends to be a little less than useful by role. But the following look at usage by students and examiners.
+
+&nbsp;
+<h3>Student usage</h3>
+The graph below shows the spread of actions by students with the books. It shows that the most common action performed by students is viewing books. The table following the graph provides the raw data for the graph.
+
+<a href="https://www.flickr.com/photos/david_jones/29379151786/in/dateposted-public/" title="Student actions by year"><img alt="Student actions by year" height="395" src="https://c3.staticflickr.com/9/8217/29379151786_8fe5854ac6.jpg" width="500" /></a>
+
+Both this table and the one below for examiners show no print actions.  This suggests a bug in the analysis.
+
+Another interesting point is the dip in printing between 2014 and 2015.  Even though the number of courses using books, and the number of views by students on books increased from 2014 to 2015, the number of print actions dropped. I wonder if this has anything to do with the large number of modify/create actions by students in 2015. Were the students creating the books/books created by students less likely to be printed?
+<table>
+<tbody>
+<tr>
+<th>Year</th>
+<th>View</th>
+<th>Print</th>
+<th>Modify</th>
+<th>Create</th>
+</tr>
+<tr>
+<td>2012</td>
+<td>386101</td>
+<td></td>
+<td>41</td>
+<td>2</td>
+</tr>
+<tr>
+<td>2013</td>
+<td>812133</td>
+<td>4487</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2014</td>
+<td>1447190</td>
+<td>20310</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2015</td>
+<td>1967047</td>
+<td>15198</td>
+<td>1335</td>
+<td>28</td>
+</tr>
+</tbody>
+</table>
+&nbsp;
+<h3>Examiner usage</h3>
+The graph below shows the spread of actions by examiners with the books. The table following the graph provides the raw data for the graph.
+
+The relative increase of modify/create actions by examiners between 2014 and 2015 is another indication of the 20000 updates I performed in 2015.
+
+<a href="https://www.flickr.com/photos/david_jones/29379150796/in/dateposted-public/" title="Examiner actions by year"><img alt="Examiner actions by year" height="339" src="https://c5.staticflickr.com/9/8008/29379150796_fc4a2168b0.jpg" width="500" /></a>
+
+The views and prints by examiners drop between 2014 and 2015
+<table>
+<tbody>
+<tr>
+<th>Year</th>
+<th>View</th>
+<th>Print</th>
+<th>Modify</th>
+<th>Create</th>
+</tr>
+<tr>
+<td>2012</td>
+<td>7193</td>
+<td></td>
+<td>2072</td>
+<td>80</td>
+</tr>
+<tr>
+<td>2013</td>
+<td>26774</td>
+<td>105</td>
+<td>4850</td>
+<td>495</td>
+</tr>
+<tr>
+<td>2014</td>
+<td>35855</td>
+<td>647</td>
+<td>8364</td>
+<td>1833</td>
+</tr>
+<tr>
+<td>2015</td>
+<td>35185</td>
+<td>452</td>
+<td>26790</td>
+<td>7746</td>
+</tr>
+</tbody>
+</table>
+&nbsp;
+<h3>Further questions to explore</h3>
+<ul>
+	<li>What are the UNKNOWN roles?</li>
+	<li>How are the updates and other actions shown above distributed between users? Are there a small number of users making up the lion share of the actions (e.g. me and updates in 2015; and the one or two courses that had students updating books).</li>
+	<li>How many chapters do each student read? What about printing? Do they print and read online?</li>
+	<li>What is happening with print actions in 2012? Was there really no-one printing books?</li>
+	<li>Were the books created by students less likely to be printed? Did this account for the drop in print actions by students between 2014 and 2015? If not, what did?</li>
+	<li>Remove my 2015 outlier actions from the examiner actions graph and see what changes are made.</li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Tidy up #4 - Getting ready for user testing</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/04/bim-tidy-up-4-getting-ready-for-user-testing/">BIM - Tidy up #4 - Getting ready for user testing</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Continuing the tidying of BIM.  This time the focus is on any and all steps necessary to get BIM ready to go up on a test server and have some real folk actually look and play with it. The structure of this will be based around users and actions.  I'm going to do some of my own testing and then also add in anything that comes up from working with others.</p>
+<p>This is a work in progress.</p>
+<p>The following bullet list will list the different roles and the actions they can perform.  It will contain a description of what I found/reflected upon.  I'll add any todos in line with the action/user.  The users and their actions for BIM currently include:</p>
+<ul>
+
+<!-- ***************** COORDINATOR ****************** -->
+
+  <li> Coordinator
+         <ul>
+            <li> Remove a bim activity<br />
+Not what would typically be first, but I have some old test cases laying around and it was the first one I needed to.  The standard editing interface will remove the bim from display.  It will remove the data from mdl_bim.  Can't confirm if it will remove entries from the other bim tables.
+<p><strong>TO DO:</strong><del> Check whether removing a BIM will delete all database entries.</del> No, it doesn't.</p>
+<p><strong>TO DO:</strong> Modify lib.php:bim_delete_instance so that it removes all evidence from the database tables.  Also check if it should actually ask about backups?</p>
+</li>
+
+            <li> Create new bim/Configure;<br />
+First, let's login as a coordinator of a course and create a new BIM activity.
+<p><strong>TO DO:</strong> <del>having the newly designed icon for bim in place results in a massive icon in the configure page for a new activity.  Need to reduce it. (icon is quite large - need to reduce it)</del></p>
+<p><strong>TO DO:</strong> Need to put in place the help pages.</p>
+<p><strong>TO DO:</strong> <del>Need to put in HTML editor for "about BIM activity".</del> This is a problem with Safari.</p>
+<p><strong>TO DO:</strong><del> Can the "group mode" option in common module settings be removed?  Also "ID number" and "Grade category"</del> Added features parameter to "standard_coursemodule_elements"</p>
+<p><strong>TO DO:</strong><del> Is the "mirroring" check box in configure actually preventing mirroring?</del> YES</p>
+</li>
+
+            <li> Configure <br />
+Once the BIM is actually created, it's necessary to do some additional configuration that isn't on the standard configuration screen.  In particular, add questions and allocate markers.
+<p><strong>TO DO:</strong>  Add some description/help to the  page to give some indication of what the page is for and how to use it.</p>
+<p><strong>TO DO:</strong> By default allocate the coordinator to all students.  Is there a "all students" group?  <strong>Don't do this.  Up to coordinator to have groups allocated.</strong></p>
+<p><strong>TO DO:</strong><del> Add a message on this screen that summarises the current configuration and is especially strong on the fact that students can't register, or mirroring is turned off etc.</del></p>
+
+</li>
+            <li> Manage questions
+<p><strong>TO DO:</strong>  <del>Add some description/help to the Manage question page to give some indication of what the page is for and how to use it.  The message only shows up when there is an existing question.  Not when there are no questions.</del></p>
+<p><strong>TO DO:</strong> Able to enter question without min/max mark</p>
+<p>Can't make it required on client side because sometimes there is no new question to add.</p>
+</li>
+
+            <li> Allocate markers
+<p><strong>TO DO:</strong> <del>Fails if there are no markers<blockquote>nvalid argument supplied for foreach() in /Applications/XAMPP/xamppfiles/htdocs/moodle/mod/bim/coordinator/marker_allocation_form.php on line 34</blockquote>.  Yes, works if there are actually groups.  So some error checking needs to be added.</del></p>
+<p>Having a question does reduce the number of errors, but not entirely.</p>
+<p><strong>TO DO:</strong> Error on moodle-training<blockquote>SELECT * FROM m_bim_group_allocation WHERE bim=1 and userid in ( 21, 55348, 3, 104903, 10749, 2 )
+
+    * line 686 of lib/dmllib.php: call to debugging()
+    * line 609 of lib/dmllib.php: call to get_recordset_sql()
+    * line 930 of lib/dmllib.php: call to get_recordset_select()
+    * line 157 of mod/bim/lib/groups.php: call to get_records_select()
+    * line 30 of mod/bim/coordinator/allocate_markers.php: call to bim_get_all_markers_groups()
+    * line 39 of mod/bim/coordinator/view.php: call to bim_allocate_markers()
+    * line 97 of mod/bim/view.php: call to show_coordinator()</blockquote></p>
+<p>Being caused by incorrect set up of bim_group_allocation table.  Have fixed the XMLDBB in moodle-train, but is not taking effect.  May need to reinstall after doing more fixing.</p>
+</li>
+
+            <li> Manage marking
+<p><strong>TO DO:</strong><del> Show message if no marker allocation, as this means this display won't work.</del></p>
+<p><strong>TO DO:</strong> <del>Fails if there are no markers<blockquote></blockquote>.</p>
+<p><strong>TO DO:</strong> <del>May also be a problem with no questions be created.</del></p>
+<p><strong>TO DO:</strong> <del>When a new question is added and there are no responses to it.  Missing: is set to 0.  When it should be all students.  It's also not a link.</del></p>
+<p><strong>TO DO:</strong> <del>The list of unregistered students seems to include teaching staff.  Need to double check how "all students" are being got.</del> - seems to be working as required.  Students role seems to have a few strange allocations</p>
+
+</li>
+
+            <li> Find student
+<p><strong>TO DO:</strong> <del>Add the hint that a "%" will show all students, which might be useful for smaller classes</del></p>
+<p><strong>TO DO:</strong> <del>The "show details" link in a list of students is taking us to HRMT20019.</del></p>
+<p><strong>TO DO:</strong> <del>When showing table of multiple matches, sometimes the "Show Details" link goes to a page saying that the student hasn't registered.  Need to show "not registered" in the table.</del></p>
+</li>
+
+
+            <li> Your students
+                  <ul>
+                    <li> View student details
+<p><strong>TO DO:</strong> <del>Add in the number of students in the registered and unregistered tables.</del></p>
+<p><strong>TO DO:</strong><del> May be a problem with the calculation of the time/date for Last post.  40 years since the last post on my blog?</del></p>
+<p><strong>TO DO:</strong> Colour code the "Last post" cell.</p>
+</li>
+
+                    <li> View post details </li>
+                    <li> Allocate post
+<p><strong>TO DO:</strong> <del>After allocating a question the status in the form doesn't seem to reflect the changes</del>.....MOSTLY DONE....drop box still says unallocated but that doesn't change operation</p>
+<p><strong>TO DO:</strong> <del>Add title of post into display.</del></p>
+<p><strong>TO DO:</strong><del> Add a link for the coordinator to "process and allocate" existing posts in the database.  Maybe just leave it for cron to do...but add a message on allocate to explain.</del></p>
+</li>
+
+                    <li> Mark post
+<p><strong>TO DO:</strong> <del>When simply changing the allocation the post is being set to marked.  Should only change the allocation.  Also the drop box is keeping the value</del></p>
+<p><strong>TO DO:</strong><del> Num Marked of Num Released is wrong way around.  Should be released/marked.</del></p>
+<p><strong>TO DO:</strong> <del>Not checking that mark is within the min/max range.  Can this be done on the client? </del> It does require a number, but does not check that it is within the max/mark range - <strong>TO DO:</strong> Add a warning message if it goes above maximum.</p>
+<p><strong>TO DO:</strong><del> Does the progress result total make use of the max mark for each questions?</del></p>
+<p><strong>TO DO:</strong> <del>Entering a large number is getting auto translated into 99.</del></p>
+<p><strong>TO DO:</strong> <del>When re-allocating a post, that is already marked, to a different question - need to check the mark.</del></p>
+</li>
+                 </ul>
+           </li>
+         </ul>
+   </li>
+
+<!-- ***************** STUDENTS ****************** -->
+
+  <li> Student
+<p><strong>TO DO:</strong> <del>Add the configuration message to the top of this page in someway.</del></p>
+          <ul>
+              <li> Register blog
+<p><strong>TO DO:</strong> Errors when registering a successful URL and just before display the details - may have been caused by there not being any questions</p>
+<p><strong>TO DO:</strong><del> fix up the "string" for the heading. </del></p>
+<p><strong>TO DO:</strong> <del>add in the "about" for the bim.</del></p>
+<p><strong>TO DO:</strong> <del>Add in checks to prevent common "bad" URLs that are blogs.</del></p>
+</li>
+              <li> View details
+<p><strong>TO DO:</strong> <del>Marked questions not showing up as marked.</del></p>
+<p><strong>TO DO:</strong> <del>Add the message about this activity to the bottom of the page.</del></p>
+<p><strong>TO DO:</strong> <del>Convert the details into a table, including progress.  Use the same function as for the marker bim_show_student_details, move to locallib</del></p>
+</li>
+          </ul>
+  </li>
+
+<!-- ***************** MARKERS ****************** -->
+
+  <li> Marker
+         <ul>
+             <li> View student details
+<p><strong>TO DO:</strong><del> If there are no allocations for a marker, i.e. no groups.  Then display a message suggesting they contact the teacher in charge.</del></p>
+</li>
+
+             <li> View post details
+<p><strong>TO DO:</strong> <del>IF there are no allocations, has a failure.  <blockquote>ine 334 of mod/bim/marker/view.php: call to bim_get_marking_details()</blockquote></del> No longer a problem as the link to post details is no longer shown if there are 0 students.</p>
+</li>
+
+             <li> Allocate post </li>
+             <li> Mark post </li>
+         </ul>
+  </li>
+</ul>
+
+<h3>Non activities related</h3>
+
+<ul>
+  <li> <del>Get latest copy of SimplePie.</del> </li>
+  <li> Registration of blog posts may be screwing up the lastpost time. My blog posts are being set to 0.
+<p><strong>TO DO:</strong> <del>Check that lastpost in bim_student_feeds is being set correctly on registration </del></p>
+<p><strong>TO DO:</strong> <del>Ensure that lastpost in bim_student_feeds is being updated when processing feeds.</del></p>
+<p><strong>TO DO:</strong> <del>Check num_entries in bim-student_feeds is being changed at registration and mirroring.</del></p>
+</li>
+  <li> <del>use addRule numeric on appropriate values</del> </li>
+  <li> Generating OPML feeds for staff?  Leave till later </li>
+  <li> <strong>TO DO:</strong> <del>Is timemarked being updated by the marking process.</del></li>
+  <li> <strong>TO DO:</strong> <del>Add a timereleased to bim_marking.</del> </li>
+  <li> <strong>TO DO:</strong> <del>Get timereleased set when released.</del>???? code is in, can't see why it isn't working.  Might be due to database change.  Will need to keep an eye on this. </li>
+  <li> <del>Check cron is working. </del></li>
+  <li> <del>Gradebook stuff</del>. - moving to <a href="https://djon.es/blog/2010/02/07/bim-talking-to-the-gradebook/">another post</a></li>
+  <li> <del>Deleting BIMs.</del> </li>
+  <li> Backing BIMs up/restoring - <a href="https://djon.es/blog/2010/02/07/bim-backup-and-restore/">Leave till later</a> </li>
+  <li> Check whether a student blog url, has already been registered for this bim. </li>
+</ul>
+
+<h3>New problem - instance in course_module</h3>
+
+<p>At the moment, it appears that the setting of the instance field in the course_module table is being corrupted in some way. Caused by the add_instance method not returning the id as it should.</p></p>
+
+</body>
+</html>

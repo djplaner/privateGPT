@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - misc changes from moodle-train</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/10/bim-misc-changes-from-moodle-train/">BIM - misc changes from moodle-train</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Currently testing BIM on the training/testing environment of my current institution.  This is where I find all of the problems from the institution's non-vanilla implementation of Moodle.</p>
+
+<h3>Manage marking - not all markers - DONE</h3>
+
+<p>Not showing details for all of the markers that have been allocated students.  This appears to be because the institution has introduced a new role called "Course coordinator".  Checks:</p>
+<ul>
+  <li> Change on of the teachers to "teacher" more standard role. </li>
+  <li> Then change the access.php file in bim to map the new role appropriately.</li>
+</ul>
+<p>Part of this problem is due to students not being allocated to groups <strong>TO DO:</strong> Implies a need to identify those students who are in the course, but not in groups.</p>
+<p>Actually, the problem was a misplaced add_data_keyed that was outside, instead of inside, a loop.</p>
+
+<h3>Find student view details</h3>
+
+<p><blockquote>Parse error: syntax error, unexpected ';' in /Applications/XAMPP/xamppfiles/htdocs/moodle/mod/bim/marker/view.php  on line 968</blockquote></p>
+
+<h3>Need to remove mysql_real_escape - DONE</h3>
+
+<p>This is a hang over from early development and not removed.  Won't work on server environments if they aren't using MySQL.  -- marker/view.php line 900</p>
+
+<h3>Manage marking - counting all marked posts - DONE</h3>
+
+<p>Only 1 post marked, but release is showing 3 marked!!</p>
+<p>This is because it's simply adding the total marked for each marker.  If there is overlap in students between markers, then the # marked is counted more than once.</p>
+<p><strong>Fix needs completion locally before putting onto -train</strong></p>
+
+<h3>Marking form - min/max display - DONE</h3>
+
+<p>Need to change hard code 0 and 55 to the real min/max values.</p>
+
+<h3>Student viewing details - DONE</h3>
+
+<p>The table with student details always shows the progress report.  Even for marked posts that have not been released to the student.  Initially this table was only for staff.  But it is also being used on the students view page.  Need the progress mark to only include released posts in its total.</p>
+<p>Calculation done in bim_generate_student_results - do it here.</p>
+<p>All calls to this function, need to pass in cm</p>
+
+<h3>Breadcrumbs for new functions - DONE</h3>
+
+<p>The "change blog" feature doesn't have good bread crumbs.  May also be a problem with other new functionality.  Check and fix.</p>
+<p>Mark post </p>
+
+<h3>Add "register blog" - DONE</h3>
+
+<p>Just as marker can change existing feed for a student, add the option to "register a blog" for unregistered students.</p>
+
+<h3>cron job not completing - DONE</h3>
+
+<p><blockquote>Call to undefined function bim_get_mirrored() in <b>/Applications/XAMPP/xamppfiles/htdocs/moodle/mod/bim/lib.php</b> on line <b>176</b><br /></blockquote></p>
+<p>Get this by running the admin/cron.php.</p>
+
+<h3>Setting up help - DONE</h3>
+
+<p>Did some minor updates, rest will have to wait</p></p>
+
+</body>
+</html>

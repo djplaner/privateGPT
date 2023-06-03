@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The kludge for marking learning journals</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/06/10/the-kludge-for-marking-learning-journals/">The kludge for marking learning journals</a></h1>
+
+<p>Tags: bim, edc3100, elearning</p>
+
+<p>The following is a description of the kludge I put in place to mark the learning journals - see <a href="https://djon.es/blog/2013/02/25/the-assessment-of-learning-journals-ideas-for-bim/">here for a description</a> of initial thinking behind the journal - folk in the EDC3100 course this semester had to complete. It's meant to record what I did, provide some food for further development and offer an opportunity for some initial reflection.
+
+<h3>Final format</h3>
+
+5% of each of the three course assignments contained a component titled the "learning journal". In this, the students were expected for the relevant weeks of semester:
+<ul>
+  <li> complete all the activities on the course site; and, </li>
+  <li> post a sequence of reflective posts on their personal blog. </li>
+</ul>
+
+As outlined in the <a href="https://djon.es/blog/2013/02/25/the-assessment-of-learning-journals-ideas-for-bim/">ideas post</a> the student's mark was based on:
+<ul>
+  <li> what percentage of the activities they completed; </li>
+  <li> how many posts per week (on average) they published; </li>
+  <li> the word count of those posts; </li>
+  <li> the number of posts that contained links; and, </li>
+  <li> the number of posts that contained links to posts from other students in the course. </li>
+</ul>
+
+The intent was to encourage connections and serendipty and minimise students having to "reflect to order" in response to specific questions/criteria. Of course, that didn't stop many from seeking to produce exactly what was required to obtain the mark they wanted to achieve. 100 words per average means exactly that and also a bit of judicious quoting etc. Something for further reflection.
+
+<h3>Activity completion</h3>
+
+Each week the course site had a number of Moodle activities and resources, all with activity completion turned on. This means that Moodle tracks who has fulfilled the necessary actions to complete e.g. read a page, post to a forum etc.
+
+The reports of activity completion aren't particular helpful as I need to get the data into a Perl script, so the process is
+<ol>
+  <li> Download the CSV file Moodle can export of activity completion.<p>The CSV file for the course I just downloaded was 1.7Mb in size.</p> </li>
+  <li> Delete the columns for the activities that don't belong to the required period. </li>
+  <li> Save it locally. </li>
+</ol>
+
+<h3>Blogs</h3>
+
+I've written some Perl scripts that will parse the BIM database, evaluate the student posts and then combine that with the data from the activity completion CSV and produce the report.  This report is circulated to the markers who manually copy and paste the students result into their assignment sheet. I've also got a version of the script that will email all the students a copy.
+
+Of course, to get to this stage I've had to make sure that all of the students' blogs are registered correctly with the version of BIM on my laptop. Then I need to
+<ol>
+  <li> Run the BIM mirror process to ensure that BIM has the most recent student posts.
+       <p>Currently 335 students have registered blogs and there are 8550 posts mirrored. For an average of about 25 posts per student. In reality, there have been a number of students withdraw from the course for a number of reasons.</p>
+</li>
+  <li> Dump the PHP BIM database and create a copy in the Perl database.<p>Due to how I've got Perl and PHP installed they are using different MySQL database servers.</p> </li>
+  <li> Run either script. </li>
+</ol>
+
+<h3>The end result</h3>
+
+Is a report that summarises results. But beyond this it's a lot of extra work in overcoming human error that would have been removed with a decent system.  I've spent a fair chunk of the last week dealing with these errors that mostly arise from the absence of a system giving students immediate feedback of problems including
+<ul>
+  <li> Telling students they've registered a URL that is either not a URL or not a valid RSS feed.<p>Earlier problems dealt with students making mistakes with registering their blog. BIM does this, but because BIM isn't installed on the institutional servers I had to make do with the Moodle database activity and then manually fixing errors. </p> </li>
+  <li> Warning students that their RSS feed is set to "summary" and not "full".<p>To encourage visitors to the actual blog, some blog engines have an option to set the feed to "summary" mode. A mode where only the first couple of sentences of a post is shown in the feed.  This is not useful for a system like BIM that assumes it's getting the full post. Especially when "average word count" is part of the marking mechanism.</p><p>I've spent a few hours this week and more this semester helping recover this situation. BIM needs to be modified to <a href="https://github.com/djplaner/moodle-mod_bim/issues/76">generate warnings</a> of this so recovery can happen earlier. </p></li>
+  <li> Students editing posts.<p>Currently, once BIM gets a copy of a post it doesn't change it. Even if the author makes a change. This caused problems because some students edited published posts to make last minute changes.  This is okay but BIM's assumptions broke the practice.</p><p>BIM does provide students with a way to view BIM's copy of their posts. I believe this feature helps the authors understand that the copy on BIM is different from the version on their blog. Reducing this error. </p>
+  </li>
+  <li> Allowing students to see their progress.<p>This week I've sent all students an email with their result. BIM does provide a way for students to see their progress/marks, but with no BIM the first the students knew of what the system knew of them was when their marked assignments were returned.  BIM, properly modified for the approach I've used here, would allow the students to see their progress and do away with the need for the email. It would allow the nipping of problems in the bud. Reducing work for me and uncertainty for the students.</p> </li>
+</ul>
+
+<h3>Was it a success?</h3>
+
+I've been wondering over the recent weeks - especially when I've been in the midst of the extra work that arose from having to fix the above problems - whether it was worth it. Did I make a mistake deciding to go with the blog based assessment for this course in the absence of appropriate tool support.  Even if the institution had installed BIM, BIM itself didn't have all the tools to support the approach I've used this semester.  BIM would have reduced the workload somewhat, but additional workload would have been there.
+
+Was it worth it was a question I asked myself when it became obvious that at least some (perhaps many) <strong>students did "write for the marks"</strong>. I need to explore this a bit further. But it is obvious that some students made sure they wrote enough to meet the criteria. There was also some level of publishing the necessary posts in the day before the assignment was due. At least some of the students weren't engaging in the true spirit of the assessment.  But I don't blame them, there were lots of issues with the implementation of this assessment.
+
+Starting with the absence of BIM which created additional workload which in part contributing to less than appropriate scaffolding to help the students engage in the task more meaningfully. Especially in terms of better linkages to the weekly activities. I'm particularly interested, longer term, in how the assessment of the course and the work done by the markers can be changed from making submitted assignments to actively engaging with students blog posts.
+
+On the plus side, there was <strong>some evidence of serendipity</strong>. The requirement for for students to link to others worked to <a href="https://djon.es/blog/2013/06/04/animation-over-time-of-links-between-student-posts/">create connections</a> and at least some of them resulted in beneficial serendipity.  There's enough evidence to suggest that this is worthwhile continuing with. There does of course need to be some more formal evaluation and reflection about how to do this, including work on BIM to address some of the problems above.
+
+I've also learnt that <strong>the activity completion report in Moodle is basically useless</strong>.  With the number of students I had, the number of activities to complete, and apparently the browser I was using viewing the tabular data in the activity completion report in a meaningful way was almost useless. Downloading the CSV into Excel was only slightly more beneficial. In reality, the data needed to be manipulated into another format to make it useful. Not exactly a report located in "The Performance Zone" talked about at the end of <a href="https://djon.es/blog/2013/06/07/learning-analytics-intervention-and-helping-teachers/">this post</a>.  On the plus side, this is informing some further research.
+
+This whole experience really does reinforce Rushkoff's (p. 128) point about Digital Technology<blockquote>Digital technology is programmed. This makes it biased toward those with the capacity to write the code.</blockquote>
+
+Without my background in programming, developing e-learning/web systems and in writing BIM none of the above would have been possible. The flip side of this point is that what is possible when it comes to e-learning within Universities is constrained by the ideas of the people who wrote the code within the various systems Universities have adopted.  Importantly, this may well be at least as big a constraint on the quality of University e-learning as the intentions of the teaching staff to use the tools and the readiness of the students to adopt to changes.
+
+<h3>References</h3>
+
+Rushkoff, D. (2010). Program or be programmed: Ten commands for a digital age. New York: OR Books.</p>
+
+</body>
+</html>

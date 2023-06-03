@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Allocate questions screen</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/07/bim-allocate-questions-screen/">BIM - Allocate questions screen</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p><a href="https://djon.es/blog/2009/12/26/bim-the-show-student-posts-screen/">The last bit of work</a> I did on BIM continue the current trend of getting screens mostly working without some of the extra effort required for a production system.  This is in part driven by my desire to become more familiar with differing aspects of Moodle development.</p>
+<p>This post continues that trend by describing the implementation of the "allocate questions screen".  This is the screen used by a teacher to change the allocation of student posts to questions. A basic premise of BIM is that for a given course students are expected to respond to particular questions. BIM attempts to automatically detect student posts that answer a question and allocate them appropriately.  Sometimes, however, there is a need for some manual intervention.</p>
+<p>This screen shows a list of all the student posts recognised by BIM, including a specification of which have been allocated to which questions. The teacher can then modify the allocation.</p>
+
+<h3>Required data</h3>
+
+<p>The screen is passed the user id of the student and should also be passed the id of the course_module (course, bim id etc).</p>
+<ul>
+  <li> Student user details. </li>
+  <li> Markers students (is this student on the markers). </li>
+  <li> Summary statistics about marking/submission. </li>
+  <li> A progress result in terms of overall marking. </li>
+  <li> List of all posts for the student - contents of bim_marking </li>
+  <li> Details of the students feed </li>
+  <li> List of all questions for the course. </li>
+  <li> Course weeks?<br />The CQU version/BAM converted the time/date posted into the week of the CQU academic term.  If a Moodle course is divided into weeks, it might be possible to do the same thing here.
+</ul>
+
+<h3>Implementation questions</h3>
+
+<ul>
+  <li> How/should the date/time of a post being posted be converted into the weeks used by the course (if in the weekly structure). </li>
+  <li> This will have to include a form and drop down boxes to change the allocation.  Need to figure out how this will work (have idea, but needs to be checked).
+</ul>
+
+<h3>Get the data</h3>
+
+<p>Most of these are from previous screens or straight forward.</p>
+<ul>
+  <li> <del>Student user details.</del> </li>
+  <li> <del>Markers students (is this student on the markers).</del> </li>
+  <li> <del>Summary statistics about marking/submission.</del> </li>
+  <li> <del>A progress result in terms of overall marking.</del></li>
+  <li> <del>List of all posts for the student - contents of bim_marking</del> </li>
+  <li> <del>Details of the students feed</del> </li>
+  <li> <del>List of all questions for the course. </del></li>
+  <li> Course weeks?<br />The CQU version/BAM converted the time/date posted into the week of the CQU academic term.  If a Moodle course is divided into weeks, it might be possible to do the same thing here.
+</ul>
+
+<h3>Show the data</h3>
+
+<p>Two main parts:</p>
+<ul>
+  <li> Details table - summary of student details, progress result, num answered/marked etc. <strong>DONE</strong> </li>
+  <li> Blog posts - a list of all the blog posts by the user
+<p>Going to initially simply implement this is a collection of tables, with no form elements.  Get that working and then think about the forms stuff.</p>
+</li>
+</ul>
+<p>Okay, the table is working.  However, there are a number of questions to be answered:</p>
+<ul>
+  <li> Need to get the title of the question to display from the qid.<br />Always good to start with an easy one.  The data was there, just had to reference it.
+  </li>
+  <li> How to display the timepublished as a human readable time?<br />It may be possible that the methods used to set this time in the database (during creation of the test database) may have been incorrect.
+<p>Yep, this is the first problem.  I haven't handled the conversion from DATETIME in BAM to the bigint used in Moodle.  Have to look at that.</p>
+<p><a href="http://moodle.org/mod/forum/discuss.php?d=55719">This discussion forum thread</a> explains the usage of UNIX time and methods to go back and forth. Including a pointer to <a href="http://www.onlineconversion.com/unix_time.htm">this online converter</a> that I'm using for some initial testing. ANd the <a href="http://php.net/manual/en/function.date.php">PHP date function</a>.</p>
+<p>Suggests the need to do a complete update of the timestamps in the bim_marking table.</p>
+</li>
+  <li> How to include the form stuff to work appropriately?<br />The requirement is to have one form per post with a drop box that allows allocation to another question (or unallocation).
+<p>This comes back to having to grok the moodleforms stuff and how that works.  A bit of hunting around and I seem to now have a better handle on it.  That will be tomorrow's job.</p>
+<p>Ok, time to revisit BAM and see how it is done.  A single form for the whole page, each drop box has a name that uniquely identifies the post (uses link, but with BIM can probably use post id)</p>
+<p>Finally getting the hang of using formslib.php, including customdata.  Part of it is getting back into coding and getting familiar with PHP.  The form is being created now.  Two tasks to complete: include the title of the post in the header, and process the form.</p>
+<p><strong>Post title</strong> is usually included in the allocate page. Trouble is it's not stored in the dbase. Need to get it from the RSS file that is cached. I could get it from there, but that raises some questions about caching (e.g. what happens if the student posts lots and their blog engine only puts the last X posts in the RSS file?).  For now, will not include the title.</p>
+<p><strong>Process the form</strong> Should be able to follow the standard process.  Things to check:</p>
+<ul>
+  <li> How to get it to auto-submit when a allocation is made? <br />Setting some attributes in the select box for "this.form.submit()".  <strong>DONE</strong></li>
+  <li> What's the URL being generated by the form? (Has to go to the right place)<br /> Will need to add some hidden variables.  <strong>DONE</strong></li>
+  <li> Where should that be handled in the view.php?<br />Looks like it should be handled just after when the form is created as it stands. But this raises questions about the first run, when the form data isn't being passed in.   Ahh, there's <code>is_submitted</code> as a method that helps there. <strong>Done</strong></li>
+  <li> How should it be handled?<br /> Essentially I need to get the data about which of the select menu was changed.  The <code>get_data</code> method is meant to return the form data, trouble is it's currently only returning the hidden values.  Not the values in the select menu chosen.<p>Is this a problem caused by using the Javascript onchange function?  Let's put a submit button in and use it instead. Nope, that doesn't make it work either. </p>
+<p>So, is there something else I'm doing wrong? Yep. I was putting a space in the name of each select box.  Which meant the first part of each one was the same as the others.  Remove the space and with the submit button it shows up. Yep, that fixes the problems with the javascript approach as well.</p>
+<p>The only change that a user can make is to one of the allocations.  This is shown in the parameter "Reallocate_<em>id</em>" (where id is from bim_marking) is not default.  The value of the parameter will be the qid or Unallocated (i.e. not "default").  Have that checking in place.</p>
+<p>That all seems to be working.</p>
+</li>
+  <li> Add a link back to the Show Post Details screen.<br />This type of thing, was going to be done - at least in part - with tabs once I figured out how to get them working.  This is slightly different.<p>One option might be to change the bread crumbs in the navigation for the view.php for the bim module.  Trouble is, that currently this is done prior to the smarts in the form processing.  It looks like I need to move the navigation building down into the processing. </p><p>Intent is to create a stand-alone function - bim_build_navigation - that I can move around at will until working.  This is requiring a fairly major refactoring of the code.  Surely there has to be a cleaner way to handle this.</p><p>This work deserves its own post.</p>
+</li>
+</ul>
+
+  </li>
+</ul>
+
+<a name="todo"></a>
+<h3>What's left to do</h3>
+
+<p>Allocate posts is essentially working.
+<ul>
+  <li> Need to reduce the size of the right hand column in the details table.</li>
+  <li> Update the timepublished field in bim_marking to be correct UNIX timestamps. </li>
+  <li> Question of converting a given date/time to a specific week within a Moodle course (if using that course structure). </li>
+  <li> Some additional testing and tidying up. </li>
+  <li> The breadcrumbs will need to be fixed. </li>
+  <li> Breadcrumbs for the student view will also need to be revisited. </li>
+  <li> Think about adding the "next/prev" student mechanism for allocation and mark. </li>
+</ul>
+<p>The next steps in BIM development should probably be:</p>
+<ul>
+  <li> Nut out the breadcrumbs for staff and students (so far). </li>
+  <li> Maybe get some screen dumps out to current users. </li>
+  <li> Get the marking page done. </li>
+  <li> Start thinking about the configuration/creation/management interface. (This is linked to the tab interface).</li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Creative Commons, Flickr and presentations: A bit of tinkering</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/10/20/creative-commons-flickr-and-presentations-a-bit-of-tinkering/">Creative Commons, Flickr and presentations: A bit of tinkering</a></h1>
+
+<p>Tags: Creative Commons, Creative Commons licence, thesis</p>
+
+<p>The following is a summary of some tinkering to develop a script that will help me appropriately attribute use of Creative Commons licensed images in presentations. Beyond addressing a long-standing problem of mine, this bit of tinkering is an attempt to feel a bit productive.
+
+<h2>The problem</h2>
+
+When I give presentations I use Powerpoint (not inherently the problem). I use it in a particular way. Lots of slides, little if any text, and each slide with an interesting photo related to the point I'm trying to make.  What follows is an example. (Move beyond the first slide for a feel).
+
+[slideshare id=26291132&amp;doc=movingbeyondafashion-130917200835-phpapp02]
+
+The images are all licensed with a Creative Commons licence and I source them from Flickr via the <a href="http://search.creativecommons.org/">Creative Commons search</a>. According to <a href="http://creativecommons.org.au/content/How_to_Attribute_CC_Materials_edu.pdf">this source</a><blockquote>All Creative Commons licences require that users of the work attribute the creator. This is also a requirement under Australian copyright law. This means you always have to acknowledge the creator of the CC work you are using, as well as provide any relevant copyright information.</blockquote>
+
+The document continues with "For many users of CC material, attribution is one of the hardest parts of the process".  My current practice is to include the URL of the original image on Flickr on each slide. This has three problems
+<ol>
+  <li> It adds text to each slide, taking away some of the impact of the image. </li>
+  <li> Doesn't fulfil the requirements of the CC licence. </li>
+  <li> With this style of presentation, most 20/30 minutes presentations are getting close to 100 slides often with the same number of images to attribute.</li>
+</ol>
+
+The requirements are<blockquote>you should:<ul>
+  <li> Credit the creator; </li>
+  <li> Provide the title of the work; </li>
+  <li> Provide the URL where the work is hosted; </li>
+  <li> Indicate the type of licence it is available under and provide a link to the licence (so others can find out the licence terms); and </li>
+  <li> Keep intact any copyright notice associated with the work. </li>
+</ul> </blockquote>
+
+There are a range of online services that help with attribution.  <a href="http://www.imagecodr.org/">ImageCodr</a> generates HTML, which I use often. <a href="http://www.zoo-m.com/flickr-storm/">flickr storm</a> does a similar task somewhat differently. The <a href="http://cogdogblog.com/flickr-cc-helper/">Flickr CC helper</a> will generate HTML or text.
+
+To fit with the workflow I use when creating presentations, I'm after something that will
+<ol>
+  <li> Parse a text file of the format<p>1 http://my.flickr.com/photo
+2 http://my.flickr.com/photo2</p> </li>
+  <li> Use the Flickr API to extract the information necessary for an appropriate CC attribution. </li>
+  <li> Add that to a text/HTML file that will form a "credits" slide at the end of a presentation. <p>As per the advice from <a href="http://creativecommons.org.au/content/How_to_Attribute_CC_Materials_edu.pdf">this source</a> <blockquote>Alternatively, you can include a ‘credits’ slide at the end of the show, that lists all the materials used and their attribution details. Again, you should indicate the slide or order so people can find the attribution for a specific work.</blockquote></p></li>
+  <li> Optionally, add a message to the photo on Flickr summarising how/where the photo has been used. </li>
+</ol>
+
+<h2>Tinkering process</h2>
+
+What follows is the planned/actual tinkering process toward implementation of a solution as a Perl script.  The script will use the <a href="http://www.flickr.com/services/api/">Flickr API</a> to extract the licence information and hopefully add a comment.
+
+<h3>Flickr API working - extracting information</h3>
+
+Perl has a range of <a href="http://search.cpan.org/search?query=flickr&amp;mode=all">Flickr related modules</a>.  <a href="https://github.com/TJC/Flickr-API2">Flickr::API2</a> seems to be the current standard.
+
+The <a href="http://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html">flickr.photos.licences.getInfo</a> method gives a list of all the licenses.   When you get a photo by id (part of the URL) Flickr returns a licence id with which you can find the URL and name of the licence for the photo.
+
+Some limitations of the information
+<ul>
+  <li> Flickr doesn't provide the abbreviation for the CC licences.<br />
+       hard-coded into the script. </li>
+  <li> The url_l method for Flickr::API2 doesn't seem to be working. <br />
+       that's because it's not a method - page_url works.
+  </li>
+  <li> The owner_name method for Flickr::API2 doesn't seem to always reliably return the owner's name.<br />
+       Use the username as a supplement.
+ </li>
+</ul>
+
+
+<h3>Generating credits page</h3>
+
+Initially, I was going to copy the format used by the <a href="http://cogdogblog.com/flickr-cc-helper/">flickr cc attribution helper</a> i.e.<p>cc licensed ( *ABBR* ) flickr photo by *username*:
+*URL*</p>
+
+But <a href="http://creativecommons.org.au/content/How_to_Attribute_CC_Materials_edu.pdf">this</a> suggests that the title of the work and a link to the licence is also required (though it does mention flexibility). The format they're using is<p>*title* by *name* available at *url*<br />
+under a *licence name* <br />
+*licence url*</p>
+
+Will do this as simple text, single reference to a line.  Will also add in the slide number.
+
+After a bit of experimentation the following is what the script is currently generating
+<p>Slide 2, 3: "My downhill run!" by Mike Mueller available at http://flickr.com/photos/mike912mueller/6407874723 under Attribution-NonCommercial-ShareAlike License http://creativecommons.org/licenses/by-nc-sa/2.0/
+
+Slide 4: "Question Mark Graffiti" by zeevveez available at http://flickr.com/photos/zeevveez/7095563439 under Attribution License http://creativecommons.org/licenses/by/2.0/
+
+Slide 1: "Greyhound Half Way Station" by Joseph available at http://flickr.com/photos/josepha/4876231714 under Attribution-NonCommercial-ShareAlike License http://creativecommons.org/licenses/by-nc-sa/2.0/
+</p>
+
+Modified to recognise that I sometimes use an image on multiple pages.  I should perhaps add a bit of smarts into the code to order the slides correctly, but time is short.
+
+<h3>Adding comment on Flickr</h3>
+
+The <a href="http://www.flickr.com/services/api/flickr.photos.comments.addComment.html">  flickr.photos.comments.addComment method</a> seems to offer what I need.  Of course it's not that simple.  To make a comment the script needs to be authenticated with flickr.  i.e. as me.
+
+The documentation for Flickr::API2 is not 100% clear on this and the evolution of authentication means that flickr is moving on, but the following process seems to work
+<ul>
+  <li> Get a "frob"
+[sourcecode lang="perl"]
+use Flickr::API2;
+my $api = Flickr::API2-&gt;new({
+                'key'    =&gt; &lt;em&gt;mykey&lt;/em&gt;,
+                'secret' =&gt; &lt;em&gt;mysecret&lt;/em&gt; });
+my $result = $api-&gt;execute_method( 'flickr.auth.getFrob' );
+my $frob = $result-&gt;{frob}-&gt;{_content};
+[/sourcecode] </li>
+  <li> Get a special URL to tell Flickr to authorise the script
+[sourcecode lang="perl"]
+my $url = $api-&gt;raw-&gt;request_auth_url( 'write', $frob );
+print Dumper( $url );
+# wait until I visit the URL and hit enter
+&lt;STDIN&gt;;
+[/sourcecode]
+  </li>
+  <li> Get the token
+[sourcecode lang="perl"]
+my $res = $api-&gt;execute_method( 'flickr.auth.getToken', { 'frob' =&gt; $frob} );
+print Dumper( $res );
+[/sourcecode]
+  </li>
+  <li> Copy the token that's displayed and hard code that into subsequent scripts, including adding a comment using my flickr account.
+[sourcecode lang="perl"]
+my $comment =&lt;&lt;"EOF";
+G'day, This is a test comment.
+EOF
+my $response = $api-&gt;execute_method( "flickr.photos.comments.addComment",
+                      { photo_id =&gt; 3673725336, comment_text =&gt; $comment,
+                        auth_token =&gt; &lt;em&gt;the token I got&lt;/em&gt; } );
+[/sourcecode] </li>
+</ul>
+
+
+<h2>Put it all together</h2>
+
+I'm going to use a small presentation I use in my teaching as a test case.  I'll hardcode the link between image and slide number into the initial script.  Longer term the script will rely on there being a text file of the format
+<blockquote>1,<em>flickr photo url</em>
+2,<em>flickr photo url</em></blockquote>
+(see below for some ideas of how I'll do this)
+
+It all works.  Up above you can see the credit text produced based on a small presentation I use in my teaching.  The following is one of the images used in that presentation. If you click on the image you can see the comment that was added by the script.
+
+<div><a href="http://www.flickr.com/photos/josepha/4876231714/" target="_blank"><img alt="Greyhound Half Way Station by joseph a, on Flickr" border="0" src="http://farm5.static.flickr.com/4115/4876231714_2e5f81b446_m.jpg" title="Greyhound Half Way Station by joseph a, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nc-sa/2.0/" rel="license" target="_blank"><img align="left" alt="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nc-sa/2.0/80x15.png" title="Creative Commons Attribution-Noncommercial-Share Alike 2.0 Generic License" /></a>&nbsp;&nbsp;by&nbsp;<a href="http://www.flickr.com/people/josepha/" target="_blank">&nbsp;</a><a href="http://www.flickr.com/people/josepha/" rel="cc:attributionurl" target="_blank">joseph a</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+What follows are various bits of the script, happy to share the file, but I don't imagine that there's a lot of folk with Perl installed and configured that would want to use it.  There needs to be some more work tidying up and adding in error checking.  But it works well enough for now.
+
+The main logic of the script is
+
+[sourcecode lang="perl"]
+use strict;
+use Flickr::API2;
+
+# hard-code abbreviations for CC licences based on Flickr id
+my %CC = ( 1 =&gt; "BY-NC-SA",  2 =&gt; "BY-NC",  3 =&gt; "BY-NC-ND",
+           4 =&gt; "BY", 5 =&gt; "BY-SA", 6 =&gt; "BY-ND" );
+
+my $TOKEN = "my token";
+my $auth = {
+    'key'    =&gt; 'my key',
+    'secret' =&gt; 'my secret'
+};
+
+# which flickr URLs appear on which slides
+# flickr photo URL is the key, value is array of slides on which the image appears
+my $PHOTO_SLIDES =
+{
+    'http://www.flickr.com/photos/7150652@N02/4876231714/' =&gt; [ 1 ],
+    'http://www.flickr.com/photos/27933068@N03/6407874723/' =&gt; [ 2, 3 ],
+    'http://www.flickr.com/photos/zeevveez/7095563439/' =&gt; [ 4 ]
+};
+
+my $COMMENT =&lt;&lt;"EOF";
+--whatever comment I want to add
+EOF
+
+my $API = Flickr::API2-&gt;new( $auth );
+my $credits = generate_credits( $PHOTO_SLIDES, $API );
+add_comment( $PHOTO_SLIDES, $COMMENT, $API );
+print $credits;
+[/sourcecode]
+
+To add the comments (I'm guessing the extraction of the Flickr ID will break eventually)
+
+[sourcecode lang="perl"]
+sub add_comment($$$) {
+    my $photo_slides = shift;
+    my $comment = shift;
+    my $api = shift;
+
+    foreach my $photo_url ( keys %$photo_slides ) {
+        if ( $photo_url =~ m#http://www.flickr.com/photos/.*/([0-9]*)/# ) {
+            my $id = $1;
+            my $response = $api-&gt;execute_method(
+                "flickr.photos.comments.addComment",
+                { photo_id =&gt; $id, comment_text =&gt; $comment,
+                  auth_token =&gt; $TOKEN } );
+        }
+    }
+}
+[/sourcecode]
+
+And finally generating the attribution information
+
+[sourcecode lang="perl"]
+sub generate_credits( $$ ) {
+    my $photo_slides = shift;
+    my $api = shift;
+
+    ## Get the licence options
+    my $response = $api-&gt;execute_method( "flickr.photos.licenses.getInfo" );
+    my $licences = $response-&gt;{licenses}-&gt;{license};
+
+    my $content = "";
+
+    foreach my $photo_url ( keys %$photo_slides ) {
+        # extract the id
+        if ( $photo_url =~ m#http://www.flickr.com/photos/.*/([0-9]*)/# ) {
+            my $id = $1;
+            my $photo = $api-&gt;photos-&gt;by_id( $id );
+
+            #  get the licence
+            my $info = $photo-&gt;info();
+            my $licence = getLicence( $info-&gt;{photo}-&gt;{license}, $licences);
+            die "No CC licence found for $photo_urln"
+                if ( ! defined $licence ) ;
+            $content .= displayInfo( $licence, $photo, $info, $photo_slides-&gt;{$phto_url} );
+        }
+    }
+    return $content;
+}
+
+sub displayInfo( $$$ ) {
+    my $licence = shift;
+    my $photo = shift;
+    my $info = shift;
+    my $slides = shift; # array of slide numbers
+
+    my $slide = join ", ", @$slides;
+
+    my $url = $photo-&gt;page_url;
+    $url =~ s/ //g;
+    my $name = $photo-&gt;owner_name;
+    $name = $info-&gt;{photo}-&gt;{owner}-&gt;{username} if ( $name eq "" );
+
+    return &lt;&lt;"EOF";
+Slide $slide: "$photo-&gt;{title}" by $name available at $url under $licence-&gt;{name}
+$licence-&gt;{url}
+
+EOF
+}
+
+sub getLicence( $$ ) {
+    my $id = shift;
+    my $licenses = shift;
+
+    foreach my $licence ( @{$licenses} ) {
+        return $licence if ( $id == $licence-&gt;{id} );
+    }
+
+    return undef;
+}
+[/sourcecode]
+
+
+
+<h2>Getting the URLs of images</h2>
+
+The final script assumes I have a text file of the format
+
+The question of how to generate this text file remains open. I can see three possible options
+<ol>
+  <li> Construct the file manually.<p>This would be painful and have to wait until after the presentation file is complete. Manual is to be avoided.</p></li>
+  <li> Extract it from the Slideshare transcript.<p>As well as producing an <a href="http://www.slideshare.net/davidj/moving-beyonda-fashion">online version of a presentation</a>, Slieshare also produces a transcript of all the text.  This includes flickr photo URLs.  This currently works because of my practice of including the URLs on each slide, something I'd like to avoid.  As a kludge, I could probably include the URL on each slide but place it behind the image.  i.e. make it invisible to the eye, but still to slideshare?</p></li>
+  <li> Extract it from the pptx file.<p>Powerpoint files are now just zip file collections of xml files. I could draw on perl code <a href="http://www.perlmonks.org/?node_id=1022468">like this</a> to extract the URLs.  Perhaps the best way is to insert the Flickr URL of the photos used in the notes section (as they too are XML files).</li>
+</ol>
+
+#3 is the long term option.  Will use #2 as my first test.</p>
+
+</body>
+</html>

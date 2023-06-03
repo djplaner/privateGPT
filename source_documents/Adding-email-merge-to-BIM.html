@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding email merge to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/30/2933/">Adding email merge to BIM</a></h1>
+
+<p>Tags: bim, elearning, moodle, Uncategorized</p>
+
+<p><p>The following details an attempt to use user/messageselect.php with BIM in an attempt to move towards implementing an <a href="https://djon.es/blog/2010/05/28/one-potential-approach-to-provide-a-moodle-email-merge-facility/">email merge facility</a> for BIM.</p>
+
+<h3>BIM passing users</h3>
+
+<p>The intent here is that BIM will be used to select the users and will pass it to message select.  The first test will be to replace the current "unregistered users" section on "Your Students" which simply shows a list of email address which the staff member has to copy and paste into an email program.  See the following screen shot (click on it to see it larger).</p>
+<a href="http://www.flickr.com/photos/david_jones/4652359046/" title="Unregistered users - BIM your students by David T Jones, on Flickr"><img alt="Unregistered users - BIM your students" height="42" src="http://farm5.static.flickr.com/4033/4652359046_cf2681bebc_m.jpg" width="240" /></a>
+<p>The idea is to replace it with a simple link that when clicked on will pass the details of the unregistered users to messageselect.php</p>
+
+<h3>Parameters for messageselect</h3>
+
+<p>For this to work, I need to pass messageselect all the parameters it expects in the way it expects them.</p>
+<p>First, the parameters is expects are:</p>
+<ul>
+  <li> The list of user ids for the recipients.<br />This is done using checkboxes with parameter names <strong>user<em>id</em></strong> where id is the Moodle user id. </li>
+  <li> The course id.<br /><strong>id</strong> set to the Moodle course id. </li>
+  <li> <strong>formaction</strong><br />Seems to simply be the name of the messageselect script.</li>
+  <li> <strong>returnto</strong><br />path of script it's coming from.</li>
+</ul>
+
+<h3>Parameter passing for message select</h3>
+
+<p>In terms of how to pass the data, I've tried a normal query string.  But that didn't seem to create the necessary outcome.</p>
+<p>It appears that messageselct uses the <a href="http://www.w3schools.com/php/php_post.asp">PHP $_POST</a> variable/function which is used for a form with the post method.  So let's try that.</p>
+<p>Yep, that seems to work.  May be as simple as that.</p>
+<p>Have been able to get that working, however, the "returnto" doesn't seem to work all the way done the various screens. Works on the first, but not on the last.</p>
+
+<h3>bim_email_merge</h3>
+
+<p>The following is the function I've added to bim to enable the use of messageselect.php</p>
+[sourcecode lang="php"]
+function bim_email_merge( $ids, $course, $returnto, $button_msg ) {
+
+    global $CFG;
+
+    print &lt;&lt;&lt;EOF
+&lt;form method="post" action="$CFG-&gt;wwwroot/user/messageselect.php" /&gt;
+&lt;input type="hidden" name="id" value="$course" /&gt;
+&lt;input type="hidden" name="returnto" value="$returnto" /&gt;
+&lt;input type="hidden" name="formaction" value="messageselect.php" /&gt;
+&lt;input type="submit" name="submit" value="$button_msg" /&gt;
+EOF;
+
+    foreach ( $ids as $id )  {
+        print "&lt;input type="hidden" name="user{$id}" value="on" /&gt;";
+    }
+    print "&lt;/form&gt;";
+}
+[/sourcecode]
+<p>This function displays a submit button with a given message. If pressed the form sends a list of Moodle user ids ($ids) to messageselect.  At this stage the user can create the message, choose to remove some users and then send the message.  I think.</p>
+<p>Implemented in BIM, it looks like the following.</p>
+<a href="http://www.flickr.com/photos/david_jones/4651993995/" title="BIM's new email merge by David T Jones, on Flickr"><img alt="BIM's new email merge" height="101" src="http://farm5.static.flickr.com/4070/4651993995_51e6721e3b_o.jpg" width="317" /></a></p>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A #moodle course site wide "macro" facility?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/01/22/a-moodle-course-site-wide-macro-facility/">A #moodle course site wide "macro" facility?</a></h1>
+
+<p>Tags: moodle</p>
+
+<p><strong>UPDATE (Feb 2015):</strong> Have implemented a version of this using a simple Javascript approach. Not quite course site wide, but functional
+
+In the process - like an increasing number of Oz academics - updating a course site for a new semester. I'm fairly happy with the site as it stands and the Moodle copy process does a good job of updating links (i.e. the link to assignment 1 now links to assignment in the new course site, not the old). The trouble is that the current process doesn't currently do a good job with dates and other values that may change from semester to semester.
+
+So I'm wondering
+<ol>
+  <li> How one might implement a course site wide macro facility? </li>
+  <li> Alternatively, what existing feature of Moodle am I unaware of? </li>
+</ol>
+
+<h3>The problem</h3>
+
+Throughout the course site there are a range of labels that will exist each semester, but which may have slightly different values. Some examples include:
+<ul>
+  <li> Due dates for assessment.
+       <p>Assignment 1 tends to be due at the start of week 5, but week 5 has a different date each semester.</p> </li>
+  <li> Weekly titles.
+       <p>The course is structured by week. Each week has a particular question as its title. I like to tweak these titles based on what works (or doesn't).</p> </li>
+</ul>
+
+Since these "labels" are used in multiple places in the course site, if the values of these labels have to change, I have to find all uses of these labels and change them manually.
+
+<h3>One solution type - a macro facility?</h3>
+
+I'd find it useful if there was a central macro facility where I could define a range of variables and their values. For example
+<ul>
+  <li> ASSIGNMENT_1_DUE_DATE = 31st March - start of week 5 </li>
+  <li> WEEK_10_TITLE = "Digital citizenship" </li>
+</ul>
+
+On the course site, I would then use the variable (WEEK_10_TITLE), rather than the value. Some technology would replace the variable with the value prior to display to the user.
+
+<h3>Implementation?</h3>
+
+Really thinking aloud here.
+
+Given the cost of changing the Moodle core - I assume putting something like this in Moodle would require a change to core - that's probably not an option in the short-term.  But this is also where existing discussion of an idea like this may have occurred or been addressed.
+
+The only potential method by which I could implement something like this that springs to mind is Javascript. i.e. include some javascript in all the Moodle course pages that implement some form of macro substitution on the client's end.
+
+<h3>Post script</h3>
+
+This is an example of attempting to live within the constraints of the system. A longer term solution would be to break out of it entirely. Give up the question of fixed weeks, fixed due dates for assignments, the idea of a course remaining so consistent that only a few values need to change each semester etc. On the last point, there will be more detailed changes made. A feature like this simply gives more time to make those "better" changes by saving time on the more menial requirements.
+
+I also think it's an interesting example of how institutions that are increasingly moving to standardised, industrialised, approaches to supporting learning &amp; teaching are doing it in ways that they are either unaware of gaps in their systems/processes or are unable to conceptualise how this might work.</p>
+
+</body>
+</html>

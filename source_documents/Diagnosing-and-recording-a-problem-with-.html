@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Diagnosing and recording a problem with BAM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/05/19/diagnosing-and-recording-a-problem-with-bam/">Diagnosing and recording a problem with BAM</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>Trying out a new approach to documentation of coding changes to <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BAM</a> - i.e. writing it up in a post.</p>
+
+<h3>The problem</h3>
+
+<p>A large number of student blogs are being reported as "Not mirrored yet". BAM is meant to report the amount of time since an individual student blog was last updated (i.e. a student made a post) and mirrored. </p>
+
+<h3>Diagnosing the problem</h3>
+
+<ul>
+  <li> Is mirroring still working?<br />Yes, student blogs are being mirrored as they updated.  The copies of each student's RSS feed is being kept up to date.<li>
+  <li> Are the new posts being "allocated" properly? <br />Yes, the student I'm checking has a RSS file with a file system time stamp of "May 14 20:43". This indicates when the file was mirrored from the student's blog. <p>The BAM_BLOG_MARKING table has a DATE_PUB time stamp for the most recent post for this student of "2009-05-14 10:43:11". This indicates that the allocation is working, when BAM mirrors a RSS file, it goes through each student post, any new ones it attempts to allocate.</p><p>It appears that it is using the CQU system current time to allocate DATE_PUB<blockquote><strong>Small problem:</strong> Strictly speaking it should be using the date published value for the post as stored in the RSS.</blockquote></p> <strong>Actually</strong>, this isn't what's happening, the student had actually made a post at that time.</li>
+  <li> Is the "LAST_POST" field being updated? <br />No, it's set to the 0 value.  This is where the problem is starting.  When the display code sees this 0 value, it assumes that the blog hasn't been mirrored yet.   </li>
+</ul>
+<p>Something in the allocation process is updating the LAST_POST field in BAM_BLOG_STATISTICS incorrectly.  Rather than put in the timestamp for the most recent post, it's setting it to 0.</p>
+
+<h3>Locating the problem</h3>
+
+<p>The mirror/allocation process is</p>
+<ul>
+  <li> BAM/support/mirror.pl creates BAM::Mirror object and calls DoMirror</li>
+  <li> BAM::Mirror::DoMirror<br />For each course currently being mirrored , create BAM::BlogStatistics object and call DoMIrror</li>
+  <li> BAM::BlogStatistics::DoMirror<br />For each student in the course
+ mirrorFeed (get the latest copy of the RSS file for the blog) and then parseFeed. </li>
+  <li> BAM::BlogStatistics::parseFeed
+        <ul>
+            <li> use XML::Feed to parse the local copy of the RSS file </li>
+            <li> use XML::Feed to get the lastModified timestamp for the blog</li>
+            <li> if there are more posts in the new file than the last one then
+                    <ul>
+                        <li> BAM::BlogElements-&gt;new for the student </li>
+                        <li> updateMarking </li>
+                    </ul>
+             </li>
+          </ul>
+  </li>
+  <li> if mirrorFeed returns true then update NUM_ENTRIES and LAST_POST in BAM_BLOG_STATISTICS </li>
+</ul>
+<p>It appears that the likely problem is</p>
+<ul>
+  <li> the value for LAST_POST is being set incorrectly in parseFeed, or </li>
+  <li> the update of LAST_POST is setting it to the wrong value. </li>
+</ul>
+<p>My guess is that parseFeed is the source of the problem - though I wonder why it's happened all of a sudden.</p>
+
+<h4>Checking parseFeed</h4>
+
+<p>Will have to write a stand alone script using XML::Feed and an existing RSS file.  Can't use the above as the mirror thing depends on a new post.</p>
+<p>Well, it looks like the "modified" method for XML::Feed is not working.  Why?</p>
+<p>Okay, tried the same script on an "old" XML file.  It seems that Wordpress - possibly for an external reason - has changed the format of the RSS that it generates.  This has broken the method used to get the time the blog was last updated.</p>
+<p>The change, in the XML, appears to have been a change from the tag "pubDate" to "modified".</p>
+
+<h3>Solution</h3>
+
+<p>The current Perl/Webfuse-based instantiation of BAM is not likely to last long. Combine this with other contextual factors and the solution will have to be a kludge. </p>
+<p>Essentially some additional checking has been inserted into the section that tries to get the lastModified timestamp for the blog. Very kludgy</p>
+<p>Have also modified the return code check of the mirror process.  Normally it only runs the parseFeed stuff if the return code is 200 i.e. there's been a change.  Modified it (for short-term) to run parseFeed for 304 return codes - this will update the LAST_POST value.</p>
+<p>Running this on a whole course identified another kludge that was needed to get the modified date.  That's done. Now to run the kludge script on all the current courses, remove the 304 check and then commit everything.</p></p>
+
+</body>
+</html>

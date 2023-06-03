@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>github and the Moodle book - Step 2</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/08/16/github-and-the-moodle-book-step-2/">github and the Moodle book - Step 2</a></h1>
+
+<p>Tags: moodleopenbook</p>
+
+<p>The continuing story of linking github and the Moodle book module. Following on from <a href="https://davidtjones.wordpress.com/2015/08/14/bringing-github-and-the-moodle-book-module-together-step-1/">step 1</a> the main aim here is to grok <a href="https://github.com/tan-tan-kanarek/github-php-client">the PHP client</a> for the github api I'm currently chosen.
+
+Some additional work to be done includes
+<ol> <li> Consider use of branches etc</li>
+  <li> Ponder whether to work only with releases - or more open as listed below.
+      Releases is more directly supported by the PHP client, but directly with content may be a little more flexible. But releases are perhaps more inline with expectations?  Perhaps this is a question to answer by looking at some of the ways other similar projects are working.
+      <p>At this stage, I sort of see using the book to modify the repo as something that is happening prior to a release.</p>
+ </li>
+  <li> Looks like storing the sha of the file in a local Moodle database will be necessary to help with checking statuses etc. </li>
+</ol>
+
+<h2>How to (if)?</h2>
+
+I've got it installed and working from command line php scripts. Need to figure out how to use it
+
+<ol>
+  <li> Does the file exist in the repo?
+Getting the content should return a 200 status code and "type: file" if it is a file, but it will also return the content of the file.
+  </li>
+  <li> Create a new file
+<a href="https://developer.github.com/v3/repos/contents/#create-a-file">API</a>: PUT /repos/:owner/:repo/contents/:path
+     <a href="#createFile">Initial implementation</a> in PHP working.
+ </li>
+  <li> (fetch) Get the content for the file.
+<a href="https://developer.github.com/v3/repos/contents/#get-contents">API</a> - GET /repos/:owner/:repo/contents/:path
+         <a href="#getFile">Intial implementation</a> in PHP working.
+  </li>
+  <li> (push) Update the file with new content.
+<a href="https://developer.github.com/v3/repos/contents/#update-a-file">API:</a> PUT /repos/:owner/:repo/contents/:path
+       <a href="#updateFile">Initial implementation</a> in PHP working
+</li>
+  <li> What is the status of the file in the repo?
+       What do I actually mean by status? The full history?   Still need to find what, if anything in github/git/the API provides this.
+  </li>
+  <li> What is the relationship between the content/status of the file in the repo and the content in the book.
+         Looks like it's available via the same call.
+   </li>
+</ol>
+
+<h3>How does it work</h3>
+
+Would help if I understood the model that it uses.  Some of the example code includes something like[code lang="php"]$commits = $client-&gt;repos-&gt;commits-&gt;listCommitsOnRepository($owner, $repo);[/code]
+
+The question is whether or not there is any pattern in common between this and the github API.  I assume there is and grokking that pattern should lead to understanding how to use the API.
+
+The assumption is that the client provides a method to access the API and hence the pattern of methods etc should match.
+
+In <a href="https://developer.github.com/v3/">the GitHub api</a> is there an equivalent to <em>listCommitsOnRepository</em>? And is it found in something within a hierarchy of repos/commits?
+
+<a href="https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository">There does</a> appear to be a match.  The heading <em>List commits on a repository</em> seems to match and its found within repos/commits.
+
+Can I apply this to get the contents of a file?
+
+The <a href="https://developer.github.com/v3/repos/contents/#get-contents">GitHub API defines it here</a>
+<ol>
+  <li> Title - <em>Get contents</em> meaning method <em>getContents</em>?? </li>
+  <li> Structure is Repositories/Contents </li>
+  <li> parameters - owner, repo, path
+</ol>
+
+Leading to something like
+[code lang="php"]$commits = $client-&gt;repos-&gt;contents-&gt;getContents($owner, $repo, $path);[/code]
+
+Let's see if I can write code to retrieve the contents <a href="https://github.com/djplaner/edc3100/blob/master/Who_are_you.html">of this file</a> from GitHub.
+
+Mmm, getting undefined method for getContent(s).
+
+Let's dig into the code.  <a href="https://github.com/tan-tan-kanarek/github-php-client/blob/master/client/GitHubClient.php">GitHubClient</a> class creates the various objects.
+
+What does <a href="https://github.com/tan-tan-kanarek/github-php-client/blob/master/client/services/GitHubRepos.php">GitHubRepos</a> contain?  There is a link "contents" (<a href="https://github.com/tan-tan-kanarek/github-php-client/blob/master/client/services/GitHubReposContents.php">GitHubReposContents</a>) as expected.  But it only apparently gets the readme!!!
+
+Which does work.  But begging the question, where's the rest?
+
+One fall back would be to call directly - the getReadMe is implemented via
+[lang code="php"]return $this-&gt;client-&gt;request("/repos/$owner/$repo/readme", 'GET', $data, 200, 'GitHubReadmeContent');[/lang]
+
+That appears to work.  Now the question is whether I can get the content.  Yep, there is a method that will do that.  But it's still encoded in base64.  <a href="http://php.net/manual/en/function.base64-decode.php">This</a> will fix that. The rough code that's working follows.
+
+<h3 id="getFile">Code for get a file</h3>
+
+The following only works if the repository is open. The major kludge here is the use of <em>GitHubReadmeContent</em> as the last parameter in the request. This appears to define the type of object that is returned by request.  This appears to work (for now) because the Readme is just another file. Hence it appears that the various members etc are directly applicable.
+
+A final version should check use <em>getType</em> to check that the type of content returned is a file and not a symlink or directory
+
+[code lang="php"]
+$owner = 'djplaner';
+$repo = 'edc3100';
+$path = 'Who_are_you.html';
+
+$client = new GitHubClient();
+
+$data = array();
+$response = $client-&gt;request( "/repos/$owner/$repo/contents/$path", 'GET', $data, 200, 'GitHubReadmeContent'   );
+
+print "content is " . base64_decode( $response-&gt;getContent() );[/code]
+
+<h3>Creating a new file?</h3>
+
+At this stage, I'm thinking I'll stick with the approach of using request directly. Mainly because <a href="https://developer.github.com/v3/repos/contents/#create-a-file">GitHub API for this</a> indicates it's part of Contents. And it already appears that contents doesn't include support for method.  Yep, not there.
+
+<em>PUT /repos/:owner/:repo/contents/:path</em> will do it.  But it also lists other parameters message (commit message) and content as required.  Plus committer and branch as optional.  Plus this is also likely going to require credentials.
+
+Yep, 404 error.  Credentials required.  Put in what I think is the required code and get a 422.  Which is invalid field.  API documentation suggests content is required.  Best provide some.
+
+And that appears to work.  At least the file was <a href="https://github.com/djplaner/edc3100/blob/master/A_new_file.html">created on GitHub</a>.  But it got a 201, rather than a 200 back.  Which is actually what the documentation says should happen.  Another quick test.
+
+That's better and the <a href="https://github.com/djplaner/edc3100/blob/master/A_2nd_new_file.html">2nd file is created</a>.  This code is listed below.
+
+An example of the PHP client appears to be using releases as a way to upload (or create) a new file.
+
+<h3 id="createFile">Code to create a file</h3>
+
+Much the same limitation as above - i.e. is GitHubReadmeContent really the best value for the last parameter.
+
+Will also need to look at handling exceptions (e.g. when the response code is different).
+
+[lang code="php"]
+$owner = 'djplaner';
+$repo = 'edc3100';
+$path = 'A_2nd_new_file.html';
+$username = 'djplaner';
+$password = 'some password';
+
+$client = new GitHubClient();
+$client-&gt;setDebug( true );   # this is a nice little view
+$client-&gt;setCredentials( $username, $password );
+
+$content = "This will be the content in the second file. The 1st time";
+
+$data = array();
+$data['message'] = 'First time creating a file';
+$data['content'] = base64_encode( $content );
+
+$response = $client-&gt;request( "/repos/$owner/$repo/contents/$path", 'PUT', $data, 201, 'GitHubReadmeContent'   );
+[/code]
+
+<h3>Update a file</h3>
+
+Going to stick with the same method.  In essence, this should be an almost direct copy of the code above.  Ahh, one difference.  There is an additional required parameter - sha - "The blob SHA of the file being replaced".  This will be something that needs to be gotten from git - it's returned by getting content.  Wonder if there's a get status?
+
+That appears to be working
+
+<h3 id="updateFile">code to update file</h3>
+
+[code lang="php"]
+$owner = 'djplaner';
+$repo = 'edc3100';
+$path = 'A_2nd_new_file.html'; # an existing file
+$username = 'djplaner';
+$password = 'some password';
+
+$content = "This will be the content in the second file. The 4th time";
+
+$client = new GitHubClient();
+#$client-&gt;setDebug( true );
+$client-&gt;setCredentials( $username, $password );
+
+$sha = getSha( $client, $owner, $repo, $path ); # get the content to get sha
+
+$data = array();
+$data['message'] = 'First time creating a file - Update 4';
+$data['content'] = base64_encode( $content );
+$data['sha'] = $sha;
+$data['committer'] = array( 'name' =&gt; 'David Jones',
+                            'email' =&gt; 'some email' );
+
+$response = $client-&gt;request( "/repos/$owner/$repo/contents/$path", 'PUT', $data, 200, 'GitHubReadmeContent'   );
+
+print_r( $response );
+[/code]
+
+<h3>Statuses</h3>
+
+<a href="https://developer.github.com/v3/repos/statuses/">Separate part of the API</a> seems to deal with these.  Works on the sha.
+
+Seems the PHP client has a method based on repos to access this listStatusesForSpecificRef
+
+Mmmm, this doesn't look like it will do what I want at all.  More searching required.</p>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Using Votapedia</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/10/06/using-votapedia/">Using Votapedia</a></h1>
+
+<p>Tags: iLecture, Uncategorized, votapedia</p>
+
+<p><p>In the next couple of weeks I'm going to be giving <a href="https://djon.es/blog/2009/10/05/lectures-and-the-lms-alternatives-and-experiments/">a presentation</a> that will also serve as an experiment in alternate technologies for presentations.  One of those technologies will be <a href="http://www.votapedia.com/">Votapedia.com</a> - an Australian-based, free SMS/Web audience response system.  This post is meant to capture the process I went through in learning about how to use Votapedia.</p>
+
+<h3>Accounts</h3>
+
+<p>Votapedia is based on <a href="http://www.mediawiki.org/wiki/MediaWiki">Mediawiki</a>.  To create quizzes on Votapedia you need to get an authorised account.  This consists of two steps:</p>
+<ol>
+  <li> create an account;<br />Using the normal mediawiki approach.</li>
+  <li> get the account authorised or known.<br />This is entails sending an email to a person with some blurb about what you're using it for.  I got a response in a few hours.  </li>
+</ol>
+<p>Participants using the service to "vote" don't need accounts. However, those voting via the Web can create accounts to use in voting - they don't need to.</p>
+<p>There are limits placed on how many times participants can "vote", but this is done on the basis of the IP address (if via the web) or their phone number (via phone).</p>
+
+<h3>Creating a survey</h3>
+
+<p>Surveys exist on their own page on the Votapedia installation of MediaWiki.  You can create surveys by using some specific markup or using one of a number of "forms" which automate the process. Let's create one.</p>
+<p>A part of the <a href="http://www.votapedia.com">Votapedia</a> home page is shown in the following image.  The links in the first left-hand menu are how you create surveys.  There are 6 different types of surveys.</p>
+<table border="1" cellpadding="2">
+  <tr> <th>Survey type</th> <th>Description</th> </tr>
+  <tr> <td valign="top">Simple survey</td><td valign="top"></td></tr>
+  <tr> <td valign="top">Questionnaire</td><td valign="top">This is a survey with more than one question. Wit h this type of survey you don't need to wait for everyone to finish a question before moving on.</td></tr>
+  <tr> <td valign="top">Quiz</td><td valign="top">Essentially a questionnaire, but with other features (allocate points, can't see the quiz page before it starts..) to allow it to be used for student assessment.</td></tr>
+  <tr> <td valign="top">Anonymous text</td><td valign="top">Participants submit whatever they want</td></tr>
+  <tr> <td valign="top">Identified text</td><td valign="top"></td></tr>
+  <tr> <td valign="top">Rank expositions</td><td valign="top"></td></tr>
+</table>
+
+<a href="http://www.flickr.com/photos/david_jones/3985251703/" title="Votapedia home page  by David T Jones, on Flickr"><img alt="Votapedia home page " height="326" src="http://farm3.static.flickr.com/2455/3985251703_aaf49623c2_o.jpg" width="368" /></a>
+<p>Each link takes you to a basic HTML form that guides you in the information required to create the chosen survey.  The following image is for the simple survey (click on it to see more).</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3986017448/" title="Creating a simple survey on votapedia by David T Jones, on Flickr"><img alt="Creating a simple survey on votapedia" height="210" src="http://farm3.static.flickr.com/2672/3986017448_6371d6dd27_m.jpg" width="240" /></a>
+
+<p>Well, that's not good. It didn't work. Filled out the form, all good, hit submit and I get "There is currently no text in this page".</p>
+<p>So, I try to create another survey.  Very simple and don't do anything to upset the gods.  Same error.  Not good.  Go looking and see there's a link "My Surveys", perhaps that might give me the link.  Yep, the two surveys do show up on that page, see the following image.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3986038100/" title="My Surveys on Votapedia by David T Jones, on Flickr"><img alt="My Surveys on Votapedia" height="178" src="http://farm3.static.flickr.com/2450/3986038100_c9310792b1_m.jpg" width="240" /></a>
+
+<p>Okay, if I click on the link for one of the surveys on "My Surveys" page I get a page with the same "error". Now, there is a "Choose Number" link for each survey, maybe I need to select that first.</p>
+<p>It appears that Votapedia has a limited set of phone numbers, choose number means selecting from that collection of numbers, one number for each response. Some are in red - which means you can't use them - some are in green. </p>
+<p>Trouble is that you can only chose one number at a time and it always asks for me to choose the first number.  What about the others?</p>
+<p>It would seem that I am missing something important.</p>
+<p>Tried to create an "anonymous text" survey, same problem.  There are other surveys that seem to be working....</p>
+<p>Mmmm, now they are working.  The main thing that changed was that I changed the password for my account.  I don't think that will have changed anything. Here's the proof.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3985388561/" title="My first Votapedia quiz by David T Jones, on Flickr"><img alt="My first Votapedia quiz" height="186" src="http://farm4.static.flickr.com/3460/3985388561_41f9ae2c1b_m.jpg" width="240" /></a>
+
+<p>Still only able to choose one phone number.  Well, let's try and start the survey.  Hit the "Start survey" button....that seems to start it.  The numbers are already there.  Let's try.  Phone the number for my response, and hey presto it works.  Engaged tone and the graph is updated in front of my eyes.  That's neat.  Time to tell some other folk.</p>
+<p>Ahh, I've now got an SMS from Votapedia thanking me for my vote and giving me some details to login to the website.</p>
+<p>Now I did want to try and change the survey while it was running.  I wanted to remove the results from the page and enable web voting.  But it didn't look like I could change it while the survey was running.  So I've turned it off and will reset the survey and see if the changes work.</p>
+<p>But of course, this was because I was viewing the survey through my account. Not what a visitor would see.  Silly David.</p>
+
+<h3>Running a survey</h3>
+
+<p>Just briefly, asked a few colleagues to take the survey - all up 7 participants.  The experience highlighted:</p>
+<ul>
+  <li> Getting the engaged signal when dialing the number gave the impression of failure - this needs to be made clear at the start. </li>
+  <li> The web interface for taking the poll suffered the same problem that I described above when creating the question. </li>
+</ul>
+<p>Results looked like the following image.  Interestingly, it seems at least some of the participants missed the <strong>least</strong> modifier in the question.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3985764455/" title="Results of Votapedia question by David T Jones, on Flickr"><img alt="Results of Votapedia question" height="145" src="http://farm4.static.flickr.com/3489/3985764455_7169784299_m.jpg" width="240" /></a>
+
+<h3>Conclusions</h3>
+
+<p>Still a bit dodgy in places via the web interface. Phone side worked well. Will need the right sort of preparation of participants.</p>
+<p>The question of the phone numbers and how long it takes to dial a response is also an issue.</p></p>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding "deleted" to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/04/30/adding-deleted-to-bim/">Adding "deleted" to BIM</a></h1>
+
+<p>Tags: bim, moodle, Uncategorized</p>
+
+<p><p>The following is a record of the process of adding a "deleted" state for a blog post in <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>.  This is in response to <a href="http://github.com/djplaner/BIM/issues#issue/8">an issue</a> that has arisen out of BIM usage at CQU.</p>
+
+<h3>The problem</h3>
+
+<p>BIM always keeps a record of all posts ever found in a student's blog feed.  Even if the student deletes the post or changes the post, BIM keeps a record of the post in its internal database.  This is a feature of BIM as one of its aims is to provide a "safe/secure" record of what is posted to the students' blogs, just in case the blog service provider goes away.</p>
+<p>In addition, BIM also attempts to allocate old posts in its internal database to questions.  Sometimes, you do wish to "delete" a post to stop BIM from allocating it. To give the student a chance to post something new.</p>
+
+<h3>Requirements</h3>
+
+<p>Requirements for this feature include:</p>
+<ul>
+  <li> Only the coordinator can "delete" a post. </li>
+  <li> The post is not actually removed from the internal BIM database, it just is no longer able to be "allocated" by BIM, released by the coordinator, visible to the student, or put into the gradebook. </li>
+  <li> It must be possible to "undelete" a post. </li>
+  <li> Deletion should not change any of the other data about a post (e.g. marker comments). </li>
+  <li> Perhaps rather than be invisible to the student, it should just be obvious that it has been deleted. </li>
+</ul>
+
+<h3>Design</h3>
+
+<ul>
+  <li> Add "Deleted" status for mdl_bim_marking. <br />
+    Modified setting via XMLDB, but the database is not being updated.  This has been a problem before which I've kludged around.  But it's not something to rely upon for production. Will have to solve this problem.
+  </li>
+  <li> Add interface for staff to "delete" </li>
+  <li> Modify student view to show that it is deleted </li>
+</ul></p>
+
+</body>
+</html>

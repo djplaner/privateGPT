@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixing one part of the peoplesoft gradebook</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/10/14/fixing-one-part-of-the-peoplesoft-gradebook/">Fixing one part of the peoplesoft gradebook</a></h1>
+
+<p>Tags: bad, design theory</p>
+
+<p>The following is a development log of an attempt to fix one aspect of the Peoplesoft gradebook used at my current institution.
+
+<h1>Why and what?</h1>
+
+<h3>The problem</h3>
+
+At the end of semester all assignment marks end up in the Peoplesoft gradebook. An old school web information systems that the academic in charge of a course has to use to do some last minute checks and changes.  One of those changes is to change the grade for students who are within 0.5 of grade level.  e.g. a student with a mark of 49.6 shouldn't get an F, they should get a C (which is the pass mark).
+
+Peoplesoft won't do this.  The academic has to manually scroll through the list of students (ordered alphabetically by student name) looking for those that in this range. Once found the new grade has to be manually entered into a textbox.  This is a problem, especially if your class has a couple of hundred students.
+
+<h3>The solution</h3>
+
+The solution developed below is a Greasemonkey script that will automate this process.  It will, once installed
+<ol>
+  <li> Detect that the peoplesoft gradebook is being displayed. </li>
+  <li> Look for any students within 0.5 of a grade level. </li>
+  <li> For each of these students found
+       <ul>
+         <li> Change the background for that row to red. </li>
+         <li> Place the upgraded grade in the appropriate textbox. </li>
+      </ul>
+  </li>
+  <li> Look for any students who have already been upgraded, change the background of their row to green. </li>
+</ol>
+
+<h1>How?</h1>
+
+<h3>Identifying the gradebook</h3>
+
+First initial problem is that the Peoplesoft gradebook is using iframes.  Which complicates things a little.  Especially in identifying the appropriate iframe and then getting the script to only activiate when the appropriate document is loaded.  Not to mention no great surprise that we're talking some really ugly HTML here.
+
+<a href="studentfields"></a>
+The actual data for each student is spread over a row with XXX main cells each with div elements with specific ids (the $0 appears to increment per student)
+<ul>
+  <li> win0divHCR_PERSON_NM_I_NAME$0 - span HCR_PERSON_NAM_I_NAME$0 contains the name</li>
+  <li> win0divSTDNT_GRADE_HDR_EMPLID$0 - span STDNT_GRADE_HDR_EMPLID$0 - contains the EMPLID </li>
+  <li> win0divSTDNT_GRADE_HDR_GRADE_AVG_CURRENT$0 - span STDNT_GRADE_HDR_GRADE_AVG_CURRENT$0 - has the result. </li>
+  <li> win0divSTDNT_GRADE_HDR_COURSE_GRADE_CALC$0 - span STDNT_GRADE_HDR_COURSE_GRADE_CALC$0 - has the grade </li>
+  <li> input text box with id STDNT_GRADE_HDR_CRSE_GRADE_INPUT$0 is where the changed grade might get entered. </li>
+</ul>
+
+It appears to be part of a form with the URL ending in SA_LEARNING_MANAGEMENT.LAM_CLASS_GRADE.GBL and appearing in an IFRAME with id ptifrmtgtframe - which I assume is a generic iframe used on all the pages.
+
+So the plan appears to be for the script to
+<ol>
+  <li> Only respond for the broad URL associated with the institutional gradebook.
+      Done via the standard Greasemonkey approach.
+  </li>
+  <li> Only kick into action on the loading of the iframe with id ptifrmtgtframe.
+         This appears to work.
+[code lang="javascript"]
+var theFrame;
+theFrame = document.getElementById('ptifrmtgtframe');
+theFrame.addEventListener( "load", my_func, true );
+[/code]
+  </li>
+  <li> Check to see if the form SA_LEARNING_MANAGEMENT.LAM_CLASS_GRADE.GBL OR perhaps the presence of the ids from the table above
+      Have modified the above to pass the frame in and was using that to determine the presence of the textbox.  The problem is that there is a further complication to the interface.  Jumping to the specific page in the gradebook (there are three) is being done by a "javascript:submitAction_win0(document.win0.....)".  This isn't showing up as an on load for the frame.
+     <p>Found <a href="http://danielkibler.blogspot.com.au/2010/11/using-javascript-in-peoplesoft-proxy.html">this post</a> which talks about one potential solution but also points to someone who's been doing this for much longer and in more detail.</p>
+  </li>
+  <li> Have they included the number of students in the HTML?  - no, doesn't look like it. </li>
+</ol>
+
+A rough attempt to understand what is going on
+<ol>
+  <li> Faculty centre loads with list of courses.
+       The standard entry into gradebookFix is run at this stage - alert is shown. And then the iframes load.
+  </li>
+  <li> Click on gradebook icon trigger the current iframe load event and shows the three different gradebook icons.
+      The <em>my_func</em> function is run via an event listener for onLoad for the <em>ptifrmtgtframe</em> iframe.  But this is only run the once as....
+   </li>
+  <li> Click on the "cumulative grades" doesn't load a new iframe, calls the javascript:submitAction_win0 method.
+   </li>
+</ol>
+
+The aim is to modify the click on the particular link so that something else happens.   How about
+<ol>
+  <li> Modify onload to look for that link and add a onclick event.
+   The id for the link is DERIVED_SSR_LAM_SSS_LINK_ANCHOR3.   The problem is that attempting to add an event listener to this is not working.  i.e. a call to getElementById is not working.  Aghh, that's because these things aren't normal Javascript type objects, but special Greasemonkey wrapped stuff.
+[code lang="javascript"]
+var theLink = theFrame["contentDocument"].getElementById('DERIVED_SSR_LAM_SSS_LINK_ANCHOR3');
+
+theLink.addEventListener( "click", function(){ alert( "CLICK ON LINK CUMULATIVE" ); }, false );
+[/code]
+  </li>
+  <li> Have a function that is called on click.
+      The struggle here will be that the click is actually the start of a query that results in the content being changed.  But not necessarily recognised by Greasemonkey.
+
+     Perhaps a timeout and then another bit of code like this might work.  This could be tested simply be re-adding the on-click.  This will sort of work, but again, is only set when the iframe loads for the first time.  If any other navigation happens it won't re-add any changes in.
+
+     Have added it to the other two main links for gradebook.  Possible this will be a sufficient kludge for now.
+ </li>
+  <li> Looks like we need to capture the <em>submitAction_win0</em> method after all.
+         Nope, have figured a kludge
+ </li>
+</ol>
+
+<h3>Identifying the student rows</h3>
+
+The following code segment will change the background/font color of the first student's name
+[code lang="javascript"]
+function updateResults(element) {    var name = element.getElementById('win0divHCR_PERSON_NM_I_NAME$0');
+    name.style.backgroundColor = 'red';
+    name.style.color  = 'white';
+}
+[/code]
+
+Above specifies the <a href="#studentfields">names of the different student fields</a>.  The difference is the number after the dollar sign - 0 up to the last.
+
+Steps required here
+<ol>
+  <li> Identify how many students are on the page.
+       Will be useful for a for loop to go through each.  xpath might offer a possibility? JQuery?  A simple while loop could also do the trick.  Will go with that.
+  </li>
+  <li> Determine what to change
+        Plan is
+         <ul>
+           <li> RED - need attention i.e. marks that should be over-ridden with suggested override in place. </li>
+           <li> GREEN - those that have already been over-ridden previously. </li>
+           <li> no colour/change - correct as is. </li>
+         </ul>
+</ol>
+
+All done.  Seems to work.</p>
+
+</body>
+</html>

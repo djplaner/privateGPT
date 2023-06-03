@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - backup and restore</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/07/bim-backup-and-restore/">BIM - backup and restore</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Just about done with development of version 1.0 of the module.  A couple of important, but hopefully straight forward tasks to do.  One of these is adding the ability for BIM activities to be backed up and restored. That's the purpose of this post.  The plan is to find out how it is meant to work and plan how it can be done for BIM.</p>
+<p>At this stage, I've worked out the basics of how this works.  I think.  I haven't implemented it, so new wrinkles may appear.  Current status is to defer work on this and focus on that functionality required for immediate use.  This can be added in a little while.</p>
+
+<h3>How it works</h3>
+
+<p>The Module extension development book I've been using is pretty poor in its treatment of backups/restores.  Some existing Moodle documentation includes:</p>
+<ul>
+   <li> <a href="http://docs.moodle.org/en/Development:Backup">a start of some developer docs.</li>
+  <li> <a href="http://moodle.org/mod/forum/view.php?f=128">the user forum with links to faq</a></li>
+</ul>
+
+<h3>Some basic stuff gleaned from the code of some activities - incomplete</h3>
+
+<ul>
+  <li> Moodle looks for files backuplib.php and restorelib.php </li>
+  <li> Data is saved in a simple XML file format. </li>
+  <li> backup functions (from core choice module) <strong>QUESTION</strong> Are these specific to choice or common?
+         <ul>
+           <li>choice_backup_mods($bf,$preferences)<br />Standard, purpose is to backup everything for this module</li>
+           <li>choice_backup_one_mod($bf,$preferences,$choice)<br />Standard, purpose is to backup just a single instance of the module based on the $choice parameter as the id</li>
+           <li>backup_choice_answers ($bf,$preferences,$choice)<br />Standard, previous function backs up the instance data and then this one saves some contents</li>
+           <li>backup_choice_options ($bf,$preferences,$choice)</li>
+                     <li>choice_check_backup_mods($course,$user_data=false,$backup_unique_code,$instances=null)</li>
+           <li>choice_check_backup_mods_instances($instance,$backup_unique_code)</li>
+           <li>choice_encode_content_links ($content,$preferences)</li>
+           <li>choice_ids ($course)</li>
+           <li>choice_answer_ids_by_course ($course)</li>
+           <li>choice_answer_ids_by_instance ($instanceid)</li>
+        </ul>
+  </li>
+  <li> Need to save
+         <ul>
+            <li> instance data </li>
+         </ul>
+  </li>
+</ul>
+
+<h3>An attempt to describe the process</h3>
+
+<ul>
+  <li> Moodle module backup works be essentially creating a XML file that contains all the information in the database tables associated with the module.  </li>
+  <li> It assumes a hierarchical relationships in the data.
+       <ul>
+           <li> All instances of the module
+                <ul>
+                   <li> Data specific to an instance. (non-hierarchical) </li>
+                   <li> All hierarchical data for an instance (e.g. student feeds for a bim)
+                          <ul>
+                              <li> Data specific to a single instance (e.g. feed_url) </li>
+                              <li> All hierarchical data (e.g. posts made to the feed)
+                                     <ul>
+                                        <li> Data specific to a single instance (e.g. content of post) </li>
+                                       <li> All hierarhical data (...and so on)</li>
+                                     </ul>
+                               </li>
+                          </ul>
+                     </li>
+                   </ul>
+             </li>
+          </ul>
+     </li>
+  <li> The nested/hierarchical relationship with the XML produced is mirrored in the functions that exist.  The first one is <strong><em>MODULENAME</em>_backup_mods($bf,$preferences)</strong> which calls the next level down...</li>
+  <li> Two other required functions with names containing <strong>..._check_..</strong> are used to generate some options that allow the user doing the backup to choose what to backup. </li>
+  <li> Another function <strong><em>MODULENAME</em>_encode_content_links</strong> is a bit of a mystery.  Might be to "support inter-activities linking" or "recode links to ensure they work when reimported"  - NOT SURE.  <br />I'm assuming that this is needed because as the database ids are created by a restore, they are likely to be different to the original data.  If they do change, then it will be necessary to modify some other links.  There are two types I could think of:<ol><li>links between database tables</li><li>links in URLs with fields in the tables. </li></ol><p>The backup stuff for chat, seems to indicate the latter</li>
+  <li> The functions doing the save are meant to write XML by using <strong>fwrite</strong> and XML functions like "start_tag" "end_tag" full_tag". </li>
+</ul>
+
+<h3>The bim hierarchy</h3>
+
+<ul>
+  <li> bim
+       <ul>
+           <li> Instance data: id course name intro introformat timecreated timemodified register_feed mirror_feed change_feed grade_feed ....<strong>Other standard module stuff???</strong></li>
+           <li> bim_group_allocation
+                 <ul>
+                     <li> Instance data: id bim userid groupid </li>
+                     <li> NO HIERARCHICAL DATA</li>
+                 </ul>
+             </li>
+            <li> bim_questions
+                 <ul>
+                     <li> Instance data: id, bim, title, body, min_mark, max_mark </li>
+                     <li> NO HIERARCHICAL DATA </li>
+                 </ul>
+            </li>
+            <li>bim_student_feeds
+                 <ul>
+                   <li> Instance data: id, bim, userid, numentries, lastpost, blogurl, feedurl</li>
+                   <li> NO HIERARCHICAL DATA</li>
+                </ul>
+            </li>
+            <li> bim_marking
+                  <ul>
+                      <li> Instance data: id, bim, userid, marker, question, mark, status, timepublished, timemarked, link, post, comments, title </li>
+                      <li> NO HIERARCHICAL DATA </li>
+                  </ul>
+             </li>
+         </ul>
+  </li>
+</ul>
+
+<h3>Implementing it</h3>
+
+<p>Seems a fairly straight forward process in generating the backup. I'm simply copying the backuplib.php functions from the choice and forum modules.  Mostly choice as it's simpler.</p>
+<p><strong>NOTE:</strong> In saving the data for an element they are not saving the foreign key back to the instance of the module.  i.e. each question belongs to BIM, specified by the bim-&gt;id.   But the BIM id is not being saved for the question.  Obviously to be populated on restore.</p>
+<p>I am wondering how some of the large text fields - including HTML - will go.</p>
+<p>Also how the underscores in field names in the database tables will go.  Seems the Moodle model is to run the text all together - minmark instead of my min_mark.</p>
+
+<h4>Getting it to appear</h4>
+
+<p>I have an initial backuplib.php up.  Have tried to do a backup on the course with a BIM and it failed due to syntax errors in backuplib.php.  However, when those were fixed there were no options in the displayed backup page for BIM.  Something is missing.</p>
+<p>Maybe it is the function bim_check_backup_mods - something in backuplib.php for the module that informs the general back up what to display. Let's try.</p>
+<p>Actually, it appears I had a typo in one of the functions.</p>
+<p>A bit more provision of functions and hey presto, it is working, at least the bit I've implemented.</p>
+
+<h4>Next steps</h4>
+
+<ul>
+  <li> Writing restore functions for course data.
+  <p>Got the initial ones working.  Even tested them round trip.</p>
+</li>
+  <li> Writing the backup functions for the user data.
+         <ul>
+             <li> <del>student feeds - write data</del></li>
+             <li> <del>student feeds - display</del></li>
+             <li> <del>marking - write data</del></li>
+             <li> <del>marking - display</del></li>
+             <li> <del>group allocation - write data</del></li>
+             <li>  <del>group allocation - display</del></li>
+          </ul>
+</li>
+  <li> Writing restore functions for user data.
+      <ul>
+         <li> <del>group allocation</del></li>
+         <li>  <del>marking</del></li>
+         <li>  <del>student feeds</del> </li>
+     </ul>
+
+
+ </li>
+</ul></p>
+
+</body>
+</html>

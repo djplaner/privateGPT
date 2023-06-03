@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding bim 2.0 to "CONTRIB"</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/04/05/adding-bim-2-0-to-contrib/">Adding bim 2.0 to "CONTRIB"</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>Next step in the development of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">bim v2.0</a> is to start the process of submitting it to <a href="http://docs.moodle.org/dev/contrib">CONTRIB</a>. i.e. essentially getting out officially into the Moodle community.
+
+The following is my attempt to figure out and record the process for doing this.  This was actually started a couple of months ago but then semester started, a bit of breathing space now and I need to catch up on this.
+
+Evidence of progress
+<ul>
+  <li> The <a href="http://docs.moodle.org/24/en/BIM_module">BIM module entry</a> in Moodle docs. </li>
+  <li> The <a href="https://tracker.moodle.org/browse/CONTRIB-4249">tracker issue for BIM</a>. </li>
+  <li> The <a href="https://moodle.org/mod/forum/discuss.php?d=226074">BIM announcement post</a> in the <a href="https://moodle.org/mod/forum/view.php?id=44">"General add-ons" forum</a>. </li>
+  <li> And an entry has been added into Moodle plugins directory that is awaiting approval. </li>
+</ul>
+
+Overall, the process hasn't been that difficult. A little disjointed in places and between that and my rushing it in places, there may be a few things to fix up.  But it's done.
+
+Will be interesting to observe what happens from here.  Beyond responding to that, it's time to start thinking about further changes to BIM.
+
+<h2>Finding the right process</h2>
+
+Of course, <a href="http://docs.moodle.org/dev/contrib">the background on CONTRIB</a> I linked to above is obsolete. CONTRIB is using git, not CVS anymore (I believe). Time to find where the right process is documented.  It's a bit of an issue when the obsolete documentation on this are what Google is returning as the top hits.
+
+The <a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code">"Guidelines for contributed code</a> seem more up to date. The process listed - or at least my interpretation - is summarised in the following sections.
+
+<h3>Create a git repository</h3>
+
+<a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code#How_to_submit_code">Create a git repository</a>, preferably using the format <em>moodle-{plugintype}_{pluginname}</em>.
+
+This implies I'll need to rename the <a href="http://github.com/djplaner/BIM/">existing BIM git repository</a>.   I wonder what support git has for this?  I discover and implement one approach below.
+
+<a href="https://help.github.com/articles/fork-a-repo">Forking the existing bim repository</a> might be an option. But not sure I would want to maintain the connection. Can it be renamed?  Well apparently there is a feature to do this.  That appears <a href="https://github.com/djplaner/moodle-mod_bim">to have worked</a>, the question will be what ramifications are discovered into the future. At the very least, I imagine my local clones of bim will need to be updated.
+
+Here's what I did
+[code lang="bash"]
+git clone https://github.com/djplaner/moodle-mod_bim.git
+cd moodle-mod_bim
+git checkout bim2
+mv moodle-mod_bim bim
+# make some changes
+git push
+[/code]
+
+All seems to be working.  Of course, all the hypertext links on the blog are now broken because of the new repository name.  Will have to update a few of those.
+
+
+<h3>Test the code</h3>
+
+Make sure the code is tested.  Here's what I've done to date
+<ul>
+  <li> A range of testing while under development. </li>
+  <li> Including some testing of BIM under versions 2.4.1, 2.3.4, 2.2.7 and 1.9.19 of Moodle. </li>
+  <li> Thanks to a bug report from a Russian user of BIM <a href="https://djon.es/blog/2013/03/03/bim2-and-disable_form_change_checker/">solved a problem</a> with 2.3.2 version of Moodle. </li>
+  <li> Been using BIM for my current teaching. Not in a full on way but it's getting some testing. </li>
+</ul>
+
+Some more work to do
+
+<strong>Backup and restore test</strong>
+
+Do a backup and restore of the EDC3100 blogs between BIM installs on different versions of Moodle. Doing this from 2.4 to 2.4 as well as 2.3 will also provide me with a decent test space for the issues below and in an on-going way.  300+ students with multiple posts is a much more reasonable foundation for testing.  That worked surprisingly easily.
+
+<strong>Revisit open issues</strong>
+
+Some recent playing with BIM revealed a potential issue, so need to explore that a bit and also look at any of the other <a href="https://github.com/djplaner/moodle-mod_bim/issues?labels=bim2%2Cimmediate&amp;sort=updated&amp;state=open">immediately open issues</a> that should be addressed before adding the code to CONTRIB.
+
+<ul>
+  <li> Problem with adding <a href="https://github.com/djplaner/moodle-mod_bim/issues/68">questions and hanging process_unallocated</a> <br />
+       With a BIM activity already created with students registered and posts mirrored, it appears that when you add a question, then the function process_unallocated (attempts to decide if any student posts match the question) hangs.
+
+     Recreate the problem.  Add a question to a copy of the EDC3100 BIM activity and do the processing thing. And I can't re-create it. All working as expected.  Thinking this may have been due to proxy problems giving the appearance of a problem.
+</ul>
+
+<h3>Documentation</h3>
+
+<a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code#How_to_provide_documentation">Documenting the plugin</a> is important and suggested to be done <a href="http://docs.moodle.org/dev/Plugin_documentation">on the English Moodle docs</a>.
+
+Where would the BIM docs reside? It should be in "the most recent version of Moodle for which the plugin works".  One of the bits of advice for the process is to go into BIM and find where the link for "Moodle docs for this page" points.  Which in the case of BIM is <a href="http://docs.moodle.org/24/en/mod/bim/view">here</a>.
+
+Of course, it's not that simple. It appears this is the proper place to get started <a href="http://docs.moodle.org/24/en/BIM_module">http://docs.moodle.org/24/en/BIM_module</a>
+
+What is required of the docs, <a href="http://docs.moodle.org/24/en/Stamp_collection_module">The stamp collection module</a> is given as an example and the provided list of contents includes:
+<ul>
+  <li> Template code. </li>
+  <li> Features overview. </li>
+  <li> Installation instructions. </li>
+</ul>
+
+Done sufficiently for now, I hope.
+
+<h3>Request to be tested</h3>
+
+<a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code#How_to_request_that_your_code_be_tested.2Freviewed">Request that the code be tested/reviewed</a>. Done, at least I think this is <a href="https://tracker.moodle.org/browse/CONTRIB-4249">what was required</a>.
+
+<h3>Add it to the plugins directory</h3>
+
+<a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code#Share_code_in_the_Moodle_plugins_directory">Share the code</a> in the <a href="https://moodle.org/plugins">Moodle plugins directory</a>.
+
+Need to create a zip file containing the module that can be installed and tested. Apparently this will do it.
+[code lang="sh"]git archive -o ~/Desktop/BIM2.zip --prefix=bim/ bim2[/code]
+
+Will need to test that this works ok.
+<ul>
+  <li> Delete BIM from Moodle install. </li>
+  <li> Unzip the zip file created by the above. </li>
+  <li> Go to notifications. </li>
+  <li> Install it. </li>
+  <li> Create a BIM activity. </li>
+</ul>
+
+That seems to work.  I do wonder what I've missed.
+
+Well, $module-&gt;release in version.php appears to be one of those things.
+
+While I am here, might be a good time to update the BIM icon.  Moodle 2.x appears to support much larger icons and the image @rolley provided for BIM 1.x doesn't scale too well.  That appears to be a step too far for me.
+
+I'll leave it at that.  It's been uploaded. Not sure I've gotten everything, but it will do for the day.</p>
+
+</body>
+</html>

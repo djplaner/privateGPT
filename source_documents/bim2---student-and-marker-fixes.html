@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - student and marker fixes</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/03/31/bim2-student-and-marker-fixes/">bim2 - student and marker fixes</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>Some more work on bim2, carrying on from <a href="https://djon.es/blog/2012/03/30/bim2-status-check-and-whats-next/">last night</a>.  Aim here is to attack some of these tasks:
+<ul>
+  <li> Fix problem with mirroring of student feeds. </li>
+  <li> Double check the marker screens. </li>
+</ul>
+
+<h3>Mirroring of student feeds</h3>
+
+Last night I proposed three possible causes
+<ol>
+  <li> The caching/operation of the Moodle 2 version of Simplepie and bim.  </li>
+  <li> Left over database entries not cleaned up appropriately during testing. </li>
+  <li> Errors crept into the mirroring code due to Moodle 2 database API changes.</li>
+</ol>
+
+Is bim2 currently using the Moodle2 version of the SimplePie library for mirroring, rss parsing etc.
+
+[sourcecode language="language="php"]
+require_once( $CFG-&gt;libdir.'/simplepie/moodle_simplepie.php' );
+[/sourcecode]
+
+Check.
+
+Let's try a brand new student. Yes, same problem. Is not mirroring the feed properly.  Keeps adding all the new stuff.  Is inserting the same entry into the database each time, perhaps the problem is with the bim2 code.
+
+So time to look at lib/bim_rss.php. Basic process is
+<ul>
+  <li> Create details_link hash with key being link to posts in the dbase. - BROKEN <br />
+     Is giving an empty hash when there should be 6 entries....bim_get_marking_details is broken.  Yep, hasn't been moved across to the Moodle 2 dbase API.
+  </li>
+  <li> Loop through items in the feed
+     <ul>
+        <li> if not already in the details_link hash
+           <ul>
+             <li> Prepare for entry, including checking if it's an answer to a question. </li>
+             <li> insert it into the dbase </li>
+           </ul>
+         </li>
+      </ul>
+   </li>
+</ul>
+
+<h3>Minor display problems</h3>
+
+In fixing this, there are some minor display problems to fix. This is also probably a porting issue.
+<ul>
+  <li> "showquestions" - apparently meant to be details about questions, rather than a link to a label.<br />
+       "showquestions" is a link to the page where students can view the questions they have to answer.  However, it should have some descriptive text here.  It appears that <a href="http://docs.moodle.org/dev/Deprecated_functions_in_2.0#link_to_popup_window_.280.29">link_to_popup_window</a> is deprecated in Moodle 2.
+      <p>Not sure why this was a popup.  Make it a normal window and move on...Oh joy, the language files are cached. Need to turn that off. </p>
+  </li>
+  <li> Links after "All posts" heading - descriptive text is a link<br />
+       Being caused by an unclosed anchor tag.  Where is that shown? Ahh, lib/locallib.php - fixed.
+  </li>
+  <li> Help buttons "TO DO" - all of them are to do. <br />
+       Another conversion not fixed.  All those text files need to be moved into the lang file.  Done.
+  </li>
+</ul>
+
+That last task also helped test the various transitions that a post can go through: unallocated, allocated/submitted, marked, suspended and released.
+
+At this stage, the student part of bim2 is a go.
+
+<h3>implode</h3>
+
+The problem with get_marking_details above was caused by unfinished porting of how SQL " in " statements are handled.  The new "get_in_or_equal" method needs to be used.
+
+This needs to be fixed before moving on.  Need to search for implode.
+
+<strong>Note:</strong> Will need to keep an eye on bim_get_all_marker_stats as it needs to be closely tested.
+
+<h3>Marker "screens"</h3>
+
+A marker can do the following
+<ul>
+  <li> View student details
+      Needed to fix the help popups. Done.
+     <ul>
+       <li> View various details about the students - WORKS </li>
+       <li> Download OPML file for their students <br />
+             Error in SQL.  This is all done in marker/generateOpml.php.  Seems the problem is in bim_get_markers_students.  Actually the userid isn't being passed in.  that's fixed.
+        <p>Another problem. It's not actually returning anything for this marker. Actually, a range of problems from the bim1 code. This probably never worked.</p>
+         <p>It does now.</p>
+       </li>
+       <li> Register a blog for a student </li>
+       <li> Send an email to all unregistered students - WORKS</li>
+     </ul>
+  </li>
+  <li> Mark posts
+     <ul>
+       <li> View an overview of marking progress </li>
+       <li> Mark a particular post - which includes a range of changes</li>
+     </ul>
+  </li>
+</ul>
+
+Will leave this for now.
+
+Next time I need to continue going through the marker interface.</p>
+
+</body>
+</html>

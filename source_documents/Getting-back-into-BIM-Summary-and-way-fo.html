@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Getting back into BIM: Summary and way forward</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/14/getting-back-into-bim-summary-and-way-forward/">Getting back into BIM: Summary and way forward</a></h1>
+
+<p>Tags: bam, bim, elearning, Uncategorized</p>
+
+<p><p>The last couple of  months have resulted in an absence from work on BIM (<a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BAM</a> into Moodle</a>). This post is meant to be a summary of where I had gotten up to and a restatement of what I need to do.  The latter part is somewhat uncertain due to limited communication within my local context. Somewhat disappointing.</p>
+<p>On the plus side, contributing to my lack of work on BIM was the attendance at a couple of conferences, including <a href="http://www.ascilite.org.au/conferences/auckland09/">ASCILITE'09</a>. It was obvious from a number of ASCILITE presentations that BAM/BIM remains an important and innovative tool that is much needed. </p>
+<p>If you've only started following this blog recently, this is they type of post acts as a log/diary of the work I have done on BIM.  Probably not much of interest to a broader community.</p>
+
+<h3>Current status</h3>
+
+<p>Up until now most of the work has been familiarising myself with the "Moodle way".  I'd gotten to the stage where there was: </p>
+<ul>
+  <li> A BIM activity module in the Moodle source tree. </li>
+  <li> The module would create the BIM database tables. </li>
+  <li> The ability to add BIM as an activity to a course. </li>
+  <li> The resulting link inserted into the course would operate as the student details screen (<a href="http://www.flickr.com/photos/david_jones/3882960287/">screen dump</a>) and show details about the students blog posts. </li>
+  <li> This screen would react to different data within the database. </li>
+</ul>
+<p>The one remaining, fairly important task to be done was to figure out how to get Moodle to take data from the user and appropriately put it into the database.  This is essentially the one remaining component of web application development.  </p>
+<p>Once familiar with this process, the implementation of BIM becomes a translation process from the previous system into Moodle.</p>
+
+<h3>How it will work</h3>
+
+<p>This is developed in other posts, but I'm going to re-create it here to refresh all those dormant memory patterns I have. Much of it is pretty similar to BAM.  I've included links to screen dumps from BAM of most of the screens listed below.  BIM screens will be based on these, but they will likely be different.</p>
+<a name="screens"></a>
+<p>The intent is that BIM will work in the following way:</li>
+<ul>
+  <li> Creation.
+    <ul>
+       <li> Course coordinator will add BIM as an activity to their course. </li>
+       <li> In doing so, the coordinator will need to fill in the <strong> configuration screen</strong> with details of the use of BIM (assignment name, posts etc.) </li>
+       <li> At the end of this process, there will be a <a href="http://www.flickr.com/photos/david_jones/4183145931/">link in the Moodle course to the BIM activity</a>. This is used by both staff and students. </li>
+    </ul>
+    </li>
+  <li> Normal use.
+    <ul>
+       <li> All users of BIM will use the link to the BIM activity added in the creation stage (e.g. <a href="http://www.flickr.com/photos/david_jones/4183145931/">this screen dump</a>). Depending on what role they perform, they will see different information:
+            <ul>
+               <li> Students: there are two different views for students
+                   <ul>
+                      <li> <strong><a href="http://www.flickr.com/photos/david_jones/3268716454/in/set-72157608613577424/">Register Blog screen</a></strong> - appears when the student has not registered their blog.  Shows some explanatory text and a text box.  The student has to paste in the URL for their blog and hit submit.  If there is a valid feed, success. </li>
+                      <li> <strong>Student details screen</strong> - appears once the student has registered their blog. It will show what BIM knows about the student blog (where it is, the student's name, the number of posts) and also any marking information (marks and comments) that have been released (only staff within an appropriate role can release marks/comments). </li>
+                     </ul>
+                </li>
+               <li> Coordinator: will have access to three different screens (all which are also used elsewhere by other people - with some modification).
+                  <ul>
+                      <li> <strong>Configuration screen</strong> - the same as the screen they see when adding BIM as an activity.  Allows them to view and change the configuration of BIM for the course.  There will need to be some limitations on what can be changed, but this needs to be thought through.</li>
+                      <li> <strong><a href="http://www.flickr.com/photos/david_jones/3268716654/in/set-72157608613577424/">Show details screen</a></strong> - shows an overview of the details for all students.  "All" students can be chosen as for the course, for a particular marker etc.  Details include student name, number, number of entries in blog, and link to live blog. </li>
+                      <li> <strong><a href="http://www.flickr.com/photos/david_jones/3268716836/in/set-72157608613577424/">Show posts screen</a></strong> - shows for "all" students an indication of whether they have posted answers to a particular question; number of posts blogged and marked; summary of marks etc.</li>
+                      <li> <strong><a href="http://www.flickr.com/photos/david_jones/3267891725/in/set-72157608613577424/">Mark post screen</a></strong> - this is where the students' post is marked (if required - not all courses using BIM mark blog posts).</li>
+                      <li> <strong>Re-allocate screen</strong> - BIM attempts to automatically allocate student posts to the question (set by the coordinator) that it matches.  This automated match doesn't always work. This screen shows all of the student's posts and allows the coordinator to change the allocation of a post. </li>
+                  </ul>
+                </li>
+                <li> Other staff: Will have access to the <strong>Show details screen</strong>, <strong>Show posts screen</strong>, <strong>Re-allocate screen</strong> and <strong>Mark post screen</strong> as described for the coordinator.  The main difference is that "other staff" can only see details for students that they have been allocated to mark. </li>
+      </li>
+      </ul>
+     <li> Aggregation, mirroring and allocation of blog posts.<br />At a regular time interval (set at the system level) BIM will check if there is a new post to each students' blog.  If there is, BIM will
+         <ul>
+             <li> Add a copy of the new post(s) to a local RSS file, one per student. </li>
+             <li> Examine the new post(s) to see if they match any of the required questions as specified by the coordinator.  If there is a match, the database will be updated to indicate another question has been answered. </li>
+             <li> Update the database that some new posts have been made. </li>
+         </ul>
+      </li>
+</ul></p>
+
+</body>
+</html>

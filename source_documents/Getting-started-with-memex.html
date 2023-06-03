@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Getting started with memex</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2020/07/07/getting-started-with-memex/">Getting started with memex</a></h1>
+
+<p>Tags: FedWiki, memex</p>
+
+<p><p>My <a href="https://djon.es/blog/2020/07/06/designing-a-personal-memex-with-foam/">last post</a> was an exploration of <a href="https://foambubble.github.io/foam/">Foam</a> (a nascent personal knowledge management and sharing system) and how I might use it. This post documents two steps toward implementation</p>
+<ol>
+<li>Writing blog posts using Foam and syncing to my blog (e.g. this post)</li>
+<li>Converting almost 100 notes from <a href="http://wikity.djon.es/">my wikity</a> into Foam</li>
+</ol>
+<p>The end result is that my <a href="https://djplaner.github.io/memex/">personal memex</a> is slowly taking shape and a growing familiarity and resonance with how Foam works.</p>
+<h3>What's in memex now</h3>
+<p>Based on <a href="http://jarche.com/2014/02/the-seek-sense-share-framework/">Jarche's Seek &gt; Sense &gt; Share framework</a> <a href="https://djplaner.github.io/memex/">the home page</a> points off to three main sections: </p>
+<ol>
+<li><a href="https://djplaner.github.io/memex/seek/seek">seek</a>
+   A work in progress. </li>
+<li><a href="https://djplaner.github.io/memex/sense/sense">sense</a>
+   Where you'll find clost to 100 notes imported from my old Wikity site. These are organised into categories, including a "loose" category.</li>
+<li><a href="https://djplaner.github.io/memex/share/share">share</a>
+   Another work in progress, but does point to the original markdown file for this blog post.</li>
+</ol>
+<h3>Reflections</h3>
+<p>Having more content here has really started to highlight the functionality of Foam and its potential benefits.  The auto-complete on Wiki links is very usable and appears likely to help understanding. e.g. it's already encouraged me to spend more time on naming of notes which means spending more time on thinking about how all this fits together.</p>
+<p>At the start, I hadn't fully grokked the importance of naming files. The wiki-links autocompletion feature means that the location in the file hierarchy isn't has important as the name.</p>
+<p>It's also reinforced that the very act of using Foam is a form of sharing.</p>
+<p>It's also reinforced the benefit of the "best-of-breed" ecosystem approach to the way Foam is constructed.  Each of the VSCode extensions adding a necessary and useful functionality. There's also been some of the complications of getting disparate systems to talk together. e.g. the aborted first attempt to sync this post and Wordpress. </p>
+<p>Different bits of the ecosystem introducing unexpected side effects. e.g. if there's not a blank line before the auto-generated wiki links, it doesn't display on github.</p>
+<h3>What's next?</h3>
+<p>There are a few limitations/changes to workflow that I haven't yet figured out/got to</p>
+<ul>
+<li>Adapting the Foam/Wordpress sync script to maintaining blog pages</li>
+<li>Explore options for making the interface more visually appealing and easier to navigate</li>
+<li>Spend a bit more time on the <a href="https://djplaner.github.io/memex/seek/seek">seek</a> process</li>
+</ul>
+<p>And generally start embedding this into how I work.</p>
+<h2>Writing blog posts in memex</h2>
+<p>One of the assumptions of Foam is that the authoing environment (VSCode/markdown) can be a positive writing experience. I'm not such a fan of markedown. Writing blog posts in Foam will help me explore/change that in addition to all the benefits of <a href="https://indieweb.org/POSSE">POSSE</a> and Foam.</p>
+<h3>Wordpress &lt;--&gt; GitHub sync (failure to launch)</h3>
+<p>The hope is that the <a href="https://github.com/mAAdhaTTah/wordpress-github-sync">Wordpress &lt;--&gt; GitHub sync plugin</a> for Wordpress will help.</p>
+<p>Installation seems to have worked, but I've decided not to import existing posts here. Start afresh.</p>
+<p>Is it working? That is the question.</p>
+<p>After a bit of fiddling it works. However, it is removing files that Foam uses. Mmmm, not good. It's not 100% clear to me how and when its removing and moving files in the repo.  This is making me nervous.</p>
+<p>It's also 3 years since the last update to the repo, which include a call for maintainers. Moving on.</p>
+<h3>Python python-wordpress.xmlrpc</h3>
+<p>There is an <a href="https://pypi.org/project/python-wordpress-xmlrpc/1.4/">option with Python</a> but it's even longer since it was last updated. But it works. There's also a [Python markdown module] to convert markdown to HTML.</p>
+<p>I'm currently in the process of adding a featured image for each post. Which I'll do manually to start the post.  I need a script that's going to: read the markdown file, extract config about which post/page it's related to, and then update that page.</p>
+<p>That's done. Sufficient for now, but a huge kludge. But that's nothing new to what I do.</p>
+<p>Needs some tidying up, but that's tomorrow's (which never comes?) job.</p>
+<h2>Importing notes from wikity?</h2>
+<p>From previous experimentations I have a <a href="https://wikity.djon.es/">Wikity install</a> that contains a collection (not very big) of candidate "zettels". The idea is that importing those into memex should provide a good collection of zettels to experiment with using Foam. Giving some insights into if and how Foam can work managing such a collection.</p>
+<p>The plan here is:</p>
+<ol>
+<li>Check out the format of the Wikity entries.</li>
+<li>Develop method to programatically extract them from Wikity.</li>
+<li>Transform and insert them into memex</li>
+</ol>
+<h3>Wikity entry format</h3>
+<p><a href="https://github.com/michaelarthurcaulfield/wikity-zero">Wikity</a> (I believe) was based on the idea of Cards and <a href="https://hapgood.us/2016/09/20/wikity-updates-0-4/">CardBoxes</a>. Cards are the equivalent of zettels (which is German for a small piece of paper) and CardBoxes are the equivalent of structure notes (memex's paths).</p>
+<p>One of the problems I face is that I doubt I ever used Wikity all that well. And what is there seems to have broken links</p>
+<p><a href="https://wikity.djon.es/three-types-of-decentralisation/">Card:Three types of decentralisation</a> as some wonky content but does include a "see" link that is meant to point to a Cardbox. The content is in markdown and the "see" link is a wiki link <code>[[BAD]]</code></p>
+<p><a href="http://wikity.djon.es/why-the-web-scales/?cardbox=Affordances">Cardbox:Affordances</a> contains two cards. It shows that a CardBox is essentially only links to other cards.  The content is shown in the left hand nav bar. The content of this Wordpress post is two wiki links to the cards e.g.</p>
+<blockquote>
+<p><code>[[Why the web scales]]</code>
+<code>[[Blackboard tweaks]]</code></p>
+</blockquote>
+<p>It appears that the only sign that it's a CardBox is that inclusion of <em>CardBox::</em> in the title.</p>
+<p>Suggesting it should just be a matter of extracting the content of each post and writing it to a proper place and all should be good?</p>
+<h3>Extract content from Wikity</h3>
+<p>Wikity is a theme on top of Wordpress. Hence the python-wordpress.xmlrpc package used above should be able to grab the cards.</p>
+<p>And it can.  Quite easily.  The question now is how to insert it into memex.</p>
+<h3>Transform and insert into memex</h3>
+<p>Since Wikity uses markdown (as does Foam/memex) there is no immediate need to transform.  The question will be if there are any specific additional transformations (e.g. links) that need to be made to make it all work in Foam.</p>
+<p>Plan is to insert the wikity cards and card boxes into the Sense section of memex. At some level the cards have already been 'sensed', just not very well. The question in my mind is how to do this? What structure to use?</p>
+<p>The Foam community to the rescue with <a href="https://tslim.github.io/concepts/">this example</a> found on Twitter. A concrete example to explore. The <a href="https://github.com/tslim/concepts/tree/master/concepts">concepts directory</a> is holding the equivalent of card boxes. Semi-equivalent to the sense directory in memex. Each "card box" then has its own <a href="https://github.com/tslim/concepts/blob/master/concepts/cloud-computing.md">"index"</a> and directory for cards</p>
+<p>Steps:</p>
+<ul>
+<li>Get a list of Cards and CardBoxes in Wikity
+  Done. Simple Python code.</li>
+<li>Make directories in sense for each of the card boxes
+  Done. More simple processes</li>
+<li>Save card boxes to files in sense directory
+  Now it gets harder. More detail below. But not using wiki links</li>
+<li>Save each card ito the appropriate directory (card box or "loose")
+  Another case of a bit of markdown linking, rather than wiki-links</li>
+<li>Add a list of card boxes to sense/index.md
+  Will do this one manually, with a bit of help</li>
+<li>Add a list of "loose" cards to sense/index.md</li>
+</ul>
+<h4>Generating md files using Python</h4>
+<p>It's simple to write the files using Python. But doing so bypasses VS-Code so doesn't run <a href="https://kortina.nyc/essays/suping-up-vs-code-as-a-markdown-notebook/">the plugin</a> that enable wiki links to work.</p>
+<ol>
+<li>Figure out how to call the plugin from Python (or other means)</li>
+<li>Write normal markdown links using Python</li>
+</ol>
+<p>Problem 1 is a step too far for my knowledge and time at the moment.  </p>
+<h3>Fixing misc problems</h3>
+<p>The wikity notes are imported, but github pages isn't building. Potentially because the wikity stuff was all over the place.  Some HTML, some markdown.  Trawling through those, fixing problems and re-allocating notes.</p>
+<p>Also removing colons from filenames.</p>
+<p>It does appear to be working</p>
+<p>[Why the web scales]: ../../sense/Affordances/Why the web scales "Why the web scales"
+[Blackboard tweaks]: ../../sense/Distribution/Blackboard tweaks "Blackboard tweaks"</p></p>
+
+</body>
+</html>

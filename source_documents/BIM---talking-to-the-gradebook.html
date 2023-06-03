@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - talking to the gradebook</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/07/bim-talking-to-the-gradebook/">BIM - talking to the gradebook</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>One of the bigger tasks left to do is to integrate BIM with the gradebook.  Some <a href="https://djon.es/blog/2010/01/26/bim-sending-results-to-the-gradebook/">initial exploration</a> has been done, this post seeks to document the initial implementation.</p>
+<p>This implementation is going to be quite simple, and perhaps simple minded.  The less than straight-forward nature of the task of finding information about how to do this and the reducing time available are the main reasons for the simple approach. Potentially, the simple approach might also help the academic staff driving it.</p>
+
+<h3>Initial design</h3>
+
+<p>As posts are "released" by the coordinator, the marks will be added to a column in the gradebook that matches the name of the BIM activity.  i.e. this will be simple addition.  In terms of scaling etc. it will be up to the teaching staff to use the gradebook features to do this.</p>
+<p>At best there should be an option to include in the gradebook.</p>
+
+<h3>Implementation</h3>
+
+<h4>Add option to include results in gradebook</h4>
+
+<ul>
+  <li> <del>Modify the bim table with new field.</del> </li>
+  <li> <del>Modify mod_form.php to have field.</del> </li>
+  <li> Modify lib.php functions to appropriately modify the database appropriately.
+<p><strong>TO DO:</strong> <del>Modify add_instance to include a call to grade_update to add the item to the gradebook.</p><p>Borrowing a lot from existing modules.</del>
+</li>
+
+</ul>
+<p>Question arises: what happens if the gradebook option is added after some results have been released?  Should BIM:</p>
+<ul>
+  <li> Not allow changing. </li>
+  <li> Allow coordinator to "reset" gradebook for all currently released results? </li>
+</ul>
+
+<h4>Add the results</h4>
+
+<ul>
+  <li> Modify the "release" posts function to update the gradebook.
+<p><strong>TO DO:</strong> If the appropriate option is set, then call grade_update to change the entry.</p>
+<p>Have initial code in place.  Doesn't seem to be updating correctly.  Need to look at this more.  Subsequent additions of marks, not summing up?</p>
+</li>
+</ul>
+<p>A simple testing process for this:</p>
+<ul>
+  <li> Register feeds for 3 students in the one course. </li>
+  <li> Allocate posts to a few questions for each. </li>
+  <li> As an iterative process
+       <ul>
+           <li> Mark one or two, check gradebook, release one or two, check gradebook, repeat </li>
+       </ul>
+   <li> Repeat for another course, observe. </li>
+</ul>
+<p>Initial testing of releasing 2 students with 2 of the same questions, works fine. All in gradebook as expected.</p>
+<p>More questions/students seems to work.</p>
+<p>Go to another course, without creating questions and register a couple of student blogs.  Now, create the questions and run the bim_cron function.  Yep, that works like a charm.  Now back to gradebook.</p>
+<p>Adding BIM to gradebook after initial addition is working.  Can I release and add marks to it?  Oops, yes, but it adds another entry!!!! Bugger.  Will it do it again?  Nope.  and it works.</p>
+<p><strong>TO DO:</strong> fix the problem with an update of BIM adding Gradebook followed by release resulting in 2 columns, not one.</p>
+<p>Problem with bugs introduced in the update_instance method.  Fixed and working.</p></p>
+
+</body>
+</html>

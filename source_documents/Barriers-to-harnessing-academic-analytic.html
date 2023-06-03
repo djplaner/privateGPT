@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Barriers to harnessing academic analytics</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/02/barriers-to-harnessing-academic-analytics/">Barriers to harnessing academic analytics</a></h1>
+
+<p>Tags: elearning, indicators, Uncategorized</p>
+
+<p><p>The <a href="http://indicatorsproject.wordpress.com/">Indicators project</a> is an attempt to enable the examination, analysis and comparison of LMS usage across time, systems and institutions. The project is nothing new. Projects around academic analytics have been around for a while and I and others at <a href="http://www.cqu.edu.au/">my current institution</a> have been talking about using the collective data in systems logs to inform the practice of L&amp;T at universities for a long time.</p>
+<p>Given the long term interest and the need to do this, why aren't more universities doing it?  What is getting in the way?  This post is the start of a list of factors that I have gotten an inkling of through the literature, personal experience and talking with others.  What would you add?</p>
+<p>(PS. I'm trying to follow advice <a href="http://www.openforum.com/idea-hub/topics/the-world/article/the-art-of-the-list-guy-kawasaki?utm_source=OM&amp;utm_medium=Twitter&amp;utm_term=Alltop&amp;utm_campaign=Holy%20Kaw%20to%20Alltop&amp;utm_content=Alltop">in this post</a> on improving a blog post</a>)</p>
+
+<h3>Nature of the technology: Limitations of the LMS</h3>
+
+<p>Currently, for most universities, the learning management system (LMS - Blackboard, Moodle etc) are the main environment for L&amp;T. For good or bad, this is a major source of data.  Some of the barriers are inherent to the nature of the LMS.  These include:</p>
+<ul>
+  <li> <strong>Minor variations in naming and approach.</strong><br />Even though there are more similarities than differences between different LMS (Black et al, 2007), those differences are enough to make comparisons between LMS somewhat difficult.  There needs to be work like that carried out by Malikowski et al (2007) to enable meaningful comparisons. </li>
+  <li> <strong>The LMS focus on individual courses.</strong><br />An LMS is focused on enabling individual academics create and maintain course sites. This means the features, including reporting, are targeted at the course level.
+  <li> <strong>The LMS doesn't encompass all data.</strong><br />To really understand the impact of LMS activity you need to be able to match student activity with student performance (i.e. their grades).  Typically, student grade information is not available within the LMS.  If you all rely on is the LMS data, you can't access this and other information (e.g. demographic information about students or staff).</li>
+  <li> <strong>Advice to clear system logs.</strong><br />The versioni of Blackboard my institution used to run came with some advice to purge the activity accumulator.  One of the major tables/systems of the LMS that recorded what was being done with Blackboard.  Purging it means destorying the data.  Unless the IT folk involved stored the data first, you lost it.  </li>
+  <li> <strong>The general poor quality of the reporting/visualisation features of an LMS.</strong><br /> From Dawson and McWilliam (2008) "the current LMS present poor data aggregation and similarly poor visualisation tools in terms of assisting staff in understanding the recorded patterns of student learning behaviour."</li>
+</ul>
+
+<h3>Technical furphies</h3>
+
+<p>It's been my experience that when technical people don't really want to something, for whatever reason, they come up with a <a href="http://www.anu.edu.au/ANDC/pubs/ozwords/November_97/6._furphy.htm">furphy</a> to explain why it can't be done.  The best of these furphies have an element of truth in order to make them plausible.  However, if you know a bit more about technology, there are usually simple solutions. The ones I'm aware of include:</p>
+<ul>
+  <li> <strong>It will overload the live database.</strong><br />The idea here is that trawling the LMS database to generate analysis of how it is being used will raise "concerns with system load for querying the database in order to extract the required data" (Dawson &amp; McWilliam, 2008).  i.e. the users of the LMS will suffer from poor performance.  The problem with this furphy is that any IT department worth its salt will already have a copy of the database that is being regularly updated that it uses for development and testing.  If they don't, they're not doing their job properly.  That test database is not directly used by users and can generally be used without performance concerns.  In addition, with any of the "enterprise" database systems, it shouldn't be difficult to create another copy of the database, if they don't want the analytics playing with the dev database. </li>
+  <li> <strong>We don't have enough resources.</strong><br />This is perhaps a superset of the previous point.  It usually means that we don't have the database adminstrators, developers or hardware resources available to support the project.  Providing access to an existing dev database on an "enterprise database" should take seconds - at least if the processes and automation used by the IT department is any good.<p>In defence of the IT folk and also to make clear that these are not universals.  In some cases, they don't have the resources. Many institutions don't put enough resourcing into IT to achieve what they want. In these cases, IT are probably better off collaborating with people who want to do things as a better way to generate support to get the additional resources.</p> </li>
+  <li> <strong>The database is to complicated to understand.</strong><br />Some of the folk in L&amp;T working in analytics don't have technical backgrounds and must rely on IT.  As another version of the previous points there is the argument that the databases are too complicated to easily get useful data from them.</li>
+  <li> <strong>It's not us, it's the system owner.</strong><br />We'd love to give you access, but first you have to talk to Y as they are the system owner.  We're pretty sure that they are not keen on the idea.  Not sure how you might contact them.   Just a bit of passive resistance.</li>
+</ul>
+
+<h3>Organisational barriers</h3>
+
+<ul>
+  <li> <strong>Ownership of the data.</strong> <br />Some teaching staff see all information about their course in the LMS as belonging to them. Some faculties believe the same for their faculty courses. IT may see ownership of the database as belonging to them.  The institution may not have any firm written policy on this and simply rely on who speaks most strongly. This problem often connected with the following.</li>
+  <li> <strong>Mismatch with system owner requirements.</strong><br />For example, the organisational owner of student records data at our institution has been the student administration section.  Folk responsible for getting students enrolled, results processed and accepting money.  These folk are not mostly focused on improving learning and teaching.  So may not see the rationale for analytics or other tasks.<li>
+  <li> <strong>Privacy concerns. </strong> <br />Fears that information about individual students or even staff, will be made public and or misused -- leading to the next point.</li>
+  <li> <strong>Plans and fears of using the data as a stick.</strong><br /> It's not hard to see some management using reports from the LMS to identify "bad" academics and punish them. This may be achieved simply through the creation of KPIs and standards for course delivery that assume that it's possible to make such universal statements and ignore the inherent variability in university learning and teaching.  This leads to the next one....</li>
+  <li> <strong>Task corruption and <a href="http://en.wikipedia.org/wiki/Goodhart's_law">Goodhart's law</a>.</strong> <br /> If you set a particular measure as a performance indicator/target (e.g. the presence of a discussion forum or the number of contributions to the discussion forum by the staff member) you will get people achieving that target.  However, in some/many cases they will be using task corruption to achieve it.</li>
+</ul>
+
+<h3>Solutions</h3>
+
+<p>Many people complain that I point out problems with out pointing out solutions, hence the inclusion of this section</p>
+<p>The solutions we've used, mostly by luck than forethought, have included:</p>
+<ul>
+  <li> <strong>Historical responsibilities.</strong><br />At one stage, members of our <a href="http://indicatorsproject.wordpress.com/">project</a> were system owners or designers of at least two of the LMS used by our institution.  This meant that we have access to the databases for these systems.  Though it didn't help with the LMS we aren't responsible for.</li>
+  <li> <strong>Accidents.</strong><br />As mentioned above, advice from Blackboard is that you regularly clear/rotate the activity accumulator.  For some reason, our IT folk never did this.  So all that data, going back to 2005, was available.</li>
+  <li> <strong>Technical knowledge. </strong><br /> At least two of our project members have some technical knowledge.  When faced with technical furphies we could point out alternate representations.</li>
+  <li> <strong>Organisational knowledge. </strong><br />I've been at my current institution for nearly 20 years (god that's sad). For good and bad, I know a fair bit about the organisation and the people within it.  Often it is who you know, not what. For example, we got access to student records data over 10 years ago because I knew the system owner of the student data regularly had lunch at a certain place.  I just happened to be there to ask nicely to have access to the data. </li>
+  <li> <strong>Personal connections. </strong><br />Both internally and externally project members know a broad cross-section of people who can help provide alternate representations of stories that have been told.  Representations that often unlock doors.</li>
+  <li> <strong>Organisational power. </strong><br />This is perhaps the most useful one.  If you are doing work that is seen to be useful or important by one person in power, or lots of people throughout the organisation, that can often provide the necessary power to override/workaround objections. </li>
+  <li> <strong>Workarounds.</strong><br />Often you don't have to ask permission.  Often there are technical and social solutions to access that can work around barriers.  For example, Bakharia et al (2009) talk about an approach to analyse course discussion forums that use <a href="http://en.wikipedia.org/wiki/Greasemonkey">Greasemonkey</a> to avoid the need to access the LMS database.</li>
+</ul>
+<p>Of course, in a perfect world, all members of the organisation would be warm and fuzzy folk who are only too happy to collaborate with their colleagues to achieve important outcomes for the organisation.  None of them would ever be advised not to provide assistance or support to individuals within the same organisation.</p>
+
+<h3>References</h3>
+
+<p>Bakharia, A., E. Heathcote, et al. (2009). Social networks adapting pedagogical practice: SNAPP. Same places, different spaces. Proceedings ascilite Auckland 2009. Auckland: 49-51.</p>
+<p>Black, E., D. Beck, et al. (2007). "The other side of the LMS: Considering implementation and use in the adoption of an LMS in online and blended learning environments." Tech Trends 51(2): 35-39.</p>
+<p>Dawson, S. and E. McWilliam (2008). Investigating the application of IT generated data as an indicators of learning and teaching performance. Melbourne, Australian Learning and Teaching Council: 45.</p>
+<p>Malikowski, S., M. Thompson, et al. (2007). "A model for research into course management systems: bridging technology and learning theory." Journal of Educational Computing Research 36(2): 149-173.</p></p>
+
+</body>
+</html>

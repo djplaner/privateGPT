@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sentiment analysis of student blog posts</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/02/14/sentiment-analysis-of-student-blog-posts/">Sentiment analysis of student blog posts</a></h1>
+
+<p>Tags: bad, edc3100, learningAnalytics, pirac, Uncategorized</p>
+
+<p>In June last year <a href="https://davidtjones.wordpress.com/2015/06/16/exploring-bim-sentiment-analysis-what-might-it-say-about-student-blog-posts/">I started an exploration</a> into the value of sentiment analysis of student blog posts. This morning I've actually gotten it to work. There may be some value, but further exploration is required. Here's the visible representation of what I've done.
+
+The following is a screen shot of the modified <a href="https://davidtjones.wordpress.com/2015/09/15/helping-teachers-know-thy-students/">"know thy student" kludge</a> I've implemented for my course. The window shows some details for an individual student from second semester last year (I've blurred out identifying elements). The current focus is on the blog posts the student has written.
+<a href="https://www.flickr.com/photos/david_jones/24713913780/in/dateposted-public/" title="Sentiment analysis of blog posts"><img alt="Sentiment analysis of blog posts" class=" aligncenter" height="500" src="https://farm2.staticflickr.com/1588/24713913780_28a2460275.jpg" width="296" /></a>
+
+Each row in the above corresponds to an individual blog post. It used to show how long ago the post was written, the post's title, and provide a link to the blog post. The modified version has the background colour for the cell modified to represent the sentiment of the blog post content. A red background indicates a negative post, a green background indicates a positive post, and a yellow background indicates somewhere in the middle.
+
+The number between 0 and 1 shown next to the post title is the result provided by the <a href="https://indico.io/docs#sentiment_hq">Indico sentiment analysis function</a>. The method use to perform the sentiment analysis.
+<h2>Does this help?</h2>
+Does this provide any help? Can it be useful?
+
+An initial quick skim of posts from different students seemed to indicate mostly all green. Was the sentiment analysis revealing anything useful? Was it working?
+
+In the following I examine what is revealed by the sentiment analysis by paying close attention to an individual student, the one shown in the image above.
+<h3>Red blog post - reveal target for intervention?</h3>
+The "red" blog post from the image above included words like "epic fail". It tells the story of how the student had problems getting the new software for the course working. It shows as the third post the student made in the semester. The start of this course can be frustrating for students due to technical problems. This particular student didn't report any of these problems on the course discussion forums.
+
+Given that the course is totally online and there are ~100 students in this offering, there's little chance for me to have known about these problems otherwise. Had the sentiment analysis been in place during the offering and if it was represented effectively, I might have been able to respond and that response might have been helpful.
+<h3>Yellow blog post - a problem to address?</h3>
+The yellow post above is a reflection on the students experience on Professional Experience, in a school, in front of a classroom, actually teaching. It is a reflection on how the student went through an emotional roller coaster on prac (not unusual), how her mentor really helped (also not unusual, but a little less so), but also how the various exemptions she received contributed to her problems.
+<h3>Very positive blog posts - loved resources?</h3>
+A number of the posts from this student are as positive as they can get - 1.0. Interestingly, almost all of them are descriptions of useful resources and include phrases like
+<p style="padding-left: 30px;">what a wonderful learning tool ...lovely resource...wonderful resource for teachers</p>
+
+<h2>What's next?</h2>
+Appears that the following are required/might be useful
+<ol>
+	<li>Explore different representations and analysis
+So far I've only looked at the student by student representation. Another forms of analysis/representation would seem potentially useful. Are there differences/patterns across semester, between students that are the same/different on certain characteristics, between different offerings of the course etc.
+
+How can and should this representation be made visible to the students?</li>
+	<li>Set this in place for Semester 1.
+In a couple of weeks the 300+ student version of this course runs. Having the sentiment analysis working live during that semester could be useful.</li>
+	<li>Explore useful affordances.
+One of the points of the <a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/">PIRAC framework</a> is that this form of learning analytics is only as useful as the affordances for action that it supports. What functionality can be added to this to help me and the students take action in response?</li>
+</ol>
+<h3>Reflection</h3>
+I've been thinking about doing this for quite some time. But the business of academic life has contributed to a delay.  Getting this to work actually only required three hours of free time. But perhaps more importantly, it required the breathing space to get it done. That said, I still did the work on a Sunday morning and probably would not have had the time to do it within traditional work time.
+<h3></h3>
+&nbsp;</p>
+
+</body>
+</html>

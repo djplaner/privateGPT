@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Integrating BAM into Moodle - Can it be done?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/07/09/integrating-bam-into-moodle-can-it-be-done/">Integrating BAM into Moodle - Can it be done?</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p><a href="https://djon.es/blog/research/bam-blog-aggregation-management/">Blog Aggregation Management</a> (BAM) is a little project of mine that's been going since 2006. It's an example of, what I think, is a more appropriate product model for e-learning systems - essentially <a href="http://www.smallpieces.com/">small pieces loosely joined</a>/best of breed/PLE. Currently BAM is based on the infrastructure provided by <a href="https://djon.es/blog/2009/02/15/alternatives-for-the-institutional-implementation-of-e-learning-lessons-from-13-years-of-webfuse/">Webfuse</a>, another project of mine (which embodies and enables the better product model).</p>
+<p>Trouble is that come 2010 Webfuse is history as my current institution cans Webfuse in favour of Moodle. There are about 5 or 6 courses at that institution that currently use BAM and many more that could probably use it. So, if there is to be a future for BAM it will have to be ported to <a href="http://www.moodle.org/">Moodle</a>. This is the first step in checking to see if this can be done. It will be subsequently be followed by whether or not it should be done and whether it will be done.</p>
+<p>The following isn't a real blog post.  It's more a unstructured collection of ad hoc, formative reflections as I confuse myself diving through the Moodle world as a ill-informed newbie.</p>
+
+<h3>How do you find out developing something for Moodle?</h3>
+
+<p>Each system embodies a way of looking at the world, a set of terms and concepts. Essentially I need to get some sort of insight into its structure, language and world view.  From there I can make some vaguely informed decision as to whether the BAM worldview has any hope of living nicely with the Moodle world-view. I need some resources.</p>
+<p>Well, the <a href="http://www.moodle.org/">Moodle site</a> has <a href="http://moodle.org/development/">this pointer</a> towards development resources. Of course, there's also the constructivist approach recommended by <a href="http://blog.danpoltawski.co.uk/archives/2009-05-Secrets-of-Learning-Moodle-Development!.html">Dan Poltawski</a>.  There's a lot to be said for that approach, but it's a little heavyweight for my current requirements.</p>
+<p>What other stuff is there on the Moodle main site?</p>
+<ul>
+  <li> FAQS!  There's a <a href="http://docs.moodle.org/en/Development:Developer_FAQ">FAQ for development</a>.<br /> But most of that seems to be low level code related stuff.  I'm looking for a bigger picture.</li>
+ <li> There are some pointers to information about creating new modules or plugins.  - apparently there are 22 different types of plugins.
+     <ul>
+        <li> <a href="http://docs.moodle.org/en/Development:Developer_documentation#Make_a_new_plugin">Make a new plugin</a>
+        </li>
+     </ul>
+ </li>
+  <li> <a href="http://docs.moodle.org/en/Moodle_manuals">the manuals</a></li>
+  <li> <a href="http://docs.moodle.org/en/Coding">The coding guide</a></li>
+</ul>
+<p>The following list of resources is something I'll probably have to come back to at a later date when/if coding commences.</p>
+<ul>
+  <li> <a href="http://docs.moodle.org/en/Development:Working_with_the_Community">Working with the community</a></li>
+  <li> The <a href="http://docs.moodle.org/en/Development:XMLDB_Documentation">database abstraction layer</a></li>
+  <li> the <a href="http://docs.moodle.org/en/Development:Roles">roles system</a> </li>
+  <li> the <a href="http://docs.moodle.org/en/Development:lib/formslib.php">forms library</a> </li>
+  <li> the <a href="http://docs.moodle.org/en/Development:Using_the_file_API">file API</a> </li>
+</ul>
+
+<h3>Absence of definitions or an overview</h3>
+
+<p>I'm about 4 or 5 hours into my examination of Moodle and whether BAM might go into it. The biggest problem I have is that I haven't been able to find an overview. Something that defines terms such as blocks, activity modules etc and shows how they all link together. </p>
+<p>All of the developer docs like "how to develop a block" just leap straight into answering the question. None seem to offer a description or pointer to a description of what a block is and how it compares to other components.</p>
+<p>This <a href="http://lyceum.open.ac.uk/temp/creating_moodle_modules.ppt">set of powerpoint slides</a> (by Sam Marshall) on creating Moodle modules seems to be the best so far. </p>
+<p>Perhaps this <a href="http://dev.moodle.org/course/view.php?id=2">Moodle Programming course</a> might help fill the hole.</p>
+
+<h3>Nature of modules</h3>
+
+<p>Each module has it's own directory. Will include a list of files, directories for specific purposes.</p>
+<p>Each module can specify capabilities - who can do what?</p>
+<h3>Existing work</h3>
+
+<p>As others have pointed out, Moodle already has blogs and there is also a <a href="http://docs.moodle.org/en/Student_projects/Blog_improvements">project</a> currently looking at improving the Moodle blog component. Actually, that's a 2008 project. The <a href="http://moodle.org/blog/index.php?userid=27192">project blog</a> just seems to peter out - no final "it's done" post. However, <a href="http://docs.moodle.org/en/GSOC/2008#Blog_improvements_and_the_addition_of_a_blog_assignment_module">according to this</a> it completed successfully and contributed code which is available as <a href="http://tracker.moodle.org/browse/MDL-15435">patches</a> and may also be merged into Moodle 2.0</p>
+<p>Looking into that project brings me to <a href="http://moodle.org/mod/forum/discuss.php?d=44830">a thread on the Moodle site</a> (you may have to login to see the thread) about the blog component.  It starts off with a post from <a href="http://moodle.org/user/view.php?id=1&amp;course=5">Martin Dougiamass</a> explaining some of the initial rationale. </p>
+<p>That post reinforces the point that there is a strong model underpinning Moodle and how it should work that drives the design decisions. At least on an initial read, the aim of Blogs in Moodle was to provide a blog like facility that fit within the Moodle model. The idea of integrating BAM into Moodle comes from a different perspective and there might be some interesting clashes of perspective/assumptions.</p>
+<p>An assumption behind BAM is that you actually want the students to be posting their comments on the open web, to enable some of the serendipity related fun to happen. Moodle appears to be based on an assumption of a much tighter integration.</p>
+
+
+<h3>What type of plugin?</h3>
+
+<p>If implemented, I'm assuming BAM will be some kind of plugin and one of those <a href="http://docs.moodle.org/en/Development:Developer_documentation#Make_a_new_plugin">listed here</a>. In the following, I'm documenting my investigations about which type BAM might be.</p>
+<p>From the initial list, without looking forward, I'm guessing that BAM might be or be related to one of the following:</p>
+<ul>
+  <li> Activity module</li>
+  <li> Assignment type<br />This looks potentially interesting/related. BAM is mostly used at the moment as an assignment.  So it's inclusion here probably fits current operation.  However, currently BAM is separated from the assignment stuff which allows a bit more flexibility....mmm. There are examples of <a href="http://docs.moodle.org/en/Non-standard_assignment_types">non standard assignment types</a>.  Which are some sort of plugin to the existing assignment component.</li>
+  <li> Gradebook or Portfolio plugins </li>
+</ul>
+
+<h3>What's next?</h3>
+
+<p>Well, I should perhaps follow the <a href="http://docs.moodle.org/en/Development:Overview#Major_Development">published guidelines</a>. Completing the first step - make sure it's a good idea - is first.  I'll need to
+<ul>
+  <li> Check to see if the blog improvements offer something close to BAM. </li>
+  <li> Dig around a bit more in Moodle to see if BAM can be implemented. </li>
+  <li> Ask a question on the forums. </li>
+</ul></p>
+
+</body>
+</html>

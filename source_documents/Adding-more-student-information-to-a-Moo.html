@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding more student information to a Moodle course</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/11/13/adding-more-student-information-to-a-moodle-course/">Adding more student information to a Moodle course</a></h1>
+
+<p>Tags: bad, elearning</p>
+
+<p>moreStudentDetails.user.js is a Greasemonkey script I've written to provide more details about a student when I'm using Moodle.  Originally intended to help when responding to a student query in a course I teach that regularly has 300+ pre-service teachers from a range of backgrounds and locations.  The current version produces something like the following image (click on it to see a larger version).
+
+<a href="https://www.flickr.com/photos/david_jones/15316891905" title="MAV-based more user details by David Jones, on Flickr"><img alt="MAV-based more user details" height="198" src="https://farm4.staticflickr.com/3843/15316891905_d54e182394_n.jpg" width="320" /></a>
+
+The script adds a link titled <small>[details]</small> to the Moodle page whenever it finds a link to a user profile (see above). When you click on that link a small dialog box pops up with some more student details. For my purposes, I'm particularly interested in what type of pre-service teacher they are and their mode/campus.
+
+This script uses much the same technology as the gradebook fix mentioned in <a href="https://djon.es/blog/2014/11/07/established-versus-affordances-part-of-the-reason-institutional-e-learning-is-like-teenage-sex/">this post</a> and @damoclarky's <a href="http://damosworld.wordpress.com/2013/08/30/the-moodle-activity-viewer-mav-heatmaps-of-student-activity/">Moodle Activity Viewer</a>.  The work on these scripts is part of an on-going project to identify some theories/principles that can be used to enhance institutional e-learning (see <a href="https://djon.es/blog/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">this paper</a> for early development of these ideas).
+
+The rest of this post is divided into two parts
+<ol>
+  <li> Recent developments - documents thinking about how to transform this simple script into something that provides more useful and specific process analytics (see <a href="https://djon.es/blog/2013/08/14/aligning-learning-analytics-with-learning-design/">this post</a> for a definition of process analytics). Also documents early attempts to share this script via github.</li>
+  <li> <a href="https://djon.es/blog/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">Initial development</a> - a development diary of early steps in developing this script. </li>
+</ol>
+
+<a name="recent"></a>
+<h1>Recent developments</h1>
+
+<h2>Sharing via github</h2>
+
+Have just created the <a href="https://github.com/djplaner/bad">BAD repository</a> on github. It currently hosts two scripts
+<ol>
+  <li> gradebookFix.user.js - briefly mentioned in <a href="https://djon.es/blog/2014/11/07/established-versus-affordances-part-of-the-reason-institutional-e-learning-is-like-teenage-sex/">this post</a> this script modifies the Peoplesoft gradebook to highlight special cases. </li>
+  <li> moreStudentDetails.user.js - the script described here.  Only the client script, not the server at the moment. </li>
+</ol>
+
+Much of this code is still quite ugly and probably not at all useful by others (though the gradebookFix.user.js should be useful by any course examiner from USQ).
+
+Creating the repository at the moment is more about having the scripts under source control, stored off my laptop and to start playing with the process and mechanisms of sharing these types of scripts.
+
+The name "BAD" is based on the BAD (Bricolage/Affordances/Distributed) mindset formulated in <a href="https://djon.es/blog/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">the paper</a>.
+
+<h2>Extending it to include process analytics</h2>
+
+Lockyer et al (2013) define process analytics as analytics that "provide direct insight into learner information processing and application" (p. 1448). i.e. analysis and representations that provide some additional detail about how the learning is progressing.  I'm keen to add more of this to the "more student details" script.  The following explains what I'd like to add and some reflection about how this might be best done with the technologies available.
+
+As it happens, @Edu_K has just <a href="https://djon.es/blog/2013/08/14/aligning-learning-analytics-with-learning-design/#comment-7067">commented</a> on a post and described nicely what I'm trying to achieve<blockquote>I like your idea of in-built LA functions into the existing tools. This can help their use to adjust teaching “on-the-go” in response to needs of the particular cohort – which is one of the most important abilities of a good educator</blockquote>
+
+<h3>The plan</h3>
+
+I'm looking to add two additional groups of information about students specific to this course to the dialog box
+<ol>
+  <li> Activity completion; and,
+       Each week of the course has a learning path of set activities. Students get some marks for completing these activities and Moodle's activity completion functionality is used to track their work. Having a usable summary of each student's activity completion available in this dialog would help understand where they are up to in the learning path.
+   </li>
+  <li> Blog post activity.
+        The course requires the students to create and post to their own external blog. The <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM Moodle module</a> is used to mirror blog posts and help award marks to students based on # of posts, word count etc.  Adding a summary of the student's blog posts, related statistics and perhaps other analytics (e.g. emotion etc) could also be useful.
+   </li>
+</ol>
+
+<a name="mockup"></a>
+<h3>The mockup</h3>
+
+This will probably involve some fairly advanced jQuery work - something I'm new to - hence the need to start with a mockup.   Once the design is sort of working I'll post this and a subsequent post will pick up the coding.
+
+The initial mockup (ugly colour scheme and all) can be seen in the following image. Or you can actually play with the <a href="https://dl.dropboxusercontent.com/u/14025788/BAD/jquery/my.html">mockup here</a>.
+
+<a href="https://www.flickr.com/photos/david_jones/15593424040" title="moreStudentDetails by David Jones, on Flickr"><img alt="moreStudentDetails" height="292" src="https://farm8.staticflickr.com/7557/15593424040_22b19881c1_n.jpg" width="320" /></a>
+
+What the mockup shows in the above is the visual representation of the activities the student has completed (or not), some explanation
+<ul>
+  <li> There are 3 modules.
+       Each module in the above is coloured from green (most/all complete) through yellow (a fair bit complete) down to red (not much complete).  Initially you can only see the summary of the module completion.  But you can drill down. </li>
+  <li> Each module has 3 or 4 weeks.
+        The above shows Module 1 expanded to its three weeks.  Each of the weeks are also colour coded based on the weekly activities that have been completed. </li>
+  <li> Each week has a number of activities.
+        The above shows Week 2 expanded to show its 5 activities.  2 are completed and are in green. 3 aren't.  The completed activities include the date/time when they were completed and also the week of semester in which that date occurs.  The real version would have those activity names as links to the actual activity. </li>
+</ul>
+
+
+<a name="initial"></a>
+<h1>Initial development</h1>
+
+The following is a description of long gestating approach to solving a problem I have when teaching. i.e. knowing a bit more about my students when I'm replying to a query on a discussion forum in a Moodle course. It describes a modification to the <a href="https://github.com/damoclark/mav/">Moodle Activity Viewer (MAV)</a> to solve this problem.
+
+<h2>What I did</h2>
+
+<ol>
+  <li> Fork a new version of the MAV code. </li>
+  <li> CLIENT: Get MAV running only on my course. </li>
+  <li> Figure out how it will all work
+  </li>
+  <li> CLIENT: Get the data to send to the server (user ids) on the current page. </li>
+  <li> CLIENT: Send that information to the server. </li>
+  <li> CLIENT: Figure out the popup. </li>
+  <li> SERVER: Return a collection of HTML to the client. </li>
+  <li> CLIENT: Add a popup to the moodle page for each user link.
+     <p>Yep Damo and Rolley, going with the kludge first up.</p>
+</li>
+</ol>
+
+<h3>Add a new link for people to click on and use that</h3>
+
+<p>This does it.</p>
+[code lang="javascript"]
+ $(element).after('&lt;a id="user_"'+userID+'" class="makealink"&gt;&lt;small&gt;&amp;nbsp;more&amp;nbsp;&lt;/small&gt;&lt;/a&gt;' );
+[/code]
+
+But the problem is that there can be multiple such links (e.g. one around the image on a forum).  May not want to add a link on all.  Plus there are some other issues with passing values.  Here's what works now.
+
+[code lang="javascript"]
+$(element).after('&lt;a data="'+userID+'" class="showMoreUserDetailsLink"&gt;&lt;small&gt;&amp;nbsp;[details]&amp;nbsp;&lt;/small&gt;&lt;/a&gt;' );
+$(".showMoreUserDetailsLink").click(
+    function() {
+       var id = $(this).attr("data");
+       getUserDetails(id);
+    }
+);
+[/code]
+
+<strong>OUTSTANDING:</strong> Still have limit the situations where this is added.
+
+
+<h3>Get some data from the server</h3>
+
+<ol>
+  <li> Create an empty server that returns nothing.
+[code lang="php"]
+$html = "&lt;h3&gt;Getting data from the server&lt;/h3&gt;" ;
+
+header('Content-Type: application/json');
+
+echo json_encode($html) ;
+
+if(getenv('DEBUG'))
+    error_log('html='.json_encode($html)) ;
+[/code]
+  </li>
+  <li> Update the client to query the server.
+      <p>Copied an existing method.  Passes the user id and displays information back from the server.  Pared back the message length and its working well.</p>
+  </li>
+  <li> Create the database tables for users for the MAV server.
+   <p>Main issue here is that I'm dealing with two separate Moodle databases with different user ids.  Two steps required here on my local Moodle database:</p>
+        <ol type="a">
+           <li> Create a table to map between ids.
+                  <p>Need to extract list of user ids from the institution, match with local and stick in database.</p>
+                 <p>The enrolled users report and some regular expression magic in vi etc gets me a list of ID and name in a text file.</p>
+              <p>Rather than create a new table, adding a column to the mdl_user table on the local server "usqMoodleId" is the kludge".</p>
+           </li>
+           <li> Create the table(s) required to store the additional information. </li>
+        </ol>
+  </li>
+  <li> Have the server extract and return real data. </li>
+</ol>
+
+
+* Modify the server to return specific data for each user
+* Map the ids from study desk to my database
+* Only add the [details] link for specific links and only for links associated with this course?
+
+<h2>Fork a new version</h2>
+
+This is a kludge. Not making this pretty so a new directory and start from scratch.
+
+<h2>Only run on my course</h2>
+
+I've the method balmi.getCoursePageLink returns NULL, MAV doesn't work.
+
+I've modified this to return NULL if the Moodle course ID for the page doesn't match the ID for my current course. Obviously this would need to be more general in the future.
+
+<h1>How will it work</h2>
+
+Basic plan is
+<ul>
+  <li> Update the initial Moodle page: detect any links to user/view.php and bind a hover event on that link to function. </li>
+  <li> That function will pass the user id to the MAV server, get some HTML back and generate a dialog box. </li>
+<ul>
+
+<h3>Get the dialog box working</h3>
+
+First test is to modify the links and get the dialog box appearing without any interaction with the server.
+
+
+<h2>Get the data to send to the server</h2>
+
+The idea is that MAV will extract the Moodle user ids that it finds in the current page. If there aren't any, then nothing to do.  If there is some, it has to bundle those up and send them to the MAV server to get additional data about the user. To do that I have recognise the user profiles and then extract the URL.
+
+User profile links are typically of the following form</p>
+  <blockquote><em>moodle URL</em>/user/view.php?id=<em>userid</em>&amp;course=<em>courseid</em></blockquote>
+That should be fairly easy to recognise and the existing balmi.getMoodleLinks should serve as a template
+
+Change the name to getMoodleUserLinks and fiddle with the regular expressions to focus on the user links.  That's working.
+
+Some stuffing around to extract the user id thanks to limited knowledge of Javascript.
+
+As it stands with just these changes, the client is sending the following JSON to the server
+
+[code lang="javascript"]
+{  "mavVersion":"0.5.4",
+   "settings":{"activityType":"C","displayMode":"C","groups":[0]},
+   "courselink":"http://usqstudydesk.usq.edu.au/m2/course/view.php?id=4688",
+   "links":{"1093":"1093","18474":"18474","6622":"6622"}
+}[/code]
+
+In a proper development I'd actually change all this, but I need to get this working.  Actually I will change it slightly.
+
+<h2>Client/Server</h1>
+
+Modify the request so that it's going to the right server.
+
+New server (API) getUserProfile.php
+
+<h2>Figure out the popup</h2>
+
+This is the bit that will stretch my non-existent JQuery skills.  How to modify the Moodle page to add the dialog/popup I want for each bit of user data passed back from the server?
+
+Apparently, I'll be using <a href="http://jqueryui.com/dialog/">the JQuery dialog widget</a> and apparently the <a href="https://github.com/damoclark/mav/blob/master/gmdocs/moodleActivityViewer.user.js">getStudentAccess method</a> is a useful template.  Of course that through me a bit until I assumed to use it as a model to modify the requestData method from the original MAV that I'm kludging.</p>
+
+</body>
+</html>

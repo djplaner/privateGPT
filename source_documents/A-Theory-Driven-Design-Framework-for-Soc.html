@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A Theory-Driven Design Framework for Social Recommender Systems</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/12/20/3495/">A Theory-Driven Design Framework for Social Recommender Systems</a></h1>
+
+<p>Tags: thesis, Uncategorized</p>
+
+<p>I'm becoming increasingly interested in how the design of e-learning systems can be improved through insights from behaviour change literature and related work (e.g. I think game design principles have some connections with behaviour change. A while ago I started some thinking about this. The following is a summary of/reflection on
+<blockquote>
+Ofer Arazy, Nanda Kumar, Bracha Shapira (2010), <a href="http://aisel.aisnet.org/jais/vol11/iss9/2/">A theory-driven design framework for recommender systems, Journal of the Assocation for Information Systems</a>, 11(9):455-490
+</blockquote>
+This might sound a bit too specific, however, the following from the abstract has me interested
+<blockquote>
+We enhance Walls et al.'s (1992) IS Design Theory by introducing the notion of "applied behavioral theory" as a means of better linking theory and system design. Our second objective is to apply our theory-driven design methodology to social recommender systems, with the aim of improving prediction accuracy. A behavioral study found that some social relationships (e.g., competence, benevolence) are most likely to affect a recipient's advice-taking decision.</blockquote>
+
+Aspects of recommender systems resonate with the task facing e-learning systems, especially some of the work around academic analytics.  i.e. an attempt to recommend approaches/information that can help teachers and students.
+
+The following starts with a overview of what I took from the paper. This is followed by a summary of the major sections of the paper.
+
+In the end, not quite as interesting as I hoped. But still sufficient to spark some thinking.
+
+<h3>Overview</h3>
+
+Two main aims
+<ol>
+  <li> Show how design research can be improved through filling the gap between kernel theories in an ISDT and the subsequent design principles with an applied behavioural model.<br />
+      i.e. a traditional behavioural model/theory that tries to better approximate the design need/problem.</li>
+  <li> Illustrate how social recommender systems (with specific example within movie recommendations) can be improved using this type of approach. </li>
+</ol>
+They suggest that this is just one approach to bridging this gap. I tend to agree that this is an area of some complexity. But I also think this complexity is the source of value of design research. It is the interesting solutions within this problem area that arise from creativity that create research value. I would hope that there would be many different approaches, some of which can't be captured in a sequence of steps.
+
+Another way of looking at this is that they are simply suggesting the more formal development of an improved kernel theory that will be used to inform system design.  Not sure it is necessary that this be yet another component of an ISDT.
+
+There is an interesting point here about how the design principles/ISDT can in turn influence the kernel theories, or at least the interpretation of these into the "gap filler".
+
+There are some interesting insights from the advice-taking literature that could be useful in e-learning system design.  For example
+<blockquote>Work dating to Pelz and Andrews (1966), Mintzberg (1973), and Allen (1977) indicates that people prefer to turn to other people, rather than to documents, when seeking information.  Recommendations often are received through word-of-mouth, and such communication tends to flow through interpersonal channels based on shared interests and friendship (Arndt, 1967), both offline and online (Cross and Sproull, 2004).</blockquote>
+So, an e-learning system that attempted to connect people (teachers and students) to other people, rather than help documents, might offer some interesting outcomes.
+
+<h3>Introduction</h3>
+
+Introduces what recommender systems are.."reducing information overload by providing users with relevant information and a key component of successful online stores". References literature, talks about two approaches to recommender design and the three sequential steps: identify sources for user; analysis of user's profile; generation of recomendations
+
+SRS == Social Recommender Systems.  Introduce classification of SRS. Research on SRS using relationship information in early phases with inconclusive results, modest accuracy improvement in limited sets of cases.  <em>Limitation</em> suggested that under-specification of the nature of social relations, ad-hoc design and limited use of behavioural theory is the cause.
+
+Two primary objectives
+<ul>
+  <li> Develop an applied theoretical model;<br />i.e. this is used to link kernel theories in ISDT and the design principles.  The model is a behavioural framework. </li>
+  <li> Improve the design of social recommender systems.</li>
+</ul>
+
+<h3>Design problem: sources in SRS</h3>
+
+Collaborative filtering systems associate sources based on similar consumption profiles.  Presents mathematical formula.
+
+Social-network-enhanced RS have arisen from people prefering what their friends like and the availability of open social networks. Another mathematical formula. References literature showing limited improvements from this approach.
+
+Argues this is because the discussion of social relationships in SRS has lacked theoretical grounding.
+
+<h3>Grounding systems design in behavioural theory</h3>
+
+This is where they attempt to argue the need for an extra component in ISDTs to link kernel theories and principles of design. Interestingly they don't like the use of theory for these principles.
+
+Use Venable (2006) and Kuechler et al (2007) as evidence that the explication of the theoretical basis for make design effective is often not there. <em>I wonder about how strong the evidence for this is, where it comes and how well the following recommendations address that problem.</em>
+
+<em>In particular, am interested in the suggestion that Gregor and Jones (2007) don't necessarily see the case for grounding design in behavioural theory. It's my recollection that we argued that it is possible for design principles to work without knowing why (e.g. science of aeronautics arising after people were flying), but that have theory to ground principles in is still a good/preferable thing to have. After all, justifactory knowledge is included as one of the core components of an ISDTAnd I quote
+<blockquote>The sixth component of justificatory knowledge needs to be added, to provide an explanation of why the design works.</blockquote>.</em>
+
+It was also argued that both IT and human behavioural knowledge is required<blockquote>To further define terms as they are used in this paper, an IS design theory shows the principles inherent in the design of an IS artifact that accomplishes some end, based on knowledge of both IT and human behaviour.</blockquote>
+
+The point about the connection between kernel theories and design principles not always being explained well, is a valid one. One that has been made elsewhere.
+
+Authors argue that engineering has solved this problem and uses the example of wing design being based on aerodynamics.  This only happened after some time.  Also uses HCI as an example of a field being driven by kernel theories.
+
+Now propose four challenges in briding the gap between kernel behavioural theories and system design
+<ol>
+  <li> Difficulty in finding relevant kernel theories for a specific design problem;<br />Drawing on Walls et al (2004) they suggest that one of the problems here is the disconnect between behavioural and design researchers.
+  </li>
+  <li> Kernel theory scope is too narrow, with no single theory accounting for all constructs relevant to a design problem. </li>
+  <li> Granularity of constructs in kernel theories don't math requirements of design problem. </li>
+  <li> Kernel theories specify the direction of effects, where design requires consideration of the effects' magnitude</li>
+</ol>
+
+Talk about Card and Newell's work (1983 and 1985) that addresses these problems by developing applied pyschological theoretical models (called "engineering-style theory") rather than borrowing existing kernel theories.  It's from there that they deisgn interfaces.  Some criticism of the work, including Carroll and Kellog (1989) "It may be simplistic to imagine deductive relations from science to design, but it would be bizarre if there were no relation at all"
+
+<em>This is perhaps part of my problems so far with this paper. Part of the reason I think there aren't clear guidelines for linking kernel theories and design is that creating these linkages is the major creative aspect of design research. While it may be possible to identify some common processes or steps this remains a creative exercise. Perhaps more in common with abductive logic than deductive or inductive?</em>
+
+however, the authors think that the Card and Newell approach can provide some benefit to design research.  And essentially argue that this applied behavioural model can be added in.
+
+<h3>Linking behavioural theory to systems design</h3>
+
+Specify steps to be used with this extension to address the four challenges listed above. Done with the context of social recommender systems.
+
+<ul>
+  <li> determine whether the application of psychological or social theories is warranted in a particular design problem;<br />
+      Suggests SRS is an obvious fit given the large stream of literature from social theory.  Suggests the the collaboration in HCI and CSCW communities may serve as a model.
+  </li>
+  <li> survey the relevant theoretical domain to identify constructs that map well to the design goals;<br />
+  </li>
+  <li> specify an applied theoretical model that is based on kernel theories;<br />
+       Identify factors that would be antecedents of the dependent variable in the applied theoretical model and important to achieving the design goal. A mapping between design factors and theory based constructs.  Issue of scope becomes critical.  The question of competing, complimentary, multiple kernel theories.
+  </li>
+</ul>
+
+The applied theoretical model is developed using standard behaviourla methods.  i.e. a set of links between explaining and outcome variables. <em>The following sounds strange to me</em> This model can be useful for udnerstnding the complex relationship between constructs, but may be too complicated for guiding design decisions. ????  In this example, they had to move from a multi-stage path model to a simpler one-step regression model due to the difficulty of getting data for all the constructs within the context of a SRS.
+
+<h3>Kernel theoris of advice taking</h3>
+
+This is the section where they review kernel theories from advice literature and derivce some key constructs for SRS.
+
+Reference one of the authors earlier papers that identify the types of social data available online and suggest that these map onto several theoretical constructs: homophily, tie-strength, trustworthiness.  Then from a synthesis of advice-taking literature they develop some central variables for an applied theoretical model to understand the recipients willingness to accept a source's advice: cognitive homophily, tie strength, and competence- and benevolence-based trustworthiness.
+
+Some of the insights from this literature
+<ul>
+  <li> People prefer to ask people, rather than use documents. </li>
+  <li> Strong ties between people impact willingness to accept a recommendation, important conduit of useful knowledge. </li>
+  <li> Weak ties useful as sources of novel information, instrumental in the diffusion of ideas and receipt of work-related advice </li>
+  <li> Tie strength is multi-dimensional: closeness/emotional intensity, time </li>
+  <li> Trust and tie strength are different. </li>
+  <li> Perceived trustworthiness is closely related, but different to trust. </li>
+  <li> Trusting relationships lead to greater knowledge exchange. </li>
+  <li> Trustworthiness is multi-dimensional: benevolence, integrity, competence.</li>
+  <li> Homophily is different to tie strength </li>
+  <li> homophily can impact advice taking through the mediating role of tie strength </li>
+  <li> homophily has two dimensions: socio-demographic and cognitive </li>
+  <li> Cognitive homophily is "presumed to shape our orientation to future behaviour </li>
+  <li> Socio-demographic homophily is seen as an antecedent of cognitive homophily </li>
+</ul>
+
+<h3>Applied theory of advice taking to guide SRS design</h3>
+
+This is where they developed the model from the above that will guide their system design.  It shows the path model, the evaluation and then a simplified linear regression model to directly inform system design.
+
+This consists of a range of hypotheses, e.g.
+<blockquote> H 1a: Cognitively similar individuals will maintain relationships that are longer temporally<br />
+H 1b: Cognitively similar individuals will interact more frequently.
+</blockquote>
+which are then brought together in the multi-path model.
+
+Then describes a survey methodology to test the hypotheses. Applied to 116 undergraduate students. PLS data analysis.  Result fairly good, with some not supported.
+
+Then tested with Hopophily + one of the other relational constructs. Since design of a system would need to be simpler.
+
+<h3>Design principles for SRS</h3>
+
+Use the model from the last section to develop a Walls et al ISDT for SRS
+
+<h3>Recommender system evaluation</h3>
+
+A prototype implemented to test some aspects. Same set of students. Lots of stats. Result...<blockquote>Simulation results demonstrate that alternative types of social relationship data impact recommender system accuracy differently. While some relationships (namely competence and benevolence-based trustworthiness) enhance accuracy, other relationships (i.e., interaction duration and frequency) add noise and impede system performance.</blockquote></p>
+
+</body>
+</html>

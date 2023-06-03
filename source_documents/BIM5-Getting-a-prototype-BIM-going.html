@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM#5: Getting a prototype BIM going</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/20/bim5-getting-a-prototype-bim-going/">BIM#5: Getting a prototype BIM going</a></h1>
+
+<p>Tags: bam, bim, moodle, Uncategorized</p>
+
+<p><p>In the last <a href="https://djon.es/blog/2009/08/17/bim-4-re-jigging-how-bim-works/">bit of work</a> I did on BIM, I got to the stage of having some initial working code for BIM module that allow someone to create a BIM activity and have that data saved to the database.  The activity wouldn't do anything, but it's a start.</p>
+<p>The aim today is to try and make some progress on getting a prototype up and going.  i.e. some working Moodle code that academic staff can interact with and get some idea of how BIM will work.  I'm still uncertain how far I will go with this.  I have two main options:</p>
+<ol>
+  <li> hard coded HTML; or<br />Have the code return hard-coded HTML, don't read any database.  Just give the same information. <p>This would be the simplest approach in terms of database tables and code.  However, given that Moodle uses a forms library, I won't be able to do the simplest thing - copy the HTML from BAM into BIM.  I'll have to do some translation.  It may turn out to be simpler to do the next bit.</li>
+  <li> generate HTML from a pre-populated database.<br />Take/manipulate some data from the existing BAM database to create a BIM database in Moodle.  Write code in BIM that will generate HTML based on that data, but not allow modification of the data.</p><p>Some increased complexity, but also like to be a temptation to write the whole code which will slow down the production of the prototype.</p></li>
+</ol>
+<p>Based on that bit of reflection, I think I'll start with a hard-coded HTML approach and see what happens.</p>
+
+<h3>What to show</h3>
+
+<p>First step, I should probably ask if &lt;a href="http://www.cqu.edu.au/</a>CQU</a> has a theme for its Moodle implementation.  If I apply it to my dev box, I can make the initial prototype experiments look like the live system.  Have to ask.</p>
+<p>Okay, with the current status of BIM, if I "view" the activity, it doesn't produce any HTML. The plan here is that different users will see different information when the view the activity.  The different views are:</p>
+<ul>
+  <li> Student
+       <ul>
+          <li> If they haven't registered their blog, see the information about how to create and register their blog. </li>
+          <li> If they have registered their blog, they should see
+               <ul>
+                  <li> Details about their blog, including an interface to change their registered blog (if so configured by the coordinator).</li>
+                  <li> Details about their posts/answers.<br />This is where they see which posts to their blog BAM has recognised as an answer to a required question.  It will also show whether the answer has been marked and also any comments from the marker.</li>
+               </ul>
+           </li>
+       </ul>
+    </li>
+  <li> Staff - the following draws on screen shots of the existing system.  The appearance will change to fit Moodle and also possibly to improve the interface.
+       <ul>
+          <li> By default the "student blog details" screen (see below)
+<a href="http://www.flickr.com/photos/david_jones/3268716654/" title="BAM show student blog details by David T Jones, on Flickr"><img alt="BAM show student blog details" height="296" src="http://farm4.static.flickr.com/3342/3268716654_45968d797b_o.png" width="348" /></a></li>
+          <li> Link to the "answers page"
+<a href="http://www.flickr.com/photos/david_jones/3268716836/" title="BAM show all student posts page by David T Jones, on Flickr"><img alt="BAM show all student posts page" height="255" src="http://farm4.static.flickr.com/3384/3268716836_341b600cbc_o.png" width="379" /></a></li>
+         <li> Which in turn links to the marking page
+<a href="http://www.flickr.com/photos/david_jones/3267891725/" title="BAM mark post page by David T Jones, on Flickr"><img alt="BAM mark post page" height="287" src="http://farm4.static.flickr.com/3439/3267891725_40faa5316a_o.png" width="404" /></a>  </li>
+     </ul>
+  </li>
+</ul>
+
+<h3>To find out</h3>
+
+<p>This means that I need to find out how to do the following in Moodle:</p>
+<ul>
+  <li> Perform different operations for different types of users. </li>
+  <li> Ensure only the authorised users can perform those operations. </li>
+</ul>
+
+<h4>Different operations</h4>
+
+<p>Viewing an activity is done via the view.php file in the module.  At this stage it looks like this PHP code should check various parameters as well as course and user details and decide what to do as a result.</p>
+<p>It seems that view.php follows a fairly set structure (not suprisingly).  </p>
+<ul>
+  <li> Parameter check<br />Check each of the parameters exist and are valid - including checking that there is an instance of the activity (e.g. bim) that matches the id that's come in.  Crash and burn if these checks don't pass.</li>
+  <li> Security check<br />Get the login details/objects of the user, perform security/capability checks.</li>
+  <li> Log some activity<br />i.e. <pre>add_to_log($course-&gt;id, "bim", "view", "view.php?id=$cm-&gt;id", "$bim-&gt;id");</pre></li>
+  <li> Display the HTML<br />Which often involves a fair bit of calculation and then some use of standard header/footers.</li>
+</ul>
+<p>The quiz module appears to use the idea of pagelib.php - which appears to implement/extend a factory class.  i.e. a class that determines which type of quiz is being displayed and how to display it.  There's a global Moodle pagelib.php which seems to define the base classes for these.  There's a number of them - quiz uses page_generic_activity.</p>
+<p>The LAMS module in the contrib collection appears to take the simple if approach i.e.
+<pre>if (has_capability('mod/lams:manage', $context)){
+....
+}else if(has_capability('mod/lams:participate', $context)){
+....
+if ($lams-&gt;introduction) {
+</pre></p>
+<p>In the long run this will have to be thought through.  The if/else option isn't a technically nice and neat solution.  I'm happy for a hard-coded prototype to use it though.</p>
+
+<h4>Authorised users, capabilities etc.</h4>
+
+<p>The question now is how to determine between different types of users.  How to know the difference between students and staff.</p>
+<p>According to the <a href="http://dev.moodle.org/mod/resource/view.php?id=43">intro to moodle course docs</a> there's a roles and capabilities system that has replaced fixed roles.  That sounds like, and based on the modules I've looked at, the way to go. More <a href="http://docs.moodle.org/en/Roles_and_capabilities">documentation here</a>.</p>
+<p>Capabilities etc are defined in the db/access.php file for the module which looks a bit like this
+<pre>$mod_lams_capabilities = array(
+
+    'mod/lams:participate' =&gt; array(
+
+        'captype' =&gt; 'write',
+        'contextlevel' =&gt; CONTEXT_MODULE,
+        'legacy' =&gt; array(
+            'student' =&gt; CAP_ALLOW
+        )
+    ),
+
+    'mod/lams:manage' =&gt; array(
+
+        'captype' =&gt; 'write',
+        'contextlevel' =&gt; CONTEXT_MODULE,
+        'legacy' =&gt; array(
+            'teacher' =&gt; CAP_ALLOW,
+            'editingteacher' =&gt; CAP_ALLOW,
+            'admin' =&gt; CAP_ALLOW
+        )
+    )
+);
+</pre>
+<p>Should be able to add a couple of dummy ones and use that to add in some if/else to display different HTML based on the type of user.</p>
+<p>First problem is that it appears changes to db/access.php only get recognised if you increment the version and/or reinstall</p>
+<p>Next problem is that the little test I'm doing isn't working.  I thought I'd set a capability only for a student - but the code is being executed for the admin user.  Either I've done it wrong or the admin user has some additional "powers".  </p>
+<p>Looks like the latter.  Need to create another user and assign as a teacher. Yep, that works.</p>
+<p>Now, rather than simply "else not student" let's add a capability the identifies teachers and maybe another one that identifies admin. Okay, the administrator version is working.  But not the teacher one.</p>
+<p>At this stage, I'd like to know if there's anyway, in the code, to spit out information about the available capabilities.  Would that be in the context variable?  Nope, it's fairly simple....doesn't seem to be any reasonably straight forward code.</p>
+
+<p>need to move on.  I'm stuck at the moment with two of the capabilities working, but not the one with the student.  Guess, I'll have to go with a default.</p>
+
+<h3>Put in the student details page</h3>
+
+<p>While this is fairly straight forward.  The other unlooked for complication is the need to grasp the use of <a href="http://docs.moodle.org/en/Development:lib/weblib.php">weblib.php</a> and its functions.  So far, the introduction to weblib is not straight forward.</p>
+<p>It looks like it will require a dive into weblib.php and some trial and error.  Can't seem to find anything in terms of decent overview documentation - apart from that generated <a href="http://phpdocs.moodle.org/19/index.html">automatically from the code</a>.</p>
+<p>Again, it's another one of those frustrating jobs, not difficult, just painful.</p>
+<p>Looks like it is time to go.</p>
+
+<h3>Status</h3>
+
+<p>Have made some progress on the prototype.  But really identified some additional reading and understanding that's required to do this in "proper" Moodle-ese.</p></p>
+
+</body>
+</html>

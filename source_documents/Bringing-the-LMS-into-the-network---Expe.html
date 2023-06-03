@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bringing the LMS into the network - Experiment # 1 - Activity completion</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/08/03/bringing-the-lms-into-the-network-experiment-1-activity-completion/">Bringing the LMS into the network - Experiment # 1 - Activity completion</a></h1>
+
+<p>Tags: bad, bricolage</p>
+
+<p>The following is the first step in an attempt to modify the <a href="http://damosworld.wordpress.com/2013/08/30/the-moodle-activity-viewer-mav-heatmaps-of-student-activity/">Moodle Activity Viewer</a> (or at least a local instance). I'd like a modified version of MAV to allow me to
+<ol>
+  <li> find out how students are progressing with activity completion.
+   <p>Rather than use clicks (as MAV does currently) to track student usage, use activity completion. I use this in EDC3100, however, activity completion isn't even turned on at the Moodle level at the other institution.</p> </li>
+  <li> Easily display additional information about students as a roll-over/popup for any links to a student profile page. </li>
+</ol>
+
+The following is an initial exploration of how MAV works and what changes I'll need to kludge it to work within the local constraints.
+
+It starts with a description of how this is going to work, follows with some initial explorations getting MAV to work within my browser, an exploration of how MAV actually does this and some initial explorations of the changes I'll have to make.  It finishes with some suggestions for the next step.
+
+<h3>All as a local instance</h3>
+
+First constraint is that this is all being done as a local instance. I'll be the only one who can see it when I'm using my laptop. It will work something like this
+<ul>
+  <li> I have MAV installed on a version of the Firefox browser. </li>
+  <li> When I visit one of my institutional Moodle course sites MAV will recognise this and as a result will
+      <ul>
+        <li> Send a query to a web server running on my laptop asking for activity completion (and other) data for all, some or one student. </li>
+        <li> The web server on my laptop will query a database on my laptop that contains a copy of the activity completion data for my courses and send a reply back to Firefox/MAV. </li>
+        <li> On receipt of the reply Firefox/MAV will update the display of my course site to colour code the activities based on how many student(s) have completed the activity. </li>
+      </ul>
+  </li>
+</ul>
+
+The reliance on my laptop and a local database is due to the difficulty of making connections to the institutional servers/data.
+
+From a "theoretical" perspective, this is part of our argument that the LMS is not a full fledged member of networked learning. It's too hard to make new connections to the LMS to enable new learning. MAV and local databases are an attempt to make it easier to connect to the LMS and its large number of individual parts. The theory is that by making this easier, it is easier to innovate and encourage the development of more interesting learning that is more used.
+
+<!-- *************************************************************************************** -->
+<a name="recognise"></a>
+<h3>MAV recognising institutional LMS page</h3>
+
+First some documentation on MAV and how it works
+
+The local mav code is /usr/local/www/mav and /usr/local/www/smarty
+
+MAV has to separate servers it knows about
+<ul>
+  <li> balmiServer - this will be my local laptop </li>
+  <li> Moodle Server - this is the institutional LMS
+       <p><strong>POINT:</strong> Would be interesting to see if this could be multiple servers? e.g. when I want it to work on both my local Moodle server and the institution one</p></li>
+</ul>
+
+These are set in ~/mav/gmdocs.  Set it to http://usqstudydesk.usq.edu.au/m2
+
+Go to this link http://localhost/fred/mav/gm/moodleActivityViewer.user.js and install the updated version of MAV
+
+That seems to working.  Getting at least some information dumped into the console.  Seems to be breaking on a call to balmi.getLoggedInUserIDNumber() --- moodleActivityViewere.user.js 1199
+
+Ahh, seems the USQ study desk has an extra bread crumb in the list that breaks the code.   Modify the code in balmi.user.js and all is good.
+
+<strong>getMoodleLinks</strong>
+
+balmi.user.js has a function getMoodleLinks that extracts all the Moodle type links from the page.  This includes setting up some regular expressions to do the extraction.
+
+<em>Change:</em> the RE needs to be updated for my institutional Moodle.  Also another RE replacement a little further down for link name.
+
+<h3>How does MAV work?</h3>
+
+Try to nut out the process MAV uses and identify what possible changes I'll need to make for both the activity completion and also the student information idea.
+
+The client runs the GreaseMonkey script ~/mav/gmdocs/moodleActivityView.user.js installed on Firefox.  It starts off and calls.
+<ul>
+  <li> balmi.getCoursePageLink - Will only run MAV is the page is a valid Moodle page.
+                     <p>Looks for the Moodle breadcrumbs and extracts the course id. </p>
+<p><strong>CHANGE:</strong> this is where I could hard code the detection of my courses and also do the translation between the course ID on the USQ Moodle server and the course ID on the Moodle server on my laptop.</p>
+       <p>If not what MAV is looking (getCoursePageLink returns NULL) for MAV exits.</p>
+  </li>
+  <li> moodleActivityView.user.js - does a range of set up prep.  Adding the MAV interface etc.
+<p><strong>CHANGE:</strong> Some of these will need to change based on what I want to be able to do.</p>
+   </li>
+  <li> Adds mavUpdatePage function as a listener for the load page event - i.e. this is what updates the page.</li>
+  <li> mavUpdatePage does some debug stuff and then calls
+  <li> generateJSONRequest - generate the particular request to send to the MAV server in JSON
+      <ul>
+         <li> balmi.user.js - balmi.getCoursePageLink() - <em>A duplicate call</em> </li>
+         <li> balmi.user.js - balmi.getMoodleLinks
+             <p>get's all the links that are part of a Moodle course page.  This is for the activity tracking.</p>
+            <p>returns data of the form <blockquote> "/mod/forum/view.php?id=12345": ["forum","view.php?id=12345"]</blockquote></p>
+<p><strong>CHANGE:</strong> For activity completion the aim here will be to return the links only for value Moodle activities.</p>
+<p><strong>CHANGE:</strong> For the user details option, looking at returning the links to user details.</p>
+         </li>
+         <li> Filters out a range of links that shouldn't be included </li>
+         <li> calls requestData - actually makes the request
+       </ul>
+  </li>
+  <li> updatePage - takes the data returned from the MAV server and updates the links. Either through increasing font size of changing the background colour of the links.
+<p><strong>CHANGE:</strong> the activity completion will be closest to a version of the number of students.  Rather than the number of students who clicked on the link, it will be the number of students who completed the activity.</p>
+         <p>Has a loop that goes through all the links in the page. If they link matches something that's come back from the MAV server, then make the change. </p>
+  </li>
+</ul>
+
+The server is implemented using ~/mav/phpdocs/api/getActivity.php - processes the request
+<ul>
+  <li> decodes and logs the request </li>
+   <li> getCourseIdFromCourseHomePageLink - extracts the course id which is used to query the Moodle database </li>
+   <li> SQL to count # student in course
+<p><strong>CHANGE:</strong> Not needed for the student ID stuff.</p>
+ </li>
+   <li> Checks to see if the user wants # clicks or # students and whether just for an individual student, a group(s) or all.
+<p><strong>CHANGE:</strong> Again not needed for student details. </p> </li>
+   <li> Calls ~/mav/lib/generateSQLQuery'generateSQLQuery - just a wrapper around a fairly standard PHP template for dynamically generated SQL. <p>The template is in ~/mav/lib/getActivityQueryTemplate.php  This uses a range of PHP code to generate the appropriate SQL query to extract the stats per link </p>
+      <p><strong>CHANGE:</strong> the activity completion modifications could be implemented in here. Fairly similar to the S approach, but using activity completion rather than the Moodle log tables.</p>
+   </li>
+   <li> Processes the query for each link, placing the results into a data structure </li>
+   <li> Constructs the JSON object to send back to the browser.
+<p><strong>CHANGE:</strong> This is where my kludge will have to translate the student and activity ids returned by the SQL into the values that are being used on the USQ Moodle server and are thus what the browser will find embedded in the HTML.</p>
+  </li>
+</ul>
+
+<h3>Approach for changes</h3>
+
+Separate clients and servers for the two approaches.  Perhaps modify the existing for activity completion, but still do this separate from the existing MAV stuff so I have a clean copy?  Definitely have to put this under git.
+
+Questions
+<ol>
+  <li> What's the format for links to the student profile? Does it use the Moodle user id?
+   <p>Basically a link to the script <em>user/view.php</em> with the user's id and the course id as parameters.</p>
+[code lang="html"]
+&lt;a href="~/user/view.php?id=USERID&amp;course=COURSEID"&gt;Fred Nerf&lt;/a&gt;
+[/code]
+</li>
+  <li> How do you distinguish activity links from other links in Moodle?
+          <p>Looks like a list element with a class of <em>activity</em> is a good first start.  If it in turn contains a span of class <em>autocompletion</em> that's another good sign.  </p>
+     <p>Above, that with the activity completion you're only looking for stuff within the <em>course-content</em> div, or below that the <em>weeks</em> unordered list.</p>
+[code lang="html"]
+&lt;li class="activity book modtype_book " id="module-263678"&gt;
+  &lt;div&gt;
+    &lt;div class="mod-indent-outer"&gt;&lt;div class="mod-indent"&gt;&lt;/div&gt;
+      &lt;div&gt;
+        &lt;div class="activityinstance"&gt;
+           &lt;a class="" onclick="" href="..mod/book/view.php?id=263678"&gt;&lt;img src="" class="iconlarge activityicon" alt=" " role="presentation" /&gt;
+              &lt;span class="instancename"&gt;Setting up your tools: Diigo, a blog and Twitter&lt;span class="accesshide " &gt; Book&lt;/span&gt;&lt;/span&gt;
+           &lt;/a&gt;
+        &lt;/div&gt;
+        &lt;span class="actions"&gt;
+           &lt;span class="autocompletion"&gt;&lt;img title="Completed: Setting up your tools: Diigo, a blog and Twitter" alt="Completed: Setting up your tools: Diigo, a blog and Twitter" class="smallicon" src="" /&gt;&lt;/span&gt;
+        &lt;/span&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/li&gt;
+[/code]
+  <li> How am I going to get map the USQ Moodle activity and user ids with the ids used on my local server?
+        <p>A simple script to parse the HTML file for the course home page should be able to extract the ids for each of the activities on the USQ server and also the associated name.  The above HTML shows that the id is in the id of the list element.  Already have the names of the activities with a hard coded sequential idea in the local database. Can do the mapping that way.</p>
+  </li>
+</ol>
+
+<h3>To do</h3>
+
+Misc tasks to do
+<ul>
+  <li> Think through how this kludge is going to be done. Likely possibilities include
+         <ol type="a"> <li> Separate javascript plugins and servers for the activity completion and the user details. </li>
+            <li> Modify the existing plugins and servers to handle the additional requests. </li>
+             <li> Integrate activity completion into the existing MAV, but have user details separate <p>Mainly because activity completion is largely the same as the existing display work that MAV does. </li>
+         </ol>
+  </li>
+  <li> User detail display
+     <ul>
+       <li> Investigate what's the best way to pass the data back to the browser - just data with the HTML generated by the browser or as HTML generated by the server and simply inserted by the
+       <li> Chat with Rolley and see whether the rollover/popup idea can be implemented with the same HTML stuff used by the rest of MAV. </li>
+       </ul>
+  </li>
+  <li> Extract the activity id data from the USQ server. </li>
+  <li> Find out if there is a report that Moodle will generate a list of all the users in a course so I can extract user ids from the USQ Moodle server to create a mapping to the local user ids.
+      <p>The activity participation report will generate a list of all students with a link that includes user id and their name.</p>
+  </li>
+  <li> Get the MAV code base into git. </li>
+  <li> Implement the separate user details version of MAV might be the first major change to do. </li>
+</ul></p>
+
+</body>
+</html>

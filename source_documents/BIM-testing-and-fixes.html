@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM testing and fixes</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/02/07/bim-testing-and-fixes/">BIM testing and fixes</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>A journal of fixes and testing of BIM. Aim here is to address some minor issues with integration with my current institution's Moodle instance thereby providing a minimum working version for installation. As per <a href="https://djon.es/blog/2014/02/05/identifying-some-immediate-changes-to-bim/">yesterday's planning</a> the hope is to make further changes based on this foundation.
+
+Result is a slightly tweaked version released <a href="https://moodle.org/plugins/pluginversions.php?plugin=mod_bim">via Moodle contrib</a>.  This will be the foundation for some tweaks, though I can feel time slipping away.
+
+<h2>Latest version of BIM and PostgreSQL</h2>
+
+The institutional Moodle instance uses Postgresql. Thanks to playing with MAV I know have a version of Moodle running with Postgresql (aka fred). The plan here is to install BIM on that instance and test it
+<ol>
+  <li> What's the latest BIM?
+       <p>MOODLE_25_STABLE is the latest, but MOODLE_24_STABLE is what I need for this work, institutional Moodle version still at 2.4.</p>
+  </li>
+  <li> Install it on fred.
+        <p>Get the source</p>
+[code lang="sh"]
+git clone https://github.com/djplaner/moodle-mod_bim/
+mv moodle*bim bim
+cd bim
+git branch MOODLE_24_STABLE
+git pull origin MOODLE_24_STABLE
+[/code]
+         <p>Visit notifications as the admin user on fred and install of BIM successful.</p>
+         <p>BIM not appearing in the list available in a course. A setting?  No, there is an error? What error? Change ownership on the directory and all good.</p>
+</li>
+  <li> Do some basic tests with that version of BIM.
+        <ul>
+           <li> Create BIM activity in old EDC3100 course. - DONE </li>
+           <li> Do some work as administrator.
+                <ul>
+                   <li> Register a blog - DONE</li>
+                   <li> Create a question - DONE</li>
+                </ul>
+          </li>
+           <li> Create some teaching staff - fred already has some details for users.  - DONE
+               <p>Need to address the absence of the auth plugin - my laptop doesn't have the institutional auth plugin, can I work around this?</p><p>Need to create some new users.</p>
+                <ul>
+                  <li> examiner - david</li>
+                  <li> marker - vick, rick </li>
+                  <li> students - nerf, abe</li>
+                </ul>
+            </li>
+        </ul>
+  </li>
+  <li> Do a BIM restore from the S2, 2013 version of BIM - this will be complex given usernames? - DONE
+      <p>This worked surprisingly well. Taken a bunch of data from real life S2, 2013 and placed it into the institutional version of the course and it's worked all good.</p>
+  </li>
+  <li> Check the known institutional problems
+       <ul>
+         <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/85">Bulk email</a> - fixed.
+         </li>
+         <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/86">User search</a>.
+           <p>Stalling for some users.  Works for others - having a registered feed may be a distinction? </p><p>Having trouble identifying the cause. Wonder if it's purely a Postgresql problem.  Try with another version of Moodle with MySQL.</p>
+        <p>Works, but generates an error about curl:$count in lib/filelib.php - there is a call to SimplePie. - suggesting that the problem isn't Postgres, but the proxy configuration on the other Moodle server. Confirmed.  This raises an issue with the timeout situation with curl (changed). But also about where this is being called - showing student details I imagine.</p>
+  </li>
+         <li> <a href="https://github.com/djplaner/moodle-mod_bim/issues/87">All teaching staff are coordinators</a> - DONE
+             <p>Maybe due to how institutional roles are mapped to Moodle archetypes - examiner/teacher/moderator - editing teacher; tutor/non-editing teacher/marker - teacher.</p>
+              <p>Vick Far - teacher (archetype editingteacher) - gets the coordinator view.  Rick Nerf - marker (archetype teacher) - gets the marker view.</p>
+         </li>
+       </ul>
+  </li>
+</ol>
+
+<h2>Some new issues</h2>
+
+As doing the above testing, am adding issues into GitHub associated with <a href="https://github.com/djplaner/moodle-mod_bim/issues?milestone=1&amp;state=open">a milestone</a>.  What follows is a record of dealing with those.
+
+<strong><a href="https://github.com/djplaner/moodle-mod_bim/issues/84">Undefined property warnings in locallib.php - 435</a></strong> - Fixed.
+
+<strong><a href="https://github.com/djplaner/moodle-mod_bim/issues/83">Ugly about messages</a></strong> - Fixed.  Raises some potential to offer better support to folk around BIM.
+
+<h2>Share this with the world</h2>
+
+These fixes need to be shared more broadly.
+<ul>
+  <li> Back to github </li>
+  <li> Up to Moodle contrib </li>
+</ul>
+
+Done.</p>
+
+</body>
+</html>

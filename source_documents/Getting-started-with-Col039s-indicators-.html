@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Getting started with Col&#039;s indicators block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/13/getting-started-with-cols-indicators-block/">Getting started with Col&#039;s indicators block</a></h1>
+
+<p>Tags: indicators, moodle, Uncategorized</p>
+
+<p><p><a href="http://beerc.wordpress.com/">Col</a> has been playing around with some ideas for a <a href="https://djon.es/blog/2010/05/09/requirements-for-an-indicators-moodle-block/">Moodle indicators block</a>.  This is a record of my first attempt to install and play with the block.  Might also do a bit of reflection and setting up of processes etc so we can go further with this.</p>
+<p>The long term goal is to promote the <a href="http://indicatorsproject.wordpress.com/">Indicators project</a>, help some folk and do some research.</p>
+<p><strong>Warning:</strong> Much of the following is intended only for the indicators project team.  At this stage, there's probably not a lot of value in anyone outside the project trying to use the block.  It's very early days.</p>
+
+<h3>Installing the block</h3>
+
+<p>Installing the single PHP file provided by Col in the right place in my local Moodle install, setting permissions, visiting the "admin" page for my Moodle install and she's all right to go.  Go to a dummy course, login as a staff member, add the block and it's all working.  The block currently shows some idea of effort on the part of students, so logged in as a staff member, I don't see much.  Login as a dummy student and this is what I see. (Click on it to see a bigger version)</p>
+
+<a href="http://www.flickr.com/photos/david_jones/4602744172/" title="Indicators block version 0 by David T Jones, on Flickr"><img alt="Indicators block version 0" height="131" src="http://farm2.static.flickr.com/1126/4602744172_c62f1a9ab2_m.jpg" width="240" /></a>
+
+<p>It seems to work, though with a few errors.  The dummy student I'm using hasn't done a lot and the arrow indicates that.  The errors include:</p>
+<ul>
+  <li> The PHP error re: undefined variable. </li>
+  <li> The [[Indicators]] as the label. </li>
+  <li> The quite large amount of screen space being taken up by the right hand block column - only since the indicators block was added. </li>
+  <li> The white background for the graph, rather than transparent. </li>
+</ul>
+<p>The aim is to make this open source and let anyone work on it - or at least anyone in the indicators project as a first step.  This means we need to get this under version control.</p>
+
+<h3>New code - effort tracking during early stages</h3>
+
+<p>Col's just sent some new code, installed it and refreshed the page for the dummy student.  I get the following</p>
+
+<a href="http://www.flickr.com/photos/david_jones/4602759472/" title="Next step in indicators block by David T Jones, on Flickr"><img alt="Next step in indicators block" height="86" src="http://farm2.static.flickr.com/1173/4602759472_713e932696_m.jpg" width="240" /></a>
+
+<p>The background colour has been improved.  However, the interesting observation is that the one page reload has catapulted this student from a fairly low effort level, to a fairly high effort level.</p>
+<p>My first guess, without even having looked at the code is that this is because this is a dummy course, there are no real students and I only use it occasionally for testing. This means very low levels of usage by "students". At these levels, depending on the maths used, a single extra page refresh can make a huge difference.</p>
+<p>This is something the block should recognise and address, some solutions might include:</p>
+<ul>
+  <li> Having a "too low to show" option, so that effort isn't tracked in a state of low usage. </li>
+  <li> Or showing that overall usage is low and liable to wild swings.  Perhaps a visible "confidence" level that indicates how confident the block is that it is showing you something meaningful.</li>
+</ul>
+
+<h3>Putting the block under git</h3>
+
+<p>If we're going to work collaboratively on this, and allow other people to use it, we need some sort of support for version control and a range of other features. I've been using git and <a href="">github</a> for <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>, so I think we should use those for the block.  I'm still a newbie at this, but I'm slightly ahead of the other guys in the indicators project.  So the following shares what I did to get this up and going in the hope that it is useful for them and that they (and others) can pick up any errors I made.</p>
+
+<h4>Getting started</h4>
+
+<p>I've only done this once before, a month or so ago, and can't remember anything.  So, I'm starting with the <a href="http://help.github.com/">github help</a>.</p>
+<p>I've already set up my laptop to use github which from memory involved: creating a github account, setting up some environment stuff and generating some ssh keys.  Just follow the guides in the right hand menu on help.github.com.  Just found the <a href="http://learn.github.com/">learn.github</a> site.</p>
+
+<h4>The process</h4>
+
+<p>Here's what I did</p>
+<ul>
+  <li> initialised a new git repo for the block;
+[sourcecode language="bash"]
+bash$ cd blocks/indicators
+bash$ git init
+Initialized empty Git repository in /Applications/XAMPP/xamppfiles/htdocs/moodle/blocks/indicators/.git/
+[/sourcecode]
+    This is the empty git repository
+  </li>
+  <li> add and commit the file
+[sourcecode language="bash"]
+bash$ git add block_indicators.php
+bash$ git commit -m 'initial commit'
+[master (root-commit) c1a7051] initial commit
+ 1 files changed, 103 insertions(+), 0 deletions(-)
+ create mode 100644 block_indicators.php
+[/sourcecode]
+  </li>
+  <li> Quick double check
+[sourcecode language="bash"]
+bash$ git log
+commit c1a70517f09d2f86de53e9e1c6a056d864e7622d
+Author: David Jones &lt;davidthomjones@gmail.com&gt;
+Date:   Thu May 13 10:17:50 2010 +1000
+
+    initial commit
+[/sourcecode]
+  </li>
+  <li> Add a new repository on github<br />Actually, when you create a new repository, github presents you with the full set of instructions.  (Point I didn't remember, is to make the name of the project match the folder name.)  Part of those instructions include what I've already done. Here's the rest.
+[sourcecode language="bash"]
+bash$ git remote add origin git@github.com:djplaner/indicators.git
+bash$ git push origin master
+Counting objects: 3, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 1.63 KiB, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:djplaner/indicators.git
+ * [new branch]      master -&gt; master
+[/sourcecode]
+</li>
+  <li> github like to have a README file, so let's add one.
+[sourcecode language="bash"]
+bash$ vi README
+bash$ git add README
+bash$ git commit -m "Added readme"
+[master a08e84a] Added readme
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+ create mode 100644 README
+bash$ git push origin master
+Counting objects: 4, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 419 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:djplaner/indicators.git
+   c1a7051..a08e84a  master -&gt; master
+[/sourcecode]
+  </li>
+  <li> I have a second local Moodle install, here's how I get the code from git into the appropriate place for that second Moodle install
+[sourcecode language="bash"]
+bash$ cd cm_moodle/blocks
+bash$ git clone git://github.com/djplaner/indicators.git
+Initialized empty Git repository in /Applications/XAMPP/xamppfiles/htdocs/cm_moodle/blocks/indicators/.git/
+remote: Counting objects: 6, done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 6 (delta 0), reused 0 (delta 0)
+Receiving objects: 100% (6/6), done.
+bash$ cd indicators
+bash$ ls
+README			block_indicators.php
+[/sourcecode]
+    At this stage, I think you need to create a local git repository to work with this locally.
+  <li> Let's fix that undefined variable problem, caused by a variable not being declared/initialised before an "if", and then update github?
+[sourcecode language="bash"]
+bash$ vi block_indicators.php
+bash$ git commit -m "fixed undefined canview"
+bash$ git push --mirror git@github.com:djplaner/indicators.git
+Counting objects: 5, done.
+Delta compression using up to 2 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 341 bytes, done.
+Total 3 (delta 1), reused 0 (delta 0)
+To git@github.com:djplaner/indicators.git
+   a08e84a..caf4b54  master -&gt; master
+ * [new branch]      origin/HEAD -&gt; origin/HEAD
+ * [new branch]      origin/master -&gt; origin/master
+[/sourcecode]
+  </li>
+  <li> Okay, now to get that change showing up in my original indicators block
+[sourcecode language="bash"]
+bash$ git pull origin master
+From github.com:djplaner/indicators
+ * branch            master     -&gt; FETCH_HEAD
+Updating a08e84a..caf4b54
+Fast forward
+ block_indicators.php |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+[/sourcecode]
+   A similar thing on my second Moodle install (which I think others will be doing), would've been just "git pull".
+</ul>
+
+<h3>Reflections and what's next</h3>
+
+<p>That all seems to work.  I do realise that I've probably just identified some of the basic commands without really groking the full capabilities of git and github.  Perhaps I'll learn.</p>
+<p>Tasks to do later on include:</p>
+<ul>
+  <li> Identify how to add the other members of the indicators project to the github repository (so they have write access). </li>
+  <li> Take a look at Col's code and start thinking about what we can do to add features. </li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Getting started with NVivo</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/01/14/getting-started-with-nvivo/">Getting started with NVivo</a></h1>
+
+<p>Tags: edc3100, nvivo</p>
+
+<p>What follows is some initial explorations into the use of <a href="http://www.qsrinternational.com/products_nvivo.aspx">NVivo</a> for the qualitative analysis of content.  I'm going to use the task of <a href="https://djon.es/blog/2014/01/13/evaluating-edc3100-in-2013-step-1/">analysing student comments</a> from the evaluation of a course as a test case.
+
+<strong>Aside:</strong> Just been told that "raw" data (i.e. de-identified course evaluation data with responses grouped by student) "is not given out in any form".  So rather than having useful data to import easily, I'll have to kludge up the importation of some hamstrung data.
+
+<h2>Start with the question(s)</h2>
+
+As with all good research, I'll start with the questions I want to answer with this analysis.
+<ol>
+  <li> What themes do the student comments cover? </li>
+  <li> What themes are the most prevalent? </li>
+  <li> Is there any difference between offerings or mode of delivery (on-campus, which campus, online)? </li>
+</ol>
+
+(Remember, the aim here is mostly to learn Nvivo so the limitations of my "research" questions are noted)
+
+<h2>Sourcing assistance</h2>
+
+I was going to include both help from Nvivo and the broader web, but so far the <a href="http://help-nv10.qsrinternational.com/desktop/welcome/welcome.htm">NVivo documentation</a> is providing sufficient. Though as you get deeper into it
+
+On first glance, it appears NVivo comes with some significant help.  Help that seems to be well designed (at version 10 of the product you'd hope they'd built up some expertise). Nice and very early introduction of sample research projects and how you'd go about doing that research.  I'll borrow some of that for the process below.
+
+<h3>Key concepts</h3>
+
+All systems have some abstractions they use. Nvivo is no different. The nice "<a href="http://help-nv10.qsrinternational.com/desktop/concepts/Understand_the_key_concepts.htm">understand the key concepts</a>" section seems to list four (only four?)
+<ol>
+  <li> Sources - the (multimedia) stuff you're analysing
+       <ul>
+         <li> Internals - the sources that can be imported into Nvivo. </li>
+         <li> Externals - those you can't import. </li>
+         <li> Memos - the place you store your insights about the analysis </li>
+         <li> Framework matrices - to summarise source materials. </li>
+       </ul>
+   </li>
+  <li> Coding and nodes - you code your source material into nodes. Provides access to all the references to that node. <p>Appears this can be hierarchical</p>
+        <p>Includes "case" node to store attributes. Often used to identify people/places. Classification sheets used to view the values for these nodes. </p> <p>Nodes can be organised into folders. </p>
+</li>
+        </ul>
+
+ </li>
+  <li> Node classifications - apparently intended for "demographic attributes".</li>
+  <li> Source classifications - using case nodes to manage bibliographic data</li>
+</ol>
+
+<h3>Sources</h3>
+
+Sources/data can be organised using folders (recommended for the start), sets (used later to gather sources/nodes from different folders) and search folders (?). Also source classifications to organise/compare based on attributes. e.g. book, journal article, web page.
+
+<h2>Create a project</h2>
+
+Enough reading. Let's get going.  Some of the following is initial exploration, confirming assumptions drawn from the help material in the actual tool.
+
+Hit the new project button enter title, description, accept the default filename. Mmm, user actions can go to an event log - transparency/repeatability measure I assume.  Leave it off for this play.
+
+Ok, a window where I can recognise the point of most elements. Let's see if I can create a node.  Yep, but I want it to be a case node, can't figure out how to change it to that. Ahh, I need to create a classification first. ANd I also need to take care of the type of node.  Mm, might wait on doing this until we think things through a bit.
+
+<h2>Import some data</h2>
+
+Given the inability to get the data in a manipulable format, I need to kludge something out of the institutional web interface.
+
+To remind myself, the main survey had
+<ul>
+  <li> 8 closed questions; and,
+      <ol>
+        <li> Overall, I was satisfied with the quality of this course. </li>
+        <li> I had a clear idea of what was expected of me in this course.	</li>
+        <li> My learning was assisted by the way the course was structured.	</li>
+        <li> My learning was supported by the course resources.	</li>
+        <li> I found the assessment in this course reasonable.	</li>
+        <li> I received useful feedback in this course.	</li>
+        <li> The teaching team supported my learning.	</li>
+        <li> Overall, I was satisfied with the quality of teaching in this course.</li>
+      </ol>
+  </li>
+  <li> Four open questions
+      <ol>
+        <li> What did you find were the most helpful/effective aspects of this course?	</li>
+        <li> What did you find were the least helpful/effective aspects of this course?	</li>
+        <li> What improvement would you suggest to the course itself?	</li>
+        <li> Please feel free to make any other comments, particularly in relation to your ratings for this course</li>
+      </ol>
+  </li>
+  <li> And a couple of optional closed questions, for semester 2 these were (pick which question I selected - from a pre-approved list - and which the institution included).
+     <ol>
+       <li>  It was easy to navigate my way around the StudyDesk.	</li>
+       <li> You may have completed previous USQ student surveys in the past. Is this new set of questions an improvement? Please ignore this question if this is the first time you have completed a USQ student survey </li>
+     </ol>
+  </li>
+</ul>
+
+For each of the closed questions there was also an option for students to provide some free text responses.
+
+The web interface I have access to will provide the following associations
+<ul>
+  <li> For each closed question, it shows a list of any textual responses for that question (with the numeric response) plus the option to expand out all the other free text responses made by that student.  </li>
+  <li> For each open question, a list of the textual responses plus the option to expand out all other free text responses made by the student. </li>
+</ul>
+
+Theoretically possible to combine these two to get a better picture, but it would be manual and also plagued by the issue of not all students answered all open questions.
+
+So the best option for the purposes of this exercise may be to select one of the open questions (hopefully one most students answered) and copy and paste those responses into a Word document. Then rely on Nvivo's data wizards to import and separate responses by question and student. So the format would be something like
+<ul>
+  <li> Chosen question - What did you find were the most helpful/effective aspects of this course?
+     <ul>
+        <li> Students response to this question - The quick responses from the teaching team.
+           <p>And for each of the other open questions the student responded to.</p>
+           <ul>
+             <li> Question text: What did you find were the most helpful/effective aspects of this course? (yes it duplicates)
+                 <ul>
+                   <li> Student response: The quick response from the teaching team. </li>
+                 </ul>
+             </li>
+             <li> Question text: My learning was supported by the course resources.
+                 <ul>
+                   <li> Student response: Sometimes was frustrating that assessable course material was added after I had completed the weeks work (5/5)
+                        <p><strong>Note:</strong> the numeric response from the student for this comment on one of the closed questions.</p> </li>
+                 </ul>
+              </li>
+            </ul>
+            </li>
+          </ul>
+    </li>
+</ul>
+
+Copy and paste this into word and play with paragraph styles might work? Of course the copy and paste is ugly. The manual conversion with macros is doable for this test.  The question is whether Nvivo will auto-import?
+
+Have the data file in the format. Create a node for the offering. Import the external data as a source. Do the auto-coding and hey presto. Imported correctly!!!  FTW.
+
+Concept proved. Now I need to develop the appropriate strategy to import the sources.
+
+
+<h2>Planning the analysis</h2>
+
+The following is an attempt to plan out the process I'll use.  Just for once, having planned it all out first, prior to starting might be an idea. The following process is loosely adapted from the <a href="http://help-nv10.qsrinternational.com/desktop/concepts/using_nvivo_for_qualitative_research.htm#MiniTOCBookMark4">Nvivo help docs</a>
+<ol>
+  <li> Set up the project - research design, project journal, and make a model.
+       <p>Going to leave this until later.  This isn't really a research project. </p>
+  </li>
+  <li> Import that data organised by folders.
+         <p>The data I'll import will come in two forms</p>
+          <ol>
+            <li> Word documents for open question responses.
+                 <p>For each mode I'll create a Word document by copying and pasting from the web application. The responses will be grouped by student identified by a code and use paragraph formatting so I can use the auto-coding feature. </p> </li>
+            <li> Spreadsheets for closed question responses and "demographics".
+                 <p>Each mode will have it's own spreadsheet that contains information about the students.  This will include: the year, semester and mode of them taking the course; and, their responses to the closed questions.  Note: it will only include responses for those closed questions where the student provided a comment (the limitation of the data).</p>         </li>
+          </ol>
+  </li>
+  <li> Node structure and coding
+       <ul>
+         <li> Does a word frequency query reveal anything? </li>
+         <li> Use an initial list of nodes including: negative, positive.  The rest I'll leave open. </li>
+       </ul>
+  </li>
+  <li> Set up nodes for people, places etc. </li>
+  <li> Explore the material and code themes. </li>
+  <li> Run a matrix coding query to see about prevalence of themes. </li>
+</ol>
+
+<h3>Prepare the data</h3>
+
+Need a test run of the data and its importation.  The process is to
+<ul>
+  <li> Word document
+       <ul>
+         <li> Select the open response question that has the most responses on the assumption we'll get the most data.
+            <p>Significant problem here as not all students respond to all open questions.  So even picking the open question with the most responses, I may be missing the data. God I hate badly designed systems and institutions that don't recognise the importance of rapid response. </p>
+         <li> copy and paste without formatting into Word. </li>
+         <li> change the paragraph formatting to the following
+              <ul>
+                <li> H1 - student identifier </li>
+                <li> H2 - the text of the open question. </li>
+                <li> Body - the student's response. </li>
+              </ul>
+         </li>
+         <li> Replace the student identifier with code - <em>NUM</em>-<em>YEAR</em>-<em>SEM</em>-<em>MODE</em> where
+              <ul>
+                <li> <em>NUM</em> = unique number starting at 1 and incrementing. </li>
+                <li> <em>YEAR</em> = the year (duh) </li>
+                <li> <em>SEM</em> = 1 or 2 representing the semester </li>
+                <li> <em>MODE</em> = one of the following representing the mode of delivery: Toowoomba, Fraser Coast, Springfield, Online. </li>
+              </ul>
+          </li>
+        </ul>
+  </li>
+  <li> Spreadsheet
+       <ul>
+         <li> Create columns: Student,Semester,Year,Mode, SEC01, SEC02, SEC03, SEC04, SEC05, SEC06, SEC07, SEC08.
+              <p>Student will the be the id from the Word document.  Yes the id will duplicate the next three columns, but I'm assuming this might be needed to allow manipulation by NVivo and ease of understanding by human beings. </p>
+               <p>SEC01 etc are the ids used by the institutional system for each of the closed questions. These will be used to hold the student's response to these questions if it is available from the Word document. </p>
+          </li>
+          <li> For each student add a row from the Word doc. </li>
+        </ul>
+  </li>
+</ul>
+
+Okay, let's try this.
+<ul>
+  <li> Both files created for the smallest sample of students (n=11) </li>
+  <li> Import the word document into NVivo - no worries. </li>
+  <li> Import the spreadsheet - counts as a <a href="http://help-nv10.qsrinternational.com/desktop/concepts/about_dataset_sources.htm">data source</a> (perhaps).
+        <p>Can choose columns to be classifying or codable fields.  In this case, I believe I'm looking at classifying fields. </p>
+  </li>
+  <li> Set up the "respondent" classification. </li>
+  <li> Set up the positive/negative nodes initially, also a node for the specific offering (overkill?). </li>
+  <li> Auto create the nodes from the document - done. </li>
+  <li> Classify the student nodes as "Respondents". </li>
+  <li> Fill in the attribute values for the student nodes?
+       <p>Actually, that happens automatically when importing the spreadsheet.  The label for the first column becomes the name of the classification and the value (as I'd hoped) gets linked with the content node.</p>
+ </li>
+  <li> Let's do a bit of manual coding for positive/negative.
+      <p>Figuring out the mechanism for coding is surprisingly more difficult that I expected.</p><p>Didn't take long looking at the responses to think about "Suggestion" as another category/node.  All done, not a bad process.</p>
+</li>
+</ul>
+
+
+<h2>Current status</h2>
+
+The basics of NVivo learnt.  Some possible limitations for certain activities identified.  But there will be work arounds.  More on what the evaluation revealed (not a lot new) tomorrow.</p>
+
+</body>
+</html>

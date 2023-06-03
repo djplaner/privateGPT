@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM#2 - Starting the module</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/11/bim2-starting-the-module/">BIM#2 - Starting the module</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>As outlined in the <a href="https://djon.es/blog/2009/08/11/bim-1-working-on-the-prototype/">last BIM post</a> the aim here is to take the "template" NEWMODULE and start creating a BIM module.  Initially, this will contain hard-coded HTML or perhaps some initial non-functioning forms, we might progress onto some canned examples and finally to the real thing.</p>
+
+<h3>The NEWMODULE template</h3>
+
+<p>The aim here is copy this code into a "bim" module directory and update it a bit to get it working, but not doing anything useful.</p>
+<p>The NEWMODULE module is part of the contrib code for Moodle and is essentially a template for all the stuff a new module should cover.  There are some issues, it appears, about whether or not it has kept up to date with version of Moodle. I guess there's only one way to find out.</p>
+<p>Here's what I did:</p>
+<ul>
+  <li> Create a directory ~/moodle/mod/bim<br />This is where I think the bim code will live.</li>
+  <li> Copy the contents of NEWMODULE over into bim.</li>
+  <li> Go into Moodle and see if that's changed anything.<br />Apparently, modules/blocks when first installed can take additional installation steps via the web interface.</li>
+  <li> Nothing there, but that is expected as the instructions for NEWMODULE suggest that I have edit the files to replace NEWMODULE with bim. </li>
+  <li> Go to Notifications as the admin via the web interface and yes, the databases for the module get created. </li>
+  <li> At this stage, bim should be showing up in the list of installed activities --- but no, it's not!</li>
+  <li> At least not in the administration section, there is a new [[modulename]] in the "Add an activity" in a course site.  Looks like this might have been missed. </li>
+  <li> Ahh, it's not in the main list that appears in the navigation menu, however, if I head into "Manage Activities" it is there.  So it would appear it can be added, for some reason.  Maybe I need to write a bit of code.</li>
+  <li> Ahh, looking at the code I find that if the version variable is set to 0, then it will not be installed.  That needs to be set to the typical timestamp format that Moodle uses. </li>
+  <li> Having set that, it appears there's a need to re-visit notifications to get it installed.  Some warnings as the dbase already installed.  In fact, it reports upgrading failed.  Looks like we're in an endless loop now.  The problems are due to "bim" rows inserted into the log.  So, I've deleted those entries and dropped the bim table. </li>
+  <li> At this stage, there's a complaint about bim needing upgrading and the table mdl_bim not existing.  Seems to imply there's another entry for bim in another table, probably need to delete that.<pre>delete from mdl_modules where name='bim';
+</pre></li>
+  <li> So that is working, but still bim only appears in the "Manage activities" not in the list of activities. Something else missing? There are other activities that aren't showing up as well</li>
+</ul>
+<p>Gotta love a positive place to stop.</p></p>
+
+</body>
+</html>

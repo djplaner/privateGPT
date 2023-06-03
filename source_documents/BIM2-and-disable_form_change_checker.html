@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM2 and disable_form_change_checker</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/03/03/bim2-and-disable_form_change_checker/">BIM2 and disable_form_change_checker</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>As a developer, you have to love it when someone using your code diagnoses and identifies their own problem with your code. Especially if they give you a clear and concise explanation you can use. That's what happened with <a href="https://djon.es/blog/2013/02/27/diagnosing-a-bim-problem/">the BIM2 problem</a> I blogged about recently. It appears I was using Moodle 2.3.4 the problem was found on Moodle 2.3.2+ and there was a change in the Moodle code in-between. The following describes the bug and hopefully the fix/change I've made to the BIM code.
+
+<h3>The problem</h3>
+
+The problem arises in bim/marker/allocation_form.php with this
+[source code="php"]
+       // turn off the checking
+        $mform-&gt;disable_form_change_checker();
+[/source]
+
+disable_form_change_checker is <a href="http://docs.moodle.org/dev/lib/formslib.php_Form_Definition#disable_form_change_checker">described here</a> and it was added in <a href="http://docs.moodle.org/dev/Moodle_2.3.3_release_notes">Moodle 2.3.3</a>.
+
+So the question is how to handle this neatly so that BIM gracefully degrades with older versions of Moodle?
+
+<h3>The solution?</h3>
+
+One approach is to simply require the more recent version of Moodle, but given this is one function call in one section of the code. There has to be a more fine grain solution, doesn't there?
+
+Perhaps just removing the call? But I remember it getting quite annoying without it. So, for now, it stays.
+
+Of course, method_exists.  I need to code more.
+
+[source code="php"]
+        if ( method_exists( $mform, "disable_form_change_checker" ) ) {
+            $mform-&gt;disable_form_change_checker();
+        }
+[/source]
+
+No problem with 2.4.  What about older versions?
+
+Yes, Moodle 2.2 crashes with this problem in BIM. And method_exists fixes it.  Time to commit the code and we're done.</p>
+
+</body>
+</html>

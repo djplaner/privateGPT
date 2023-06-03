@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>More testing for Moodle and BIM versions 2.0</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/12/02/more-testing-for-moodle-and-bim-versions-2-0/">More testing for Moodle and BIM versions 2.0</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p>Continuing on with <a href="https://djon.es/blog/2010/11/18/installing-and-starting-with-moodle-2-0/">playing with Moodle 2.0</a> and in particular its external blog syncing and integration of SimplePie.  The aim here is to test the problem with special characters in feeds and what it does to PostgreSQL databases.
+
+<h3>The problem</h3>
+
+This is the <a href="https://djon.es/blog/2010/09/05/more-problems-with-bim-and-special-characters/">biggest problem</a> I've had with BIM and only really appears to be a problem with folk using PostgreSQL.  Though I'm wondering whether there is some sort of option in PostgreSQL to solve this.
+
+In summary, the problem is:
+<ul>
+  <li> Student creates a blog post by writing the content in Word. </li>
+  <li> Then copying and pasting from Word into the blog engine's text box. </li>
+  <li> This creates posts that contain special characters.<br />e.g. <a href="http://vjones88.wordpress.com/2010/08/16/week-6/">this one</a>, though this was not the student's fault. The teacher created directions that included special characters that were copied over by the student.</li>
+  <li> When BIM tries to import these posts and Moodle is using a PostgreSQL database, it won't insert into the database. </li>
+</ul>
+<strong>Important:</strong> I don't have this problem on the MySQL database I typically use.
+
+So, can I re-create this problem on Postgres.
+
+<h3>PostgresSQL</h3>
+
+Well there's an executable PostgreSQL ready for install, download that.  Oh dear, need to change a kernel configuration and re-boot.
+
+Now, let's create another Moodle 1.9 install and get BIM working on it with some "bad" feeds.
+<ul>
+  <li> Moodle installed and working. </li>
+  <li> Bring in a copy of BIM<br />I'm always forgetting this as I don't use git often enough now, so a bit of documentation<br />
+[code lang="sh"]
+sudo git clone git://github.com/djplaner/BIM.git
+[/code]
+  Go to http://localhost/mp/admin and the install runs and success.  </li>
+  <li> Let's backup a course from my MySQL Moodle 1.9 install and import it here. </li>
+  <li> Okay, nothing showing, some problem with BIM.<br />Note to self, BIM needs to be installed in a directory with lowercase bim, not uppercase.</li>
+  <li> Create some student accounts, allocate them to groups. </li>
+  <li> Allocate markers in BIM. <br />Opps, debug error.<pre>
+Ahh, no check if there are no markers.  Will have to modify this. Done.</li>
+  <li> Set up Moodle 1.9 based on Postgres </li>
+  <li> Create the moodle database on postgres</li>
+  <li> Set up the BIM module and feed it a bad feed. </li>
+</ul>
+
+<h3>Results</h3>
+
+I didn't have a problem. The feeds which have traditionally not worked with BIM on the institutional servers, worked fine with the local version of Postgres.  Which is sort of what I suspected.
+
+This provides further evidence to suggest that the problem with BIM and special characters is arising from something specific to the configuration of Postgres at the institution.  Have asked for the specific details of the configuration to see if there is any difference.  Also asked for any additional problem reports they may have, just to see if other feeds might cause a problem locally.
+
+In short, at the moment, there doesn't appear to be a general problem.</p>
+
+</body>
+</html>

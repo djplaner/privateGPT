@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - manage marking - view and release</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/17/bim-manage-marking-view-and-release/">BIM - manage marking - view and release</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>This post continues on from <a href="https://djon.es/blog/2010/01/17/bim-manage-marking/">the manage marking</a> work and describes the design/implementation of the view and release operations of manage marking. There are strong similarities in what both operations do and how they do it, so doing them in one.</p>
+<p>Both view and release take a collection of values and subsequently query/update the bim tables.</p>
+
+<h3>Implement simple controller</h3>
+
+<p><code>view.php</code> gets a simple controller to call the right function.  <code>bim_manage_release</code> and <code>bim_manage_view</code>.
+
+<h3>Basic algorithm</h3>
+
+<p>Both will follow the same basic algorithm</p>
+<ul>
+  <li> Check and get the values for the parameters. </li>
+  <li> Perform operation </li>
+  <li> Display the result. </li>
+</ul>
+
+<h3>View</h3>
+
+<p>Aim to show essentially same data as <code>show_teacher_post_details</code> but based on a particular set of student ids.</p>
+<ul>
+  <li> Get student ids that match parameters. </li>
+  <li> Get matching student, marking and feed details based on student ids. </li>
+  <li> Get the details of the specific marker (if one). </li>
+  <li> Use the <code>bim_setup_posts_table</code> and <code>bim_create_posts_display</code> functions. </li>
+</ul>
+<p>Posts/students in the "missing" category are going to be somewhat more difficult. "Missing" only makes sense if there is a question allocated.  i.e. they are missing posts as answers to that question.  So, missing = all students in course - those not belonging to the marker (if marker exists) - those with posts.  And some of these will be unregistered, will need to handle those.</p>
+<p><strong>DONE</strong></p>
+
+<h3>Reset</h3>
+
+<p>This is somewhat different - no missing - but mainly because it will seek to update the database, rather than display information from it.</p>
+<p>Given either marker, question or neither, the aim is</p>
+<ul>
+  <li> generate a number of ids in bim_marking for posts that match the criteria and then to update them to Released. </li>
+  <li> only interested in posts that are:
+      <ul>
+          <li> currently in the Marked state </li>
+          <li> match the marker and/or question </li>
+          <li> if none of those, then it should match the bim </li>
+      </ul>
+  </li>
+</ul>
+<p>All pretty straight forward and it is now working.</p>
+
+<h3>What's been done</h3>
+
+<p>The Manage Marking screen for coordinators has been completed. This brings to end most, if not all, of the interface for BIM. </p>
+<p>What's left includes:</p>
+<ul>
+  <li> The background/cron code to mirror and allocate student posts </li>
+  <li> The process for putting results into the gradebook. </li>
+  <li> Identify the CQU specific method for putting students and markers into groups together. </li>
+  <li> A general re-check of some of the code including:
+         <ul>
+            <li> Modification to meet Moodle coding guidelines. </li>
+            <li> Re-factoring the structure and location of functions. </li>
+            <li> Double checking the early functions on the basis of more recent knowledge. </li>
+            <li> Looking at the use of flexible_tables and in particular the sorting. </li>
+         </ul>
+  </li>
+  <li> General run through the BIM life cycle. </li>
+  <li> Creation of online help resources. </li>
+  <li> Adding BIM into the Moodle contrib section. </li>
+</ul></p>
+
+</body>
+</html>

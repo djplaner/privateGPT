@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Implementing a course barometer in Moodle: A kludge</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/03/05/implementing-a-course-barometer-in-moodle-a-kludge/">Implementing a course barometer in Moodle: A kludge</a></h1>
+
+<p>Tags: edc3100, moodle, teaching</p>
+
+<p>It's the start of the second week of the course I'm teaching. I'm directly responsible for 60 odd on-campus students and 130 or so online/distance students. That split reminds me a lot of my teaching at <a href="http://www.cqu.edu.au/">CQU</a> in the mid-1990s. The deja vu continues in terms of getting a feel for how the students are going, how are they responding to the course, its model and content? Back at CQU the solution was inspired by <a href="https://djon.es/blog/publications/student-feedback-anonymity-observable-change-and-course-barometers/">course barometer idea</a> from some University folk in Sweeden.
+
+The original course barometer was a purpose-built application in Webfuse, an "LMS" used at CQU from 1996 through 2009. This post records an initial attempt to recreate something simliar using standard Moodle 1.9 modules.
+
+<h3>What?</h3>
+
+The barometer is meant to be a simple form that allows the students to
+<ul>
+  <li> Indicate whether how they are feeling about the course at the moment: good, bad, or indifferent. </li>
+  <li> Provide some free-text comments to supplement the feeling. </li>
+</ul>
+
+Preferably this is done anonymously - <a href="https://djon.es/blog/publications/student-feedback-anonymity-observable-change-and-course-barometers/">previous research</a> has shown that anonymity isn't as important as doing something with the feedback - and would allow us to break up the students by campus/mode of study.
+
+Some form of report should be generated to allow teaching staff to analyse student responses. One the nice list is a method for staff to respond.
+
+<h3>How?</h3>
+
+Thanks to @markdrechsler and @mguhlin the Moodle tool possibilities (with links to Moodle 2.2 docs) are :<ul>
+  <li> <a href="http://docs.moodle.org/22/en/Choice_module">Choice</a>,<br />Appears that the choice module is limited to MCQs, but I do want the free text response.
+  </li>
+  <li> <a href="http://docs.moodle.org/22/en/Feedback_module">Feedback</a>, <br />Looks like this could be the one.
+  </li>
+  <li> <a href="http://docs.moodle.org/22/en/Questionnaire_module">Questionnaire</a> (though apparently deprecated), and <br />Doesn't appear to be included in the <a href="http://www.usq.edu.au/">USQ</a> Moodle instance.
+  </li>
+  <li> my original idea Quiz.<br />As Mark suggested, having the concept of a "right" answer built into the quiz means it's not great for the purpose of a barometer.
+  </li>
+</ul>
+
+<h3>Place with feedback</h3>
+
+Time to get familiar with what the <a href="http://docs.moodle.org/22/en/Feedback_module">Feedback module</a> can do.  Add a new Feedback activity and the form provides (which seem the same as <a href="http://docs.moodle.org/22/en/Feedback_settings">those documented here</a>)
+<ul>
+  <li> Name and description. </li>
+  <li> Timed release of the activity. </li>
+  <li> An anonymous option - FTW. </li>
+  <li> Allow the students to see the analysis. <br />There are two sides to this. Yes is good, allows students to get a sense for how others are going. No it is bad, because of the possibility of "bad" responses.  I'll go with yes. </li>
+  <li> Email notification of submissions.<br />Will turn this one, will help mitigate the risk of "bad" responses. </li>
+  <li> Multiple submit - no. </li>
+  <li> It does allow separate groups.<br />Wondering if this will provide the separation of students into the different modes. </li>
+</ul>
+<p>Creating it's a fairly simple process. Add the questions. Create a template (allow use of these same questions in other feedback activities). Away we go.</p>
+<p>I do wonder if USQ automatically create student groups based on mode of study? And yes they do. And the Feedback module allows separation of students into groups.</p>
+
+<h3>Done</h3>
+
+<p>Fairly simple to set up and even before I'd formally announced it, one student has submitted their first bit of feedback.</p></p>
+
+</body>
+</html>

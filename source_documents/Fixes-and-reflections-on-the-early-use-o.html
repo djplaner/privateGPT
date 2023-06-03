@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixes and reflections on the early use of BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/03/09/fixes-and-reflections-on-the-early-use-of-bim/">Fixes and reflections on the early use of BIM</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p><a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> is into it's 2nd week of being used at CQU (about 3/4 courses approaching 500 students) and there's also talk of it being used at another Australian university.  It's time for a couple of reflections on early experience and also time to identify the source of a common problem.</p>
+
+<h3>Not enough pro-active support</h3>
+
+<p>A couple of staff using BIM have reported that they can't see all of their students.  In both cases this has been because the staff haven't been allocated to the full list of student groups in their course.  In BIM, staff only "see" the students they've been allocated to.</p>
+<p>What I've learnt from this is that BIM (like many other systems) doesn't bridge the gap between the reality of what the people using it experience/try to do and its own internal organisation.  Someone like me, intimately aware of its internal organisation, can identify and fix the problem straight away.  A normal person, with no knowledge of the internal organisation, can't.  The system needs to bridge this gap.</p>
+<p>One initial idea would be to work into BIM some idea of a common "life cycle" that different people go through using BIM.  Have BIM know where a particular person is up to in that life cycle and also know what they should have done by now.  This would allow BIM to modify itself (i.e. show some hints etc) if the person hasn't completed a necessary task, encouraging them to complete that task.  e.g. a coordinator who hasn't allocated any groups to themselves might get a message reminding them to do so.</p>
+
+<h3>They don't get the model</h3>
+
+<p>There's been much made of the efforts being made by various staff at the institution to train both students and staff in the use of Moodle.  My limited experience with some of the staff suggests that some still don't get the model that underpins Moodle and how it works internally and at the institution.  This lack of understanding means they can't easily problem solve and get frustrated with the system.</p>
+<p>This connects with the previous point but also points to some limitations (in my mind) to the nature and timing of the training being given.</p>
+
+<h3>Students, staff and lists - and how I didn't get the model</h3>
+
+<p>A key part of what a coordinator wants from BIM is the ability to track what students are doing (or not) with BIM.  This allows them then to respond pro-actively etc.  At it's simplest BIM supports this by providing a list of students who have not yet registered their blog.  There's also a list of these unregistered students' email addresses that staff can use to email these students and remind them to register.</p>
+<p>While this appeared to be working on my test box, the migration to the real, live system has identified a problem (or two) including:</p>
+<ul>
+  <li> It may be possible that some registered students have their email address included in the unregistered list. </li>
+  <li> Teaching staff are being included in the unregistered list. </li>
+  <li> Some of the students/staff in the list don't have email addresses. </li>
+</ul>
+<p>A related problem is that the institution has a "cast of thousands" of support staff that are meant to help academics with the courses.  These staff are appearing in the list of teaching staff for "Allocate Markers".  This is confusing the real teaching staff.</p>
+<p>This is an example of me not getting the model being used on the live instance.  So my assumptions in the BIM model, don't match. Need to fix this.</p>
+
+<h3>Fixing the list</h3>
+
+<p>Okay, let's fix it.  Three problems:</p>
+<ul>
+  <li> How to exclude non-teaching staff from marker allocation. </li>
+  <li> How to exclude teaching staff from unregistered students. </li>
+  <li> Check that registered students can't appear in unregistered list. </li>
+</ul>
+
+<h4>Non-teaching staff</h4>
+
+<p>So, what role do all these non-teaching staff have in Moodle on the live system?</p>
+<p>Well it looks like it is some special kludge. The staff don't appear in any of the normal roles or groups for the course, but they do appear in BIM.</p>
+<p>The marker allocation page uses get_users_by_capability to get all the staff that have marker or coordinator capabilities as set by BIM.   Ahh, the capability for bim:coordinator allows editingteacher, coursecreator and "admin" to have this capability.  Wonder if all these staff are in the admin role/group?</p>
+<p>In terms of system roles, there is a "Course Developer" role and an administrator role.  It appears these are the source.</p>
+<p>If this is the case then the admin user on my laptop should appear on a local bim's allocate markers. Yep.</p>
+<p>And if I remove the admin allow for coordinator, it should disappear?  Nope.  But this could because I don't understand how to get this change to operate in a Moodle instance.</p>
+<p>Mmm, time to dig into the code for get_users_by_capability to understand what is going on.</p>
+<p>Ahh, there's a view param, which can hide users with invisible roles.  Let's try that.  Nope. Didn't change anything.</p>
+<p>In terms of capability, "moodle/site:doanything" is being included in at least one SQL statement.</p>
+<p>So, this is the basic problem.  get_users_by_capability is including the "important"/admin roles.  So, the solutions are either exclude those users or use a different method that only gets teaching roles.</p>
+<p>Anything in the forums?  Yep, <a href="http://moodle.org/mod/forum/discuss.php?d=115636">this</a> which has a couple of solutions, including the "doanything" parameter for get_users_by_capability, which - if false - excludes the admins.</p>
+
+<h3>Exclude teaching staff from unregistered students</h3>
+
+<p>This is/should be done by the same process, but get's different results for a coordinator under "Your students" and manage marking.  Let's try "Manage Marking". The process here is:</p>
+<ul>
+  <li> allStudents = bim_get_all_students<br />
+           Again using get_users_by_capability, need to set doanything to false.
+   </li>
+  <li> feedDetails = bim_get_feed_details <br />Just a simple get entries from bim_student_feeds.</li>
+  <li> unregistered = array_diff( $allStudents, $feedDetails ) </li>
+</ul>
+<p>That should work now.</p>
+
+<h3>Check registered can't appear unregistered</h3>
+
+<p>Don't see how can this can happen now.</p></p>
+
+</body>
+</html>

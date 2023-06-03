@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moving the indicators Moodle block to a factory class</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/17/moving-the-indicators-moodle-block-a-factory-class/">Moving the indicators Moodle block to a factory class</a></h1>
+
+<p>Tags: indicators, moodle, Uncategorized</p>
+
+<p><p>The following reports on some work on the <a href="https://djon.es/blog/2010/05/13/getting-started-with-cols-indicators-block/">indicators block</a> to move it towards using some object-orientation and the <a href="http://en.wikipedia.org/wiki/Factory_method_pattern">factory design pattern</a>.</p>
+
+<h3>Why?</h3>
+
+<p>One of the requirements we've talked about for the indicators block was the ability to show many different "indicators" (visualisations of something important about learning and teaching within a Moodle course). The idea is that the individual user could either scroll through the different visualisations or they could configure it to show a subset that they are interested in.  Some examples of indicators that are already out there which might be included are:</p>
+<ul>
+  <li> An effort meter;<br />This is what the block currently shows.  It's closely related to the <a href="http://lewiscarr.co.uk/node/12">Moodle meter idea</a> of <a href="http://lewiscarr.co.uk/">Lewis Carr</a>. To the extent that both the meter and the current indicator both use Google's chart API for the graphics.  Though the meter appears to place users into four groups. The indicators block currently uses a straight numeric scale. </li>
+  <li> Traffic lights;<br />Purdue University has <a href="http://www.ecampusnews.com/technologies/tech-helps-students-adopt-good-study-habits-2/">used traffic lights</a> to represent students' standing in a class. This is a little bit like <a href="http://www.sci.usq.edu.au/staff/deraadt/index.html">Michael de Raadt's</a> Moodle <a href="http://www.sci.usq.edu.au/staff/deraadt/progressBar.html">progress bar block</a>, at least in terms of helping students visualise their progress, this time within a course.</li>
+  <li> Network visualisations of connections;<br />The <a href="http://ceit.uq.edu.au/content/snapp-group">SNAPP</a> project is the main example of this I know.  Visualise the network of interactions between participants in a discussion forum.</li>
+  <li> Waterfall visualisation;<br />This comes <a href="http://opencontent.org/blog/archives/1286">from work</a> done by David Wiley and his students. It's connected to the traffic lights/progress bar idea, but is focused more on showing student progress to the teacher. Allowing the teacher to see which students are struggling or not.</li>
+</ul>
+<p>The last one is somewhat connected to a visualisation that Col has been working on.  He describes the rationale and the approach in <a href="http://beerc.wordpress.com/2010/05/14/using-the-indicators-project-data-to-identify-at-risk-students/">this blog post</a>.  More on that later.</p>
+<p>Are there any other ideas for visualisations?</p>
+
+<h3>What?</h3>
+
+<p>Given the aim is to include multiple visualisations and we do want people to be able to add their own to the block, we need to have a clean way of separating the code for the different indicators.  This is what the factory design pattern does.</p>
+<p>The idea of the factory pattern is that you want the code for the different indicators to be separated out. These indicators are different, but they all do essentially the same task (look at the LMS data and generate some visualisation). The decision about which of the indicators you want to show to the user is a fairly complex decision.  In terms of the indicators this decision will eventually need to consider:</p>
+<ul>
+  <li> What type of user is this?<br />Students and staff will be able to see different indicators.</li>
+  <li> How has the user configured the indicators block?</li>
+  <li> Based on the above, which indicator should we show?</li>
+</ul>
+<p>The initial version of the block had the decision about which indicator to show and the code for both indicators (staff and student) combined into the one function.  A bit messy with two.  Have 6 or 7 and it would've been a nightmare.</p>
+<p>With the factory design pattern, the guts of the block's main function looks like this.</p>
+[sourcecode lang="php"]
+// get details about the context
+$context = get_context_instance(CONTEXT_COURSE,
+                                $SESSION-&gt;cal_course_referer);
+
+// create the correct indicator
+$indicator = IndicatorFactory::create($context);
+// use the indicator to generate the HTML to put in the block
+$this-&gt;content-&gt;text = $indicator-&gt;generateText();
+[/sourcecode]
+<p>There's a class called <code>IndicatorFactory</code> which when given the current context decides which indicator should be used. The factory then constructs the right indicator and returns it.</p>
+<p>All indicators simply generate the "text" that is placed in the block.  So we call the indicators generateText function and we're done.</p>
+<p>All the <code>IndicatorFactory</code> class does at the moment is look at the type of user.  If the user is a teacher, then it creates an object of the class <code>staffActivity</code>.  If it is a student, it creates an object of class <code>studentActivity</code></p>
+[sourcecode lang="php"]
+if ( has_capability( 'moodle/legacy:teacher', $context ) ||
+     has_capability( 'moodle/legacy:editingteacher', $context ) ) {
+     require_once(
+                    $CFG-&gt;dirroot.'/blocks/indicators/staff/staffActivity.php');
+     return new staffActivity;
+} else if ( has_capability( 'moodle/legacy:student', $context ) ) {
+      require_once(
+                    $CFG-&gt;dirroot.'/blocks/indicators/student/studentActivity.php');
+      return new studentActivity;
+}
+[/sourcecode]
+<p>Both the "activity" classes contain the SQL statements, a bit of maths and the call to the Google charts API that was necessary to generate the particular visualisation.  Both of the "activity" classes extend the abstract class <code>Indicator</code>.  The idea is that for each of the above indicators we implement, each one will have its own class that extends the <code>Indicator</code> class.</p>
+
+<h3>What's next</h3>
+
+<p>This has laid the foundation for having multiple indicators for each user category.  The next step might include:</p>
+<ul>
+  <li> How will users move between different indicators? <br />One idea is that there are left and right arrows at the bottom of the indicators that allow the user to scroll through the available indicators.  Have other Moodle blocks done this?  How?  Does this mean a refresh of the entire page or do we do some HTML trickery?<p>Alternatively, do we randomly (or sequentially) show the indicators everytime the page is refreshed? Do we build some smarts into the Indicators block so that at certain times or based on certain events it shows specific indicators first?  For example, in the day or two leading up to an assignment due date it might show the percentage of students who have submitted and those that haven't.</li>
+  <li> How will users be able to configure which indicators they are interested in? <br />Eventually (not right now) we may want to allow the users to configure which ones they are interested in.</li>
+  <li> Can we improve the current indicators?<br />For example, some of the SQL for the student activity indicator users "roleid=5" to indicate a student.  I think this is deprecated.</li>
+  <li> Do we need to and how will we "cache" the data required for the indicators? <br />At the moment, both indicators query the database every time the block is shown. In a large installation this could lead to some performance problems.  Eventually, we will need to look at an approach to "caching" to reduce the performance hit.</li>
+  <li> Do we need to move to a model/view pattern for the indicators? <br />Are we going to want the one set of data around an indicator to be visualised in many different ways?  SNAPP already does this with the different types of network visualisation it supports.  If so, we may wish to split the indicators into a model (calculate the data) and view (visualise it) objects.</li>
+  <li> How do we support bigger indicators? <br />SNAPP visualisations are probably not going to fit within a block.  Especially if we're talking about building on SNAPP by enabling visualisations of discussion forums across a range of courses, not just the current one.  How do support indicators that need quite large areas?  A popup?  A new page?  What's the Moodle way?  What's the cool way?</li>
+  <li> Are there other visualisation tools?<br />The Google chart API looks like a good, low impact way of doing visualisations.  But it might not provide everything we need.  Are there other alternatives?</li>
+</ul></p>
+
+</body>
+</html>

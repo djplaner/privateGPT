@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: manage marking services - Part II</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/19/bim2-manage-marking-services-part-ii/">bim2: manage marking services - Part II</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>Time to continue the implementation of support services for manage marking started in <a href="https://djon.es/blog/2011/02/17/bim2-manage-marking-support-services/">the last post</a>.  Services left to be implemented are
+<ul>
+  <li> Releasing marked posts.</li>
+  <li> Registering a blog.</li>
+</ul>
+
+<h3>Releasing marked posts</h3>
+
+Standard order for this stuff
+<ol>
+  <li> Controller. </li>
+  <li> Model.<br />In this case, the model will be making changes to the database and storing the outcome. </li>
+  <li> View. </li>
+</ol>
+
+<h4>Model</h4>
+
+First, parse the parameters.  There are two: marker and question. The possible combinations are
+<ul>
+  <li> question and marker empty == release all marked posts for this activity. </li>
+  <li> question set only == release all marked posts for that question. </li>
+  <li> marker set only == release all marked posts for that marker. </li>
+  <li> marker and question = release all marked posts for that question and that marker. </li>
+</ul>
+
+So, have the model processing and updating the database.  Also getting list of changes to report in the view.
+
+The view will need to be able to translate student uid and question id into question title and user name. So need to include students and questions in the model.
+
+<h4>View</h4>
+
+A simple one, simply suggest success and summarise the changes made.  Yep, all done.  Need to do a bit more checking
+
+<h3>Misc bugs</h3>
+
+On manage marking there are a couple of minor bugs to fix
+<ul>
+  <li> Empty table and email button showing up when there are no unregistered students.<strong>FIXED</strong> </li>
+  <li> The "release" link is appearing within a question heading when there are no questions to release. <br />
+ This one is probably going to be a bit more difficult to fix.  Actually, the header code is correct in what it is doing.  Time to check out how the rows are calculating whether there is anything marked.  The display of marker details appears to be working, it's the calculating of the stats that seems to be letting itself down.<p>Ahh, all that and it's not a code problem, but with the configuration of the users and course members.  Mostly. </p></li>
+</ul>
+
+This is the type of bug that is going to have to be looked for in testing.
+
+<h3>Registering a blog</h3>
+
+This allows the coordinator to register a blog for unregistered students. It is essentially the same as the process for a student to register, just a slightly different interface. Hopefully, there can be some significant code reuse.  Let's look at how I did it for the student.
+
+The student interface itself is a bit too complex.  Registration is handled by some overly complex code within a method of one of the view.  i.e. it's not that stand alone. It is complicated because it also includes processing of the form.
+
+Am going to have to put this into a stand along object that can be easily called elsewhere like this
+[code lang="php"]
+$form = new process_register_form( $this-&gt;factory );
+$form-&gt;process();
+[/code]
+
+There are going to have to be some differences between using it with a student and with a coordinator, including
+<ul>
+  <li> heading - this (including breadcrumbs) will have to change. </li>
+  <li> return URL - successful processing generates a "return to ??", ?? will change based on where it's calling from.</li>
+</ul>
+
+In terms of the heading, it's even more complex as the student and coordinator should see radically different headings when this is called.  In the end, the code looks like this
+[code lang="php"]
+$form = new process_register_form( $this-&gt;controller );
+$form-&gt;set_header( $this, "view_header", "registeration" );
+$form-&gt;set_return( "?param=regOK&amp;id=".$this-&gt;model-&gt;factory-&gt;cm-&gt;id);
+$form-&gt;display();
+[/code]
+
+The set_header method is used to tell $form which function to call to display the header that is required. set_return provides the URL params which let $form now where to redirect output when successfully registered.
+
+So, time to add this in the appropriate place for manage_marking.  There is some difference here in that it's not being called from a view, but instead a controller.  Another wrinkle to consider.  Let's create a view just for register and stick the call in there, this allows the view to be handled.
+
+Ahh, no another problem, the URL for the register your blog has to be updated.  Ahh, that's the first parameter in the form.  Done.
+
+Next problem, when the student is registering their blog, the userid is based on their login, but that can't happen when the coordinator is doing it.  Has to be based on the student parameter.  So, will need to pass in the userid for the student with the blog to be registered as a parameter.  So this means I need to
+<ul>
+  <li> Generate the form with an extra hidden parameter for coordinator. <strong>done</strong></li>
+  <li> Same for student - how do I get id of browser user? (this-&gt;factory-&gt;userid) <strong>done</strong></li>
+  <li> Modify processing of the form to use the hidden parameter. <strong>done</strong> </li>
+</ul>
+
+
+<h3>What's next?</h3>
+
+So, manage marking is essentially done.  Time to move onto "Your students", some new code there, also a fair bit of work to do, but should get quicker.</p>
+
+</body>
+</html>

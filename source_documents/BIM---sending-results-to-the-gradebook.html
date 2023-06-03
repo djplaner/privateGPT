@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - sending results to the gradebook</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/26/bim-sending-results-to-the-gradebook/">BIM - sending results to the gradebook</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Almost forgot to add this into BIM. BIM is used by staff to manage and mark feed/blog posts from students.  Eventually, those marks have to be put into the Moodle gradebook so they can form part of the students final grade.  This post summarises a search for information about how this can be done within Moodle and some design thinking about how to get it done in BIM.</p>
+
+<h3>Activity modules sticking stuff into the gradebook</h3>
+
+<p>Initially, I'm using the "raw" version of <a href="http://www.packtpub.com/moodle-1-9-extension-development/book">the Moodle extension development book</a> to get this information.  Chapter 4 of the book covers activity modules, including talking to the gradebook.  First a quick summary of what I'm reading before I start trying to understand it.</p>
+<p>Page 60 talks about a <em>modgrade</em> element of formslib for creating a menu for the user to select a point value for the activity.  May need something like this in the coordinators view.</p>
+<p><code>gradelib.php</code> seems to be the API. Misc ideas from the gradebook for further lookup</p>
+<ul>
+  <li> specify maximum scale. </li>
+  <li> <code>grade_update</code> accepts an array of grades
+$grades = array('userid'=&gt;$userid, 'rawgrade'=&gt;$grade); </li>
+  <li> parameters for grade update, based on activity module instance
+$params = array('itemname'=&gt;$foo-&gt;name, 'idnumber'=&gt;$foo-&gt;id);</li>
+  <li> setting $params values for 'gradetype' 'grademax' 'grademin'  'reset'</li>
+  <li> Call the grade_update function
+return grade_update('mod/foo', $foo-&gt;course, 'mod', 'foo', $foo-&gt;id, 0, $grades, $params);</li>
+</ul>
+<p>So essentially, the overview is that there's a single grade_update method that takes a collection of parameters. </p>
+<p>I probably could of gotten that from the Moodle docs and the library file.  Time to look at those next. </p>
+
+<h3>Moodle resources</h3>
+
+<p><a href="http://docs.moodle.org/en/Development:Grades">Docs on grades</a> which includes mention of the limited public API used by activities to sent grades.  Modules do not read grade tables or use the internal API. And the <a href="http://docs.moodle.org/en/Development:Grades#API_for_communication_with_modules.2Fblocks">docs on the API</a>.</p>
+<p>Functions of interest in the API include:</p>
+<ul>
+  <li> grade_is_locked($courseid, $itemtype, $itemmodule, $iteminstance, $itemnumber, $userid=NULL) <br />To tell whether a grade or grade item is currently locked. i.e. (I believe) the module can't update it.  Seems to be confirmed by <a href="http://docs.moodle.org/en/Development:Grades#Locked_grades">this</a>.  Related is if grades are manually changed in the gradebook, they become read only in the module.</li>
+</ul>
+<p>This <a href="http://docs.moodle.org/en/Development:Grades#Updating_module_code">section</a> talks about functions required in lib.php of a module.  Suggesting that there are "many examples in official modules" with assignment being the most advanced.</p>
+<p>There's also some <a href="http://docs.moodle.org/en/Grades">general docs on Grades</a> which suggests three building blocs of the Moodle gradebook:</p>
+<ul>
+  <li> the <a href="http://docs.moodle.org/en/Grade_categories">grade category</a><br />Can have its own grade formed by calculating the grades from individual items within the category.  Categories may belong to other categories. All categories belong to the course category.</li>
+  <li> the <a href="http://docs.moodle.org/en/Grade_items">grade item</a><br />An item can only belong to a single category. Become columns in the grader report. May refer to course activities or manual grades.  <p>Modules generate grade items through the Gradebook API to generate a matching grade item. </p><p>The gradebook interface allows a number of settings to be edited, including a multiplicator.  <strong>Important:</strong> This may imply that BIM only has to add up the total marks and leave the multiplicator to the gradebook.   This same editing interface allows specification of whether the item is hidden or locked.</li>
+  <li> The grade</li>
+</ul>
+
+<h3>Questions</h3>
+
+<ul>
+  <li> Is there a need to provide specific functions in mod/bim/lib.php? If so, what do they need to do and how do they relate to the interface for the coordinator to control this? </li>
+  <li> Need to learn more about the parameters and implications for the functions in the API.</li>
+  <li> How does a item for a specific activity get added to the gradebook? Can you simply add a student's grade and the item for all students will be added OR do you need to create the item and then add student grades?</li>
+  <li> It appears scale is related to the grademenu and specifies the <a href="http://docs.moodle.org/en/Scales">type of scale</a> being used?</li>
+</ul>
+
+<h3>lib.php required functions</h3>
+
+<p>It appears necessary to create some functions within the lib.php file for the module.  Need to find out more.  This is not something that the example from the book uses.  No mention of "update_grades" in the book.  It creates a new function (no required by Moodle) called "Foo_grade".</p>
+<p>A search of module code for "update_grades" finds elements in modules such as: quiz, scorm, lesson, assignment.  The <a href="http://docs.moodle.org/en/Subcourse_module">subcourse module</a> also provides some examples, but not using the standard lib.php type stuff.</p>
+<p>Ahh, a <a href="http://download.moodle.org/plugins19/mod/">
+new NEWMODULE.zip</a> includes the functions related to gradebook, at least some.  Having  a look now.  Not all that complete, just stuff around scale.  Points to the forum module.</p>
+<p>Forum module includes the following functions in lib.php which appear to be somewhat common:</p>
+<ul>
+  <li> forum_get_user_grades( $forum, $userid=0)<br /> Return grade for given user or all users. <p>Based on type of forum aggregation, do different selects into forum database to get different recordset (get_records_sql) and apply some scaling.</p></li>
+  <li> forum_update_grades( $forum=null, $userid=0, $nullifnone=true)<br /> Update grades by firing grade_updated event.<p>Based on various conditions call various other grade update functions.</p> </li>
+  <li> forum_grade_item_update( $forum, $grades=NULL)<br /> For a given forum, update grade item.<p>Wrapper around grade_update that modifies the params based on various forum settings.</p></li>
+  <li> forum_grade_item_delete( $forum )<br />Another wrapper to use grade_update to delete grade item for the forum.</li>
+</ul>
+
+<h3>Current situation</h3>
+
+<p>It appears that there are two separate "APIs" at play here:</p>
+<ul>
+  <li> The minimalist gradebook API in gradelib.php that provides the basic operations for a module to update grade items. </li>
+  <li> The API/collection of functions that can be defined in the lib.php file of a module so that use of the gradebook API works with the module user interface. </li>
+</ul>
+<p>It doesn't appear that it is necessary for you to actually use the module API.  The example from the extension development book didn't.  But I expect it would be good practice to do so.</p>
+<p>I've not been able to find documentation that explains either very well.  Beyond of course the actual working code of existing modules.</p>
+<p>If you use the "module" API then you should also probably include some options in the mod_form.php for the type of grading you want for the specific activity to be set.</p>
+<p>Then there is this quote from <a href="">the development grades docs</a><blockquote>Modules usually store raw grades internally and pass them into gradebook every time they change. Gradebook may also request activities to resend the grades. </blockquote> This suggests that the module API functions may be important so that the gradebook can "request" the resending of grades.</p>
+
+<h3>Playing with Foo</h3>
+
+<p>I'm going to install the Foo activity from the extension development book and observe what happens.  In particular to answer question #3 from the questions section above.</p>
+<ul>
+  <li> Copy the code into the moodle tree. </li>
+  <li> Visit the site as the admin user.  Upgrade/install of foo works.</li>
+  <li> Go back to the course and can now add "Activity Foo!" </li>
+  <li> Does include a grade menu in the mod_form.php.<br />  It seems to follow a fairly standard structure.   Ahh, this is the modgrade element.  Need to find out more about how this works and what it means for users and coding. </li>
+  <li> Foo is created, but nothing is added to the gradebook at this stage. </li>
+  <li> Use the foo.  Ahh, the coordinator/teacher has no access to submit. </li>
+  <li> What about a student?  Yes, they have access.  Submit.</li>
+  <li> Has the gradebook changed?  No!!!! </li>
+  <li> Was viewing the simple "Grader report".  Perhaps change has happened, but I just can't see it.  No!!  Try full view. </li>
+</ul>
+
+<h3>Playing with forum</h3>
+
+<p>That hasn't answered any questions.  Time to comment the forum grades functions and create a new one.  Submitting the form has resulted in an entry being added and also some of the "comments" being displayed (to fast to see though).</p>
+<p>Add in a die.  It seems to be a call to forum_grade_item_update with grades NULL and the params set to (
+    [itemname] =&gt; Another one
+    [idnumber] =&gt;
+    [gradetype] =&gt; 2
+    [scaleid] =&gt; 1
+) Where "Another one" is the name of the forum, and a believe the name for the grade item.</p>
+<p>forum_grade_item_update is only called from with lib.php.  One of which is within add_instance and which passes only the name of the new instance.  Also called in update_instance</p>
+
+<h3>Fixing foo</h3>
+
+<p>So, is the problem with the foo module that it isn't creating this grade item in the gradebook before trying to add individual items for students?  What does gradelib.php say that grade_update should do?</p>
+<p>From the comments
+<blockquote>Submit new or update grade; update/create grade_item definition. Grade must have userid specified, rawgrade and feedback with format are optional. rawgrade NULL means 'Not graded', missing property or key means do not change existing.</blockquote>. So it does both.  The question is whether or not foo is doing it properly.</p>
+<p>Let's do a comparison of the parameters being passed. </p>
+<p>Here's the important bit - in gradelib.php the $grades parameter is set to NULL if you are updating the grade_item definition.</p>
+<p>By adding a call to grade_update in the add_instance of the foo activity.  I've got it adding the item to the gradebook.</p>
+<p>Some other limitations of the module are preventing me from going any further.  I think I have a handle on this.  Time to submit the errata.</p>
+
+
+<h3>Suggestion for process</h3>
+
+<p>Based on what I've learned so far, the following is what I'm thinking of implementing.</p>
+<ul>
+  <li> Modify mod_form.php to ask for a scale and whether or not this should be graded. </li>
+  <li> Modify lib.php functions and database to store the scale. </li>
+  <li> Modify add_instance and other related functions to modify the gradebook in appropriate ways. </li>
+  <li> Think about whether we need a special function to use the grade book API. </li>
+  <li> Think about how the updating of the gradebook should occur<br />
+        <ul>
+            <li> Grade should be just an addition of the marks to questions. </li>
+            <li> Should gradebook be updated when marked or when released (released? </li>
+         </ul>
+  </li>
+  <li> Have BIM simply set the raw grade, no support for scales etc, at least not initially. <br />Which means the form option will be "gradebook" or not.</li>
+</ul>
+<p>Implementation will have to wait till another time.</p></p>
+
+</body>
+</html>

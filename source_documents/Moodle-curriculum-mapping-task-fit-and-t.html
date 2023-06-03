@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moodle, curriculum mapping, task fit and task corruption</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/17/moodle-curriculum-mapping-task-fit-and-task-corruption/">Moodle, curriculum mapping, task fit and task corruption</a></h1>
+
+<p>Tags: moodle curriculummapping, Uncategorized</p>
+
+<p><p>I'm involved in some early discussions with some folk from the Psychology department here at <a href="http://www.cqu.edu.au/">CQUniversity</a> about a project looking at curriculum mapping.  If I've got any idea of their problem, it's associated with the need to show their students, themselves and the accrediting bodies how the activities, resources and assessments of the courses within they degree meet the outcomes for the courses and the program.</p>
+<p>I have a meeting with them tomorrow.  The following is an edited copy of a post I've just made to a <a href="http://moodle.org/mod/forum/discuss.php?d=110759">discussion about curriculum mapping</a> on the Moodle general developer forum. It's an attempt to identify one potential way forward.</p>
+<p>Before moving forward - a definition of some terms as I'll use them in the following:</p>
+<ul>
+  <li> Course - the smallest unit of study a student can enrol in. Usually goes over 12 weeks or so. A bachelor's degree consists of 24 courses. </li>
+  <li> Program - a collection of courses that contribute to a degree (e.g. the psychology program). </li>
+  <li> Curriculum mapping - an attempt to generate a representation of the alignment (or lack thereof) between stated outcomes for programs and courses and the activities, resources and tasks provided to students.</li>
+</ul>
+
+<h3>Top-down versus bottom-up</h3>
+
+<p>In the discussion around curriculum mapping on the Moodle general developer's forum, <a href="http://moodle.org/user/view.php?id=2675&amp;course=5">Ger Tielemans</a> makes the following point<blockquote>The point is that Moodle works - by design - bottom-up while most curriculum tools work top-down.<ul><li>In the top-down approach you have first to fill a cascade of questions before you can enter one single resource or activity (teachers hate this!)</li>
+ <li> In Moodle you start on course level and even there it is a free form design, teachers become "bricoleurs" (French for handyman).</li></ul>
+      Teachers like this approach, but it is killing your curriculum wish.<p>Is it possible to combine these approaches, still with simplicity in mind?</p></blockquote></p>
+<p>This point was the inspiration for the following suggestion/idea. It really strikes a chord with my experience helping academic staff with their teaching and also as an academic staff member trying to teach.</p>
+<p>The rest of this post includes some additional background why I think engaging with the bottom up practice of most academics is the better solution than forcing them to work top-down; and an initial description of a potential solution that might achieve this.</p>
+
+<h3>Reasons why changing to top-down is hard</h3>
+
+<p>The basic assumption is that trying to change academics from a bottom-up to a top-down approach is almost certainly going to fail, or at least be really, really difficult and expensive. Instead, it is a better idea to try and achieve the same goal while allowing academics to retain their bottom up approach. This section outlines a few reasons for that.</p>
+<p>If the goal is to enable curriculum mapping, I would suggest not changing academic practice from bottom-up to top-down.  If you believe there are other benefits in changing academic practice to top-down, that's another argument.  I'm focusing here on the pragmatic question of how best to generate a curriculum map of a program/set of courses.</p>
+
+<h4>Change and task corruption</h4>
+
+<p>When it comes to change in teaching practice with university academics, it's very hard. Most (there is a minority of innovators that are an exception) tend not to change their practice.</p>
+<p>When the push for this change is from the top-down (i.e. management), it is even less likely that academics will change teaching practice. If pushed the end result is, at best compliance, and at worst <a href="https://djon.es/blog/2009/03/04/task-corruption-in-teaching-university-negative-impact-of-place/">task corruption</a>. This tends to defeat the purpose of any change in the first place.</p>
+<p>The need for curriculum mapping is mostly top-down. It's needed for accreditation and accountability reasons - mostly concerns for management. My fear is that any requirement for academics to produce/contribute to curriculum maps is likely to be seen as an additional impost and either they won't participate or they will be seen to comply.</p>
+
+<h4>Other work</h4>
+
+<p>It appears that there is <a href="http://www.iamse.org/conf/conf12/abstracts/Assessment/ed%20-%20jackson.htm">some work</a> (more detail on <a href="http://moodle.org/mod/forum/discuss.php?d=117150">Moodle forum</a>) being done at the University of Virginia School of Nursing on developing a more traditional top-down approach to curriculum mapping for Moodle.  It's also a lot more than that.</p>
+<p>There's a vaguely related set of work being done around <a href="http://www.editlib.org/p/31976">syllabus builders</a> that might perform some of the same roles.  At least from the perspective of entering course outcomes and possibly mapping.</p>
+<p>For the reasons I outline below (and probably some more) I don't think these approaches would be as effective in my context (I make no claims about other contexts). A comparison between the different approaches might be interesting.</p>
+
+<h4>Task fit and familiarity</h4>
+
+<p>There's a theory/model called <a href="http://www.istheory.yorku.ca/tasktechnologyfit.htm">Task Technology Fit (TTF)</a> from the information systems discipline, which basically says an IT system is more likely to have a positive impact on individual performance if the system matches the tasks the user must perform. i.e. it's pretty hard to use a hammer to cut wood. Related to this is the idea is that people like familiarity and avoid the unfamiliar.</p>
+<p>At least in my context, within the next year or so academics will be familiar with Moodle. As all our courses will be expected to have a Moodle presence. The use of Moodle will become a standard part of the task they are expected to perform - running a course (I use that title rather than "create a learning experience/environment" because I believe that's how many interpret their task).</p>
+
+<h4>Design versus copying across</h4>
+
+<p>In my context, it is my perception that there are very few courses that are designed from scratch (i.e. designed from the top-down). Mostly people re-use documents, resources and course sites from previous terms and make slight modifications. Few people have the time or inclination and design a course from scratch.  The exceptions are obviously those folk who are creating new courses, but I believe they are in the minority.</p>
+<p>For me, this means that approaches that focus on creating curriculum maps through the course design process are also not likely to fit.</p>
+<p>In addition, at my institution the "syllabus builder" that we use is a locally developed system.  While it serves a purpose, it has some limitations and enhancing it to fulfill the role of curriculum mapping would be difficult.  Rather than waste that investment in a proprietary system, it would seem to make more sense to put this functionality into a open system like Moodle. </p>
+<p>Especially when Moodle is the system the academics will be using throughout the term for most of the learning and teaching.  Why make them use another system?</p>
+
+<h3>Evaluating potential innovations</h3>
+
+<p>Back in 2003, some colleagues and I proposed a model, drawing heavily on Rogers (1995), for evaluating potential web-based innovations <a href="https://djon.es/blog/publications/a-model-for-evaluating-potential-web-based-education-innovations/">(Jones, Jamieson and Clark, 2003</a>). The claim was<blockquote>innovations are largely promoted on the basis of a collection of supposedly objective benefits. The implementation of these innovations often ignores contextual issues that can cause problems with adoption of the innovations. This paper has proposed the use of a model from diffusion theory through which educators can increase their awareness of potential implementation issues, estimate the likelihood of reinvention, and predict the amount and type of effort required to achieve successful implementation of specific WBE innovations.</blockquote></p>
+<p>Based on my interpretation of the model I would see any top-down approach to curriculum mapping as having significant implementation issues, a high probability of reinvention and is likely to require a great deal of complicated and expensive "social engineering" to achieve meaningful outcomes. A bottom-up approach is likely to be somewhat easier, though potentially still not incredibly straight forward depending on the context.</p>
+<p>For example, given that the psychology folk are fairly motivated about curriculum mapping, either approach is likely to be much simpler.  However, another grouping of academics with a different set of motivations, are likely to be very different.</p>
+
+<a name="solution"></a>
+<h3>A solution?</h3>
+
+<p>Based on the above background and sparked by Ger's observation of the difference between top-down and bottom-up, the following idea came to me overnight. It's also informed by some <a href="https://djon.es/blog/2009/08/17/bim-4-re-jigging-how-bim-works/">recent experience I gathered</a> while trying to become familiar with Moodle (which means I'm still new to Moodle so take the following with a grain of salt).</p>
+<p>The basic idea is to modify the operation of Moodle so that everytime an academic edits or adds a resource or activity to a Moodle course they can easily select which of the course and program outcomes that resource or activity is associated with. This would provide a database with the information necessary to create a curriculum map.</p>
+<p>My organisation already has the program and course outcomes in a database. We also know which courses belong to which programs. So this information could be fed in automatically. The academics wouldn't have to enter it.</p>
+<p>It is my understanding that the update form for most resources/activities in Moodle will include a "Common module settings" box like that shown in the following image.  See the box near the bottom of the page with the title "Common module settings"</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3827709349/" title="Simple moodle "><img alt="Simple moodle " height="217" src="http://farm3.static.flickr.com/2646/3827709349_a817a05475_m.jpg" width="240" /></a>
+
+<p>So, given that (generally) when an academic is updating a resource/activity they are working within a particular course and that we've already entered into a database the course and program outcomes that are associated with the course. It shouldn't be too hard to add a "Course/program outcomes" section to every update form.  This section would include a list of all the relevant program and course outcomes.</p>
+<p>So, every time an activity or resource is edited by an academic they can choose which of the program and course outcomes are associated with the activity or resource.  This "mapping" is then stored in a database and is available for other services to use.  Those other services might include:</p>
+<ul>
+  <li> A block that reminds/notifies the academic that some of the course outcomes aren't yet covered by an assessment or activity. </li>
+  <li> A website that shows prospective and current students where and how each outcomes is met.</li>
+  <li> The necessary curriculum map for accreditation and management purposes.</li>
+</ul>
+
+<h3>Drawbacks</h3>
+
+<p>The drawbacks I can think of include:
+<ul><li>Doesn't this require a mod to the Moodle core? That's hard right?</li><li>Doesn't selecting the program/course outcomes imply additional work for the academics?</li><li> What about activities/resources that aren't online/in Moodle?</li>
+</ul>
+
+<h4>Mod to the Moodle core?</h4>
+
+<p>I believe this suggestion might require a change in the "core" of Moodle to enable the "Program/course outcomes" to be added as an option on all of the of update forms of activities/resources. This might not be straight forward - I don't know enough to comment.</p>
+<p>However, based on my ignorance, I think I could see how the modular structure of Moodle would allow this to be done in a way that might not require large changes....would need to look at this more.  i.e. in the bit that produces the "common settings" add a function call to the program/course outcomes stuff - if it exists.  (Does my ignorance show?)</p>
+<p>Even if it were difficult, my argument has always been that with modern information systems it's more important to make the users' job easy, than the systems developers.</p>
+
+<h4>Isn't it more work?</h4>
+
+<p>Doesn't this still mean additional work for academics? Aren't they just as likely to ignore it or "comply" with it?</p>
+<p>Yes, but there's always a limit to how far you can go.  I think this is about as simple as you can.  In addition, I think some of the visualiations/services that this data makes possible could be used to encourage academics.</p>
+<p>For me, this remains that most challenging aspect, finding effective and appropriate ways to encourage academics to engage with this sort of thing. </p>
+
+<h4>What about off-line activities/resources?</h4>
+
+<p>Yep, this is a problem.  No grand thoughts about this.</p>
+
+<h3>Thoughts?</h3>
+
+<p>This is still an initial thought, a rough idea. It will have significant flaws. Any suggestions? Comments? Given the need to get comments from my local context, I'll probably blog this as well.</p>
+
+<h3>References</h3>
+
+<p>Jones, D., K. Jamieson, D. Clark. (2003). <a href="https://djon.es/blog/publications/a-model-for-evaluating-potential-web-based-education-innovations/">A model for evaluating potential Web-based education innovations</a>. 36th Annual Hawaii International Conference on System Sciences, Hawaii, IEEE.</p>
+<p>Rogers, E. (1995). Diffusion of Innovations. New York, The Free Press.</p></p>
+
+</body>
+</html>

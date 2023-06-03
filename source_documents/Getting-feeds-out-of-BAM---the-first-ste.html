@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Getting feeds out of BAM - the first steps</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/03/10/getting-feeds-out-of-bam-the-first-steps/">Getting feeds out of BAM - the first steps</a></h1>
+
+<p>Tags: bam, Chapter 5, design theory, elearning, ples@CQUni, thesis, Uncategorized</p>
+
+<p><p>The <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">Blog Aggregation Management (BAM) project</a> is an attempt to be a bit more Web 2.0/SaaS in the implementation of e-learning within a University.  BAM works by students creating and using their own blog on one of a number of freely available external blogging services and registering it with BAM.  BAM provides some management infrastructure that integrates these external services with university information and also offers support for staff to mark and track student posts. The staff interface is primarily via a web interface.</p>
+<p>Recently, I've been <a href="https://djon.es/blog/2009/03/02/some-potential-updates-to-bam-a-step-towards-breaking-the-lmscms-orthodoxy/">thinking about</a> changes to enable teaching staff to use RSS readers as their primary interface.  This post details some initial steps towards achieving this.</p>
+
+<h3>What's been done</h3>
+
+<p>A fairly simple addition has been made to BAM. The ability for an individual staff member to download an <a href="http://en.wikipedia.org/wiki/OPML">OPML file</a>. The OPML file contains pointers to the blogs for that staff member's students.  Many CQUni courses have large numbers of staff teaching large numbers of students.</p>
+<p>The OPML file can then be imported into a newsreader and used to track the posts students are making to their blogs. Without a need to visit the university supplied web interface.</p>
+<p>The following screencast is intended to help CQUniversity staff make use of this feature. It also illustrates the why and what of the process.</p>
+
+[slideshare id=1124399&amp;doc=usingfeeds-090309225635-phpapp02]
+
+<h3>The next step</h3>
+
+<p>The feeds within the OPML file are the "raw" files from the student blogs. i.e. they only contain the students raw blog posts.  There is no additional "cooking" of the feeds from the individual student blogs to add additional value.  Some examples of "cooking" could include:</p>
+<ul>
+  <li> Addition to each post of links back to the BAM web interface (e.g. a link to the interface that staff use to record a mark for each post). </li>
+  <li> Addition of information about the student - their name, student number etc. </li>
+</ul>
+<p>The aim is to get this initial "raw" feed feature out to the staff and see how they go with it.  If all goes well, the "cooked" feed feature will come out later.</p></p>
+
+</body>
+</html>

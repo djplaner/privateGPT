@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Early analysis of Moodle data</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/03/18/early-analysis-of-moodle-data/">Early analysis of Moodle data</a></h1>
+
+<p>Tags: bad, indicators, learninganalytics, Uncategorized</p>
+
+<p>A small group of teacher educators that I work with are starting to explore some research ideas around engagement, initial teacher education, and in particular the questions that arise out of the <a href="https://www.qilt.edu.au/">Quality Indicators for Learning and Teaching (QILT)</a>
+
+For that project and others I need to get back into analysing institutional Moodle data. The following is a recording of some initial forays on a longer journey. It's all basically <a href="https://en.wikipedia.org/wiki/Data_wrangling">data wrangling</a>. A necessary first step to something more interesting.
+<h2>To do</h2>
+Much of the following is just remembering how I've configure my local system (a need the points to bad and interrupted practice)
+<ol>
+	<li>Do I have the data in a database?
+Yes. Postgres9.1 | Databases | studydesk2015 | moodle | tables</li>
+	<li>Can I access this via Perl/PHP etc.
+Woohoo!  Yes.  Perl is a go (yes, I'm old).  ~Research/2016/QiLTEers/Analysis/myScripts</li>
+	<li>Can I run some initial simple analysis
+Time to borrow some of Col's work</li>
+</ol>
+<h2>Hits and grades</h2>
+Let's try the old standard, the pattern between hits on a course site and grades.
+<h3>Still using the same tables for same purpose</h3>
+Col's work was from a while ago. The Moodle database schema - especially logs - has moved on.  Are his scripts work with the current data I have? Does that data I have even come with the tables his scripts use?
+
+mdl_logstore_standard_log - tick
+
+Ahh, but Moodle has changed its approach to logging.  My data has two tables.  The one mentioned and mdl_log (old version). That led to some wasted time - thanks for cluing me in Randip
+<h3>Clicks</h3>
+Experiment with 3 courses (some with 2 offerings) and see if I can get total clicks for that course.
+
+Results are
+<ul>
+	<li>139,392 - 4th year course, S1</li>
+	<li>220,362 - Big 1st year course, S1</li>
+	<li>639,750 - Biggish 3rd year course, S1</li>
+	<li>308,399 - Big 1st year course, S2</li>
+	<li>185,675 - Biggish 3rd year course (but smaller offering), S2</li>
+</ul>
+<h3>Clicks per student</h3>
+Raw total clicks isn't that useful. What about the clicks per student average?
+
+The 4th year course was showing too many students. What's the go there?  Ahh, the query to identify students is returning duplicates.
+<table>
+<tbody>
+<tr>
+<th>Course</th>
+<th>Total Clicks</th>
+<th># Students</th>
+<th>Clicks / Student</th>
+</tr>
+<tr>
+<td>4th year course, S1</td>
+<td style="text-align: right;">139,392</td>
+<td style="text-align: right;"><strong>175</strong></td>
+<td style="text-align: right;">796.5</td>
+</tr>
+<tr>
+<td>Big 1st year course, S1</td>
+<td style="text-align: right;">220,362</td>
+<td style="text-align: right;">215</td>
+<td style="text-align: right;">1024.9</td>
+</tr>
+<tr>
+<td>Biggish 3rd year course, S1</td>
+<td style="text-align: right;">639,750</td>
+<td style="text-align: right;">323</td>
+<td style="text-align: right;">1980.7</td>
+</tr>
+<tr>
+<td>Big 1st year course, S2</td>
+<td style="text-align: right;">308399</td>
+<td style="text-align: right;">451</td>
+<td style="text-align: right;">683.8</td>
+</tr>
+<tr>
+<td>Biggish 3rd year course, S2</td>
+<td style="text-align: right;">185675</td>
+<td style="text-align: right;">90</td>
+<td style="text-align: right;">2063.1</td>
+</tr>
+</tbody>
+</table>
+&nbsp;
+<h3>Clicks and Grades</h3>
+Next question is if I can produce the slightly more useful pattern between participation and grade.
+<a href="https://www.flickr.com/photos/david_jones/4037668845/in/album-72157608613577424/" title="Average student hits on course site/discussion forum for high staff participation courses"><img alt="Average student hits on course site/discussion forum for high staff participation courses" height="301" src="https://farm3.staticflickr.com/2790/4037668845_dab85a9db1.jpg" width="500" /></a>
+
+That seems to be working, and some success with caching.
+
+Here's the first semester 2015 offering of the biggish 3rd year course from the table above (a course I teach).
+
+<img alt="EDC3100_2015_1.png" class="alignnone size-full wp-image-9091" height="453" src="https://davidtjones.files.wordpress.com/2016/03/edc3100_2015_1.png" width="752" />
+
+And here's the second semester 2015 offering of the same course.  The S1 offering has both on-campus and off-campus students.  The S2 offering is online only.
+
+<img alt="EDC3100_2015_2.png" class="alignnone size-full wp-image-9094" height="452" src="https://davidtjones.files.wordpress.com/2016/03/edc3100_2015_2.png" width="753" />
+<h2>What's left to do</h2>
+A lot.  But doing the above has started building the foundation scripts that will help transform the raw institutional data into something that more people can do more analysis with.
+
+Bigger picture tasks to do are (not necessarily in this order)
+<ol>
+	<li>Polish and build out the data wrangling foundation.
+<ol>
+	<li>Identify the formats most useful for the next level of the process</li>
+	<li>Improve the implementation of the scripts</li>
+	<li>Build out the functionality of the scripts</li>
+</ol>
+</li>
+	<li>Identify the questions we want to explore
+<ol>
+	<li>Break down by student type</li>
+	<li>Investigate the impact of timing on students</li>
+	<li>LMS usage frameworks/course signatures</li>
+	<li>Explore Moodle Book usage</li>
+	<li>Include discussion forum participation</li>
+	<li>Explore the use of links by staff and impact.</li>
+</ol>
+</li>
+</ol>
+And many, many more.
+
+&nbsp;</p>
+
+</body>
+</html>

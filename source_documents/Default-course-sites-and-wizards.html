@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Default course sites and wizards</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/06/07/default-course-sites-and-wizards/">Default course sites and wizards</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>There is now <a href="https://djon.es/blog/2010/06/25/default-course-sites-and-wizards-version-2-0/">a version 2.0</a> of this section.</p>
+<p>The following is the next section from chapter 5 of <a href="https://djon.es/blog/research/phd-thesis/">my thesis</a>. This one describes attempts made to provided a functionality within Webfuse that improved the quality of the default course websites, without increasing workload for academic staff and while retaining some elements of autonomy.  </p>
+<p>Sadly (to me anyway) the institution in which this work evolved has gone backwards.</p>
+
+<h4>Default course sites and wizards</h4>
+
+<p>As described in chapter 4, the initial assumptions built into Webfuse was that a course website would simply be an empty page. From this single, empty page it was assumed that each individual teaching staff member would then draw on the variety of page types (hypermedia templates) provided as course website building blocks by Webfuse to construct their course website. Very quickly it became obvious that the majority of academics did not have the time, inclination, or skills to engage in this sort of design and construction process. Those staff that did have this combination of skills often wanted to use other tools or approaches with which they were already familiar. </p>
+<p>In addition, it became obvious that a significant percentage of the tasks associated with creating a course website were fairly low-level tasks, often involving reuse of information and resources already provided. These observations led to the practice where support staff created initial default course sites by manually editing the initial empty course sites and uploading standard information (e.g. course synopsis, staff contact details etc). However, these course sites were of limited quality, failed to encourage further enhancement from academic staff, and required significant workload from faculty administrative staff. It is within this context that it became necessary to better support the concept of a course and encourage greater engagement with course sites from academic staff.</p>
+<p>During 1999 an initial attempt at addressing this problem was commenced as the "Wizard" project. Briefly described in Jones and Lynch (1999) the Wizard project planned to provide an interface based on the Wizards common to Widows programs of the late 1980s. Such an interface would walk the academic through a series of questions about their course, the provided answers would be combined with the Webfuse page types to create a course site. A particular focus of this plan was an adopter-focused development approach, however, due to organisational uncertainty and limited development resources, this project did not move beyond the prototype and planning stage.</p>
+<p>The next attempt to address this problem was the creation of an automated and expanded default course site approach for the second term of 2001. This coincided with the broader roll out of CQU's new student records system. This new default course site approach was made possible by the expanded Infocom web team, the improvements in the Webfuse process and code-base described in previous sections, and was the primary task of the author during the first half of 2001. The automated and expanded default course site approach evolved to consist of the following components:</p>
+<ol>
+  <li>	An expanded default course site;<br />
+As described in more detail below, the single empty page default course site was replaced with a much expanded site consisting of five separate sections, containing a range of course related data and services within a re-designed interface. Each offering of every course offered by Infocom would have a new default course site.</li>
+  <li> Integration with existing data sources;<br />
+Much of the data used in the creation of the default course site was drawn upon from existing, organisational data sources created by other processes.</li>
+  <li>	Automatic creation;<br />
+The creation and population of all default course sites was performed by running a script that, given the details of a specific term and year, would existing information, Webfuse page types, and related scripts and create default course sites for all courses offered by Infocom. </li>
+  <li>	A copying process; and<br />
+Teaching staff could further modify the default course site by adding additional course information and services. Rather than re-add these additional features for each subsequent term a copying process was developed by which staff could specify what they would like to copy to the new course site.</li>
+  <li>	Support for a real course site.<br />
+There continued to be a number of teaching staff who wished to create their own course website with other tools. Each default course site had support for an optional "real" course site This added another area of the default course site in which the staff member could place their own course site.</li>
+</ol>
+<p>Figure 5.1 is the home page for a default course site from July 2001. This home page formed the top of the hierarchical structure of the default course site. Underneath the home page there were five sections:</p>
+<ol>
+  <li> Updates;<br />
+The updates section provided a function that allowed teaching staff to provide and store course wide updates or announcements. The titles and post dates of the most recent updates were also visible from the home page. </li>
+  <li>	Study schedule;<br />
+This section provided a week by week breakdown of the course, its topics, content and assessment.</li>
+  <li>	Assessment;<br />
+Provided access to details about the course assessment. By default this would summarise for each assessment item, the title, due date and percentage of the overall assessment. </li>
+  <li>	Resources; and<br />
+All remaining course resources and services were made available via this section. By default this included a link to the course profile (syllabus) document, details of the course textbook(s) (including a link to the university bookshop, and, if used, a discussion forum or mailing list.</li>
+  <li>	Staff.<br />
+This provided both the personal details of the staff teaching the course as well as an area restricted to the teaching staff used for discussion or sharing resources. The personal details of teaching staff included name, contact details and where available a photo.
+If the teaching staff in charge of a course decided to create a real course site, then a sixth section was added under the default course site home page. The teaching staff could upload and manage their real course site within this section.</li>
+</ol>
+<a href="http://www.flickr.com/photos/david_jones/4677807498/" title="Webfuse default course site home page by David T Jones, on Flickr"><img alt="Webfuse default course site home page" height="143" src="http://farm2.static.flickr.com/1284/4677807498_7720a2a08d_m.jpg" width="240" /></a>
+<div align="center">Figure 5.1 – Home page for a Webfuse default course site (July 2001) - click to make bigger</div>.
+<p>As identified in chapter 4, since Webfuse was a faculty system, not an institution system, there were organisational, political and technical limits on how well it could be integrated with institutional systems. These limitations continued to exist post 2001. Consequently, the default course site creation process included a number of work arounds and could not achieve all of the automation and integration desired. For example, study schedules had to be manually entered, even though the course profile (syllabus) already contained such a schedule. It was not until 2008 that CQU's distance education publications process included a semi-automated process for the provision of electronic versions of course study guides. </p>
+<p>The default course site process did create some initial and on-going disquiet around questions of academic independence, consistency and institutional identity. This was particularly a problem for academic staff wanting to create their own course sites. Of the 99 course sites created in the first term of the expanded default course site approach, 8 courses had a real course site. Table 5.4 summarises the total number of default course sites versus real course sites created by Webfuse from 2002 through 2009. </p>
+<table border="1" cellpadding="2">
+  <caption align="bottom">Table 5.4 - Comparison between default course sites and real course sites (2002-2009)</caption>
+  <tr>
+    <th> Year</th> <th>Total courses</th><th>Real course sites</th><th>% Real course sites</th></tr>
+  <tr>
+    <td valign="top">2002</td>
+    <td valign="top"> 313 </td>
+    <td valign="top"> 27 </td>
+    <td valign="top"> 8.6% </td>
+  </tr>
+  <tr>
+    <td valign="top">2003</td>
+    <td valign="top"> 305</td>
+    <td valign="top"> 29</td>
+    <td valign="top"> 9.5%</td>
+  </tr>
+  <tr>
+    <td valign="top">2004</td>
+    <td valign="top"> 329</td>
+    <td valign="top"> 16</td>
+    <td valign="top"> 4.9%</td>
+  </tr>
+  <tr>
+    <td valign="top">2005</td>
+    <td valign="top"> 299</td>
+    <td valign="top"> 15</td>
+    <td valign="top"> 5.0%</td>
+  </tr>
+  <tr>
+    <td valign="top">2006</td>
+    <td valign="top"> 297</td>
+    <td valign="top"> 15</td>
+    <td valign="top"> 5.1%</td>
+  </tr>
+  <tr>
+    <td valign="top">2007</td>
+    <td valign="top"> 251</td>
+    <td valign="top"> 4</td>
+    <td valign="top"> 1.6%</td>
+  </tr>
+  <tr>
+    <td valign="top">2008</td>
+    <td valign="top"> 225</td>
+    <td valign="top"> 2</td>
+    <td valign="top"> 0.9%</td>
+  </tr>
+  <tr>
+    <td valign="top">2009</td>
+    <td valign="top"> 211</td>
+    <td valign="top"> 0</td>
+    <td valign="top"> 0</td>
+  </tr>
+</table>
+ <p>One advantage provided by the expanded default course site approach was the ability for the institution to exercise some control over the minimum level of service provided to students. Changes to the expanded default course site occurred through two means:</p>
+<ol>
+  <li> Institutional or strategic direction; and<br />If the faculty identified some information or a service that it thought should be part of the minimum level of service to students it could implement this minimum standard across all courses via the default course site process. For example, from the second half of 2001 through 2002 all Infocom courses were required to have a course barometer (Jones 2002) to provide a mechanism to capture student feedback during a term.</li>
+  <li> Adopter-focused and emergent development.<br />The Infocom web team modified the default course site operation in response to lessons learned from supporting academics using the system and observing what innovative staff added to the default site. This is in line with the adopter-focused and emergent development practices discussed in previous sections.</li>
+</ol>
+<p>Due to the foundation provided by the Webfuse page types and templates it was not necessary for all default course sites to have the same structure or the same look and feel. Theoretically, every course site could be completely different. The flexibility of the default course site idea was tested in 2007 with the creation of a "Web 2.0" course site (see Figure 5.2). This "Web 2.0" course site was implemented as a Webfuse default site using Webfuse page types, however, using a different appearance and structure to a normal default site. This site is a "Web 2.0" site because all of the functionality (discussion, wiki, blog, portfolio and resource sharing) were provided by freely available Web 2.0 tools hosted on external sites. Webfuse used RSS feeds generated by these external tools to create and maintain the course site. Students used these RSS feeds to remove the need to visit the course site at all. </p>
+<a href="http://www.flickr.com/photos/david_jones/4677968716/" title="Home page for Web 2.0 course site by David T Jones, on Flickr"><img alt="Home page for Web 2.0 course site" height="193" src="http://farm5.static.flickr.com/4032/4677968716_99cc6a2cd0_m.jpg" width="240" /></a>
+<div align="center">Figure 5.2 – Web 2.0 Course site (2007)</div></p>
+
+</body>
+</html>

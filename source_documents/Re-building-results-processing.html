@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Re-building results processing</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/07/01/re-building-results-processing/">Re-building results processing</a></h1>
+
+<p>Tags: bad, concretelounge, edc3100</p>
+
+<p>It's once again time to process final results for a course and return the final assignment. A process that involves
+<ol>
+  <li> Checking overall student results for a course, before returning the final assignment. </li>
+  <li> Identifying all of the students who won't have final results available by the required date. </li>
+  <li> Analysing this offering's performance across the course and comparing it with prior offerings. </li>
+  <li> Returning the final assignment. </li>
+  <li> Ensuring the overall results are entered appropriately into the student records system. </li>
+  <li> Preparing a report for the examiners meeting. </li>
+</ol>
+
+There are three problems driving this
+<ol type="a">
+  <li> What institutional processes/tools are provided to help with these tasks are far from user friendly.
+      <p>e.g. the greasemonkey script I wrote last year to help with task #5 above.</p>
+</li>
+  <li> There are no institutional processes/tools for some of these tasks.
+     <p>e.g. the only way to get all of the assignment marks into one place is to put them into the Moodle gradebook. But I believe if I do that then the students can see the marks. Given that I'm still moderating the last assignment marks them seeing the marks is not so good.</p>
+ </li>
+  <li> The management of online assignment submission has changed this year, so some of prior workarounds are no longer viable. </li>
+</ol>
+
+<h3>What I used to do</h3>
+
+Part of this activity is identifying what I've already got.  It's around 7/8 months since I last had to do this, so I don't remember.  I'm not sure the impact of this temporal distance is something that the designers of institutional systems and processes are fully cognisant of.
+
+The old process appears to have been
+<ol>
+  <li> Extract individual CSV files for each assignment from EASE.
+       The old online assignment system generated 2 separate CSV files. I needed both. </li>
+  <li> Get another CSV file with Professional Experience results.
+       Whether a students has passed their Professional Experience is determined by another part of the institution using a different system.  </li>
+  <li> Run a perl script which would
+        <ol type="a">
+          <li> Extract all the data from the CSV files. </li>
+          <li> calculate the final results (for each student). </li>
+          <li> Assign a grade to the student based on circumstances
+               <ul>
+                  <li> FNP if at all assignments not submitted. </li>
+                  <li> F regardless of mark if PE failed. </li>
+                  <li> IM if PE mark has not yet been received </li>
+                  <li> RN if assignment submitted but still being marked. </li>
+               </ul>
+          </li>
+          <li> Generate grade breakdowns for each campus and overall </li>
+          <li> Output all that as a CSV file, including comments that I'd added</li>
+        </ol>
+   </li>
+  </li> Import that into Excel and do some further checking. </li>
+</ol>
+
+<h3>What I need to do</h3>
+
+The process will be largely the same.  The main difference is the source and format of the CSV files.  The changes now are
+<ol>
+  <li> Assignment 1, Assignment 2 and PE marks are now in Moodle gradebook.
+         The will all export nicely.  Though it does use the long version of the USQ student number. May need to do a workaround for that.
+
+       what sort of institution is silly enough to have at least 3 versions  of the same student number?. Long with leading 0s. Long without leading 0s. Short!
+  </li>
+  <li> Assignment 3 mark will be in Moodle assignment activity.
+         That will work.  The grade is there.
+
+         But yet, it uses a different version of the student number (long without leading 0s).   But both do have email address, that might be the candidate for unique id. Or the script will just pre-pend leading 0s.
+  </li>
+</ol>
+
+The other major difference is that neither of these CSV files include any mention of the campus or mode the students are using.  Which prevents breaking results down.  But thankfully I do have database table populated with this information.
+
+Ahh, that's right.  I also have to change the PE mark for some students to -1 to indicate they were exempt.  This is to discern students for whom there is no PE result yet, from those students who aren't going on PE and should still pass.
+
+My other problem is that the CSV file for A3 has a "status" field that includes new line characters. My poor little Perl CSV parsing module doesn't handle that well.
+
+It's working well enough to help moderate A3 results.  Time to do that.
+
+Still to be done
+<ul>
+  <li> Modify gradebook.csv to have -1 for PE for those students who will never go **** what about when it's updated? </li>
+  <li> Add the campus calculations back in </li>
+  <li> Figure out how to handle the status field in Moodle assignment csv. </li>
+  <li> Have the script produce an Excel file, not a CSV file </li>
+</ul></p>
+
+</body>
+</html>

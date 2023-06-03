@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Including Dojo in pages</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2006/08/01/including-dojo-in-pages/">Including Dojo in pages</a></h1>
+
+<p>Tags: dojo, Uncategorized</p>
+
+<p>Based on various sources including <a href="http://manual.dojotoolkit.org/WikiHome/DojoDotBook/BookScript">the Dojo "manual"</a>
+
+Three starting sections in HEAD
+<ol>
+	<li> setting flags - this one is optional
+
+	djConfig = { isDebug: false };
+
+
+  </li>
+  <li> dojo bootstrap - I think I found that this didn't work as a single tag - had to be the open/close tag set
+
+
+ </li>
+  <li> define the packages to be used
+
+  dojo.require("dojo.event.*");
+  dojo.require("dojo.io.*");
+  dojo.require("dojo.widget.*");
+
+
+  </li>
+</ol>
+
+<h3>
+  Path to dojo
+</h3>
+
+With Webfuse - dojo is installed at <code>/webfuse/tools/dojo/</code></p>
+
+</body>
+</html>

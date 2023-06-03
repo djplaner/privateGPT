@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Testing out the Moodle search book block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/05/10/testing-out-the-moodle-book-search/">Testing out the Moodle search book block</a></h1>
+
+<p>Tags: bad, moodleopenbook, Uncategorized</p>
+
+<p>Earlier this year - as part of the <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">Moodle Open Book project</a> - I <a href="https://davidtjones.wordpress.com/2016/01/17/finishing-tweaks-to-moodle-book-search-block/">made some changes</a> to <a href="https://github.com/stronk7/moodle-block_search_books">Search Book block</a> for Moodle. The hope being that my institution might install this on it's Moodle installation, which in turn would allow my students and I to search the ~70 Moodle books that make up the "learning path" for my course.
+
+Well it is almost there. It's in the test environment and the following reports on some testing of the Search Book block. In summary, it all appears to be working.
+
+It will be really interesting to see how this changes the behaviour and experience of the student in my course next semester. I believe the current (and past) students would have liked to have this functionality. I know it would have made my tasks a lot easier.
+
+Much thanks to
+<ul>
+	<li><a href="https://github.com/stronk7">Eloy Lafuente</a> for developing the block in the first place.</li>
+	<li>The Moodle devs at USQ who fixed further problems.</li>
+</ul>
+(and one other person who I'm sure made a contribution, but I can't find the details)
+<h2>Populate a course</h2>
+First step is to back up my existing course and upload to the test environment. Mainly so that there is a collection of content to search.
+<h2>Add the block</h2>
+By default the "search books" block doesn't appear in the test environment.  Need to add the block.
+
+<strong>Observations</strong>
+<ol>
+	<li>Is there a need to promote this change amongst people who use the Moodle book (and others)?
+The addition of a new block isn't going to be obvious to most people. There's no point in automatically adding it to all courses, as it's only useful for those people using the Book resource.</li>
+	<li>I'll need to modify my course prep material a bit to include mention of this facility so students actually know that it's there.</li>
+	<li>I wonder whether people will get confused between the "search forum" and "search books" blocks?</li>
+</ol>
+<h2>Tests</h2>
+<h3>Search for something certain to be there: edc3100</h3>
+<img alt="Screen Shot 2016-05-10 at 9.31.13 am.png" class="alignnone size-full wp-image-10726" height="1142" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-31-13-am.png" width="1884" />
+
+As expected quite a few results.  Quick test of search results reveal finding pages that actually contain the search phrase.
+
+Navigating amongst the different pages of search results appear to work.
+
+<img alt="Screen Shot 2016-05-10 at 9.33.26 am.png" class="alignnone size-full wp-image-10731" height="1462" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-33-26-am.png" width="1780" />
+
+<strong>Observations:</strong>
+<ul>
+	<li>Results are ordered by the order of the books in the course list.
+e.g. the Assessment material in my course is found near the end of the search because they are located in the final section of the course site.  This will cause some problems with searching for assignment related information.</li>
+	<li>Need to rethink/experiment with structure of EDC3100 material</li>
+</ul>
+<h3>Search for exactly a phrase: <strong>"creative commons"</strong></h3>
+<img alt="Screen Shot 2016-05-10 at 9.36.43 am.png" class="alignnone size-full wp-image-10741" height="1180" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-36-43-am.png" width="1922" />
+
+Significantly more results than I initially expected, and some of the search results (e.g. the second result from the above list - shown below) doesn't actually include the search string in the visible text.
+
+<img alt="Screen Shot 2016-05-10 at 9.38.14 am.png" class="alignnone size-full wp-image-10746" height="1278" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-38-14-am.png" width="1918" />
+
+But that's because the HTML for the image includes the following HTML. The search string <strong>"creative commons"</strong> appears in the title tag for the image.
+
+[code lang="html"]
+&lt;img title="Creative Commons Creative Commons Attribution 2.0 Generic License"  src="http://i.creativecommons.org/l/by/2.0/80x15.png"  alt="Creative Commons Creative Commons Attribution 2.0 Generic License"&gt;
+[/code]
+
+&nbsp;
+
+<strong>Observations</strong>
+<ul>
+	<li>This might cause some confusion for users.
+I wonder how prevalent this might be. How much of the HTML in Moodle books contains meaningful descriptions?</li>
+	<li>Potential feature request for an advanced search facility - exclude/include HTML in the search</li>
+</ul>
+<h3>Search for a phrase: <strong>creative commons</strong></h3>
+<img alt="Screen Shot 2016-05-10 at 9.47.47 am.png" class="alignnone size-full wp-image-10764" height="832" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-47-47-am.png" width="1902" />
+
+As expected returns a few extra results.
+<h3>Search for phrase mixed up: <strong>creative copyright</strong></h3>
+<img alt="Screen Shot 2016-05-10 at 9.48.53 am.png" class="alignnone size-full wp-image-10767" height="542" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-48-53-am.png" width="1884" />Appears to work as expected.
+<h3>Search for "must include word": <strong>copyright +creative</strong></h3>
+Doesn't make any difference to search results to the above.
+<h3>Search for content missing a word: <strong>copyright -creative</strong></h3>
+<img alt="Screen Shot 2016-05-10 at 9.51.33 am.png" class="alignnone size-full wp-image-10773" height="518" src="https://davidtjones.files.wordpress.com/2016/05/screen-shot-2016-05-10-at-9-51-33-am.png" width="1900" /> As expected
+<h3>Exploratory search: <strong>"assignment 3"</strong></h3>
+Searched first for <strong>assignment 3 </strong>and got 231 results. Search for <strong>"assignment 3"</strong> return 102 results.
+
+<strong>Observation</strong>
+<ul>
+	<li>As expected above the assignment specification for Assignment 3 was search result 100 or so.  This is due to the structure of my course site and the search block's ordering of results by the order they appear in the course.</li>
+	<li>Raises questions of whether it's possible or worth it to integrate some form of ranking of results. At the very least if the search phrase appears in the title of  the page, should it be ranked higher?</li>
+</ul>
+<h3></h3>
+<h3></h3></p>
+
+</body>
+</html>

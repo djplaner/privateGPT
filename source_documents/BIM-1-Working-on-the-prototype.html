@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM #1: Working on the prototype</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/11/bim-1-working-on-the-prototype/">BIM #1: Working on the prototype</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>Over the last few weeks I've slowly been getting into Moodle/PHP as part of need to put the <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BAM project</a> into Moodle.  I've decided today to abbreviate this project into BIM - BAM into Moodle.  It'll do for now.</p>
+<p>The <a href="https://djon.es/blog/2009/07/30/bam-into-moodle-9-a-working-estudyguide-block/">last post</a> left off on the development of a eStudyGuide block.  I'm leaving that behind now and trying to focus on ideas/development of a prototype of BIM so that other folk can look and play with it.</p>
+
+<h3>Requirements for a prototype</h3>
+
+<p>I think the aim will be to set up a prototype of how I think BIM will work in such a way that other people can experiment and discover what I think BIM will do. Some ideas:</p>
+<ul>
+  <li> Use an old CQU course that has already used BAM. </li>
+  <li> Set it up as a Moodle course. </li>
+  <li> Add the various BIM links/blocks I'm thinking of initially as HTML, later as hard-coded, then display only, finally working?? </li>
+ </ul>
+<p>I'll use the <a href="http://webfuse.cqu.edu.au/Courses/2006/T2/COIS20025/">2006/T2 offering of COIS20025</a> as the prototype course.  It's the first course to use BAM and I was the coordinator - that lessens issues with permission etc.</p>
+
+<h3>Functionality and plans</h3>
+
+<p><a href="https://djon.es/blog/2009/07/28/bam-into-moodle-6-planning-and-some-real-coding/">A previous post</a> outlined a list of tasks users will have to perform with BAM. Each of these will have to be integrated into the prototype and decisions made about how it will be implemented.  In the following the tasks are divided into students, coordinator and teaching staff.</p>
+<p>The end result of all that, is I need to discover the following:</p>
+<ul>
+  <li> Can a Moodle module be used to add a number of different activities?<br />In this case, need to be able to add a "Create and register blog" activity for students and a "BIM Manage" activity for staff. <p><strong>Yes</strong>.  It appears that this is what the Assignment activity does</li>
+  <li> Can a Moodle module generate a block - or does the block need to be implemented as block? (I'm guessing the later)<br />Would like there to be a BIM block that shows different information specific to the student/staff looking at the site. <p>May work around this by simply having a single student BIM activity.  Initially it requires registration, then it shows progress.</li>
+  <li> How does Moodle handle the allocation of students to a marker/staff member?<br />Is this done in the gradebook, for groups?  How is done at CQU?<br /> </li>
+  <li> How can BIM put results into the gradebook?<br />Each blog post will be marked separately and then all results manipulated into a final result. That final result will generally, but not always, need to go into the gradebook.  Some other courses may not use the gradebook, so I don't think BIM should be implemented within the gradebook.  Just have a connection to it.<p>This fits with the Moodle model - there's a gradebook API.</li>
+  <li> How should BIM configure/connect to an assessment item within the gradebook? <br />The gradebook API??  Will check on this.</li>
+</ul>
+<p>Will continue this at some later stage.</p>
+
+<h3>One Moodle module - different activities</h3>
+
+<p>Initially I'm going to do a search for examples of a Moodle Module that supports multiple activities, however, I'm starting to feel that understanding the Moodle module/activity process might be a better way to go. </p>
+<p>Doesn't seem to be anything easily findable via Google - perhaps says more about my grasp of the Moodle vocabulary.</p>
+<p>Let's go via the code</p>
+<ul>
+  <li> Example activities in a default install - Wiki, Survey, SCORM/AICC, Quiz, Lesson, Gloassary, Forum, choice etc. </li>
+  <li> URL is all to mod.php with an id (course?), section, and a "add" parameter <br />Each of the values for "add" appear to match the name of a folder in the ~/mod directory.  Implying, one directory, one activity.</li>
+  <li> Interestingly, there are 7 mod.php files in Moodle.  The one used here is for course. </li>
+  <li> mod.php can be passed a range of values - add, type, indent, update, hide, show, copy, moveto, movetosection.... </li>
+  <li> Ahh, the assignments activity has options - online text, upload, offline, chat specified by a type parameter that is passed in as a parameter.
+</ul>
+<p>Ahh, finally found the right words for Google searches, online resources include:</p>
+<ul>
+  <li> <a href="http://moodle.org/mod/forum/discuss.php?d=89225">this thread</a> in a Moodle.org forum.</li>
+  <li> <a href="http://docs.moodle.org/en/Development:Modules">docs.moodle.org page</a> on module development. </li>
+  <li> Which points to the NEWMODULE dummy/template module in the contrib code. </li>
+</ul>
+
+<h3>Assignments activity</h3>
+
+<p>This activity is an example of an activity with different related tasks.  Here's a description of some investigations:</p>
+<ul>
+  <li> The "Add activity" drop down on a course page has sub-items for "Assignments" matching each type.<br />So, BIM could be equivalent to "Assignments" and then have two sub-types: CreateAndRegister and Manage? </li>
+  <li> Now, does this mean a different form when adding this activity. - Add an online text - add an offline.<br />There are similarities and differences in the forms used.</li>
+  <li> Once the assignment activities are added, they use view.php in the activity code with an ID passed.  Again, it displays some information that is customised to the type.</li>
+  <li> Those that require a form, also go via view with additional parameters. </li>
+  <li> There's also an index.php for assignments that takes the course id and shows all the relevant activities in a page.</li>
+  <li> The index.php is used as a link in an "Activities" block that lists all activities in a course. </li>
+</ul>
+
+<h3>Perceived mismatch</h3>
+
+<p>There seems to be a mismatch here between my ideas and how Moodle works.   The first time you add a BIM activity, the Moodle approach seems to be that this is when you configure BIM for the course.</p>
+<p>Similarly, the separation of create/register and the progress activities for the student into an activity and a block may not be the best way to go.  Perhaps, just a single activity - check progress or something similar.</p>
+
+<h3>Grades</h3>
+
+<p><a href="http://docs.moodle.org/en/Grades">Docs on the grades</a>/gradebook is the place to find out about this.  Some comments:</p>
+<ul>
+  <li> Gradebook is designed to be the repository - modules push grades to it, gradebook doesn't go the other way.</li>
+  <li> The pushing is done via the <a href="http://docs.moodle.org/en/Development:Grades#API_for_communication_with_modules.2Fblocks">gradebook public API</a>. </li>
+  <li> Related terms include:
+   <ul>
+      <li> Grades - scores attributed to participants. </li>
+      <li> grade category - collection of grades </li>
+      <li> grade item - stores a grade for each participant. </li>
+   </ul>
+</ul>
+<p>Will need to read more of this eventually.</p>
+
+<h3>Where next?</h3>
+
+<p>After all of that, it appears that a path forward might be to start work on the new module, initially as a prototype and eventually, over time, add the real functionality into it.</p>
+<p>So that's the next step.</p></p>
+
+</body>
+</html>

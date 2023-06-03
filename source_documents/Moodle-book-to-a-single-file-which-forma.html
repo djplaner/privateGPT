@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moodle book to a single file: which format?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/12/11/moodle-book-to-a-single-file-which-format/">Moodle book to a single file: which format?</a></h1>
+
+<p>Tags: html5, moodleopenbook, semantic, thesis</p>
+
+<p>The <a href="https://davidtjones.wordpress.com/2015/12/03/moodle-book-and-github-working-together/">Moodle Book github tool</a> allows the import/export (pull/push) of Book content from/to GitHub. The content from the Moodle Book is stored as a single file on GitHub. One of the many unanswered questions about the tool is the format of the exported file. The current format is a bit of dodgy HTML with divs, classes, and ids.  Aim here is to figure out if and how the <a href="http://www.w3schools.com/html/html5_semantic_elements.asp">HTML 5 semantic elements</a> might provide a more useful method.
+
+Given that my last serious web development role and interest was 10+ years ago, some of the following is likely to be a bit silly.  It's not helped by the fact that the online explanation of some of these elements differ and the whole semantic element thing appears to be somewhat less than widely supported and used.
+<h3>HTML 5 semantic elements</h3>
+Are a collection of elements/tags in HTML 5, including &lt;article&gt; &lt;aside&gt; &lt;header&gt; etc that are intended to help define different parts of a web page and thus make it easier to share/reuse data across applications. Sounding exactly like what is needed here.
+
+All are probably relevant, but the more immediately relevant include:
+<ul>
+	<li>&lt;article&gt; - Specifies independent, self-contained content.
+Good match for an individual book. Includes sections.</li>
+	<li>&lt;section&gt; - A section in a document.
+Good match for a book chapter (or sub-chapter)? Can be nested.</li>
+	<li>&lt;header&gt;  - for either a document or section
+Could be used within a section to specify the title of the chapter from the book, but also appear on the page when viewing the single file.</li>
+	<li>&lt;footer&gt; - for either document or section
+Could be used within a section to hold icons for next/previous (getting optional here)</li>
+	<li>&lt;nav&gt; - defines a set of navigation links
+Thinking this could be added to the github file by the tool to add navigation links within the file.  Ability to jump to specific chapters etc.</li>
+	<li>&lt;aside&gt;</li>
+	<li>&lt;details&gt;</li>
+	<li>&lt;main&gt;</li>
+</ul>
+<h3>Structure for the single github file</h3>
+Which brings me to to the following. Note: the Moodle book calls every page a chapter or a sub-chapter. A sub-chapter(s) is nested within a chapter.
+
+[code lang="html"]
+&lt;html&gt;
+  &lt;header&gt;
+    &lt;title&gt;Title of book in Moodle&lt;/title&gt;
+  &lt;/header&gt;
+  &lt;body&gt;
+
+    &lt;article data-title="Title of book in Moodle" data-introformat="1" data-customtitles="0" data-numbering="1" data-navstyle="1"&gt;
+      &lt;header&gt;
+        &lt;h1&gt;Title of book in Moodle&lt;/h1&gt;
+        &lt;div&gt;Introduction to the book from Moodle&lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;section data-pagenum="1" data-contentformat="1" data-title="Title of 1st chapter from book"&gt;
+        &lt;header&gt;
+          &lt;h1&gt;Title of 1st chapter from book&lt;/h1&gt;
+        &lt;/header&gt;
+        CONTENT OF THE CHAPTER from the book
+
+        &lt;section data-pagenum="2" data-contentformat="1" data-title="Title of 2nd chapter (and a sub-chapter) from book"&gt;
+          &lt;header&gt;
+            &lt;h1&gt;Title of 2nd chapter (and a sub-chapter) from book&lt;/h1&gt;
+          &lt;/header&gt;
+          Content of the sub-chapter from the book
+        &lt;/section&gt;
+      &lt;/section&gt;
+
+      &lt;section data-pagenum="2" data-contentformat="1" data-title="Title of 3rd chapter from book"&gt;
+        &lt;header&gt;
+          &lt;h1&gt;Title of 3rd chapter from book&lt;/h1&gt;
+        &lt;/header&gt;
+        CONTENT OF THE 3rd CHAPTER from the book
+
+      &lt;/section&gt;
+    &lt;/article&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+[/code]
+
+Entering HTML like that to get pretty coloured in Wordpress is harder than it looks.
+
+Testing the structure is quite easy given <a href="https://gsnedders.html5.org/">this online outliner</a>.
+
+&nbsp;
+<h3>Questions</h3>
+My first question is whether or not the above is "valid" HTML 5?  The outliner seemed to like it.
+
+The second question is whether or not the above will work? Not from a HTML 5 perspective, but my code.
+
+Which picks up the following questions
+<ol>
+	<li>Do the data attributes play nicely with semantic elements?</li>
+	<li>Should the title be both a data attribute and in the header element?</li>
+	<li>Should I rely on the parsing code to auto-generate pagenum?</li>
+	<li>Should I rely on the parsing code to identify chapters and sub-chapters?</li>
+	<li>Are there any nice existing javascript resources that will auto-generate the navigation between chapters? (Or do I have to write something?)</li>
+	<li>Are there any nice CSS resources that will style semantic elements nicely? (Or do I have to write something?)</li>
+	<li>Will the PHP parsing code handle semantic elements (and data attributes)?</li>
+</ol></p>
+
+</body>
+</html>

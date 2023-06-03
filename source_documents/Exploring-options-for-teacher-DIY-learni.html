@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploring options for teacher DIY learning analytics</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2017/10/07/exploring-options-for-teacher-diy-learning-analytics/">Exploring options for teacher DIY learning analytics</a></h1>
+
+<p>Tags: 4paths, indicators, TeacherDIY</p>
+
+<p>A few of us recently submitted a paper to <a href="http://itali.uq.edu.au/alasi2017">ALASI'2017</a> that examined a "case study" of a teacher (me) engaging in a bit of DIY learning analytics. The case was used to drawing a few tentative conclusions and questions around the institutional implementation of learning analytics.  The main conclusion is that teacher DIY learning analytics is largely ignored at the institutional level and that there appears to be a need and value to support it.  The question is how (and then if supported, what happens)?
+
+This post is the start of an exploration of some technologies that combined may offer some of the affordances necessary to supporting teacher DIY learning analytics. The collection of technologies and the approach owes a significant amount of inspiration to <a href="https://blog.ouseful.info/about/">Tony Hirst</a>, especially in <a href="https://blog.ouseful.info/2017/06/27/byoa-bring-your-own-aplication-running-containerised-applications-on-the-desktop/">this post</a> in which he writes
+<blockquote>What I care about are some of the features that Docker has, and how I can use those features to make my own life easier, ... supporting personal, DIY, BYOA (“bring your own app”) IT that works at an individual level in the form of end-user applications, or personal digital workbenches</blockquote>
+
+The plan/hope here is that Docker combined with some other technologies can provide a platform to enable a useful combination of do-it-with (DIW) and do-it-yourself (DIY) paths for the institutional implementation of learning analytics.  The follow is mostly documenting ad hoc exploration of the technologies. 
+
+In the end, I've been able to get working a Jupyter notebook working as a JSON API and started explorer docker containers.  Laid the ground work for the next step which will be to explore how and if some of this can be combined to integrate some of the work Hazel is doing with <a href="http://djon.es/blog/2017/03/13/sharing-indicators-platform-via-github/">some of the Indicators work from earlier in the year</a>.
+
+<h2>Learning more - Juypter notebook JSON api </h2>
+
+Tony provides <a href="https://blog.ouseful.info/2017/09/06/building-a-json-api-using-jupyer-notebooks-in-under-5-minutes/">a description</a> of using Jupyter Notebooks to provide a JSON API.  Potentially this provides a way for DIY teachers to create their own <a href="https://github.com/damoclark/mav-enterprise">MAV-like server</a>.
+
+<a href="https://blog.ouseful.info/2017/09/06/building-a-json-api-using-jupyer-notebooks-in-under-5-minutes/">Tony's exploration</a> is informed by <a href="http://blog.ibmjstart.net/2016/01/28/jupyter-notebooks-as-restful-microservices/">this</a> from some aspect of IBM that aims to introduce the <a href="https://github.com/jupyter/kernel_gateway">Jupyter kernel gateway (github repo)</a>
+
+The README.md from <a href="https://github.com/jupyter/kernel_gateway">github repo</a> mentions serving HTTP requests from "annotated notebook cells".  Suggesting that the method of annotation will be important.  The <a href="https://github.com/jupyter/kernel_gateway_demos/blob/master/scotch_demo/notebooks/scotch_api_python.ipynb">IBM example code</a> that each API call is handled by a particular block starting with an appropriately formatted comment i.e.
+<blockquote>single-line comments containing a HTTP verb ... followed by a parameterised URL path</blockquote>
+
+Have a simple example working.  
+
+
+<h2>Deploying - user experience</h2>
+
+The IBM bit then goes about using Docker to to deploy this API.  But before I do that.  Lets get some experience at the user en with <a href="https://github.com/psychemedia/ou-robotics-vrep/tree/master/robotVM">Tony's example</a>.
+<ol>
+  <li> <a href="https://www.virtualbox.org/wiki/Downloads">Install VirtualBox</a>
+         <em>Question:</em> Is this something a standard user can do?
+  </li>
+  <li> <a href="https://www.vagrantup.com/downloads.html">Install vagrant</a>
+  <li> command line to install a vagrant plugin
+       <p><em>Question:</em> Too much?   But can probably be worked around. </li>
+  <li> Download the repo as a zip file.
+       <p>Had to figure out to go back to the repo "home" to get the download option (long time between drinks doing this).</p> </li>
+  <li> Run the vagrant file
+      <p>Ok, it's downloading the file from the vagrant server (from <a href="https://app.vagrantup.com/ouseful/">the ouseful area</a> on Vagrant).</p><p>It's a 1.66Gb file. That size could potentially be an issue, suggesting the need for a local copy.  Especially given the slow download.</p> <p>An hour or two later and it is up and running. There's a GUI linux box running on my Mac.</p> </li>
+</ol>
+
+Don't know a great deal about the application that is the focus, but it appears to work.  It's a 3D application, so the screen refresh isn't all that fast.  But as a personal server for DIY teacher analytics, it should work fine, at least in terms of speed.
+
+Running it a second time includes a check to see if it's up to date and then up it pops. 
+
+The box appears to have Perl, Python and Juypter installed.
+
+<h2>Deploying - developing a docker/container/images</h2>
+
+This raises the question of the best option for creating and sharing a docker/container/<em>insert appropriate term</em> - I'll go with images - that has Jupyter notebooks and the kernel_gateway tool running. At this stage, this purpose seems best served by a headless virtual machine with browser-based communication the method for interacting with Jupyter notebooks.
+
+Tony appears to do exactly this (using OpenRefine) using Kitematic in <a href="https://blog.ouseful.info/2017/06/27/byoa-bring-your-own-aplication-running-containerised-applications-on-the-desktop/">this post</a>.  Later in the post the options appear to include
+<ul>
+  <li> Sharing images publicly via the Dockerhub registry </li>
+  <li> Use a private Dockerhub registry (one with the free plan)
+  <li> On a local computer </li>
+  <li> Run your own image registry </li>
+  <li> And, I assume use an alternative. </li>
+</ul>
+
+Tony sees using the command line a draw back for running your own.  Perhaps not the biggest problem in my case.  But what is the best approach?
+
+<a href="https://docs.docker.com/docker-hub/">Dockerhub</a> and its ilk do appear to provide extra help (e.g. official repositories you can build upon).  
+
+<a href="https://www.slant.co/options/8674/alternatives/~docker-hub-alternatives">One set of alternatives</a> appear largely focused on supporting central IT, not the end user. Echoing a concern expressed by Tony.
+
+<a href="https://sloppy.io/gitlab-container-registry-alternative-docker-hub/">Intro from another alternative</a> suggests that docker is becoming more generic.  Time to look and read further afield.
+
+<h3>Intro to containers</h3>
+
+<a href="https://medium.com/flow-ci/introduction-to-containers-concept-pros-and-cons-orchestration-docker-and-other-alternatives-9a2f1b61132c">From Medium</a>
+<ul>
+  <li> Containers abstract the OS etc to make it simple to deploy </li>
+  <li> Containers usually measured in 10s of megabytes </li>
+  <li> Big distinction made between containers and virtual machines, perhaps boils down to "containers virtualise the OS; virtual machines the hardware" 
+        <p>Though interesting, the one tried above required the downloading of a virtual machine first.  <em>Update:</em> That appears to be because I'm running Mac OS X.  If I were on a Linux box, I probably wouldn't have needed that.  </p>
+   </li>
+  <li> The following seem to resonate most with the needs of teacher DIY learning analytics
+<blockquote>
+   <ul> <li> Using containers can decrease the time needed for development, testing, and deployment of applications and services.  </li>
+      <li> Testing and bug tracking also become less complicated since you there is no difference between running your application locally, on a test server, or in production. </li>
+      <li> Container-based virtualization are a great option for microservices, DevOps, and continuous deployment. </li> </ul>
+   </blockquote>
+    <li> Docker is based on Linux and open source, is the big player. </li>
+    <li> Spends some attention on container orchestration - appears to be focused on enterprise IT. </li>
+</ul>  
+  
+Following offers a creative intro to Kubernetes
+
+https://youtu.be/4ht22ReBjno
+
+Starts with the case for containers (Docker), but then moves onto orchestration and the need for Kubernetes.  Puts containers into a pod, perhaps with more than one if tightly coupled. Goes onto to explain the other features provided by Kubernetes.
+
+And intro to Docker
+
+https://www.youtube.com/watch?v=RyxXe5mbzlU
+
+<h2>Rolling my own</h2>
+
+Possible technology options
+<ul>
+  <li> <a href="https://www.docker.com/products/docker-toolbox">Docker toolbox</a> <p>Though that appears to <a href="https://docs.docker.com/toolbox/overview/">be deprecated</a></li>
+  <li> <a href="https://www.docker.com/docker-mac">Docker for Mac</a> (and a version for Windows)
+       <p>Download it; test it...all works</p>
+</ul>
+
+Do the following and I have a web server running in Docker that I can access from my Mac OS browser.
+<pre lang="bash">
+AA17-00936:docker david$ docker run -d -p 80:80 --name webserver nginx
+Unable to find image 'nginx:latest' locally
+latest: Pulling from library/nginx
+afeb2bfd31c0: Pull complete 
+7ff5d10493db: Pull complete 
+d2562f1ae1d0: Pull complete 
+Digest: sha256:af32e714a9cc3157157374e68c818b05ebe9e0737aac06b55a09da374209a8f9
+Status: Downloaded newer image for nginx:latest
+f1f6925acc31f80faf726358f8de5712458ff3649d2c0626bf3bb37f11d1b070
+AA17-00936:docker david$ 
+</pre>
+
+<h3>Dig into tutorials and have a play</h3>
+
+Docker share a <a href="https://github.com/docker/labs/">git repo</a> for tutorials and labs.  Which are quite good and useful.
+
+<a href="https://github.com/docker/labs/blob/master/beginner/chapters/setup.md">Getting set up</a> with some advice above.  
+
+<a href="https://github.com/docker/labs/blob/master/beginner/chapters/alpine.md">Running your first container</a> includes some simple commands.  e.g. to show details of installed images.  Showing that they can be quite small.  
+
+<em>Question:</em> To have folk install Docker, or do the VM route as above?
+
+<pre lang="bash">
+AA17-00936:docker david$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              2d696327ab2e        11 days ago         122MB
+nginx               latest              da5939581ac8        2 weeks ago         108MB
+alpine              latest              76da55c8019d        2 weeks ago         3.97MB
+hello-world         latest              05a3bd381fc2        2 weeks ago         1.84kB
+</pre>
+
+<a href="https://github.com/docker/labs/blob/master/beginner/chapters/webapps.md">Web apps with docker</a>, which also starts looking at the process of rolling  your own.
+
+This is where discussion of different types of images commence
+<ul>
+  <li> Base (e.g. an OS) and child images which add functionality to a base image </li>
+  <li> Official images - sactioned by docker </li>
+  <li> user images </li>
+</ul>
+
+Process can be summarised as
+<ul>
+  <li> Create the app (example is using a Python web framework - Flask)</li>
+  <li> Add in a <em>Dockerfile</em> - text file of commands for the Docker daemon when creating an image </li> </li>
+  <li> Build the image <p>Does require an account on the Docker cloud</p><p>And there it goes getting all the pre-reqs etc. Quite quick.</p></li>
+</ul>
+
+And successful running.
+
+<a href="https://github.com/docker/labs/blob/master/beginner/chapters/votingapp.md">Docker Swarm</a> running multiple copies, including on the cloud.  Given the use case I'm interested in is people running their own...not a priority.
+
+It does provide a look at Docker Compose files and a more complex application - multiple containers and two networks.  Given my focus on using Jupyter Notebooks and perhaps the kernel gateway, this may be simplified a bit.
+
+Seems we're at the stage of actually trying to do something real.
+
+<h3>Create a Docker image - TDIY</h3>
+
+Jupyter Notebook, kernel gateway and a simple collection of notebooks - perhaps with greasemonkey script
+
+<h2>Misc. related stuff</h2>
+
+<a href="https://medium.com/flow-ci/a-simple-introduction-to-microservices-a69446d2c211">Bit on microservices</a> (microservice architectural style) pointing out the focus on 
+<blockquote>principles of loose coupling and high cohesion of services</blockquote>
+and in turn a number of characteristics
+<ul>
+  <li> Applications are made up of small independent services
+        <p>Is TDIY LA about allowing teachers to create applications by combining these services? </p> </li>
+  <li> Services are independently modifiable and (re)deployable
+        <p>But by whom? </p> </li>
+  <li> Decentalised data management: each service can have its own database
+       <p>What about each user? </p> </li>
+</ul>
+
+Goes on to list a range of advantages, but the disadvantages include
+<ul>
+  <li> inefficiency - remote calls, network latency, potential duplication etc. 
+       <p>But going local might help address some of this.</p> </li>
+  <li> <em>Developing a user case could need the cooperation of multiple teams</em>
+        <p>This is the biggest barrier to implementation within an instituiton. But raises the spectre of shadow systems, kludges etc. </p> </li>
+  <li> complications in debugging, communication </li>
+</ul>
+
+<a href="https://www.infoq.com/articles/container-landscape-2016">Microservices and containers</a> covers some of the alternatives.
+
+Seems docker is the place -- it's bought Kitematic and apparently not loved it - a risk for basing the DIY approach on it.
+
+<blockquote>Another part of the story is that you can build your own images and either share them publicly via the Dockerhub registry, keep them locally on your own computer, post them to a private Dockerhub repository (you  get a single private repository as part of the Dockerhub free plan, or can pay for more…), or run your own image registry.</blockquote>
+
+<a href="https://hub.docker.com/">Dockerhub</a> is probably the option I want to use here because of the focus on being open, of being cross institutional etc.</p>
+
+</body>
+</html>

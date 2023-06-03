@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding multiple visualisation approaches to Indicators block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/26/adding-multiple-visualisation-approaches-to-indicators-block/">Adding multiple visualisation approaches to Indicators block</a></h1>
+
+<p>Tags: elearning, indicators, moodle, Uncategorized</p>
+
+<p><p>This post is a summary of work being done to update the <a href="https://djon.es/blog/2010/05/09/requirements-for-an-indicators-moodle-block/">Moodle indicators block</a> so that it can support multiple visualisation tools and approaches.</p>
+
+<h3>Problem</h3>
+
+<p>The indicators block is aimed (at least for me) to be a way in which various visual insights (indicators) about what is going on within Moodle can be shown to students and staff. <a href="http://beerc.wordpress.com/">Col</a> initial indicators within the block were generated using the <a href="http://code.google.com/apis/charttools/">Google chart tools</a>. This worked really well and I think we've only scratched the surface with those tools. However, there appears to be a need to support multiple visualisation approaches, reasons might include:</p>
+<ul>
+  <li> the visualisation tool doesn't provide necessary functionality; and </li>
+  <li> need for a multiple visualisations for the same data.</li>
+</ul>
+<p>A simple example of this comes from the only "data" the indicators block currently visualises - the level of activity in a course site by staff or students.  Currently this is shown as a "dial" or speedo (see below). The dial ranges from red through to green and a black arrow indicates the level of activity by the participant. </p>
+<a href="http://www.flickr.com/photos/david_jones/4602759472/" title="Next step in indicators block by David T Jones, on Flickr"><img alt="Next step in indicators block" height="86" src="http://farm2.static.flickr.com/1173/4602759472_713e932696_m.jpg" width="240" /></a>
+<p>Alan <a href="https://djon.es/blog/2010/05/13/getting-started-with-cols-indicators-block/#comment-3182">commented</a> that he didn't like the dial/meter visualisation in that it seems to encourage a simplistic "more is better" perception.  Alan would prefer some sort of traffic light visualisation.  After a very quick look, I don't think the Google chart tools provide a traffic light visualisation.  Regardless, you get the idea.</p>
+<p>Rather than force someone to use only one visualisation, it would seem better if the Moodle indicators block allowed people to choose (and implement) the ones they preferred. i.e. support for multiple visualisations.</p>
+
+<h3>What's been done</h3>
+
+<p>The aim here is to complete and describe three tasks that enable multiple visualisations.  These tasks are:</p>
+<ol>
+  <li> Move the Indicators to a Model/View pattern. <br />The intent is to separate the calculation of the data from the visualisation.  i.e. to allow multiple different visualisations.</li>
+  <li> Add support for an alternate visualisation tool.<br />In this the <a href="http://en.wikipedia.org/wiki/Protovis">protovis</a> library.</li>
+  <li> Implement a couple of different visualisations of existing data.<br />Essentially to test and illustrate the use of the Model/View patterns.</li>
+</ol>
+<p>Most of these have been done, but only in initial stages for staff.</p>
+
+<h3>Model/View</h3>
+
+<p>For each indicator there are two main tasks it must perform:</p>
+<ol>
+  <li> Generate/retrieve the data to be visualised. </li>
+  <li> Generate the visualisation. </li>
+</ol>
+<p>The aim here is to separate out those two tasks into two classes. A model and a view. This means that the existing indicator code that looks like this.</p>
+[sourcecode language="php"]
+$indicator = IndicatorFactory::create($context);
+$this-&gt;content-&gt;text = $indicator-&gt;generateText();
+[/sourcecode]
+<p>Will get modified to something like this.</p>
+[sourcecode language="php"]
+$model = IndicatorFactory::createModel( $context );
+$view = IndicatorFactory::createView( $model, $context );
+$this-&gt;context-&gt;text = $view-&gt;generateVisualisation();
+[/sourcecode]
+<p>The factory class is now responsible for generating both the model and the view. The above is likely to change overtime.  For example, rather than passing just $context, there might be other information e.g. user preferences etc.</p>
+<p>Let's see if I can get this to work with some testing.</p>
+
+<h3>Adding a protovis visualisation</h3>
+
+<p>Aim here is to create a 2nd visualisation of the existing indicator using Protovis. Using the protovis view will initially be hard coded for some users, eventually to be replaced with some preferences or rotation approach.</p>
+<p>Running out of time at the moment, so I'm going to put in a dummy protovis view that simply shows a bar graph.  Doesn't use the data from the model at all.</p>
+<p>So, here's what the staff indicator looks like with the google chart view.</p>
+<a href="http://www.flickr.com/photos/david_jones/4640574573/" title="Staff activity indicator by David T Jones, on Flickr"><img alt="Staff activity indicator" height="242" src="http://farm5.static.flickr.com/4054/4640574573_f5beb54a25_o.jpg" width="196" /></a>
+<p>The bit of the factory that generates this view looks like this</p>
+[sourcecode lang="php"]
+if ( has_capability( 'moodle/legacy:teacher', $context ) ||
+     has_capability( 'moodle/legacy:editingteacher', $context ) ) {
+    require_once(
+        $CFG-&gt;dirroot.'/blocks/indicators/staff/activity/google_view.php');
+    return new activityView( $model );
+}
+[/sourcecode]
+<p>Eventually, rather than a straight use of require...google_view this would eventually be replaced by some algorithm that figures out which view the user wants.  But, for now, I've introduced the following which randomly selects which  view to use.</p>
+[sourcecode lang="php"]
+$view = "/blocks/indicators/staff/activity/google_view.php";
+if ( rand( 0, 1 ) == 1 ) {
+        $view = "/blocks/indicators/staff/activity/protovis_view.php";
+}
+require_once( $CFG-&gt;dirroot.$view );
+return new activityView( $model );
+[/sourcecode]
+<p>The dummy protovis view looks like this</p>
+<a href="http://www.flickr.com/photos/david_jones/4636913195/" title="Proof of concept - protovis in Moodle indicators block by David T Jones, on Flickr"><img alt="Proof of concept - protovis in Moodle indicators block" height="233" src="http://farm4.static.flickr.com/3399/4636913195_a8e7c6487f_o.jpg" width="209" /></a>
+
+<h3>To do</h3>
+
+<p>Need to update the student view to use this model, need to start generating some different models and views.</p>
+<p>Also need to think about how the models can be used to do some "caching" of database content.</p></p>
+
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Final Tidy up</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/15/bim-final-tidy-up/">BIM - Final Tidy up</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Today is the day that BIM get's handed off to the folk of my institution's central IT division and from there onto <a href="http://netspot.com.au/">Netspot</a> who will be ensuring that it is "safe" for IT to install it on the institution's live Moodle instantiation. In preparation for the hand over, I've done one last test and identified some issues to fix. This post documents that work.</p>
+
+<h3>Process student feed on view - DONE</h3>
+
+<p>Historically, BAM, from which BIM grew, only mirrored students' feeds once every hour.  Essentially to be a good citizen on the server.  But the delay causes problems.  Students don't understand the need to wait.</p>
+<p>So the plan it to retain the hourly update, but to add a process student feed for a single student as the first thing that happens when that student attempts to view the details of their BIM activity.  This removes the delay. In addition, because of caching and the minimal work involved does not place undue load on the server or the blog services.</p>
+<p>Implementation includes:</p>
+<ul>
+  <li> How is processing done now? <br />2 main functions
+    <ol>
+        <li> bim_process_feed - checks the RSS feed and processes new posts. </li>
+        <li> bim_process_unallocated - checks entries in bim_marking to see if they match any questions (some might have been added). </li>
+    </ol>
+  </li>
+  <li> Can it be done for a single student/feed (register?) <br /> Yes.
+<p>Both functions take the params  $bim, $feed, $questions ) - $feed is for single student.</p>
+</li>
+  <li> Implement it. <br />Put a call to the two functions in the show_student_details method.  But only call them if there are actually questions (allocation doesn't work if there are no questions to allocate to).
+</li>
+  <li> Should we show a message? </li>
+</ul>
+
+<h3>Wrong count on student details - DONE</h3>
+
+<p>If there are no questions currently allocated, the student details table is still showing 1 as the count of required answers.</p>
+<p>Strange problem with PHP count, added check for empty and working now.</p>
+
+<h3>Tell markers configuration - DONE</h3>
+
+<p>Currently coordinators and students get messages if they can't register etc.  The poor marking staff don't.  Add one.</p>
+
+<h3>Suspended post, no description - DONE</h3>
+
+<p>Student can see a message about the status of a post in BIM.  If the post is suspended, they can't see anything.</p>
+<p>Left message the same as marked.</p>
+
+<h3>Changes to released post, no gradebook - DONE</h3>
+
+<p>A released post that has the mark changed, is not updating in the gradebook.  Have any change to a released post (mark or comments) set the post back to Marked.</p></p>
+
+</body>
+</html>

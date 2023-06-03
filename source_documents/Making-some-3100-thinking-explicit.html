@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Making some "3100" thinking explicit</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/01/11/making-some-3100-thinking-explicit/">Making some "3100" thinking explicit</a></h1>
+
+<p>Tags: edc3100, elearning, teaching</p>
+
+<p>In around two months a couple of hundred pre-service teachers will be wanting/required to start engaging with the course EDC3100, ICTs and Pedagogy. For the last 3 or 4 months I've been <a href="https://djon.es/blog/2012/12/14/4668/">reading a bit</a> and generally mulling over what I'll do and how far to go. Back in July I started off <a href="https://djon.es/blog/2012/07/20/starting-the-re-design-of-edc3100/">with this initial post</a>. It's now (past) time to make some of this explicit, make some design decisions and implement it. This is the start. Littered through the following will be questions and reminders to myself for further consideration.
+
+If you have thoughts and criticisms, now would be a good time to contribute. Any and all feedback is very much appreciated. Littered through the following are <strong>Questions</strong> I've left myself. Feel free to make suggestions.
+
+This post has been an on-going development process over a week or so. It's a somewhat organised collection of thoughts, but it is time I stopped following leads, posted it  and started seriously thinking about the implementation specifics.  That will be next week's task.
+
+<h2>The rationale</h2>
+
+Lisa Lane writes <a href="http://lisahistory.net/wordpress/2012/11/five-short-years-to-mooc-corruption/">in this post</a> about what she sees as the purpose of MOOCs<blockquote>the opportunity to exploit the opportunities of the web, to form learning communities, to blow apart top-down teaching models, and to create something meaningful and valuable to participants.</blockquote> While EDC3100 will not be a MOOC, Lisa's description resonates strongly with what I'm trying to do and what's influencing my current thinking. Here's a bit more of the rationale.
+
+<h3>Transformation</h3>
+
+<a href="http://www.usq.edu.au/course/synopses/2012/EDC3100.html">EDC3100</a> aims to help pre-service teachers figure out how to design learning and teaching in "ICT enriched environments". Larkin et al (2012) suggest that how academics model the use of ICTs in learning and teaching is an important factor in developing the ICT competence of students. Our experiences shape us. The use of ICT in the courses taken by pre-service teachers are shaping their knowledge of ICTs and Pedagogy. This begs the question about the types of experiences with ICTs for learning that students gain from EDC3100 and whether it be better?
+
+How do you evaluate "better"? Well one approach is to use something like the SAMR model (see the following image). There are similar frameworks/models, including: <a href="http://sdexter.net/courses/589/downloads/RAT.pdf">the RAT Framework</a> and the <a href="http://www.med8.info/cpf/twining/index.htm">Computer Practice Framework</a>. But the story is just about the same. Using SAMR most of the use of ICTs in prior offerings of EDC3100 site within the enhancement stage.
+
+<div class="samr"><a href="http://jennyluca.wikispaces.com/file/view/SAMR_model.png/203923578/SAMR_model.png"><img border="0" height="250" src="http://jennyluca.wikispaces.com/file/view/SAMR_model.png/203923578/SAMR_model.png" width="350" /></a><div><small>SAMR model image from Jenny Luca's <a href="http://jennyluca.wikispaces.com/TPACK+and+SAMR">TPACK and SAMR blog post</a></small></div></div>
+
+Is there any wonder then that much of the use of ICTs we see when our students head out to teach also appear at that same level? Certainly what they see in 3100 is not the only, or even the major, reason the students struggle to be transformative (3 weeks in a new school in someone else's class working to their plans isn't a great context for transformation) in their use of ICT and pedagogy. However, it would seem important for a course like 3100 to provide them with an opportunity to observe and participate in some examples of transformation.
+
+<strong>Question:</strong> How do we provide students with the preparation and opportunity to demonstrate/experience the design of transformation with ICTs?
+
+<strong>Question:</strong> A model like SAMR might solve a problem observed last year where pre-service teachers weren't aware that there was more to ICTs and pedagogy than using an Interactive White Board to show a YouTube video. Or that having the students use <a href="http://popplet.com/">Popplet</a> to create a mindmap perhaps wasn't a great advance over butchers papers and pens.  Are there better alternatives to SAMR?  The <a href="http://www.med8.info/cpf/twining/index.htm">Computer Practice Framework</a> adds a few extra considerations linked to common mistakes.
+
+<h3>Building confidence and experience</h3>
+
+Hammond et al (2009) identifies personal experience of using ICT as an important contextual factor explaining why a pre-service teacher will use ICTs. This experience (Hammond et al, 2009, pp 70-71)<blockquote>gave student teachers the confidence to use ICT, allowed them to develop effective strategies for learning new skills and gave them an awareess of the value of ICT based on its application in their own learning</blockquote> Given this, it would appear important for EDC3100 to provide a space for the pre-service teachers to expand their experience with ICTs and develop their confidence with them. To provide them with a foundation.
+
+Hopefully we can help them develop their tech support skills and perhaps build on the advice from <a href="http://xkcd.com/">xkcd</a>.
+
+<div class="techsupport"><a href="http://xkcd.com/627/"><img border="0" height="206" src="http://imgs.xkcd.com/comics/tech_support_cheat_sheet.png" width="183" /></a><div>xkcd comic strip "Tech support cheat sheet"</div></div>
+
+Barton and Haydn (2006) found that the sheer volume of information about using ICT and pedagogy can overwhelm students. The volume of information, or its rate of increase, is not likely to have significantly reduced since 2006. Consequently the course has to help students develop the confidence and experience in dealing with this volume.  We have start their journey towards becoming, as @palbion describes it, <a href="http://www.pama.net.au/dralb/?p=3445">expert learners</a>.
+
+<strong>Question:</strong> Where are the good insights, models, theories etc around designing and scaffolding people's development of these skills?  Information literacy?
+
+<h3>Reflection and feedback</h3>
+
+Hammond et al (2009) quote a range of authors to identify structured reflection on the use of ICT as a powerful technique in developing pedagogic understanding. Similarly, "assignments which relate ICT to developing practice can be influential" (Hammond et al, 2009, p. 60). In the version of EDC3100 that I taught last year, there wasn't a lot of opportunity for students to engage in reflection. Even less opportunity to receive feedback on those reflections. Hopefully in 2013 we can change this. Increasing the levels of reflection and feedback will hopefully improve learning.  <a href="http://www.learningandteaching.info/teaching/what_works.htm#Feedback">Feedback</a> must be good since <a href="http://www.learningandteaching.info/teaching/what_works.htm">Hattie</a> identifies it as what works best for improving learning.
+
+<strong>Question:</strong> What are the good insights/models/theories etc around designing activities that encourage reflection?
+
+<h3>Learning to be</h3>
+
+EDC3100 is a professional course. It's in the 3rd year of a four year degree program that is hopefully producing effective teaching professionals by the end. This is why I'm interested in how EDC3100 can help the pre-service teachers taking the course "learning to be" a teacher. Seeley Brown (2008, p. xii)<blockquote>perhaps even more signifi cant, aspect of social learning, involves not only “learning about” the subject matter but also “learning to be” a full participant in the field. This involves acquiring the practices and norms of established practitioners in that field or acculturating into a community of practice.</blockquote>I'm hoping EDC3100 can encourage/enable the students to engage in social learning with other students and join in broader teacher networks. To really engage with the task of "learning to be" a teacher.
+
+<h3>Diversity, personalisation and pedagogies</h3>
+
+During 2013 there are likely to be 300+ students take the course. They will be a very diverse student cohort on a number of criteria. For example, in terms of technical skill last year's cohort included everything from an ex-IT development professional through to technophobes. As the graph below shows students' ages ranged from 18 through 60. Though over 50% of the students were traditional 3rd year students straight from high school - aged 20 years old.
+
+<a href="http://www.flickr.com/photos/david_jones/6778531890/" title="age Distribution by David T Jones, on Flickr"><img alt="age Distribution" height="208" src="http://farm8.staticflickr.com/7197/6778531890_e60ddf650c_n.jpg" width="320" /></a>
+
+There was also significant diversity in the type of teacher they were preparing to be. EDC3100 last year included "pre-service teachers" training to teach everyone from pre-school, primary school, high school and vocational education. Not to mention the different disciplines and knowledge areas these pre-service teachers will cover. Barton and Haydn (2006, pp 267) suggest that <blockquote>Training needs to be differentiated to take into account the differing ways in which ICT helps teachers of different subjects to improve teaching and learning</blockquote>
+
+<a href="http://www.flickr.com/photos/david_jones/6908938917/" title="EDC3100 Sector breakdown by David T Jones, on Flickr"><img alt="EDC3100 Sector breakdown" height="193" src="http://farm8.staticflickr.com/7197/6908938917_dcb85ab4b8_n.jpg" width="320" /></a>
+
+As it happens the university that employs me to teach EDC3100 has adopted "Personalised learning" as <a href="http://www.usq.edu.au/about-usq/about-us/plans-reports">one of its four overarching themes for its 2022 Vision</a>. Some of the institutional words around this theme include<blockquote>We promise to partner with learners in the pursuit of their study objectives regardless of their background, location or stage in life. <p>Through innovation USQ harnesses emerging technologies to enable collaborative teaching and individualised learning for its students regardless of their location or lifestyle.</p>
+<p>We understand our remarkably diverse and global student population. USQ seeks to accommodate individual learning styles and to provide students with personalised adaptive learning support. We are known for our capacity to research and anticipate technological advances and to capitalise on these.</p></blockquote>
+
+<strong>Question:</strong> How does this type of sentiment match some of the broader ideas of personalised learning (e.g. <a href="http://www.personalizelearning.com/2012/05/stages-of-personalized-learning.html">this one</a>)?
+<strong>Question:</strong> How far can you take personalised learning within an institutional context with a significant focus on consistency and quality assurance (where consistency and quality are often equated)?
+
+While perhaps not going quite as far as <a href="http://coopcatalyst.wordpress.com/2012/12/28/good-education-best-of-2012-the-five-most-extraordinary-things-to-happen-in-education/">suggested by this high school student</a>. There's a lot to be said for aiming EDC3100 toward this goal <blockquote>Let’s bring learning back to the learners. Why are we disregarding the brilliant work of progressive educators like John Dewey, Maria Montessori, Jean Piaget, and Paulo Freire? We need to allow students to craft their own learning experiences through projects, apprenticeships, and hands-on engagement. ..... My advice: Let’s get over the fads and understand that learning is best done through doing, creating, and exploring.</blockquote>
+
+<h3>The dead viola player?</h3>
+
+In <a href="http://mfeldstein.com/where-xmoocs-and-adaptive-analytics-both-fail-for-now/">critiquing xMOOCs and Learning Analytics</a> Michael Feldstein identifies another reason driving the changes in EDC3100. Feldstein breaks the class experience into three parts and talks about how well they scale with technology. The parts are
+<ol>
+  <li> Content transmission;<br />Which scales well. Feldstein gives Khan Academy as an example.  Given that content is free and abundant, I'm hoping the teaching staff in EDC3100 can avoid duplicative content creation. e.g. we won't be giving lectures in the traditional sense.
+<p><strong>Questions:</strong> What (if any) content required for EDC3100 is not free and abundant?<br />How do we scaffold students' engagement with the abundant content?</p>
+  </li>
+  <li> Assessment; <br />Which xMOOCs are scaling with MCQs and perhaps somewhat with peer assessment. But which doesn't necessarily scale well if you're trying to assess in areas that don't come with "cut-and-dry answers". </li>
+  <li> Remediation.<br />i.e. responding helpfully to students when they are stuck. The ability to identify "not only what a student is getting wrong on an assessment but why she is getting it wrong".</li>
+</ol>
+
+It's remediation that Feldstein identifies as what both learning analytics and xMOOCs don't do well. He also suggests it's been dead long before xMOOCs<blockquote>My guess is that college professor productivity has risen in the last decade, if all you mean by “productivity” is number of butts in classroom seats per teacher. The cost has been less time to respond to individual student needs.</blockquote>
+
+I'm hoping EDC3100 can revive the viola player a touch. There will be limit to how much the EDC3100 teaching staff can do this due to institutional workload and funding models and simply the sheer number of students. This is where <a href="http://mfeldstein.com/where-xmoocs-and-adaptive-analytics-both-fail-for-now/#comment-93422">Stephen Downes' comment</a> on Feldstein's post comes in. In talking about how the cMOOCs addressed the problem the dead viola player<blockquote>You don’t need an expert for this – you just needs someone who knows the answer to the problem. So we have attempted to scale by connecting people with many other students. Instructors are still there, for the tough and difficult problems. But students can help each other out, and are expected to do so.</blockquote>
+
+Perhaps the crux of the problem for me with EDC3100 is framed by Stephen as <blockquote>we need to structure learning in such a way as to make asking questions easier, and as necessary, to provide more incentives to people to answer them.</blockquote>
+
+There are numerous barriers to this.  Cousin and Deepwell (2005) identify the learner problem, in that they "arrive in the networked setting with 'congealed practices' from more didactic educational contexts". Shifting the students out of their congealment can be hard and unsuccessful work. Not the least because the institutional context has its own problems with congealment that can create a fair bit of cognitive dissonance. Not to mention that the teaching staff bring a level of congealment. When I am thinking about what I will be doing as this course is happening, I find myself slipping back into my own set of congealed practices. Finally, there is just the question of discovering and evaluating what are the practices that will effectively replace the congealed practices.
+
+This is where I'm hoping to benefit from the work of others such as <a href="http://www.irrodl.org/index.php/irrodl/article/view/1041/2025">Kop, Fournie and Sui Fai Mak (2011)</a> and <a href="http://oro.open.ac.uk/28774/">Weller (2011)</a>.
+
+<strong>Question:</strong> What are some of the other useful sources of design insight?
+<strong>Question:</strong> When am I going to stop navel gazing and start actually designing?
+
+In arguing that <a href="http://computinged.wordpress.com/2013/01/04/moocs-are-a-fundamental-misperception-of-how-learning-works/">MOOCs fundamentally misperceive how teaching works</a> Mark Guzdial suggests that "the main activity of a teach is to orchestrate learning opportunities, to get students to do and think. A teacher does this most effectively by responding to the individuals". How can we do this effectively in the context of EDC3100?
+
+<h2>Synchronicity</h2>
+
+As it happens there is currently a great deal of activity in this area. Other folk are putting together MOOCs and open courses and sharing the whys, wherefores and what. These offer some possibilities for learning/borrowings. Here's an initial summary.
+
+<h3>#etmooc</h3>
+
+Alec Couros - one of the <a href="https://djon.es/blog/2012/12/14/4668/">inspirations</a> for much of what's happening with EDC3100 - is involved with <a href="http://etmooc.org/">#etmooc</a> - Educational Technology &amp; Media. Given this connection and the topic of #etmooc being very closely related to the topic of EDC3100 I'm aiming to engage with it in a number of ways.
+
+Alec, as is his wont, appears to have been very open in gathering input for the design of #etmooc. The evidence of this can be seen in posts from <a href="http://lisahistory.net/wordpress/2012/12/organizing-etmooc/">Lisa Lane</a>, <a href="http://cogdogblog.com/2012/12/10/openness-beyond-the-course-container/">Alan Levine</a> and others. Lisa's post summarises some of the resources (including a <a href="https://plus.google.com/u/0/communities/116789514116083331517">Google community</a> from which I've drawn a couple of ideas in one quick skim and <a href="https://docs.google.com/folder/d/0B9N9E-8eecBAcV9hcHU0azBRMjg/edit?docId=1w0uirKvMYtU2iLdk1aGqmTkcTyVgXFJwxnM1qxEyH1U">the planning Google doc</a>) and questions considered by the #etmooc designers.  It's interesting in terms of my lack of connections in certain areas to note that I'm only now becoming aware of some of <a href="http://educationaltechnology.ca/couros/2238">Alec's much earlier posts</a> about #etmooc.
+
+Unlike the typical weekly course (and cMOOC) schedule, Lisa and Alan suggest something more open. Topics that have a launch date, a basic introduction and then a community development process where the aims and resources for the topic are developed by the community. There's much to like to this idea, but it probably falls to far outside the constraints of EDC3100. Not sure how the institution might take this approach and I think the students may have some queries about exactly what my role is in the course. EDC3100 will need to keep a bit more of the traditional schedule, but how much can we open it up from there?
+
+<strong>Question:</strong> How much can I push the content of the course out of the institutional Moodle instance and into more open technologies?
+
+Some insights/ideas from all of the above #etmooc related resources
+<ul>
+  <li> If a course is successful in getting students engaged with networks, then the course doesn't have an end date. </li>
+  <li> Large synchronous presentations have value for "introducing/advancing ideas and for tool demonstrations". </li>
+  <li> With a distributed approach the effective use of tagging is necessary for aggregating networked conversations. </li>
+  <li> Designing interactions is key or as one of the comments put clustering opportunities. Helping people orient themselves by providing tasks/opportunities to find "people who you want to learn with". </li>
+  <li> Entry to Twitter and this type of approach in general is difficult. </li>
+  <li> The idea of using <a href="https://github.com/features/projects">git projects</a> as a platform. </li>
+  <li> The influence of <a href="http://neflins23things.blogspot.com.au/2009/01/what-are-23-things.html">23 things</a> as a design aid or something like <a href="http://www.kerismith.com/popular-posts/100-ideas/">100 ideas</a>. </li>
+  <li> The importance of a central course space for orientation and perhaps community?<br />It would also match students expectations.
+<strong>Question:</strong> If I create a central course space in both the institutional Moodle instance and in a Wordpress (or some other open site) blog with the same information, which would students use the most?
+  </li>
+</ul>
+
+<h3>OLDS-MOOC</h3>
+
+Will be interesting to compare the <a href="https://sites.google.com/a/olds.ac.uk/oldsmooc/about/olds-mooc-how-it-works">Learning Design for a 21st Century Curriculum MOOC</a> with #etmooc. Both are starting about the same time.
+
+<h3>Emerging Learning Technologies</h3>
+
+Curtis Bonk has released the <a href="http://php.indiana.edu/~cjbonk/Syllabus_R685_Spring_of_2013.htm">syllabus for his "R685, Emerging Learning Technologies" course which is also closely related to the purpose of EDC3100. (It is interesting to see the evolution of the course from the <a href="http://php.indiana.edu/~cjbonk/Syllabus_R685_Fall_of_2012.htm">2012 version</a>, especially in the objectives. One of the assessment options was to evaluate changes in syllabi from the course since 1990  ) But one difference is that EDC3100 tends to spend more time explicitly on pedagogy. Both #etcmoos and R685 don't, at least as indicated by the course topics.
+
+Some insights/ideas from R685
+<ul>
+  <li> The grading scheme. <br /> Interesting in the flexibility that it gives the students. Six set tasks which each give points up to a total of 360 points.  Your grade is based on the number of points you achieve. Perhaps a step to far here. </li>
+  <li> Tidbit reflections.<br />A large collection of small online articles are provided. Students are asked to read 3-4 a week. The assessment is to submit a list of the top 20 (and the top 2-3 videos) and reflection on what was learned from them.  The list of resources might be useful.</li>
+  <li> Discussion moderator. <br />Students sign up to take on the role of discussion starter based on the week's readings. </li>
+  <li> Participation is marked both for synchronous sessions and posts etc. </li>
+  <li> The qualitative criteria for posts.
+<blockquote><ol> <li> Diversity (some variety in ideas posted, and some breadth to exploration);
+</li> <li> Perspective taking (values other perspectives, ideas, cultures, etc.);
+</li> <li> Creativity (original, unique, and novel ideas);
+</li> <li> Insightful (makes interesting, astute, and sagacious observations).
+</li> <li> Relevancy (topics selected are connected to course content); and
+</li> <li> Learning Depth/Growth (shows some depth to thinking and elaboration of ideas);</blockquote>
+</ol></blockquote>
+  </li>
+  <li> Criteria for the reflective paper grading are also interesting
+<blockquote>
+  <ol> <li> Relevancy to class: meaningful examples, relationships drawn, interlinkages, connecting weekly ideas.
+</li> <li>  Insightful, Interesting, Reflective, Emotional: honest, self-awareness, interesting observations
+</li> <li>  Learning Depth/Growth: takes thoughts along to new heights, exploration, breadth &amp; depth, growth.
+</li> <li>  Completeness: thorough comments, detailed reflection, fulfills assignment, informative.</ol>
+ </blockquote>
+  </li>
+  <li> The collection of weekly resources.<br />Useful because of the list of resources to pick over, but also as an example of the "MOOC-like" approach I'm thinking for EDC3100. Provide a collection of useful resources and have the students read and reflect. Perhaps search for some more.    Interesting division into Readings and Tidbits.
+<strong>Question:</strong> How much and what learning activities should be set each week?
+  </li>
+</ul>
+
+Should remember that R685 is a graduate course, 3100 is undergraduate. There is a large written component (as in formal report) in R685, will aim to avoid that.
+
+<h3>Educators as Social Networked Learners</h3>
+
+In <a href="http://usergeneratededucation.wordpress.com/2012/12/29/developing-a-mooc-inspired-course/">Educators as Social Networked Learners</a> Jackie Gerstein describes here graduate course - Social Networked Learning. Some thoughts/inspirations from this post include
+<ul>
+  <li> Use of alternate media (e.g. Glog) for assessment/to capture learning. <br />Certainly something I wish to explore in 3100. Part of the students learning what they do.  They need to use the ICT tools we're talking about to show and share their learning. </li>
+  <li> The Twitter assignment has some suggestions to be made for both how 3100 might use Twitter, but also some of the other tools </li>
+  <li> The PLE assignment's use of Mindmap might be another way to balance broadening awareness of different tools. </li>
+</ul>
+
+<h3>Social media literacies syllabus</h3>
+
+Via Jackie Gerstein's post I come to Howard Rheingold's <a href="https://docs.google.com/document/d/1whawicjQdSDh1ohWF4-CDnSrrpkjfFtnpc6632vGBvg/edit?pli=1">Syllabus for Social Media Literacies</a>. Like this<blockquote>Literate populations are becoming the driving force that shape new media, just as they were the eras following the invention of the alphabet and printing press,. What broad populations know now, and the ways they put that knowledge into action, will shape the ways people use and misuse social media for decades to come. </blockquote> and the five social media literacies
+<ol>
+  <li> attention; </li>
+  <li> crap detection; </li>
+  <li> participation; </li>
+  <li> collaboration; and, </li>
+  <li> network awareness. </li>
+</ol>
+
+<strong>Reminder:</strong> revisit this work to explore it's applicability to 3100 and observe what comes out of #etmooc
+
+Importantly, the following succinctly captures important aspects of the "design principles" I'd like to use<blockquote>chose texts that can offer analytic tools, explanatory frameworks, and competing perspectives -- the basic building blocks for teachers and learners to use.</blockquote> and he makes the important point and likely problem with this type of approach i.e.  <blockquote>College students have been strongly socialized to do the homework for each class the night before it is due -- a method that doesn’t work when discourse, not a discrete product like a term paper, is the goal. The necessity for more frequent informal discourse through forums, blogs, comments, usually needs to be repeated and reinforced.</blockquote>
+
+Some other important points/ideas etc.
+<ul>
+  <li> The criteria and resources on <a href="http://socialmediaclassroom.com/community/wiki/introduction-forums">this introduction to forums</a> could be useful (though I've seen similar elsewhere)
+    <blockquote>4 Points - The posting(s) integrates multiple viewpoints and weaves both class readings and other participants' postings into their discussion of the subject.
+3 Points - The posting(s) builds upon the ideas of another participant or two, and digs deeper into the question(s) posed by the instructor.
+2 Points - A single posting that does not interact with or incorporate the ideas of other participants' comments.
+1 Point - A simple "me too" comment that neither expands the conversation nor demonstrates any degree of reflection by the student.
+0 Points - No comment.</blockquote>
+  </li>
+  <li> The idea of students pre-submitting a substantial question that they are prepared to address in a f-t-f session. </li>
+  <li> Teams of (2) students creating mindmaps from key readings for the week. </li>
+  <li> I wonder how well the <a href="http://socialmediaclassroom.com/host/vircom/lockedwiki/welcome-instructor">instructors introduction</a> would match current requirements of my institution? </li>
+</ul>
+
+<h2>Introduction to openness</h2>
+
+And then there is <a href="https://learn.canvas.net/courses/4/">David WIley's course "Introduction to Openness in Education</a> being run on Canvas. Interesting insights and ideas include
+<ul>
+  <li>  The use of badges rather than grades.<br />It's not a graded course, but interesting to see the badge implementation. It's one of the considerations for 3100 and the use of blog posts to "submit" the evidence.   The course itself has a module dedicated to open assessment and open badges which could prove useful perhaps as an example of transformation for the 3100 students.
+<p><strong>Question:</strong> How would the awarding of badges work with BIM and by extension Moodle? </p>
+</li>
+  <li> <a href="https://learn.canvas.net/courses/4/wiki/course-philosophy?module_item_id=52477">Explicitly makes the point</a> that the learning artifacts are the students and are stored outside the LMS.<br />Links this to a constructionist type quote from Terry Anderson. </li>
+  <li> The Anderson quote is from a post <a href="http://terrya.edublogs.org/2012/12/18/connectivy-your-course/">"Connectivying" your course</a>. It draws on the work by Anderson and Dron in two papers, including <a href="http://www.eurodl.org/?p=current&amp;article=523.">this one</a><br />
+          Describes two defining characteristics of connectivism
+          <ul>
+                <li> Construction, annotation and maintenance of learning artifacts that are open and contribute to knowledge beyond the course. </li>
+                <li> Student be given the opportunity, incentive and support to form networks with others, including outside the course. </li>
+         </ul>
+  <li> The <a href="https://learn.canvas.net/courses/4/wiki/course-technology-requirements">technology requirements</a> are likely to be very similar to 3100, though perhaps not the YouTube account? But perhaps that's my textual prejudice showing through. </li>
+  <li> The structure of the course in Canvas looks very much like something you could do in Moodle.<br />Though much of it seems to resemble the "ramble" approach from last year. i.e. it appears Wiley has provided much of the content. Not something I'd like to replicate. </li>
+</ul>
+
+
+A blog post on new pedagogy that includes pointers to lots of examples
+http://www.contactnorth.ca/trends-directions/evolving-pedagogy-0/new-pedagogy-emergingand-online-learning-key-contributing
+
+So what shape should this course take?
+
+*the aim should be to keep it open and flexible, engage the students in innovative applications of technology, with the world outside, be reflective....??
+
+<h2>Finding the pedagogy</h2>
+
+<p>From Rheingold comes a link to the <a href="http://pogil.org/uploads/media_items/pogil-instructor-s-guide-1.original.pdf">Instructor's guide to process-oriented guided-inquiry learning</a>. Much of this is known stuff, but I'm repeating it hear to remind myself.</p>
+
+<p>Near the start it quotes 5 key ideas about learning from current research in the cognitive sciences, that people learn by
+<ul>
+  <li> constructing their own understanding based on their prior knowledge, experiences,  skills, attitudes, and beliefs.</li>
+  <li>  following a learning cycle of exploration, concept formation, and application.</li>
+ <li> connecting and visualizing concepts and multiple representations.</li>
+  <li> discussing and interacting with others.</li>
+  <li>  reﬂecting on progress and assessing performance.</li>
+</ul>
+
+Ahh, that comes from Bransford et al (2000).  That resonates with earlier thoughts.  The POGIL document talks about a three stage learning cycle
+<ol>
+  <li> Exploration; <br />
+     Provide students a model (very broadly defined) to examine or a set of tasks to follow that embody what is to be learned.  <strong>"The intent is to have the students encounter questions or complexities that they cannot resolve with their accustomed way of thinking"</strong>  Guided by critical-thinking or key questions.
+    <p>Talks about three types of questions</p>
+       <ol>
+           <li> Directed questions - point to obvious discoveries about the model . </li>
+           <li> Convergent questions - require synthesis of relationships from new discoveries and prior knowledge to develop new concepts or deeper conceptual understanding. </li>
+           <li> Divergent questions - open-ended, without unique answers. </li>
+      </ol>
+  </li>
+  <li> Concept invention/formation;<br />
+    Also called introduction, the idea is that the learners develop insights into a construct that helps understanding develop.
+   </li>
+  <li> Application.<br />i.e. do something with that new understanding. </li>
+</ol>
+
+Then come some implications for teaching
+<ul>
+  <li> Organising knowledge in long-term memory<br />
+       Pattern recognition is enhanced by ask for comparions and contrasts with problems in different contexts; identify patterns in concepts/problems/solutions; classify problems in terms of concepts.
+      <p>Have students identify relevant issues and concepts, discuss why relevant and plan solutions. Brainstorming. </p>
+     <p>Give time to develop deep understanding.</p> </li>
+  <li> Overcome limitations of working memory. <br />
+          Help chunk and develop knowledge schemata. Encourage them to draw diagrams. </li>
+  <li> Analysing problems and planning solutions.<br />
+            Use an explicit problem-solving methodology. Instruct them in how to use it. Ask them to explain what was done. Compare their approaches with that of the expert. </li>
+  <li> Benefiting from meta-cognition.<br /> Assessing the approaches of others and identifying strengths, areas for improvement and insights is useful. </li>
+  <li> Transfer knowledge for use in new contexts.<br />Have students talk about the relevance and usefulness of what they have learned. Figure out when and where it can be used.</li>
+</ul>
+
+Four roles for the teacher
+<ol>
+  <li> Leader - creating the environment, explaining th elesson etc. </li>
+  <li> Monitor/assessor - touches on the dead viola player/remediation section above. </li>
+  <li> Facilitator - interventions, asking questions etc. </li>
+  <li> Evaluator </li>
+</ol>
+
+And a table
+
+<table>
+  <tr> <th> Steps in the process</th> <th>7E equivalent </th> <th>Component of the activity </th> </tr>
+  <tr>
+    <td valign="top"> Identify a need to learn</td>
+    <td valign="top"> Engage </td>
+    <td valign="top"> An issue that excites and interests is presented<br />An answer to the question <em>Why?</em> is given.<br /> Learning objectives and success criteria are defined</td>
+  </tr>
+  <tr>
+    <td valign="top"> Connect to prior understandings</td>
+    <td valign="top"> Elicit</td>
+    <td valign="top"> A question or issue is raised, and student explanations or predictions are sought. Pre-requisite material is identified</td>
+  </tr>
+  <tr>
+    <td valign="top"> Explore</td>
+    <td valign="top"> Explore</td>
+    <td valign="top"> A model or task is provided and resource material identified. Students explore the model or task in response to critical-thinking questions.</td>
+  </tr>
+  <tr>
+    <td valign="top"> Concept invention, introduction and formation</td>
+    <td valign="top"> Explain</td>
+    <td valign="top"> Critical-thinking questions lead to the identification of concepts and understanding is developed</td>
+  </tr>
+  <tr>
+    <td valign="top">Practice applying knowledge </td>
+    <td valign="top"> </td>
+    <td valign="top"> Skill exercises involve straightforward application of the knowledge</td>
+  </tr>
+  <tr>
+    <td valign="top">Apply knowledge in new contexts </td>
+    <td valign="top">Elaborate and extend </td>
+    <td valign="top"> Problems and extended problems require synthesis and transference of concepts</td>
+  </tr>
+  <tr>
+    <td valign="top"> Reflect on the process</td>
+    <td valign="top">Evaluate </td>
+    <td valign="top">Problem solutions and answers to questions are validated and integrated with concepts. Learning and performance are assessed. </td>
+  </tr>
+</table>
+
+<strong>Question:</strong> What changes would be required to this table to better encourage the formation of the community and culture aspects mentioned by Gardner and the other features I've talked about above? Not to mention some other differences.
+
+<a href="http://www.irrodl.org/index.php/irrodl/article/view/1011/2021">Casey and Evans (2011)</a> cite/describe Nuthall's (2007, p. 36) four premises for learning
+<ol>
+  <li> Students learn what they do, and what they are learning is what you see them doing: writing notes, coping with the boredom without complaining, and later, memorizing headings and details they only partially understand. What they do in the classroom, day after day, is what they become experts at.</li>
+  <li> Social relationships determine learning. It’s very important to remember that much of what students do in the classroom is determined by their social relationships. Even in the teacher’s own territory, the classroom, the student’s primary audience is his or her peers. More communication goes on within the peer culture than within the school and classroom culture.</li>
+  <li> Effective activities are built around big questions. If we want to design effective learning activities, we must carefully monitor what students are gaining as they engage in focused learning. We have to spend a considerable amount of time and resources monitoring what they are understanding and learning as well as designing and carrying out these activities. Taking the time and providing the resources needed to design effective learning activities means covering much less of the formal curriculum. To justify doing this, we must make sure that the outcomes of these learning activities are significant not only in the official curriculum but also in the lives and interests of the students.</li>
+  <li> Effective activities are managed by the students themselves. The ideal learning activity, in line with the previous three premises, has the following characteristics:
+      <ul> <li>  It focuses on the solution of a major question or problem that is significant in both the discipline and the lives and culture of the students;</li>
+     <li> It engages the students continuously in intellectual work that is appropriate in the discipline;</li>
+    <li> It provides teachers with opportunities, as the class engages in solving the smaller problems, to monitor individual students’ evolving understanding of the content and procedures.</li>
+   </ul>
+  </li>
+</ol>
+
+There's some useful insights there.
+
+Gardner Campbell's <a href="http://campustechnology.com/Articles/2011/08/10/How-Blogging-Can-Catalyze-Learning.aspx?Page=1">Narrate, Curate, Share piece</a>  also captures some of the aim. The aim is for students to be engaging in telling and creating their stories of exploration and learning. Not to be blithely fulfilling requirements.  <a href="http://www.gardnercampbell.net/blog1/?p=620">This blog post from Gardner</a> further explores his perspective on this which breaks down into (though he does express his fear of the dangers of being too analytical about this)
+<ol>
+  <li> Distinguish between a requirement and an assignment.<br />Blogging is required, but not assigned. Specify how much blogs/comments required (he talks about the dangers and need for a number) but not talk about why or about what. This warns against some of my ideas about being quite specific about marking criteria and purpose.  Which has the danger of becoming "new wine in old bottles".</li>
+  <li> Encourage/make visible the community-culture continuum, make it accessible to thought.<br />In Gardner's words<blockquote>So when I talk to my students about blogging, I try very hard to emphasize how they’re likely to experience both community (tighter bonds with their fellow learners in the course of study) and culture (participation in the greater blogosphere, with unpredictable and often lovely results). </blockquote> When I read this, I'm thinking about how I can encourage recognition of and the opportunity to engage in this for these students. <p>The culture aspect connects with the "learning-to-be" point above.</p> </li>
+  <li> Be the change you wish/relate that change.<br />Use your own personal experience and example of blogging. </li>
+</ol>
+
+Oh I like this from Gardner's post<blockquote> Blogs are hydroponic farms for heuristics, hypothesis-generation, metacognition that continually moves out to other metacognizers and back to one’s own reflection. </blockquote> which is part of a response to the fear that student blog posts will show the ignorance
+
+<h2>To do</h2>
+
+read<blockquote>Kirschner, P., Strijbos, J., Kreijns, K., &amp; Beers, P. J. (2004). Designing electronic collaborative learning environments. Educational Technology Research and Development, 52(3), 47-66.
+<p>Doering, A., Miller, C., &amp; Scharber, C. (2012). No such thing as failure, only feedback: Designing innovative opportunities for e-assessment and technology-mediated feedback. Journal of Interactive Learning Research, 21(1), 65–92.</p>
+
+</blockquote>
+
+
+
+<h2>References</h2>
+
+Bransford, J., Brown, A., &amp; Cocking, R. (2000). How people learn: brain, mind, experience, and school. Washington, D.C.: National Academy Press.
+
+Larkin, K., Jamieson-Proctor, R., &amp; Finger, G. (2012). TPACK and Pre-Service Teacher Mathematics Education: Defining a Signature Pedagogy for Mathematics Education Using ICT and Based on the Metaphor “Mathematics Is a Language”. Computers in the Schools, 29(1-2), 207–226. doi:10.1080/07380569.2012.651424</p>
+
+</body>
+</html>

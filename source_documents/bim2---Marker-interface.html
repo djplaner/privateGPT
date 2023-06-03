@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - Marker interface</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/04/03/bim2-marker-interface/">bim2 - Marker interface</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>In case you're wondering, BIM is a Moodle activity module that helps teaching staff manage individual student blogs. This post is one of a number of posts documenting the development of a version of BIM that will work with Moodle 2.x. More detail on BIM <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">here</a>
+
+In the following, I'm continuing work on the marker interface from <a href="https://djon.es/blog/2012/03/31/bim2-student-and-marker-fixes/">prior work</a>.  Work to do includes
+<ul>
+  <li> Register a blog for a student <strong>DONE</strong></li>
+  <li> Mark posts - viewing details <strong>DONE</strong></li>
+  <li> Allocate questions <strong>DONE</strong></li>
+  <li> Mark a particular post – which includes a range of changes <strong>DONE</strong></li>
+</ul>
+
+This means that the marker interface for BIM2 is working.  Next step will be the coordinator interface.
+
+<h3>Register a student blog</h3>
+
+That actually seems to be working as stands. Not surprising as it reuses the student functions for registering.
+
+However, the main marker screen isn't handling the absence of "unregistered" students well.  i.e. if there are none, it's still showing the heading and empty table.
+
+Fixed.
+
+<h3>Mark posts</h3>
+
+This is the main marking interface and has a number of components.  We'll start with simply displaying the main interface.
+
+Current problems
+<ul>
+  <li> Has the same "showquestions" problem as the student had. <strong>DONE</strong> </li>
+  <li> Help button not showing in the right place. <strong>DONE</strong> </li>
+  <li> It's crashed and burn, not completing. <strong>DONE</strong><br />Needed to include tablelib.php
+  </li>
+</ul>
+
+<h3>Allocation questions</h3>
+
+This seems to be displaying first up.
+
+Some things to improve
+<ul>
+  <li> Funny "# posts mirrored" heading appearing - <strong>DONE</strong></li>
+  <li> Allocating a post doesn't seem to be showing actual answers &amp; required answers <br />
+      This problem seems to be due to displaying the stats with old data. It is being updated in the database.  A fairly major flaw in the original design of the code.
+ </li>
+</ul>
+
+<h3>Mark a post</h3>
+
+Coding error...seems a database problem in marker/view.php 868.  Ahh, the syntax for DB-&gt;get_field has changed.  Should check that all over.  That's it.
+
+Another problem with implode.  That's working.
+
+Now problems with help buttons again.  Done.
+
+Title for showing the student post is being corrupted.  That's fixed.
+
+Now the marker comments title and editor aren't showing up properly. Ahh, it appears <a href="http://docs.moodle.org/dev/lib/formslib.php_Form_Definition#editor">"htmleditor" is deprecated</a>.  But the problem is really just the width of things. i.e. use has make the browser window large.
+
+When updating a post having a problem with addslashes still being used. Remove those, no longer needed.  Do a quick check where else it is used
+
+<strong>To test:</strong> Do need to populate the test BIM with more questions and students with answers.  Done.</p>
+
+</body>
+</html>

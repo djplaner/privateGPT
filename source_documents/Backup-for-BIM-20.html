@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Backup for BIM 2.0</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/12/29/backup-for-bim-2-0/">Backup for BIM 2.0</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>What follows is a journal of the attempt to bring <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM 2.0's</a> backup functionality into line with the new approach in Moodle 2.x.
+
+Done. Appears to be all working.  Will work on restore next and do some testing.
+
+<h2>Backup</h2>
+
+First up is trying to understand the <a href="http://docs.moodle.org/dev/Backup_2.0_for_developers">developer docs on the new backup process</a>.  What follows is an attempt to both summarise/understand those docs and explain what changes I've made to BIM 2.0.  The <a href="http://docs.moodle.org/dev/Backup_2.0_general_architecture">Backup 2.0 general architecture documents</a> are also used.
+
+What I believe it all boils down to is the ability to convert the database structure for a BIM activity into an XML file/structure. The aim here will be to keep the XML structure produced as close to that produced by 1.9 as possible.
+
+Steps required
+<ol>
+  <li> Preparation - knowing what to backup <br />Much of this is done in the "BIM data" section below.
+    <ol>
+      <li> Draw the DB schema.</li>
+      <li> Identify where the user information is located in the schema. </li>
+      <li> Determine correct order of backup. </li>
+      <li> Identify attributes and elements.<br />All "id" fields should be attributes. </li>
+      <li> Identify not needed elements.<br /> Any field except those in parent elements should be included. </li>
+      <li> Identify the file areas used. <br />Text fields and attachements appear to fit into this sector.  This appears to be a bit new in Moodle 2. </li>
+      <li> Annotating important bits<br />e.g. the ID fields.
+    </ol>
+  </li>
+  <li> Remove the old backup stuff.<br />Basically backuplib.php in the bim directory. </li>
+  <li> Tell Moodle that BIM 2.0 is supporting backups.<br />Add the following to mod/bim/lib.php[code lang="php"]case FEATURE_BACKUP_MOODLE2:          return true;[/code]</li>
+  <li> Set up the directory for the code<br />create mod/bim/backup/moodle2</li>
+  <li> Set up and test the backup process (which won't work at the moment). <br /> The backup documentation includes a simple script that speeds up the develop/test cycle for backups.  put that in place and run it. Breaks as expected</li>
+  <li> Start putting in the code
+        <ol>
+           <li> create empty mod/bim/backup/moodle2/backup_bim_settingslib.php</li>
+           <li> backup_bim_stepslib.php - another empty file </li>
+           <li> backup_bim_activity_task.class.php the place the above files are used. For now just some skeleton code with empty methods.</li>
+        </ol>
+  </li>
+  <li> Run the backup again.<br />Which runs without error as expected. </li>
+  <li> Create the bim.xml file - as an empty file
+      <ul>
+         <li> Some empty code into backup_bim_stepslib.php </li>
+         <li> Call the method from the steps file from backup_bim_activity_task.class.php. </li>
+      </ul>
+  </li>
+  <li> Now to define each of the elements essentially a translation of the provided code with the description of the bim data below.  This produces an empty backup file for bim. </li>
+  <li> Define the tree of data following the skeleton code. </li>
+  <li> Connecting it all to the database<br /> A fairly simple set of method calls building on the above.  Tested and all seems to be working.  Woo hoo!
+  </li>
+  <li> Annotating IDs <br /> This appears to be <a href="http://docs.moodle.org/dev/Backup_2.0_for_developers#annotate_is_important">related to signposting user</a> (and other) information, something I missed the first time.<br />For BIM, the relevant fields to annotate are user and group.
+  </li>
+  <li> Annotating files <br /><strong>Not sure about this section. Need to read some more and update. </strong>
+  </li>
+  <li> Encode references to URLs?<br /> Done as per example.
+  </li>
+</ol>
+
+
+<h2>BIM Data</h2>
+
+The following is based on <a href="https://djon.es/blog/2010/02/07/bim-backup-and-restore/">this 2010 post</a> documenting the development work on the backup process for BIM 1.0.  With some extra work based on the preparation information from above.
+
+The bim data hierarchy (bullet points represent table names)
+<ul>
+  <li> bim <br />
+       id (attr) <br />
+       course (not needed) **** CHECK IF THIS IS INCLUDED **** <br />
+       name<br />
+       intro (????file area???)<br />
+       introformat<br />
+       timecreated<br />
+       timemodified<br />
+       register_feed<br />
+       mirror_feed<br />
+       change_feed<br />
+       grade_feed<br />
+       <ul>
+          <li> bim_group_allocation<br />
+               id (attr) <br />
+               bim (not needed)<br />
+               groupid  <br />
+               userid  <br />
+          </li>
+          <li> bim_questions<br />
+               id (attr) <br />
+               BIM (not needed)<br />
+               title (???? file area ???? )<br />
+               body (??? file area????) <br />
+               min_mark<br />
+               max_mark
+           </li>
+           <li> bim_student_feeds <br />
+                id (attr) <br />
+                bim (not needed)<br />
+                userid<br />
+                numentries <br />
+                lastpost <br />
+                blogurl <br />
+                feedurl <br />
+            </li>
+            <li> bim_marking <br />
+                 id (attr) <br />
+                 bim (not needed) <br />
+                 userid <br />
+                 marker <br />
+                 question (this is an id back into bim_questions)<br />
+                 mark<br />
+                 status <br />
+                 timemarked <br />
+                 timereleased<br />
+                 link (???file area??)<br />
+                 timepublished<br />
+                 title (??file area??) <br />
+                 post (?? file area?? )<br />
+                 comments (?? file area??)
+             </li>
+         </ul>
+   </li>
+</ul>
+
+In BIM 1.0 the user data includes: student feeds, marking and group allocation.</p>
+
+</body>
+</html>

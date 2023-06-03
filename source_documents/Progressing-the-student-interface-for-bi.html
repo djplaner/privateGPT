@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Progressing the student interface for bim2</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/12/30/progressing-the-student-interface-for-bim2/">Progressing the student interface for bim2</a></h1>
+
+<p>Tags: bam, bim, bim2, Uncategorized</p>
+
+<p>The <a href="https://djon.es/blog/2010/12/28/the-student-controller-for-bim2-models-and-view/">last post</a> ended up with the basics of the student controller and views functioning to produce some simple output. The aim here is to get the entire student interface up and actually reading data from the database. It won't be completely finished. There will be some additional extra features to add. The aim here is to iron our the design of the whole model/view/controller set of classes.
+
+Am going to release this post before it is finished and continue working on it. So it will change.
+
+<h3>To do list</h3>
+
+<ul>
+  <li> Help strings are not displaying consistently using either breakdown and also problems with identifiers of the help strings....<strong>Is this a problem with the version of Moodle 2 I have?</strong> </li>
+  <li> rationalise the filenames and object names for all of student. Feed into design approach for other users</li>
+  <li> Show questions
+       <ul>
+          <li> get_string not replace place holders with values. </li>
+          <li> add in support for due dates for questions. </li>
+          <li> include information about questions answered by the student, also details about whether its marked etc. </li>
+       </ul>
+  <li> The show questions stuff can/probably should be re-used for staff, especially markers. </li>
+  <li> Need to read up more about the proper approach to using OUTPUT and PAGE in generating output, there's a limit to how far simple copying can take you. </li>
+  <li> Setting the URL for the tables in show questions and posts, probably also activity details. </li>
+  <li> Show posts
+        <ul>
+           <li> Need to add user/blog/post summary/details at start</li>
+           <li> <del>Need to test posts of various statuses</del>. </li>
+           <li> Add in the option to allocate posts. </li>
+           <li> Is there a chance to add an internal navigation that allows jumping to individual posts </li>
+           <li> The "Allocated to:" value in details should be link, maybe a popup, to the question </li>
+       </ul>
+   </li>
+  <li> Check that the views are setting the URL appropriately -- e.g. does "tab" need to be included? is it?</li>
+  <li> Consider using html_table rather than flexible_table for some of the tables. </li>
+  <li> Need to look into table classes and setting styles on cells etc. to ensure table format okay</li>
+</ul>
+
+<h3>Student tabbed interface</h3>
+
+Each of the user groups will be using a tab interface to access the different services, so have to get this up and going.  After a bit of playing have this working by having the tabs declared in the controller and then having the view figure out how to display them...which is how the division of responsibilities should theoretically work.
+
+Well, that's working for the student views. Able to move between them all as a student with a registered blog.  Need to work on the tabs for unregistered..where the other two tabs are inactivated. Actually, that works fine.
+
+<h3>Models and object/relational mapping</h3>
+
+The intent is that each individual page will have a model that is responsible for retrieving and manipulating all of the data required for page. That model is passed to the view which uses the data to display the necessary output.  Some, if not all, of that data will be retrieved through classes that are essentially object/relational mapping objects.
+
+I'm planning to implement the first of these with the student controller/views. Will start with the questions page as this is the most straight forward. It should simply display all of the questions that have been set for this activity.
+
+<h4>Put in some data</h4>
+
+I'm going to manually insert some test data into the database. The data will be taken from test data from bim.
+
+<h4>Questions</h4>
+
+The intent is to minimise the need for the main bim2 code to know a great deal about the tables and fields in the database. Hide all that behind a specific object, <em>bimtwo_questions</em>.  Since Moodle already does much of this, this objects are likely to be fairly simple wrappers (and yes that does raise the question of why add the extra layer of abstraction...) One answer to that question is that some of the objects will have fairly high level methods that will perform important tasks on the data.
+
+These o/r objects are going to sit in the lib directory for now.
+
+The <em>bimtwo_questions</em> object is going to take the <em>bimtwo</em> identifier and retrieve all of the questions for that bim2 activity from the bimtwo_questions table.
+
+At the moment, there will be little or no methods for the class. This is likely to change later when the idea of due dates for questions gets added.  Methods to determine which questions has passed the deadline etc seem likely.
+
+Data that will be required includes
+<ul>
+  <li> questions - the list of questions for the activity;</li>
+  <li> answered questions - the list of questions the student has answered.</li>
+</ul>
+
+Okay, simple model up and going.  Let's get it displaying the content in a reasonably nice way. This means identifying how to produce pretty tables in Moodle 2.0.
+Seems good old flexible_table remains.  However, it's gone to a oo based implementation.
+
+Well, show questions is working, at least in a basic form.  Will leave it there and move onto the other screens.
+
+<h3>Your posts</h3>
+
+Initially this can be a simple one and just display the list of posts the system knows about from the student. Eventually this should allow the student to manage the allocation for unallocated or unmarked questions.
+
+First, put some approriate data into the database. bimtwo_marking needs to be filled in. Done.
+
+Need an o/r mapping object to retrieve this data. Initially the class bimtwo_posts will be much the same as bimtwo_questions. Copy and paste and a search and replace.
+
+Now I need to add in a model for the page and use the o/r object to get data and display it simply.
+
+Okay, have the data, time to display it. The question is how. In bim the posts were separated into distinct tables based on state (i.e. allocated, marked, etc). For bim2, initial thinking is two tables unallocated posts and allocated posts. Allocated posts include those that have been marked, returned etc. and thus will have to include columns or some other indication of mark, dates, etc.
+
+Actually, looks like a single table might be the way to go.  Pity flexible_table doesn't want to nest.
+
+Need to update the test data to include posts that are
+<ul>
+  <li> allocated<br /><del>Show the time allocated, Show the question that it's been allocated to</del>. </li>
+  <li> released<br />Show time allocated, marked and released. Also the mark and also the comments. </li>
+</ul>
+
+<h3>Activity details</h3>
+
+This page can take on a number of different forms, depending on whether a feed has been registered and whether or not the students are able to register a feed.  The first one I'll implement is the situation where the student has registered a feed and it has started to be mirrored.
+
+In this situation, the page should display
+<ul>
+  <li> Configuration details about the bim2 activity;<br />This will be used to identify if registration is turned on, display the description of the activity and other config data around the activity. <p>This data is already available as part of the bimtwo object within the factory, which is passed in.</p></li>
+  <li> feed details for the student;<br />i.e. does the student have a registered feed and, if so, where is it, how many posts etc. <p>This will likely need to be a new class. </p></li>
+  <li> user details.<br />i.e. their name, userid etc.  Used to display information, but also to get the feed details and other personal information.<p>This looks like being a new class. Have made sure that factory stores the user id. This will be needed to get the user records.</p></li>
+</ul>
+
+Ending up with a single class that pulls all this information into the one place. However, it does rely on other classes that can be re-used elsewhere.  Will document this at the end.
+
+At the moment, I'm having to put in all the language strings and associated help files.  I think I am liking the fact that help strings are now included in the help file, rather than in separate files in a separate directory.
+
+Am having a problem getting parameters passed in correctly to help strings. Ahh, have to put curly braces around them.  <em>Interesting</em>, I gather this from reading the code, not the Moodle documentation or discussion on moodle.org.  Would be buggered without the ability to read the Moodle code.
+
+Still having problems with getting the help strings to work properly. Going to have to put in place holders that aren't working and leave this as a major todo.  Downloaded latest version of Moodle and the problem continues.  So, probably a problem with my code.  Will have to look at this later.
+
+<h3>Back to the start</h3>
+
+The next step is to implement the activity details/student view from the start of the student interaction. i.e. before the student has registered their blog and in some cases, before the staff have turned registration on.  The stages to be implemented are, when the student visits the activity and:
+<ul>
+  <li> <em>DONE</em>Registration is not turned on and the student has not registered;<br />Show the activity configuration section shown normally, but precede it with message about how the student has not registered and that registration is not on
+  </li>
+  <li> <em>DONE</em>Registration is turned on and the student has not registered;<br />Same as above, but show the registration form
+  </li>
+  <li> Handle the registration of the student's blog, which has two cases
+        <ul>
+           <li> Registration worked<br />Show a success message and then show the normal interface. </li>
+           <li> It didn't work<br />Show an appropriate error message, some direction on how to fix it and show the registration form again</li>
+        </ul>
+  </li>
+</ul>
+
+Use the three test students as a test case.  Start with the registration not turned on.
+
+Now to add the register form. Seems a straight copy across of the form from bim, a few substitutions for module name (bim to bimtwo) and we're just about done.  The processing of the form has to be modified to be more object oriented. i.e. a new class.
+
+Perhaps time now to start a new blog post, this has been going on for weeks.  The next one will handle the registration process.</p>
+
+</body>
+</html>

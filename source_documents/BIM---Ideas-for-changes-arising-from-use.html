@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Ideas for changes arising from user testing</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/11/bim-ideas-for-changes-arising-from-user-testing/">BIM - Ideas for changes arising from user testing</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Today BIM was tested by an intelligent, but when it comes to BIM a clueless, user.  I sat back and watched the assumptions and mistakes that were made because the system design was not well thought out enough or was missing some functionality.  The following is a list of the ideas that arose from that session.</p>
+
+<h3>Suspend student posts - DONE</h3>
+
+<p>Need the ability for the coordinator and perhaps marker to suspend a particular post so that it cannot be released.</p>
+<p>Planned implementation:</p>
+<ul>
+  <li> <del>Add a suspend state into bim_marking table. </del></li>
+  <li> <del>Show post details page needs to indicate suspension.</del> </li>
+  <li> <del>Add entry for suspend states in Marking overview</del> </li>
+  <li> Add a suspend checkbox on the marking page.
+        <ul>
+            <li> <del>Add the checkbox </del></li>
+            <li> <del>Get it being set if suspended </del></li>
+            <li> <del>Add notify box to reinforce that it is suspended.</del> </li>
+            <li> <del>Add the ability to change it</del> </li>
+            <li> <del>Ensure a suspended post is never set to mark by simple changes in mark</del></li>
+            <li> <del>Make sure suspended is excluded from release</del> </li>
+        </ul>
+  </li>
+  <li> <del>?? add a suspend checkbox on the allocate page? </del>  NO</li>
+  <li> <del>Allocate page does need to show that a post is suspended</del> </li>
+</ul>
+
+<h3>Show student details</h3>
+
+<ul>
+  <li> <del>Trying to get last post to be colourful.</del> </li>
+  <li> <del>Also - #entries is still 0, not being updated. </del><br />
+   Should be set by process feed.</li>
+</ul>
+
+<h3>Help and support</h3>
+
+<p>Identify the places and ideas for additional support and help resources that can be added into various screens to get folk going - ultimate aim to have it self sustaining.</p>
+<p>Some functions from weblib.php might help here includeing :link_to_popup_window, element_to_popup_window, print_heading_with_help, print_box( $message, $classes ), print_container( $message, $clearfix);, helpbutton, notice, notify (bold message in optional colour - $message, $style ='green'), page_doc_link( ), doc_link(),.</p>
+<ul>
+  <li> <del>Marker - show student details</del> </li>
+  <li> <del>Marker - show post details</del> </li>
+  <li> <del>Marker - mark</del> </li>
+  <li> <del>Marker - allocate</del> </li>
+  <li> Coord
+      <ul>
+         <li> <del>mod_form</del> </li>
+         <li> <del>Configure BIM</del> </li>
+         <li> <del>Manage questions</del> </li>
+         <li> <del>Allocate markers</del> </li>
+         <li> <del>Manage marking </del>
+         </li>
+         <li> Find student
+         </li>
+         <li> Your students? </li>
+      </ul>
+  </li>
+</ul>
+<p>Modify the help file that shows links to all help files for BIM.</p>
+
+<h3>See student report</h3>
+
+<p>Add a feature that allows markers to see exactly what one of their students sees when they visit BIM.  Enables them to at least start from the same place in discussions.</p>
+
+<h3>Mark post</h3>
+
+<ul>
+  <li> <del>Next and previous student and post</del> <br />This was in BAM.  When marking an individual student post, have links to be able to go to the next or previous post for this student or for this question.
+<p>This is a fairly major task, I think.  In BAM when you were marking a student post there were the following :<blockquote>For this student: previous post | next post<br />For this question: previous student | next student</blockquote>Where the next/prev text were links that would take you to the next/prev post for the student or to the next/prev student's answer to the current question.</p>
+<p>Implementation for BIM should probably be:</p>
+<ul>
+  <li> Questions
+      <ul>
+         <li> bim_get_question_hash returns list of questions, answerd by the student--- $marking_details </li>
+         <li> find current question in that hash </li>
+         <li> get the id for next and prev (loop around at the end OR don't show?) </li>
+         <li> construct the URL based on those ids and the current student/bim </li>
+     </ul>
+</li>
+  <li> Students
+      <ul>
+        <li> Get a list of students who have answered the current question. </li>
+        <li> Find the current student in the list</li>
+        <li> Get ids for the next/prev </li>
+         <li> construct the URL. </li>
+       </ul>
+   </li>
+<ul>
+
+  </li>
+  <li> <del>Re-arrange some of the feedback when submitting so that it shows up more obviously and in places folk more likely to look. </del></li>
+
+  <li> <del>Change some of the naming of "Answer" and "Submitted" etc  into more action oriented easier to understand words.</del> </li>
+
+  <li> Screen casts for help on marking. </li>
+</ul>
+
+<h3>Student instructions for registering</h3>
+
+<ul>
+  <li> <del>Reduce the size of the hard-coded instructions for "how to register" to nothing.</del></li>
+  <li> NO <del>Provide some initial default values for the "intro/about"</del> </li>
+  <li> <del>Include pointers to the screencast and other help documents for the student.</del> </li>
+  <li> <del>Change the label for the submit button to "register blog".</del> </li>
+  <li> <del>Make it clearer that once submitted, this is the detail you will see.</del> </li>
+  <li> <del>Add some advice about what to do if "question not allocated"</del> </li>
+  <li> <del>Give some indication of when the last "mirror" was and when the next one might be.</del></li>
+  <li><del> Add some additional links to explain specific terms.</del> </li>
+</ul>
+
+<h3>Some form of email group - DONE</h3>
+
+<p>Mainly for unregistered students, some way of communicating with these students en mass to tell them to register.  Some flexibility in what to send and where to send it.</p>
+<p>A fall back might be to simply show a list of email addresses for those students that can be cut and paste into an email client and/or a mailto link.</p>
+
+<h3>Links for student and post details - DONE</h3>
+
+<p>Re-work these navigation links to that they are situated more appropriately and more obvious in what they should do.</p>
+
+<h3>Remove "change registration" for marker - DONE</h3>
+
+<p>Only coordinator should be able to do this.</p>
+
+<h3>Look at the ordering of the questions in columns</h3>
+
+<p>Currently post details order of questions is somewhat arbitrary.  Get it ordered on the question being entered?</p>
+
+<h3>Roll overs? - NO</h3>
+
+<p>Any chance of putting in place roll overs that provide some additional pointers on what a particular link will do.</p>
+
+<h3>Show questions to users and markers?</h3>
+
+<p>Let the students and the markers see the list of questions.</p></p>
+
+</body>
+</html>

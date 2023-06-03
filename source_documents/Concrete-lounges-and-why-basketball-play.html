@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Concrete lounges and why basketball players aren&#039;t better hockey players</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/03/30/allocating-assignments-to-markers-moodle-assignment-submission/">Concrete lounges and why basketball players aren&#039;t better hockey players</a></h1>
+
+<p>Tags: concretelounge, elearning, moodle, moodle, oasm, oasm</p>
+
+<p>Assignment 1 for my course is due later today.  100+ students have submitted.  Time to explore the Moodle assignment submission system and how to allocate assignments to markers.
+
+<h3>So what?</h3>
+
+Why would that be interesting to anyone not using Moodle?  Well because...
+
+<a href="https://www.flickr.com/photos/david_jones/9861514544" title="Is elearning like teenage sex? by David Jones, on Flickr"><img alt="Is elearning like teenage sex?" height="240" src="https://farm3.staticflickr.com/2837/9861514544_01b3c7fbca_n.jpg" width="320" /></a>
+
+<a href="http://www.linkedin.com/pulse/train-teacher-way-she-should-go-depart-michael-sankey">One explanation</a> for the quality of "e-learning" is<blockquote>We have taken our teachers who have been really effective at face-to-face teaching and asked them to also be experts in online teaching. Get real! That’s like asking a good basket baller to become a good hockey player. Yes it’s sport and yes you have a ball and competitors, but the rules are very different. And yes, if you’re a good sportsperson, chances are you can pick-up on being good at another code, but it will take time and quite a bit of training.</blockquote>
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/jorbasa/15415175008/" target="_blank"><img alt="&rdquo;Die Schuhe sind zu groß.&rdquo; - &rdquo;The shoes by Jorbasa, on Flickr" border="0" src="https://farm4.static.flickr.com/3946/15415175008_ec372eb14b_m.jpg" title="&rdquo;Die Schuhe sind zu groß.&rdquo; - &rdquo;The shoes by Jorbasa, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-nd/2.0/" rel="license" target="_blank"><img align="left" alt="Creative Commons Creative Commons Attribution-No Derivative Works 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-nd/2.0/80x15.png" title="Creative Commons Creative Commons Attribution-No Derivative Works 2.0 Generic License" /></a>&nbsp; &nbsp;by&nbsp;<a href="https://www.flickr.com/people/jorbasa/" target="_blank">&nbsp;</a><a href="https://www.flickr.com/people/jorbasa/" rel="cc:attributionurl" target="_blank">Jorbasa</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+That's certainly part of the problem. But - to extend the analogy - the other part of the problem that I experience day to day is that universities are asking the good basketball players to play hockey with equipment that's quite a few sizes too small and simply doesn't help them play hockey, let alone learn how to play hockey.
+
+This is not to say that the provision of the appropriate equipment is easy. It's not. It's incredibly difficult. A wicked problem.
+
+The point is that the perspective (from the <a href="http://www.linkedin.com/pulse/train-teacher-way-she-should-go-depart-michael-sankey">same post</a>) is - in my experience - not the case at all<blockquote>We already have all the tools we need to get our students engaged. Sure there will be new ones that come along from time to time that will do things a wee bit better, but for the time being we have plenty to make this happen.</blockquote>
+
+As a teacher engaged with e-learning at a University, most of the technology provided is <a href="https://davidtjones.wordpress.com/2014/12/18/concrete-lounge/">a concrete lounge</a>.
+
+<br />
+
+<h3>Assignment submission</h3>
+
+My current institution has this year moved away from a locally produced online assignment submission and management (OASM) system toward one embedded within the Moodle LMS.  There's apparently been some customisation of the standard Moodle OASM system, but it's not clear just how much.  I've already heard reports from other staff (with courses that have assignments due before mine) that allocation of assignments to makers is less than easy.
+
+The following documents my attempts to do this and seeks to explore if the Moodle assignment submission system will be an example of the wrong size shoes for playing hockey.
+
+<h3>I'm a hockey player</h3>
+
+<em>Background:</em> I designed and implemented my first OASM system back in 1994/1995. From then through to about 2004/2005 I led the design and implementation of various generations of an OASM system and wrote <a href="https://davidtjones.wordpress.com/publications/three-generations-of-online-assignment-management/">the odd paper</a> about it. I know a bit about these systems. I'm not a basketball player, I'm a hockey player.
+
+<h2>Assigning some assignments - do it myself</h2>
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/mray/6060332372/" target="_blank"><img alt="Documentation by mray, on Flickr" border="0" src="https://farm7.static.flickr.com/6184/6060332372_78ba7e9560_m.jpg" title="Documentation by mray, on Flickr" /></a><br /><a href="http://creativecommons.org/licenses/by-sa/2.0/" rel="license" target="_blank"><img align="left" alt="Creative Commons Creative Commons Attribution-Share Alike 2.0 Generic License" border="0" src="http://i.creativecommons.org/l/by-sa/2.0/80x15.png" title="Creative Commons Creative Commons Attribution-Share Alike 2.0 Generic License" /></a>&nbsp; &nbsp;by&nbsp;<a href="https://www.flickr.com/people/mray/" target="_blank">&nbsp;</a><a href="https://www.flickr.com/people/mray/" rel="cc:attributionurl" target="_blank">mray</a><a href="http://www.imagecodr.org/" target="_blank">&nbsp;</a></div>
+
+First test, can I figure out how to do this via the interface. i.e. don't read the "manual".
+
+Assuming the "Assignment administration" menu would offer some insight/affordances.
+
+"Marker assignment quota" seems the most obvious option.  A couple of observations
+<ul>
+  <li> Apparently one of the students has some how been allocated the role of marker, she is appearing in the list of markers.
+      <p>My first question is obviously, "How the hell did that happen?".  The user is currently assigned to both the student and "general admin" roles. I don't remember (even accidentally) making this change.  Wonder how it happened?</p>
+  </li>
+  <li> This offers a choice of unlimited or a specific quota, but isn't pre-populated with data already entered.
+       <p>i.e. to employ the markers to do this work, I had to negotiate with them how many they could mark and then specify that in the contract process. Having to re-enter this data in another system is a bit of a pain. I understand why it hasn't been done. These are two very separate systems managed by very different parts of the institution. But if the shoe were too fit.....</p>
+</ul>
+
+<blockquote><strong>Concrete lounge #1:</strong> Having to re-enter data already present in other systems.</blockquote>
+
+<h3>View/grade all submissions</h3>
+
+Next bet is to try the "View/grade all submissions" which shows a filterable list of all the submitted assignments and allows a number of operations to be done upon them.  I'm assuming that "allocate marker" could be one of them.
+
+Yep, "set allocated marker" is an option.  Select the student(s) to allocate, select the menu option and hit "Go".  Brings up a page with those students listed and another drop down menu of markers.  You chose the marker and hit "Save Changes"
+
+Two potential problems with this
+<ol>
+  <li> Pre-allocation; and
+      <p>This does imply that you can only allocate markers to assignments that have already been submitted. I've got at least one marker who has a fixed group of assignments to mark. All located at a specific campus. In a perfect world I'd be able to pre-allocate the assignments from those students to the marker.  Rather than have to wait until they are submitted and manually allocate them.</p> </li>
+  <li> Manually selecting individual students.
+       <p>Individual allocation is ok, but I would like to see at least two additional options. First, the allocation by group option available above. Second, a random (or perhaps specific) allocation of specified numbers. e.g. I have markers who will make 50 assignments, I'd like to automatically allocate them 50 assignments and have the system randomly allocate them.  I'd rather not have to count to 50.</p>
+        <p>Even better, it might be nice to say allocate them 50 assignments, but aim to achieve a balance of ability levels (perhaps based on GPA or some other indicator).  Few things are more depressing than having to mark 50 low quality assignments. I assume there would be other allocation schemes people would like to apply.</p> </li>
+</ol>
+
+Are there other options beyond this?
+
+<h3>Grading options</h3>
+
+Under the "grading option" drop down menu there is a "auto-allocate markers" option.  But I wonder if it's smart enough to handle variety.  i.e. I need to ensure that one marker gets all the students at one campus, but can randomly allocate the remainder.
+
+I don't want to experiment with this option, just in case it goes ahead and auto-allocates straight away. So I'll do a Google search for documentation.  The search results are not that clear.
+
+It appears that Moodle 2.6 added two related features - marking workload; and, marking allocation. These have to configured into the assignment activity.  Did I do this? I did indeed.  And this provides the functionality I've already identified.
+
+So let's just suck it and see.  Good, it doesn't do this straight away.  It allows the options to
+<ol>
+  <li> allocate all unallocated, submitted submissions; </li>
+  <li> allocate all unallocated submissions (including unsubmitted ones);
+        <p>Both these options are dong be specifying an "allocation batch size" and either doing an "Allocate" or "Simulate".  The simulate is a useful feature.</p>
+  </li>
+  <li> copy allocations from another assignment. </li>
+</ol>
+
+Nothing here about allocating based on groups.
+
+<h3>Filters and options</h3>
+
+There are a collection of filters that can be applied, based on
+<ul>
+  <li> # assignments per page; </li>
+  <li> assignment status; </li>
+  <li> marker allocation; </li>
+  <li> workflow status; <p>A slight duplication to assignment status, but based on a different approach.</p> </li>
+</ul>
+
+There's nothing here about filtering based on groups.  Is this because I haven't configured there to be?
+
+<h3>Group options in the settings</h3>
+
+There is a "Group submission settings" section in the assignment settings.  But most of this is based on the idea of students submitting assignments in groups.  Not using groups to allocate assignments to markers.
+
+<h3>No obvious options</h3>
+
+I'm giving up. I can't see from the system any obvious ways to allocate assignments easily via groups.
+
+At this stage it appears that I will have to
+<ol> <li> Manually allocate all students at one campus to their marker. </li>
+  <li> Use the auto-allocate feature for the remaining students. </li>
+</ol>
+
+<div style="float: right;"><a href="http://www.flickr.com/photos/david_jones/8235400311/" target="_blank"><img alt="Edu Doggy by David T Jones, on Flickr" border="0" src="http://farm9.static.flickr.com/8069/8235400311_3b1215e44e_m.jpg" title="Edu Doggy by David T Jones, on Flickr" /></a></div>
+
+In theory, I could negotiate with the first marker to do an auto-allocate.  But I think it important that he mark the assignments of his own students.  Changing that preference would be the case of the tail wagging the dog.
+
+<h2>Use the documentation</h2>
+
+Before I do that, let's see whether the documentation provided by the institution can offer any insight.  It appears that this might be the solution<blockquote>However, if the assignment activity has first been configured into groups, these can be manually assigned to a specified Marker.</blockquote>
+
+I'm not entirely sure what this means.  Let's experiment with a dummy assignment and use the "common module settings" and the groups there.
+
+First, the groupings don't seem to be appropiate.  No option to do it at campus level.
+
+Okay, this appears to have added an additional option to filter which students/assignments are shown based on groups.
+
+This would provide the option I need (a bit of a kludge), but the question is whether or not the setting can be changed on the fly - i.e. after students have started submitting?
+
+The other question is what do (or will) the students actually see. I don't believe there is actually an easy way for me to test this.
+
+Let's try making the change.  Appears to be no problem with other assignments. I assume Moodle will warn of any horrible consequence? Famous last words? Logically there shouldn't be a problem, but....
+
+Change made, but there is no difference in the display. The option to select just the students in a particular group does not appear.  Perhaps it can't be changed once submissions have been made.
+
+<blockquote><strong>Concrete Lounge #2:</strong> No apparent way to filter assignments/students by groups</blockquote>
+
+Group membership is stored independently of assignment submission in the Moodle database. It should be possible to offer a "Group filter" - perhaps even one dependent on the "grouping" - as a way to modify the viewing of all submissions.
+
+Looks like I'll have to do this manually.
+
+<h2>Documentation at the wrong abstraction layer</h2>
+
+<blockquote><strong>Concrete Lounge #3:</strong> The local help documentation (like most help documentation) is written at the level of functionality. It describes the interface and what each interface element does. It isn't organised at the level of "activity type" i.e. the level of the users.</blockquote>
+
+i.e. I have a certain model of how I want to manage the submission, allocation, and marking of assignments. That's what I know. That's where I am. Documentation that started at this level by describing a list of different models of using assignment submission and then describing how to configure the Moodle assignment submission system to implement this model would be more useful (and much more difficult to write).
+
+Better yet. Would be an assignment submission system that would present a list of different models, briefly explain each one, allow me to choose which I want, and then set up the system to fulfill that model.
+
+i.e. the system actually fit what I wanted to do, rather than required me to engage in explorations how to figure out if and how I could translate the functionality of the system into what I wanted to do.
+
+Sorry, but the tools we have available at the moment aren't quite ready to help basketball players become better hockey players.
+
+<h2>Update</h2>
+
+As per the comment below I missed an option to flick.  That's done and I can see the groups and make use of those.  So here's what I did
+<ol>
+  <li> Allocate unsubmitted from campus X to the marker;
+      <p>Set filter to the tutorial group I need and filter for "unsubmitted". This is so that if they submit, they will automatically appear on the marker's list.</p>
+  </li> <li> Allocate submitted from campus X to the marker; </li>
+    <li> Auto-allocate the remaining submitted to markers;
+         <p>Priority is given to those submitted.</p></li>
+  <li> Drop the allocation for campus X marker
+          <p><em>Problem:</em> the campus X marker was originally allocated 22 students to make. But one has dropped out. Meaning when I do an auto-allocate (simulation) he gets allocated another marker. </p> <p>I also have to make sure that the "student marker" has an allocation of 0.</p></li>
+  <li> Do the auto-allocation again. </li>
+</ol>
+
+Now all I need do is to figure out how much advice the markers will need to download, mark and resubmit the their allocated assignments.
+
+<h3>What advice is there?</h3>
+
+Hard to explore this myself as I don't know how much my view of the system is the same as what a marker would see.
+
+The "Download all submissions" option gets them all, not just the ones I've allocated.
+
+Appears that the "view all", play with filters, and then download is the way to go.  I assume that the markers won't need have the "Marker filter" to play with.
+
+I wonder if the organisation has given any advice specific to markers. Of course, the "portal" I can access links to various staff support sites won't let me login on my current browser. Nor on chrome.
+
+Oh dear, the "portal" still has a large explicit link to the old assignment submission system.
+
+Now begins the traipsing through various sites to figure out where it is.
+
+A couple of red herrings and finally found the document I had been using (not only was it hidden away in the object repository, I had to login again to access it) and it confirms my suspicion.  Downloading will be fairly simple for markers - once they find the right place and buttons to push.
+
+But there doesn't appear to be any specific file/resource that can be sent to markers.  It appears that I'll have to create my own (just like every other person in charge of a course with multiple markers).  Of course, the other option is that I've missed the presence of this other document entirely.
+
+It appears a cut down version of the larger document was circulated.  Found this out via personal networks and Twitter, rather than via other means.  The smaller document had been circulated earlier via email, but finding it in my Inbox......
+
+The documentation is very generic.  I'll update it and include a direct link to the specific assignment.
+
+<h3>What is downloaded?</h3>
+
+A zip file with all student submissions in a single directory.  Wonder how it works if the students are submitting multiple files? Does it put each student's submission into separate directories then?
+
+<h3>Specifying moderation samples</h3>
+
+In terms of moderation, my practice is to specify to the marker at least 3 assignments that they should mark first. These are sent back to me ASAP for moderation and any advice on marking.  The aim is that the 3 assignment represent a spectrum of abilities based on GPA typically: a 6+ GPA, a high 4/5 GPA, and a sub 4 GPA.
+
+As in the past, this information isn't part of the OASM system. So I have to do it manually via a spreadsheet. However, in the past the OASM system did provide a spreadsheet of students allocated to a marker. This enable the use of Excel formulas to find some samples.  Doesn't appear possible to do this via Moodle.
+
+Luckily the "more student details" popup <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/#extending">described here</a> lets me click on a link in the list of students and find out the students GPA (amongst other things).
+
+<blockquote><strong>Concrete lounge:</strong> Can't easily allocate sample marking based on student GPA (or other means) in part because can't see how to expert students allocated to a marker to a spreadsheet.</blockquote>
+
+<h3>Contacting the non-submits</h3>
+
+Another task at this time is to approach the students who have yet to submit the assignment and see what's going on.  Some of these will have extensions, some won't.  Is there an option to show those students who have not submitted, but haven't received extensions?
+
+Doesn't appear to be.
+
+<blockquote><strong>Concrete lounge:</strong> Can't see how to list those students who have not yet submitted the assignment, but who haven't been granted an extension.</blockquote>
+
+The options appear to be scrolling through the list of almost 50 students and manually identifying those without extensions.  But even when I do that, what can I do? Can I send those students an email message?
+
+Doesn't appear to be possible.
+
+<blockquote><strong>Concrete lounge:</strong> Unable to send group (or personalised) emails to students who have not yet submitted the assignment.</blockquote>
+
+Wouldn't be too hard to write a Greasemonkey script that extracts the email addresses of the students without extensions.
+<ul>
+  <li> name in c2 (cell 2)
+  <li> email address is in C4  </li>
+  <li> an extension is indicated by a div with class extensiondate in c5 </li>
+</ul>
+
+But that would require a bit of extra work.  I do have some Perl scripts that I use for web scraping that could be more easily converted, but not as shareable.  Script written and email sent.
+
+<blockquote><strong>Concrete lounge:</strong> Unable to use filters to identify students who have not submitted the assignment AND do not have an extension</blockquote>
+
+<h3>Uploading results and marked files</h3>
+
+Uploading the marked files seems fairly straight forward, as long as the same filenames are retained.
+
+Question remains about how to upload the marks.  The OASM system won't be smart enough to extract the results from the uploaded files.
+
+Oh dear, it appears that results need to be added manually for each student. That's a bugger if you're a casual marker employed to make 50 assignments. Beyond the time and workload implications, there's the problem of human error, especially with a hugely repetitive manual process.
+
+Correction, I need to enable the "offline grading worksheet" option. Yep, that adds "download grading worksheet" (and upload) to the options.</p>
+
+</body>
+</html>

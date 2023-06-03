@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Manage Marking</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/17/bim-manage-marking/">BIM - Manage Marking</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>We come to the main last collection of functionality required of BIM to be operation (a major tidy up is needed after this, but it's getting there).  That last collection is currently going under the label "Manage Marking".  It covers the functionality required by the teacher in charge of a course to manage the marking being done by other staff, this includes the following tasks:</p>
+<ul>
+  <li> Track the marking progress of other staff. </li>
+  <li> Be able to quickly find and view the progress, marks and comments associated with a particular student (i.e. when they complain to the marker).</li>
+  <li> Eventually this might include some sort of advice/suggestions around what is going wrong for the student (mostly around their feed and its subscription). </li>
+  <li> The ability to manage the release of marks and comments.<br />By default, a marker can only mark a student post. In this state, the student cannot see the mark or comments.  The coordinator is meant to moderate the mark/comments and then, when ready, release them.</li>
+</ul>
+<p>Additional discussion of this collection of functionality was <a href="https://djon.es/blog/2010/01/09/bim-design-of-manage-marking-and-other-features-for-coordinators/">in an earlier post</a></p>
+<p>This post is an attempt to boil that basic overview into some more detailed plans for the implementation of this functionality and possibly discussion of how it has been implemented.</p>
+
+<h3>Implementation plan</h3>
+
+<p>Aim to have the more comment task on the first page, immediately accessible, including:</p>
+<ul>
+  <li> Button/link to release all current marked posts. </li>
+  <li> Button/link to view all current marked posts. </li>
+  <li> List of markers/groups and the stats on their progress
+  </li>
+  <li> The stats should probably include a list of all questions for this BIM activity.  For each column have a link to release all marked posts for those questions and also for those markers. </li>
+  <li> Each of the "stats" in the table should be a link to drill down the details of just those students that fit the stats.<br />
+          In turn, on this "drill down" page, have the links to release all marked posts of various types, including checkboxes to select individual students.
+  </li>
+  <li> Search box to enter part of student username or name and see details about them. </li>
+</ul>
+<p>This requires two fairly general methods/screens to:</p>
+<ol>
+  <li> Release results; (<strong>op=release</strong>)and <br />The idea here is that given a subset of student posts (represented in someway) that are currently in the Marked state, they need to modified into the Released state.  Based on current designs the methods will be
+        <ul>
+            <li> Release all marked posts - <strong>no parameters</strong></li>
+            <li> Release all posts for a given week (regardless of marker) - <strong>question=$qid</strong> </li>
+            <li> Release all posts for a marker (regardless of question) - <strong>marker=$qid</strong> </li>
+             <li> Release all posts for a marker for a given week - <strong>marker=$qid&amp;question=$qid</strong> </li>
+        </ul>
+  </li>
+  <li> Display lists of students (<strong>op=view</strong>).<br />Going to be 3 different parameters: marker, question and status.  Use similar structure to release in implementation.  i.e. construct SQL based on parameters passed in and then display them.</li>
+  </li>
+</ol>
+
+<h3>Implementation questions</h3>
+
+<ul>
+  <li> Need to consider how the gradebook generates its <a href="http://docs.moodle.org/en/Image:gradebook_normal_mode.png">look and feel</a> and see if I can borrow useful stuff. </li>
+</ul>
+
+<h3>Required data</h3>
+
+<p>Data required to implement this initial screen includes:</p>
+<ul>
+  <li> List of all markers associated with the BIM. </li>
+  <li> Details of the markers. </li>
+  <li> List of all students associated with those markers. </li>
+  <li> Statistics for those students for each marker. </li>
+  <li> Probably a list of all the questions for the bim. </li>
+</ul>
+
+<h3>Get the data</h3>
+
+<h4>List of all questions</h4>
+
+<p>Re-use the bim_get_question_hash </p>
+
+<h4>Markers and students</h4>
+
+<p>bim_get_markers_students - gets all student details for a given marker in the course.  Now just have to find out who all the markers are? I wonder if this is getting into the realm of capabilities, roles and other complications. And perhaps start to have questions connected with the <a href="http://docs.moodle.org/en/Grades">gradebook/grades module</a></p>
+<p>Ok, this looks like it will be done via groups and may involve some local CQU customisation which I need to discover.  In the meantime, I'll stick with writing functions that will essentially work, but initially use some kludgey database tables I've added for this purpose.  This will be one of the big things to discover.</p>
+<p>So, add function <code>bim_get_all_markers_students</code>.  It will get all the markers, then call bim_get_markers_students.  </p>
+<p>At this stage, we will need:</p>
+<ul>
+  <li> # Submitted, # Marked, etc for each marker (i.e. all their students). <br /> Most of these figures can be taken straight from bim_marking, but won't have details about those who haven't been marked.  Will need to use the above function.</p>
+  </li>
+  <li> Will also need #submitted etc per question. </li>
+</ul>
+<p>Implement <code>bim_get_all_marker_statistics</code>:</p>
+<ul>
+  <li> Take the markers_students array </li>
+  <li> Get list of all markers students ids (keys students) </li>
+  <li> SQL statement group num students in each status by question </li>
+  <li> Use that to populate group based array </li>
+</ul>
+
+<h3>Show the data</h3>
+
+<p>Rather than a form, I think this display will just be a table of some description.  Rather than buttons, use links that can be processed.  Will development this in a progressive sort of way:</p>
+<ul>
+  <li> Show list of markers, with overall stats. </li>
+  <li> Show the list of questions for the unit as columns in rows for each marker. </li>
+</ul>
+<p>The data is being shown.  Just need to add the links to release and view and this part will be done.  Do release and view in a separate post.</p>
+<p>To do this need to:</p>
+<ul>
+  <li> Show "release" link, when there is something to release for:
+          <ul>
+              <li> <del>Each marker </del><br />Which implies I need to know the overall status stats for each marker.  <code>bim_get_all_marker_stats</code> is the obvious place to do this.  Add an entry <code>Total</code></li>
+              <li> <del>Each marker and question </del></li>
+              <li> <del>Each question</del> <br /><code>bim_get_question_response_stats</code> does this.  Use that</li>
+          </ul>
+  </li>
+  <li> Show "view" link, when there are students to view for each status for each marker <strong>DONE</strong> </li>
+</ul>
+
+<h3>What's been done</h3>
+
+<p>I'm cutting this a little short in order to get onto other things.    Currently the screen is showing a table that gives a summary of marker progress.  It provides links to release results (where appropriate) and to drill down to specific student details (where appropriate).</p>
+
+<h3>What hasn't been done</h3>
+
+<p>The main thing that needs to be done is the addition of the search box for a specific student.  Though that should probably be provided for the normal marker as well?</p>
+
+<h3>What's next?</h3>
+
+<p>Time to implement the "release" and "view" operations associated with manage marking.</p></p>
+
+</body>
+</html>

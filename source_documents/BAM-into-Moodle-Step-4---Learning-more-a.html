@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BAM into Moodle Step #4 - Learning more about Moodle</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/07/23/bam-into-moodle-step-4-learning-more-about-moodle/">BAM into Moodle Step #4 - Learning more about Moodle</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>In <a href="https://djon.es/blog/2009/07/21/bam-into-moodle-step-3-some-initial-development/">the previous step</a> I got to know a bit more about the Moodle code base, libraries and idioms.  Even got to modify a bit of code - nothing much more complex than hello world.  Time to continue that journey.</p>
+
+<h3>Roles and capabilities</h3>
+
+<p>Continuing my journey through <a href="http://dev.moodle.org/mod/resource/view.php?id=43">Unit 6</a> of the Moodle Programming Unit.  This time with roles and capabilities.</p>
+<p>Apparently before v1.7 there were fixed roles.  Gee, I learnt that in Webfuse in 1996 - sorry, writing historical chapters of the thesis, revisiting old ground and getting pissy about it all.</p>
+<p>Main terms are:</p>
+<ul>
+  <li> Contexts - hierarchical "spaces" in which "permissions" apply
+        <ul>
+          <li> 7 of them - from broadest to most specific: CONTEXT_SYSTEM, CONTEXT_PERSONAL, CONTEXT_USER (spelled CONETXT in docs), CONTEXT_COURSECAT, CONTEXT_COURSE, CONTEXT_MODULE, CONTEXT_BLOCK. </li>
+          <li> Permissions not set within a context are inherited from a more general context. <li>
+        </li>
+  </li>
+  <li> Capacilities - a specific Moodle action that can be executed by a user
+    <ul>
+        <li> e.g. 'moodle/course:update' - updating course settings</li>
+        <li> e.g. 'moodle/course:viewhiddencourses' - guess? </li>
+     </ul>
+  </li>
+  <li> Roles  - a named set of all the capabilities with associated permissions (which ain't a great explanation)
+      <ul>
+          <li> e.g. student, forum moderator etc. </li>
+      </ul>
+  </li>
+  <li> Permissions - describes the ability of a role to perform a certain capability (Que?)
+       <ul>
+          <li> permissions for a capbility are set within a context - e.g. course. </li>
+           <li> Four permissions available to be set for a capability of a role within a context:<ul>
+              <li> CAP_INHERIT - inherit permission from more general context </li>
+              <li> CAP_ALLOW - guess </li>
+              <li>  CAP_PREVENT - deny the capability in the current context and more specific contexts, unless over-ridden</li>
+              <li> CAP_PROHIBIT - deny a capability and don't allow it to be over-ridden. </li></ul>
+  </li>
+</ul>
+
+<h4>Functions for roles and capabilities</h4>
+
+<ul>
+  <li> require_login - require user to be logged in and perform some other checks </li>
+  <li> get_context - returns a context instance object containing a context level and an instance id - e.g. CONTEXT_COURSE and a course id.  This is needed to do the next step.</li>
+  <li> require_capability </li>
+  <li> has_capability </li>
+</ul>
+
+<h3>Documentation</h3>
+
+<p><a href="http://manual.phpdoc.org/">PHPDoc</a> used for code documentation - another thing to learn.</p></p>
+
+</body>
+</html>

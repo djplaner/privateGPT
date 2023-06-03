@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Updating "more student details"</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/07/23/updating-more-student-details/">Updating "more student details"</a></h1>
+
+<p>Tags: bad, edc3100, indicators</p>
+
+<p><a href="https://davidtjones.wordpress.com/2014/11/13/adding-more-student-information-to-a-moodle-course/">"More student details"</a> (see image below) is the most visible part of the additional systems I've put in place to make teaching bearable (<a href="http://www.usq.edu.au/learning-teaching/USQSalon/JonesAlbion">this presentation</a> talks more about it). The problem I'm dealing with here is that a new semester has started, which means I need to re-configure these feral systems to work with the new semester.
+
+And while I'm at it, I'm hoping I might be able to add <a href="https://davidtjones.wordpress.com/2015/06/16/exploring-bim-sentiment-analysis-what-might-it-say-about-student-blog-posts/">a bit of sentiment analysis</a> to it.
+
+<a href="https://www.flickr.com/photos/david_jones/18657245938/in/dateposted-public/" title="MoreStudentDetails"><img alt="MoreStudentDetails" height="254" src="https://farm4.staticflickr.com/3715/18657245938_225d364f57.jpg" width="500" /></a>
+
+<h2>What needs to be done</h2>
+
+Tentative process appears to be
+<ol>
+  <li> Create new course ID (5), group id (53), contextid (575) and course label (EDC3100_2015_S2) for new offering - creating the course in local Moodle. </li>
+  <li> Create a BIM activity in the new course. - 3 - DONE</li>
+  <li> run participants/parse.pl - DONE</li>
+  <li> run the user extras. - DONE</li>
+  <li> Load the initial activity information.- DONE </li>
+  <li> Load the current activity completion data. - DONE</li>
+  <li> Load the BIM data. - DONE</li>
+  <li> Update the greasemonkey script </li>
+</ol>
+
+The basic aim is to populate a database running on my laptop with the following data
+<ul>
+  <li> Student enrolment data.
+       <ul>
+         <li> Source - spreadsheet provided by manual dump from student records</li>
+         <li> Destination - Local moodle tables: mdl_user_extras and mdl_user </li>
+         <li> Method
+              <ul>
+                 <li> Initialisation - set up the Moodle users data
+                       <ul>
+                        <li> update the course label in extras.pl </li>
+                        <li> Play around with the columns in the spreadsheet. </li>
+                       </ul>
+                  </li>
+                 <li> Maintenance - participants/extras/extra.pl - DONE
+                       <ul>
+                          <li> Can the CSV file be read appropriately - DONE - but missing some of the data I would have liked to have had.              <br />Keep on eye out for strange data - e.g. UK post codes.
+                           </li>
+                          <li> Get the users data for this course. </li>
+                          <li> See if a match can be made with local Moodle and Peoplesoft data </li>
+                          <li> Any missing students (can't match) </li>
+                          <li> insert into mdl_user_extras table </li>
+                          <li> update mdl_user table - to update the phone1 and phone2 values </li>
+                       </ul>
+                  </li>
+              </ul>
+         </li>
+         <li> Status </li>
+       </ul>
+  </li>
+  <li> Student Moodle user data.
+       <ul>
+         <li> Source - CSV file produced  </li>
+         <li> Destination  - Local moodle tables: mdl_user, mdl_groups_members, mdl_role_assignments</li>
+         <li> Method
+               BAM/3100/3100_support/participants/parse.pl
+              <ul>
+                 <li> Initialisation
+                       <ol>
+                        <li> Update the library files </li>
+                        <li> Create a new local Moodle course - get id. </li>
+                        <li> ??? do I need to create a group ID???? What else is needed </li>
+                      </ol>
+                 </li>
+                 <li> Maintenance - script will do most of this  -- students aren't enrolled in the course, but are appearing in BIM.
+                      <ol>
+                        <li> Parse the HTML file. - DONE</li>
+                        <li> Find any existing users - DONE   </li>
+                        <li> Add the new students - DONE</li>
+                        <li> Populate the group data - DONE</li>
+                        <li> Populate role assignments - DONE</li>
+                     </ol>
+                 </li>
+              </ul>
+         </li>
+         <li> Status </li>
+       </ul>
+  </li>
+  <li> Activity completion data  - DONE
+       <ul>
+         <li> Source
+            <ul>
+             <li> HTML file saved of main Moodle site - DONE</li>
+             <li> CSV file from activity completion </li>
+            </ul>
+         <li> Destination - local Moodle tables </li>
+         <li> Method
+              <ul>
+                 <li> Initialisation - activities/parseActivity.pl - DONE
+                      <ol>
+                        <li> Have the local Moodle course set up. </li>
+                        <li> Ensure that the script has the configuration for the new course. </li>
+                        <li> Dump the main remote Moodle page to HTML. </li>
+                        <li> Run the parseActivity.pl script
+                             <ul>
+                                <li> Parse the html page - DONE</li>
+                                <li> update the activity mapping table - DONE</li>
+                             </ul>
+                        </li>
+                        <li> perhaps have to play with the activity translation stuff <strong>especially since Moodle 2.8 seems to have changed their method</strong>
+                      </ol>
+                </li>
+                 <li> Maintenance
+                      <ul> <li> List of activities -  Whenever a the activity list to be completed changes on the remote site, save a new HTML file and re-run the script. </li>
+                         <li> Activity completion - run the parse completion script
+                            <ul>
+                               <li> get progress data  - DONE
+                                     And Moodle has changed the format of their spreadsheet. It appears that the ... has been removed. Let's try that.
+                                </li>
+                               <li> update the local/remote mapping - DONE</li>
+                               <li> check the students - DONE</li>
+                               <li> update the database - DONE</li>
+                           </ul>
+                        </li>
+                   </ul>
+                 </li>
+              </ul>
+         </li>
+         <li> Status </li>
+       </ul>
+  </li>
+  <li> Student blog data.
+       <ul>
+         <li> Source - HTML file from BIM on remote site</li>
+         <li> Destination - local Moodle BIM tables </li>
+         <li> Method
+              <ul>
+                 <li> Initialisation  - DONE
+                     <ol>
+                        <li> Create the course </li>
+                        <li> Create the BIM activity </li>
+                        <li> Run the user scripts </li>
+                        <li> Modify the bim/parseBIM.pl script </li>
+                      </ol>
+                </li>
+                 <li> Maintenance
+                     <ol>
+                         <li> parse the file </li>
+                         <li> Get the users and check data </li>
+                         <li> insert the data - DONE</li>
+                      </ol>
+                  </li>
+              </ul>
+         </li>
+         <li> Status - simply save the updated HTML page and re-run the script when updates required</li>
+       </ul>
+  </li>
+</ul>
+
+<h3>Greasemonkey script</h3>
+
+Well the data is in and the update process should be fairly straight forward - though still somewhat manual.  Time to move onto the Greasemonkey script.  This is what recognises and updates the Moodle page, communicates with the details server and displays a pop up.  Changes will likely need to be made to both the client and server to serve the new course.
+
+Greasemonkey first
+<ul>
+  <li> Recognise the course - 7023
+       Add that Moodle course id to an if statement and it should start working?  As long as I remember to reload the modified script.  Yes.  It is recognising it.
+  </li>
+</ul>
+
+Server
+<ul>
+  <li> Map course id to BIM </li>
+  <li> Map remote course id to local id </li>
+  <li> need to abstract out the WEEKS data - at the moment this is hard coded to the weeks, but it will do
+  </li>
+  <li> And the module mapping - DONE
+  <li> Fix up the dates </li>
+</ul>
+
+Still some minor bugs, to do list includes
+<ul>
+  <li> Get the accordion working. </li>
+  <li> Timeago isn't calculating the time since/till end of weeks. </li>
+  <li> Missing data- GPA, # courses complete </li>
+  <li> Add in the sentiment analysis work. </li>
+</ul></p>
+
+</body>
+</html>

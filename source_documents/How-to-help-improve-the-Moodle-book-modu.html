@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How to help improve the Moodle book module</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/02/10/how-to-help-improve-the-moodle-book-module/">How to help improve the Moodle book module</a></h1>
+
+<p>Tags: bad, concretelounge, edc3100, moodle</p>
+
+<p>As mentioned <a href="https://davidtjones.wordpress.com/2015/02/08/kludging-an-authoring-process-with-moodle-books-etc/">in the last post</a> there are limitations in the Moodle book module that are acting as <a href="http://fedwiki.djon.es/view/welcome-visitors/view/concrete-lounge">a concrete lounge</a>. The following documents an attempt to help improve the module.
+
+In the end, I've made some serious steps to contributing a bit of code to a standard plugin (as I write this, I'm imagining how experienced Moodle folk will shudder at the many misuses of Moodle terms in the following).
+
+<strong>Update:</strong> The "bug" in the Book module reported below is not a bug. There's actually functionality in the Book module to support this, it's just not obvious. More <a href="https://davidtjones.wordpress.com/2015/07/18/import-and-the-book-module-a-case-of-knowledge-loss/">explanation is available</a>.
+
+<h2>Task and context</h2>
+
+As described in <a href="https://davidtjones.wordpress.com/2015/02/08/kludging-an-authoring-process-with-moodle-books-etc/">the last post</a> the context is a course website hosted in the Moodle LMS. A course that uses quite heavily <a href="https://docs.moodle.org/28/en/Book_module">the Moodle book module</a>. The module has import function that is meant to allow you to import a collection of HTML documents into a book.
+
+<h2>Concrete lounge</h2>
+
+The problems with the import process include
+<ol>
+  <li> Titles for imported titles are 100% from the HTML filenames.
+       e.g. call your file "Diigo tool disappears_sub.html" and the chapter title will be "Diigo tool disappears_sub.html".  Rather than "Diigo tool disappears".
+       The _sub is required by the import function to indicate a sub-chapter. The .html is to indicate a HTML file. </li>
+  <li> The order of imported chapters is based on the order in the file system.
+       e.g. If I have the following files to import
+[code lang="sh"]
+dj:001 david$ ls *.html
+A blog.html
+Diigo tool disappears_sub.html
+Diigo.html
+The tools we'll be using.html
+Twitter.html
+[/code]
+        Regardless of the order in which I add these files to the zip file (import is via a zip file), the order that they will appear as chapters in the book is dependent on the order the file system of the Moodle computer creates.
+        Even if I create the zip file in the right order
+[code lang="sh"]
+dj:001 david$ unzip -t import.zip
+Archive:  import.zip
+    testing: The tools we'll be using.html   OK
+    testing: Diigo.html               OK
+    testing: Diigo tool disappears_sub.html   OK
+    testing: A blog.html              OK
+    testing: Twitter.html             OK
+No errors detected in compressed data of import.zip.
+[/code]
+         The first chapter will be "A blog.html"
+  </li>
+  <li> There is not option to remove all existing chapters before import.
+        There are situations where I'm trying to replace the entire book with the import. Currently I have to create a brand-new book resource, or manually remove all the chapters in the current book. </li>
+  <li> No method for linking to a chapter prior to import.
+        If I create the collection of chapters elsewhere, there will be times when I wish to create links between those chapters.  Currently there is apparently no capacity to do this. </li>
+</ol>
+
+
+<h2>Bricolage</h2>
+
+Here's what I've done so far to address this problem with the resources available.
+
+<h3>Process to make changes to Moodle core</h3>
+
+<a href="https://docs.moodle.org/dev/Process#Fixing_a_bug">This seems</a> to be the process I need to follow for the above which translates into
+<ol>
+  <li> Is there a tracker issue?
+       Via various trails I end up at the <a href="https://tracker.moodle.org/browse/MDL/component/12138/?selectedTab=com.atlassian.jira.jira-projects-plugin:component-summary-panel">book page/section</a> in tracker.  Raising the question which versions of the book Module am I dealing with?
+      Time to track through the <a href="https://tracker.moodle.org/browse/MDL-37199?jql=project%20%3D%20MDL%20AND%20component%20%3D%20Book%20ORDER%20BY%20updated%20DESC%2C%20priority%20DESC%2C%20created%20ASC">book issues</a> in tracker.  Those related appear to be
+        <ul>
+          <li> <a href="https://tracker.moodle.org/browse/MDL-33219?jql=project%20%3D%20MDL%20AND%20component%20%3D%20Book%20ORDER%20BY%20updated%20DESC%2C%20priority%20DESC%2C%20created%20ASC">support for re-importing chapters</a>
+               Close to what I'm working on.  But it's old. Created in 2008. </li>
+         <li> <a href="https://tracker.moodle.org/browse/MDL-41473?jql=project%20%3D%20MDL%20AND%20component%20%3D%20Book%20ORDER%20BY%20updated%20DESC%2C%20priority%20DESC%2C%20created%20ASC">Book HTML zip incorrect URL</a>
+              Picks up on the issue with links between chapters that have been imported.  This appears to have been fixed and should be in from 2.5 onwards.  Need to check this (NOTE: I haven't actually tried this process yet).
+        </ul>
+       Nothing apparent.
+
+       So as <a href="https://docs.moodle.org/dev/Process#Users">a user</a> I can report the bug/make a feature request and then contribute by making a fix.  So let's create an issue in tracker.  What type of issue should it be?
+        <ul>
+          <li> bug - A problem which impairs or prevents the functions of the product. </li>
+          <li> improvement - An improvement or enhancement to an existing feature or task. </li>
+        </ul>
+        Either could apply.  I'll be positive and call it an improvement.  <a href="https://tracker.moodle.org/browse/MDL-49128?filter=-2">Issue created</a>.
+  </li>
+  <li> Which branches should the fix be made on?
+    The advice is<blockquote>Bugs should normally be fixed on all the supported stable branches that are affected. New features should just go into master, but sometimes minor enhancements are made on the most recent stable branch.</blockquote>
+       So where does this fit?  I assume a bug or minor enhancement.  The other factor is that if I make this change on the version that my institution is using, that will increase the chances that I might get to use it this semester (which are very slim).  Of course, it's difficult to remember/discover which version of Moodle we're using.  I think perhaps 2.7 for now.  Which seems to the <a href="https://download.moodle.org/releases/supported/">other supported release</a>.
+  </li>
+  <li> Develop the change using git
+       <a href="https://davidtjones.wordpress.com/2013/05/26/preparing-bim-for-moodle-2-4-and-beyond/">Prior work</a> contains an example of how to get a version of the Moodle source using git and start making changes.  Will start with that.
+
+    My issue number is MDL-49128
+       <ul>
+          <li> <a href="https://docs.moodle.org/dev/Git_for_developers">Git for developers</a>
+               This is the process I'm currently using.
+          <li> <a href="https://docs.moodle.org/dev/Commit_cheat_sheet">GIT commit cheat sheet</a> </li>
+        </ul>
+    The process I'll use is
+<ul>
+  <li> Fork the branch of Moodle I want to work on  MOODLE_??_STABLE
+[code lang="sh"]
+dj: david$ history | grep git
+ git clone git://git.moodle.org/moodle.git
+  git clone git://github.com/djplaner/moodle.git
+  git branch -a # what are the available branches
+  git remote add upstream git://git.moodle.org/moodle.git  # connect upstream
+  git checkout MOODLE_27_STABLE
+[/code]
+</li>
+  <li> Create the branch
+[code lang="sh"]
+git checkout -b MDL-49128-book-import-fixes origin/master
+[/code]
+  </li>
+  <li>  Make changes - see below </li>
+
+  <li> Testing process
+      <ul>
+        <li> zipfiles.zip
+             Has the following files that should be displayed in this order
+            <ol>
+               <li>  The tools we'll be using.html   </li>
+               <li> Diigo.html             </li>
+              <li> Diigo tool disappears_sub.html (this is a sub chapter)  </li>
+               <li>  A blog.html              </li>
+              <li>  Twitter.html     </li>
+             </ol>
+            Without either fix the chapters will start with A blog.html, Diigo.html etc. through to Twitter.html.
+            With the both fixes, the order of chapters should match the numbered list above. Also, the chapter names should not include .html or _sub
+         </li>
+       </li>
+       <li> zipdirs.zip
+             Has essentially the same chapters, however, they are implemented as folders containing a single HTML.
+      </li>
+      </ul>
+  </li>
+  <li> Commit the changes to my repo
+        This wasn't as straight forward as I thought.  Ended up with
+[code lang="sh"]
+git remote set-url origin https://github.com/djplaner/moodle.git
+git push origin MDL-49128-book-import-fixes
+[/code]
+      Which ends up creating this <a href="https://github.com/djplaner/moodle/compare/MDL-49128-book-import-fixes?expand=1">nice little summary</a> on github.
+   </li>
+  <li> Ask the Moodle devleopers to review it
+        Updated the issue in the tracker, time to wait and see what I got wrong.
+  </li>
+</ol>
+
+<h3>Making changes</h3>
+
+I've been using the zipfiles approach. A zip file with a collection of HTML files, each file equals one chapter.  This is fixed based on previous work.
+
+There is also a zipfolders approach. A zip file of folders. Where each folder equals one chapter.
+
+The order fix is working on zip folders. However, with the chapter names, I'm now getting both the chapter name and the file name.  So <em>The tools well be using/The tools well be using</em>.  Should the filename or the folder name be used?
+
+I'm assuming the folder name.  The book module import code appears to support this.  For example when reading HTML files it is looking for default files in the folders. i.e. Default.htm and index.htm.  Suggesting that it isn't assuming that these have the names of the chapters.
+
+That appears to be working.
+
+<h2>Factors</h2>
+
+I have to think that anyone who had used the import function in action - like I  <a href="https://davidtjones.wordpress.com/2015/02/08/kludging-an-authoring-process-with-moodle-books-etc/">tried to do</a> - would have been aware of the limitations of the import function.  It just doesn't seem designed to be useful. Thus it seems logical to suspect that maybe the original designer wasn't a user.  They weren't solving their own (or someone close to them) problem.  Just implementing a feature.  Hence they weren't in a position to know how limited it was.
+
+This distance between implementing the function and using the function seems to be a common feature of concrete lounges.  Anyone who has to use a concrete lounge for any length of time is going to be aware of the pain and want to change it.
+
+The fact that this particular bit of pain has stood for so long, has to say something. Perhaps it's just at the book module is just an unloved child?  But it is part of Moodle core now, so it has to be perceived to be useful for some.</p>
+
+</body>
+</html>

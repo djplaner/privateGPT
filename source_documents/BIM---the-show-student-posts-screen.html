@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - the show student posts screen</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/26/bim-the-show-student-posts-screen/">BIM - the show student posts screen</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>This post describes the initial implementation of show student posts screen.  IT builds on the format/process used in the <a href="https://djon.es/blog/2009/12/24/bim-staff-show-details-screen/">show student details screen</a>.</p>
+
+<h3>Required data</h3>
+
+<p>There should be some similarity with the show student details screen. The first three match.</p>
+<ul>
+  <li> Which students the marker is responsible for. </li>
+  <li> User details for those students. </li>
+  <li> Student details from student feeds </li>
+  <li> Split students into registered and unregistered. </li>
+  <li> Student details from bim_marking. </li>
+  <li> List of questions for the bim. </li>
+</ul>
+
+<h3>Implementation questions</h3>
+
+<ul>
+  <li> Main question appears to be how to call this screen. <br />Probably need an additional parameter to specify which of the operations that the teacher can call: ShowPostsDetails  AllocatePosts MarkPost.<p>Yep, that seems to work.  Using <code>screen as the parameter.  If empty, defaults to show student details. </li>
+  <li> There's also the question of including both bimId and courseId in the view.php for bim.<br />Currently it is only including the course id.  This means that a course can only have one BIM.  A limitation.<br />Actually, this is an example of my limited, but hopefully growing, knowledge of Moodle.  The id passed in is for the course_module table which holds information about the combination of course and activity/module.  So this is not a worry.</li>
+</ul>
+
+<h3>Get the data</h3>
+
+<p>The first four points from above are duplicated from the show student details screen.  Easy.</p>
+<p>List of questions - uses existing bim_get_question_hash.</p>
+<p>Student details from bim_marking.  Given a list of student ids (from $registered) get the appropriate details. Very similar to <code>bim_get_feed_details</code>. So create <code>bim_get_marking_details</code></p>
+
+<h3>Show the data</h3>
+
+<p>This should be very similar to show student details.  Simply showing some additional fields in the table. Tasks are</p>
+<ul>
+  <li> Show the unregistered students first. <strong>Done</strong><br />This is intended to be annoying so as to encourage the markers to get the students registered.  Of course, this may back fire for students who have stopped the course early.</li>
+  <li> Show the registered students.<strong>Done</strong> <br />Bit of work, but is going.  Have to look at the sorting of columns in flexible_table.  Actually, that's down to the test data.  Will leave it for now.</li>
+</ul>
+
+<a name="todo"></a>
+<h3>What's left to do</h3>
+
+<p>Tasks left to do on this screen and subsequent screens include:</p>
+<ul>
+  <li> General improvement in look and feel. </li>
+  <li> The sorting isn't working as expected.  flexible_table not quite set up properly yet. This will effect the details screen as well. </li>
+  <li> The tab interface for details/posts screens needs to be set up.<br />Some initial attempts have proven to be somewhat less than successful. </li>
+  <li> There are now links to the AllocatePosts screen - but it's not working. <br />Function in place, but just displays message.</li>
+  <li> There are now links to the MarkPost screen - but it's not working.<br />Function in place, but just displays message. </li>
+  <li> Question of sorting on the question columns (by mark, submit and not submit) </li>
+  <li> The # of functions per screen is getting quite large, getting to the stage of needing to break it out into support libraries. </li>
+</ul></p>
+
+</body>
+</html>

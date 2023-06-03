@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Automating calculation of LMS/CMS/VLE feature usage - a project?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/08/05/automating-calculation-of-lmscmsvle-feature-usage-a-project/">Automating calculation of LMS/CMS/VLE feature usage - a project?</a></h1>
+
+<p>Tags: elearning, evaluation, indicators, lmsEvaluation, Uncategorized</p>
+
+<p><p>I'm in the midst of looking at the <a href="https://djon.es/blog/2009/08/05/factors-related-to-the-breadth-of-use-of-lmsvle-features/">work of Malikowski et al</a> in evaluating the usage of VLE features.  The aim of this work  is an attempt to provide information that can help those who help academics use VLEs.  The following is an idea to address those problems and arrive at something that might be useful for cross-institutional comparisons.</p>
+<p>Given the widespread adoption of the LMS/VLE, I'd be kind of surprised if someone hasn't given some thought to what I've suggested, but I haven't heard anything.  </p>
+<p>Do you know of a project that covers some of this?</p>
+<p>Interested in engaging in something like this?</p>
+
+<h3>Their contribution</h3>
+
+<p>An important contribution they've made is to provide a useful framework for comparing feature usage between different systems and summarised the basic level of usage between the different parts of the framework.  The framework is shown in the following image.</p>
+
+<a href="https://www.flickr.com/photos/david_jones/3465729160/" title="Malikowski Flow Chart"><img alt="Malikowski Flow Chart" height="640" src="https://farm4.staticflickr.com/3601/3465729160_255865ebc6_z.jpg?zz&#x3D;1" width="581" /></a>
+<h3>Limitations</h3>
+
+<p>However, there remain two important questions/problems:</p>
+<ol>
+  <li> How do you generate the statistics to fill in the framework? <br />Malikowski et al suggest that prior studies relied primarily on asking academics what they did with the LMS.  They then point out that this approach is somewhat less than reliable. The adopt a better approach by visiting each course site and manually counting feature usage.  <p>This is not much of an improvement because of the workload involved but also the possibility of errors due to them missing usage.  For example, the role in the LMS of the user visiting each course site may not be able to see everything. Alternatively, when they visit the site may change what they see e.g. an academic that deletes a particular function before term ends.</p>
+</li>
+  <li> What does it mean to adopt a feature?<br />In Malikowski (2008) adoption is defined as using a feature more than the 25% percentile.  This, I believe, is open to some problems as well.</li>
+</ol>
+
+<h3>Implications</h3>
+
+<p>Those limitations mean, that even with their framework, it is unlikely that a lot of organisations are going to engage in this sort of evalaution.  It's too difficult.  This means less data can be compared between institutions and systems. This in turn limits reflection and knowledge.</p>
+<p>Given the amount of money being spent on the LMS within higher education, it seems there is a need to address this problem.</p>
+
+<h3>One approach</h3>
+
+<p>The aims of the following suggestion are:</p>
+<ul>
+  <li> Automate the calculation of feature usage of LMS. </li>
+  <li> Enable comparison across different LMS. </li>
+  <li> Perhaps, include some external data. </li>
+</ul>
+<p>One approach to this might be to use the model/framework from Malikowski et al as the basis for the design of a set of database tables that are LMS independent.</p>
+<p>Then, as need arises, write a series of filters/wrappers that retrieve data from a specific LMS and inserts it into the "independent" database.</p>
+<p>Write another series of scripts that generate useful information.</p>
+<p>Work with a number of institutions to feed their data into the system to allow appropriate cross institutional/cross LMS comparisons.</p>
+<p>Something I forgot - also work on defining some definition of adoption that improves upon those used by Malikowski.</p>
+
+<h3>Start small</h3>
+
+<p>We could start something like this at CQU.  We have at least two historically used "LMS/VLEs" and one new one.  Not to mention <a href="http://beerc.wordpress.com/">Col</a> already having made
+progress on specific aspects of the above.</p>
+<p>The logical next step would be to expand to other institutions.  Within Australia?  ALTC?</p></p>
+
+</body>
+</html>

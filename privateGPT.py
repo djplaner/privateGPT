@@ -8,6 +8,11 @@ from langchain.llms import GPT4All, LlamaCpp
 import os
 import argparse
 
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
+
 load_dotenv()
 
 embeddings_model_name = os.environ.get("EMBEDDINGS_MODEL_NAME")

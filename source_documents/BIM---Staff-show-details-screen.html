@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Staff show details screen</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/24/bim-staff-show-details-screen/">BIM - Staff show details screen</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>This post documents the creation/completion of the BIM show details screen.  This is used by staff to get a summary of their student details, whether they have registered their feed, made posts etc.</p>
+<p>The BIM design will be based on the <a href="http://www.flickr.com/photos/david_jones/3268716654/in/set-72157608613577424/">equivalent BAM screen</a> with some slight modifications. For example, I don't believe Moodle will have the equivalent of the Webfuse "Photo Gallery" or "email merge" facilities.</p>
+<p>The post is starting to evolve into a semi-standard structure that I think I'll use with the other screens.  Will see how that goes. The structure at the moment is:</p>
+<ul>
+  <li> Identify all the data required for the screen. </li>
+  <li> Specify any questions about the implementation I have. </li>
+  <li> Document what I did to get the data. </li>
+  <li> Document what I did to get it showing in the browser. </li>
+</ul>
+
+<h3>Data that is required</h3>
+
+<p>To implement this screen, the code will need to retrieve the following data</p>
+<ul>
+  <li> The list of students who the staff member is responsible for marking. </li>
+  <li> User details about the staff member (name etc). </li>
+  <li> User details about the students. </li>
+  <li> Information for the students from <code>bim_student_feeds</code>
+</li>
+  <li> Identify which of the marker's students haven't registered their feeds. </li>
+</ul>
+
+<h3>Questions</h3>
+
+<ul>
+  <li> Staff (not course coordinator) have two main screens for BIM: show details and show posts.  Should I implement these as tabs? <strong>Probably yes</strong><br />The coordinator will have an additional screen to configure the BIM activity, this could be represented using an additional tab. </li>
+  <li> Does the coordinator/teacher/student switch in view.php work with the test data? <br />It seemed to work before.  If I'm going to write this screen, I need to login to Moodle as a teacher, but not coordinator.  It works as expected.  Little wins are good wins - well they are better than loses.</li>
+</ul>
+
+<h3>Get the data</h3>
+
+<p>Basically this should document the points identified in the data section above.</p>
+
+<h4>Staff members students</h4>
+
+<p>Need to know which students the staff member is responsible for marking.</p>
+<p>For the purposes of testing this is being held in the table <code>bim_markers_students</code> because I'm uncertain how the local Moodle instance will populate this information.  Eventually, I'm assuming it will be part of the groups features.  I can update the code then.</p>
+<p>Rather than separate out getting the list of student usernames and then their details.  Let's combine all this into the one function <code>bim_get_markers_students( $bim, $userid)</code></p>
+<p>Ahh, but of course, I've created the table markers_students using the course, not the BIM.  As this was how BAM worked (sort of).  This means <code>$bim</code> will need to, in the short term, be replaced with the course id.</p>
+<p>DONE: currently returns an array of user details for all the markers' students with the key being Moodle user id.</p>
+
+<h4>User details for markers</h4>
+
+<p>This is a quite straight forward use of Moodle database API.</p>
+
+<h4>Student information from bim_student_feeds</h4>
+
+<p>Need to take the student ids from the array above and get the information for the students from bim_student_feeds.</p>
+<p><pre>$student_ids = array_keys( $student_details );
+$feed_details = bim_get_feed_details( $bim, $student_ids );</pre></p>
+
+<h4>Identify which students haven't registered</h4>
+
+<p>This is essentially find all those students in <code>$student_details</code> that don't have an entry in <code>$feed_details</code>.  The question is, does PHP have some in-built functions that might help with this?  A simple for loop and an 'exist' function could do this.  Do I worry about going further?</p>
+<p>This <a href="http://www.w3schools.com/PHP/php_ref_array.asp">page</a> suggests that the function <code><a href="http://www.w3schools.com/PHP/func_array_diff_key.asp">array_diff_key()</a></code> might be what I'm looking for.</p>
+<p>However, the trouble is that <code>bim_get_feed_details</code> is returning an array with keys being the feed id, not the student id.  Need to update that.</p>
+<p>That's working.</p>
+
+<h3>Get it producing in the browser</h3>
+
+<p>Time to get it working in the browser.</p>
+<p>Will leave the question of the tabbed interface until the next bit of work.  Will focus on getting this screen working.  There are going to be two main sections to this screen:</p>
+<ol>
+  <li> Registered feeds. </li>
+  <li> Unregistered. </li>
+</ol>
+<p>The course description section that is in the BAM version of this screen can be forgotten, I believe, as BIM is working within the course Moodle site.</p>
+<p>This is essentially showing a bunch of data in a table. Can do this in for loops, but surely there's a quicker way in Moodle.  Seems I need to dig into weblib.php again.  Of course, <code>print_table</code>.  Will need to manipulate the data to use it.</p>
+<p>That's working, at a basic level.  More work to be done includes:</p>
+<ul>
+  <li> Look at alternating row colours to improve layout/appearance. </li>
+  <li> Figure out how to display the date/time properly, in this case number of days ago. </li>
+  <li> Add in the red/green/yellow for the cases where the last post was a while ago. </li>
+  <li> <del>Modify URL for live blog to some HTML.</del> </li>
+  <li> <del>Left align the headers.</del> </li>
+  <li> Left align the other numeric columns. </li>
+  <li> Add the ability to sort by columns. </li>
+</ul>
+<p>I now learn about <code>tablelib.php</code> that specifies a <code>flexible_table</code> class.  </p>
+
+<h3>Current status</h3>
+
+<p>Have got flexible_table working somewhat.  The sorting isn't working appropriately, the display of columns etc needs some work, but the data is being displayed.</p>
+<p>Doing a similar thing with the show posts screen should be fairly simple and somewhat similar.  Probably pay for the next step to be to finish these screen and get the tabs working, before duplication for show posts.</p>
+<p>Time to go home on Xmas eve.</p></p>
+
+</body>
+</html>

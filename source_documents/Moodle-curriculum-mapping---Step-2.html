@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moodle curriculum mapping - Step 2</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/03/30/moodle-curriculum-mapping-step-2/">Moodle curriculum mapping - Step 2</a></h1>
+
+<p>Tags: curriculumMapping, Uncategorized</p>
+
+<p><p>This is the second exploration of an idea for enhancing Moodle to enable curriculum mapping.  It carries on from the <a href="https://djon.es/blog/2010/03/23/first-step-in-moodle-curriculum-mapping/">first step</a> and is part of a <a href="https://djon.es/blog/research/curriculum-mapping/">broader project</a>.</p>
+<p>The aim today is to:</p>
+<ul>
+  <li> Create a CSV file of Moodle outcomes for a couple of programs.<br />Mostly to get a feel for the outcomes that accrediting bodies are after and to test out this "uploading" of outcomes.  Also to get some insight into how the "scales" might work. </li>
+  <li> "Map" a course or two with those outcomes. <br />The aim is to get a feel for how difficult doing this actually is and how well it works. Perhaps get some insights into ways it could be made easier/more effective.  </li>
+  <li> Start identifying the database structures where that information is placed.<br />This is a pre-cursor to starting to develop extensions to Moodle that will draw on this information.  It helps identify where the information is, what is there and what might be possible in terms of development. </li>
+</ul>
+<p>Am going to be updating this post throughout today (30 March, 2010)</p>
+
+<h3>Moodle outcomes CSV file testing</h3>
+
+<p>Moodle allows you to upload outcomes into Moodle via a CSV file.   The format is a 6 field CSV file</p>
+<ul>
+  <li> outcome_name - full name</li>
+  <li> outcome_shortname - short name</li>
+  <li> outcome_description</li>
+  <li> scale_name - name of scale</li>
+  <li> scale_items - comma separate list of scale items</li>
+  <li> scale_description</li>
+</ul>
+<p>
+e.g.<blockquote>
+outcome_name;outcome_shortname;outcome_description;scale_name;scale_items;scale_description<br />
+Participation;participation;;Participation scale;"Little or no participation, Satisfactory participation, Full participation";</blockquote>
+</p>
+<p>Each outcome in Moodle is associated with a scale.  It's typically used to make student performance against the outcome.  For curriculum mapping, I believe the scale can be used to measure how well the course/activity/resource meets the outcome/attribute etc.</p>
+<p>The task now is to create a useful CSV outcomes file for my purposes.  The choices that exist include:</p>
+<ul>
+  <li> The <a href="http://dmai.cqu.edu.au/FCWViewer/view.do?page=7949">institution's graduate attributes</a>; or </li>
+  <li> The outcomes required of specific disciplinary accrediting bodies.</li>
+</ul>
+<p>Am thinking I'll start with the institutional graduate attributes - mostly for political reasons - and then do one of the disciplinary bodies outcomes for a bit more learning.</p>
+
+<h4>Graduate attributes</h4>
+
+<p>Not 100% certain this represents the current state of the institution's graduate attributes, but it's good for an experiment.  The institution is apparently introducing graduate attributes progressively during 2010 with all undergraduate programs done from Jan 2011 and all other programs from 2012.</p>
+<p>The institution has 8 graduate attributes:</p>
+<ul>
+  <li>Communication </li>
+  <li> Problem solving</li>
+  <li> Critical thinking</li>
+  <li> Information literacy</li>
+  <li> Team work</li>
+  <li> Information technology competence</li>
+  <li> Cross cultural competence</li>
+  <li> Ethical practice</li>
+</ul>
+<p>As it stands, I've been unable to find any description of these.  However, <a href="http://dmai.cqu.edu.au/FCWViewer/getFile.do?id=31123">a document describing the project</a> has developed some "levels of achievement" for the attributes and offered descriptions of those levels using learning outcomes and the revised Bloom's taxonomy.</p>
+<p>The three levels are: introductory, intermediate and graduate.  Each of the outcomes/levels are associated with learning domains from the revised Bloom's taxonomy.</p>
+<p><strong>Note:</strong> my aim here is to identify what has been done and work out how it can be translated into Moodle's outcomes CSV file.  Not to judge what's been done.</p>
+
+<h4>The CSV file</h4>
+
+<p>The first version of a CSV file for the attributes is done and successfully in.  Will reflect more on this after lunch.</p>
+<p>The Moodle help documentation suggests that the format is as listed above, with outcome_description and scale_description as optional.  That means that you don't have to include them in a line, but you do need to include all fields.  Getting the format exactly right was an interesting experience in trial and error.</p>
+<p>The first two lines of the file are<blockquote>Communication;comm;"Described here http://dmai.cqu.edu.au/FCWViewer/view.do?page=7949";"CQU Graduate Attributes (Communication)";"Introductory - Use appropriate language to describe/explain discipline-specific fundamentals/knowledge/ideas (C2), Intermediate - Select and apply an appropriate level/style/means of communication (C3), Graduate - Formulate and communicate views to develop an academic argument in a specific discipline (A4)";</blockquote></p>
+
+<h4>What is looks like</h4>
+
+<p>When trying to map an activity/resource in Moodle, you use the "edit" facility for that activity/resource and a part of the resulting page looks like the following - click on it to see it bigger.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/4475350746/" title="Moodle outcomes by David T Jones, on Flickr"><img alt="Moodle outcomes" height="96" src="http://farm3.static.flickr.com/2804/4475350746_23454bfff1_m.jpg" width="240" /></a>
+
+<p>Some comments on this image:</p>
+<ul>
+  <li> Duplicate outcomes suggest Outcome management not great.<br />You can see three outcomes for Communication.  This is due to the problems associated with importing the CSV file - 2 failed attempts, followed by a successful one.  And subsequent difficulties in finding out how to delete the older versions of the outcome.....Ahh, you have to go to "edit outcomes".</li>
+  <li> Not enough information.<br />While it wouldn't be a problem eventually, the problem I'm currently facing is that I'm not familiar enough with the outcomes to understand what they mean.  I want some additional pointers in the interface - even just the normal Moodle help link (a little question mark).  This absence is somewhat related to the next point. </li>
+  <li> Can't use the scale here and now. <br />For curriculum mapping, I want to select the scale here and now.  The idea is to specify to what level this activity/resource meets the outcome.  This highlights the difference in purpose between the outcomes in Moodle (focused on measuring individual student performance) and what the outcomes would be used in many forms of curriculum mapping (mapping how well a course covers outcomes).   For Moodle outcomes the scale starts to apply in the gradebook, i.e. when you're marking the individual student.  Not in the activity/resource.<p>Graduate attributes could be used for both approaches, map the course and also track student progress.</p></li>
+  <li> The need for groupings of outcomes. <br /> The first outcome "David's first outcome" is some from some earlier testing.  But it does highlight an additional requirement, the ability to separate (and perhaps map) between different groupings of outcomes.  e.g. CQU's graduate attributes, course learning outcomes and perhaps discipline accrediting body learning outcomes.</li>
+  <li> The Moodle workflow is somewhat limited.<br />With outcomes, as with other aspects of Moodle, the "workflow" - the sequence of screens you go through as you perform a task - leaves a bit to be desired.  It's not often clear where to go, or as you finish how best to proceed. </li>
+</ul>
+
+<h3>Other outcomes</h3>
+
+<p>Am now looking at the accreditation requirements for psychology and public relations to understand what is there and what implications that might have for this idea.</p>
+<p>In terms of public relations it appears to be a combination of course outcomes, university graduate attributes and some specific "criteria/areas" specified by the program.</p>
+<p>In psychology, there's an odd mixture of discipline specific "graduate attributes", with each having its own set of critiera, and a collection of "skills" to "map" assessment against.</p>
+
+<h3>Where's the data?</h3>
+
+<p>Seems the outcomes stuff might be stored in three tables:</p>
+<ul>
+  <li> grade_outcomes: id, courseid, shortname, fullname, scaleid, description, timecreated, time modified, usermodified <br />
+  Obviously the table the CSV import modifies. </li>
+  <li> grade_outcomes_courses: id, courseid, outcomeid<br />Links a course with an outcome in the previous. </li>
+  <li> grade_outcomes_history: id, action, oldid, source, timemodified, loggeduser, courseid, shortname, fullname, scaleid, description. <br />Not sure on this one.</li>
+</ul>
+<p>So, one question is where does the mapping against a particular activity/resource get put?</p>
+
+<h3>What about code?</h3>
+
+<p>moodle/lib/grade/grade_outcome.php defines a class grade_outcome, that is meant to handle it all, including database manipulation.</p></p>
+
+</body>
+</html>

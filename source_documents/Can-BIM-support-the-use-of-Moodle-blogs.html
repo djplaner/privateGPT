@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Can BIM support the use of Moodle blogs?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/02/can-bim-support-the-use-of-moodle-blogs/">Can BIM support the use of Moodle blogs?</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><h3>Problem</h3>
+
+<p><a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> is a Moodle activity module that helps academic staff manage the use of individual student blogs, where those blogs are hosted on the students' choice of blog service (e.g. Wordpress.com etc.). An in-built assumption/limitation in how BIM works is that each student's blog must be open to the world.  If access to the blog is restricted, BIM can't mirror it.</p>
+<p>For many folk this is not a problem. However, there are occasions where teaching staff want students to use individual blogs, but what the students post should be kept private, to some extent.</p>
+
+<h3>One Solution?</h3>
+
+<p>It's <a href="http://github.com/djplaner/BIM/issues#issue/13">been suggested</a> that allowing students to register their Moodle blog with BIM might get around this problem. This post is an attempt to explore that option.</p>
+
+<h3>Potential constraints</h3>
+
+<p>I don't have a lot of time to spend on this, so it has to be simple and not involve major modifications to BIM.  In addition, I'm reluctant to add to BIM special support for Moodle blogs. The aim of BIM is to encourage and enable the use of real tools through reliance on "standards" i.e. RSS and ATOM feeds.  I don't want to add special support for any particular blog.</p>
+<p>The Moodle blog itself is not much of a blog and is likely to change soon.</p>
+
+<h3>The Moodle blog</h3>
+
+<p>Focusing on 1.9, I can find out the following:</p>
+<ul>
+  <li> Site configuration for blogs.<br />Each Moodle site can configure its policies around blog visibility.  Options range from turning the blog facility off entirely through to all site users being able to see all blog entries and everyone being able to see entries specified as world readable.</li>
+  <li> Users can also configure entries for just them to see. </li>
+  <li> RSS security by obsufucation, not real security.<br />My understanding is that Moodle blog's can generate RSS, and that restrictions are based on the location of the RSS being secret as opposed to really secure.</li>
+  <li> As per <a href="http://moodle.org/mod/forum/discuss.php?d=134612">this post on Moodle.org site</a> the Moodle site needs to have RSS enabled at the site level via: Admin blog &gt; Server &gt; RSS &gt; Enable RSS
+</ul>
+
+<h4>Moodle Blog RSS</h4>
+
+<p>With RSS enable at the site level, an RSS icon is displayed on a user's blog.  If they click on that they get an RSS feed with the URL not being all that private.  i.e. confirming above, you have to know somethings to work it out, but it can be worked out.</p>
+<p>In terms registering a Moodle blog feed, you can't rely on auto-detect as Moodle doesn't use the right "HTML".  You actually have to register the RSS feed.</p>
+<p>But now I have another problem.  I can't seem to get the Moodle blog to add posts/items to the RSS feed. </p>
+
+<h3>Conclusions</h3>
+
+<p>I'm going to leave this investigation now without having worked it out.  The reasons are:</p>
+<ul>
+  <li> If you can get RSS being generated from the Moodle blog you should be able to register it with BIM, as long as the permissions are set correctly. </li>
+  <li> If you can do this, then the students' RSS feeds are only going to be very slightly more secure than those on Wordpress.com or similar.  </li>
+  <li> It will be very easy for other students within the course to see each other posts, so not a lot of privacy.</li>
+</ul></p>
+
+</body>
+</html>

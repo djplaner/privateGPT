@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Porting BIM to Moodle 2 - Step 1</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/11/19/porting-bim-to-moodle-2-step-1/">Porting BIM to Moodle 2 - Step 1</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>The wife's out for some culture so I find myself late on a Saturday night taking the initial steps in the second attempt to port BIM to Moodle 2.  Started reading Mike Churchward's blog series on <a href="http://tandl.churchward.ca/2011/10/converting-m19-plug-ins-to-m2.html">porting modules to Moodle 2</a>.
+
+Time moves on, and almost a week later I'm putting the finishing touches on this post/development journal entry. It gives a brief summary (mostly for my records) of what I've done to get a version of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> that is being recognised by Moodle 2.1. Not sure how well it is working, but Moodle 2.1 is creating tables and recognising the plugin as being available for use in courses.
+
+The next step will involve experimenting with just how well BIM is working with Moodle 2.1 and fixing what needs to be done. This will involve finishing some of the following.
+
+<h3>Upgrading Moodle</h3>
+
+Of course, it's a good 6/7 months since I touched Moodle. So I should probably start by upgrading to the latest version of Moodle, which seems to be 2.1.2.
+
+It is going to take sometime to get back into this.
+
+Oh look at that, Moodle 2.1 requires the next version of PHP. Thankfully some kind soul has produced a <a href="http://download.moodle.org/macosx/">dmg file</a> with Xampp and Moodle 2.1 for Mac OSX.  Let's install that.
+
+That was relatively painless.  Moodle 2.1 up and going.
+
+<h3>The plan for git</h3>
+
+The source code for BIM is <a href="https://github.com/djplaner/BIM/">hosted on BIM</a>. The previous attempt at BIM2 is also hosted there, need to figure out what to do with this new version.....yes folks, I'm that out of it as a developer.
+
+Ohh, there's a GUI client for Mac OSX now.  Looks okay.
+
+<a href="http://nvie.com/posts/a-successful-git-branching-model/">This seems</a> to be the approach. More on this tomorrow.
+
+The plan is
+<ul>
+  <li> Tag the existing bim code as 1.0 (and v1.0 just for good measure - i.e. re-learning git). </li>
+  <li> Create a bim2 branch and then a develop branch from there. <br /><tt>git checkout -b bim2</tt></li>
+  <li> Convert the Moodle 2 branch into a Moodle 2 module. <br />This will be the step-by-step process I start from now, with a vague set of steps something like
+     <ul>
+       <li> Do minimum to get Moodle 2 to recognise bim. </li>
+       <li> Comment out everything that creates errors. </li>
+       <li> Gradually bring bits back and convert them to Moodle 2 "format". </li>
+     </ul>
+     Be interesting to see how long that plan lasts.
+  </li>
+</ul>
+
+<h3>Get Moodle 2.1 to recognise the bim module</h3>
+
+With the code in place (~/mod), when I login as admin to the local Moodle installation, there is the notice that bim is ready to install. Now's when we find out what is missing.  There's the error<blockquote>Plugin "mod_bim" is defective or outdated, can not continue, sorry.</blockquote>
+
+The error causing this is<blockquote>Missing mandatory en language pack.</blockquote> If I go looking for the code, it's looking for the file <tt>$fullmod/lang/en/$mod.php</tt>. More information <a href="http://docs.moodle.org/dev/User:Frank_Ralf/Experience_of_converting_a_module_to_Moodle_2#Language_folder_changed">here</a> and <a href="http://docs.moodle.org/dev/Migrating_to_2.0_checklist">this checklist</a>
+
+I'd gotten a fair bit of the way through this conversion process when errors were causing me concern. After a few more side tracks I discovered the following.
+
+Oh dear, simply syntax errors. Need to check those. Using this little bit of shell
+[code lang="sh"]
+for name in *.php
+do
+  php -d display_errors=1 -l $name
+done
+[/code]
+
+Fixed up all of those and now have a bit of success, good news this late on a Saturday afternoon, bim is being recognised by Moodle 2.1
+
+<h4>Language strings</h4>
+
+From the <a href="http://docs.moodle.org/dev/Migrating_to_2.0_checklist">the checklist</a>
+<ul>
+  <li> <strong>DONE</strong> rename language folder (en_utf8 to en) </li>
+  <li> <strong>DONE</strong> Change $a to {$a} </li>
+  <li> Change popup help files <a href="http://docs.moodle.org/dev/Help_strings">to _help lang strings</a> and shorten.<br />Need to run up Moodle 1.9 so I can double check where the help strings are going etc.
+      <p>Some of these are quite long, I can see some Moodle docs in my future, including:</p>
+       <ul>
+         <li> Manage marking help "manageMarking.html" </li>
+         <li> yourStudents.html </li>
+         <li> opml.html </li>
+         <li> unregisteredDetails.html </li>
+         <li> registeredDetails.html </li>
+         <li> changingosts.html </li>
+         <li> mods.html </li>
+       </ul>
+ </li>
+  <li> <strong>DONE</strong> Add $string[‘pluginname’] to lang file</li>
+   <li> <strong>DONE</strong> Add $string[‘pluginadministration’] to lang file</li>
+</ul>
+
+So, does that change the Moodle 2.1 complaints about BIM?
+
+Yes it does.  A big green tick and success.  You know it's not going to be that easy.  Ahh, internal server error. Have to remove the bim code entirely to get Moodle to start up again.  Will remove it via Moodle, stick the code back in to see if the problem was due to a time out issue.
+
+Time to go through the rest of the checklist.
+
+<h4>Database</h4>
+
+Also drawing on the <a href="http://docs.moodle.org/dev/DB_layer_2.0_migration_docs">DB layer 2.0 migration docs</a>
+<ul>
+  <li> <strong>DONE</strong>Leave empty db/update.php file</li>
+  <li> <strong>DONE</strong>New $DB global objects with functions replace old db functions<br />There is a <a href="http://cvs.moodle.org/contrib/tools/check_db_syntax/">PHP script</a> that checks for functions.</li>
+  <li> $DB parameters swapped to ?</li>
+  <li> <strong>DONE</strong>Add and strip slashes no longer required</li>
+  <li> <strong>DONE</strong>Remove use of ENUM and ENUMVALUES in install.xml file</li>
+  <li> <strong>DONE</strong>Remove STATEMENTS section in install.xml file, use db/install.php or db/log.php instead.</li>
+  <li> <strong>DONE</strong> not used..check use of sql_substr()</li>
+  <li> Get_records() etc now always returning arrays, empty array in case of no records found.</li>
+  <li> Db functions throw errors not return false on error</li>
+  <li> DB functions offer strictness parameters e.g MUST_EXIST</li>
+  <li> <strong>DONE</strong> Update version.php numbers (esp required)</li>
+  <li> <strong>DONE</strong>In version.php add $module-&gt;requires = 2010080300; // Requires this Moodle version</li>
+</ul>
+
+More insights from <a href="http://docs.moodle.org/dev/Installing_and_upgrading_plugin_database_tables">page on upgrading plugin tables</a>
+
+<h4>Page display</h4>
+
+<ul>
+  <li> New $OUTPUT header and footer functions<br />Done the basics at the top level. Need to do more work on this.</li>
+  <li> Navigation links need to use $PAGE-&gt;navbar</li>
+  <li> Make sure that you instantiate the moodle form before any call to $OUTPUT-&gt;header()</li>
+  <li> Create a renderer</li>
+  <li> <strong>DONE</strong> (not used) Change the way image urls are displayed (not $CFG-&gt;pixpath any more)</li>
+  <li> CSS changes
+       <ul> <li> <strong>DONE</strong> (not used) Change styles.php to styles.css</li>
+            <li>Change page id to new structure e.g. course-format-studyplan to page-course-view-studyplan</li>
+       </ul>
+  </li>
+</ul>
+
+<h4>Forms</h4>
+
+<ul>
+  <li> Param_clean parameter type removed</li>
+  <li> type required parameter for optional_and required_param</li>
+  <li> Replace file form elements with new filepicker</li>
+  <li> Replace htmleditor with editor form field type</li>
+  <li> Change setHelpButton to addHelpButton. (You need to change the arguments, but the new ones are simpler.)</li>
+</ul>
+
+<h4>Roles and permissions</h4>
+
+<ul>
+  <li> <strong>DONE</strong> array name to $capabilities in access.php</li>
+  <li> <strong>DONE</strong> Remove references to admin in access.php</li>
+  <li> <strong>DONE</strong> Rename legacy to archetypes in access.php</li>
+  <li> <strong>DONE</strong> Add manager archetype in access.php</li>
+  <li> Ensure require_login as well as require_capability checks</li>
+  <li> <strong>DONE</strong> (not used) isguest() is depreicated, use !isloggedin() || isguestuser() instead</li>
+</ul>
+
+<h4>Progress</h4>
+
+Somewhere in all of that, things got a bit much.  Need to do this differently, for now.
+
+Empty slate and slowly copy stuff in, starting with index.php.  index.php requires a valid course id with a bim activity to work directly.  But bim is showing up in Moodle 2.1 okay.</p>
+
+</body>
+</html>

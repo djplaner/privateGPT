@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Requirements for an "indicators" Moodle block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/09/requirements-for-an-indicators-moodle-block/">Requirements for an "indicators" Moodle block</a></h1>
+
+<p>Tags: elearning, herding cats, indicators, Uncategorized</p>
+
+<p><p>The <a href="http://indicatorsproject.wordpress.com/">Indicators project team</a> are off to <a href="http://moodlemoot.org.au/">Moodlemoot AU 2010</a>.  All three are giving presentations, but only two (i.e. not me) are on the indicators project. In thinking about how we might make the most of this opportunity, we've floated the idea of announcing an "indicators" Moodle block at the conference.  This post is an attempt to make concrete our thinking and take some steps towards making it happen, hopefully even generate some interest and external comments.</p>
+
+<h3>What is an "indicators" Moodle block?</h3>
+
+<p>At least for me, at the moment, an "indicators" Moodle block is a simple extension to Moodle that just about anyone can install into their Moodle install and start getting some insights into whether or not what they (teaching staff, students or administrators) are doing is good, bad or indifferent. </p>
+<p>Such a block would probably fulfill some/all of the following:</p>
+<ul>
+  <li> Can be embedded into a normal Moodle view.<br />As a teaching staff member, or a student, the block would be part of my normal Moodle interface.  It's not located somewhere special that I have to remember to visit, it's always there. </li>
+  <li> Is very visual.<br />It sends a strong, very clear message.  I don't have to apply special knowledge or spend a lot of time trying to understand what it is telling me.  If I'm doing something wrong, it should be red or something similar.<p>This does <strong>NOT</strong> mean that is obtrusive.  As a part of a normal Moodle view it can take my attention away from other stuff.</p>
+  </li>
+  <li> Enables comparisons.<br />It doesn't tell me how many times I've posted to the discussion forum, it tells me how much less (or more) I've posted than the best students, or all the students, or the worst students.  In a friendly way it helps me understand how my use of the LMS compares to that of others. </li>
+  <li> Only uses what data is already in Moodle.<br />The aim is for anyone with a Moodle install to be able to add this block and use if straight away.  No need to modify/connect with external data sources (at least not yet).</li>
+  <li> Serves as a stepping stone to more functionality.<br />The first block is our foray into providing such a service.  Over time we might add more functionality.  The block has to be a good open source project, something others can add to.<p>Also, the block has to allow the use to provide more than just visualise the data.  It should help them to plan actions they might take, to talk to others about this, to track history etc.
+</ul>
+
+<h3>Other tasks</h3>
+
+<p>Apart from thinking about what it actually is, we also need to think about what we need to do to start implementation.  Here's my first list.</p>
+<ul>
+  <li> Identify some visualisation software.<br />Most of these will be graphs or perhaps networks.  We need to find a way to generate these graphs/network diagrams from PHP and in a way we can include in a Moodle block.</li>
+  <li> Figure out the Moodle database structure.<br />Whatever we do we'll be pulling data from Moodle.  So need to find out the format for the bit we're interested in. </li>
+  <li> Data caching?<br />Most of these examples are likely to require getting a large bunch of data and doing some calculations before generate the visualisation.  The block can't be a performance hog, so we're going to have to figure out some way to minimise performance impact.  Caching? </li>
+  <li> Moodle block programming.<br />Have done a little, there's a bit of doco out there. So shouldn't be too hard. </li>
+  <li> Managing the code.<br />We haven't done any joint development yet. Doing something like this would require us to figure out how we manage the development process.</li>
+  <li> Who does what?</li>
+</ul></p>
+
+</body>
+</html>

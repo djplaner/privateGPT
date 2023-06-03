@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Designing a collection of analytics to explore "engagement"</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/04/14/designing-a-collection-of-analytics-to-explore-engagement/">Designing a collection of analytics to explore "engagement"</a></h1>
+
+<p>Tags: bad, pirac, qilters, Uncategorized</p>
+
+<p>I'm working with a group of fellow teacher educators here at USQ to explore what is happening around student engagement with our online courses. It's driven by the apparent less than stellar responses on <a href="https://www.qilt.edu.au/">the QILT site</a> from our prior students around "engagement". It's also driven by some disquiet about the limitations of aggregated and de-contextualised data like that reported on the QILT site and also that arising from most learning analytics (e.g. as found <a href="https://davidtjones.wordpress.com/2016/04/03/learning-analytics-should-not-promote-one-size-fits-all-the-effects-of-instructional-conditions-in-predicting-academic-success/">by Gašević et. al. (2015)</a>.
+
+Hence our idea is to do something like
+<ol>
+	<li>Take a collection of teacher education courses.</li>
+	<li>Iteratively apply a range of increasingly specific learning analytics to reveal what's happening around engagement in our course sites.</li>
+	<li>Reflect on what we learn and what that might have to say about
+<ul>
+	<li>the use of aggregated and de-contextualised data/analytics;</li>
+	<li>what data/analytics might be useful for ourselves and our students; and</li>
+	<li>what's happening in our courses, and how that compares to what we thought was going on.</li>
+</ul>
+</li>
+</ol>
+As the person most familiar with technology and learning analytics, I'm tasked with identifying the sequence of "increasingly specific learning analytics" that we'll use.
+
+What follows is a first draft.  I'm keen to hear suggestions and criticisms. Fire away.
+
+Specific questions to be to be answered
+<ol>
+	<li>Does the sequence below make sense?</li>
+	<li>Are there other types of analytics that could be usefully added to the following and would help explore student/staff engagement and/or perhaps increase contextualisation?</li>
+	<li>What literature exists around each of these analytics, where did the apply the analytics, and what did they find?</li>
+</ol>
+<h2>Process overview</h2>
+Each of the ovals in the following diagram are intended to represent a cycle where some analytics are presented.  We'll reflect on what is revealed and generate thoughts and questions. The labels for the ovals a short-hand for a specific type of analytics. These are described in more detail below.
+
+The sequence is meant to capture the increasing contextualisation. The first four cycles would use fairly generic analytics, but analytics that reveal different and perhaps more specific detail. The last two cycles - learning design and course specific - are very specific to each course. The course specific cycle would be aimed at exploring any of the questions we identified for our individual courses as we worked through the other cycles.
+<a href="https://www.flickr.com/photos/david_jones/26380443975/in/dateposted-public/" title="Version 1 of process"><img alt="Version 1 of process" height="500" src="https://farm2.staticflickr.com/1461/26380443975_d89aeb5ff8.jpg" width="462" /></a>
+It won't be quite as neat as the above. There will be some iteration and refinement of existing and previous cycles, but the overall trend would be down.
+
+The analytics below could also be compared and analysed a variety of ways, most of which would be responding to details of our context. e.g. comparisons against mode and specialisation etc.
+<h2>Click/grade &amp; Time/grade</h2>
+This cycle replicates some of the patterns from <a href="http://ascilite.org.au/conferences/sydney10/procs/Beer-full.pdf">Beer et al (2010)</a> (somewhat shameless, but relevant self-citation) and related.  This is aimed at just getting the toe in the water, getting the process set up.  It's also arguably perhaps as removed from student learning/engagement as you can get. A <a href="https://davidtjones.wordpress.com/2016/04/09/playing-with-d3/">recent post</a> showed off what one of these will look like.
+<a href="https://www.flickr.com/photos/david_jones/26291023316/in/dateposted-public/" title="EDC3100 2015 Course and grades"><img alt="EDC3100 2015 Course and grades" class=" aligncenter" height="160" src="https://farm2.staticflickr.com/1608/26291023316_4748084e8f_n.jpg" width="320" /></a>
+
+This would also include the heatmap type analysis such as the following diagrams.
+<ul>
+	<li>Which links on a course site do the students click most?
+e.g. the <a href="https://github.com/damoclark/mav">Moodle Activity Viewer</a>.</li>
+	<li>What days/weeks of semester do they click most?
+e.g. the <a href="https://infiniterooms.wordpress.com/2015/08/14/when-are-they-learning-a-moodle-activity-calendar-heatmap/">Moodle activity calendar heatmap</a></li>
+</ul>
+<a href="https://www.flickr.com/photos/david_jones/12259871663/sizes/o/"><img alt="12259871663_48602a5da1_q" class="alignnone size-full wp-image-327" height="150" src="https://digitalqilters.files.wordpress.com/2016/03/12259871663_48602a5da1_q.jpg" width="38" /></a>  <a href="https://infiniterooms.files.wordpress.com/2015/08/calendar_heatmap3.png"><img alt="" height="168" src="https://infiniterooms.files.wordpress.com/2015/08/calendar_heatmap3.png" width="250" /></a>
+<h2 id="rossi">"Rossi" data sets</h2>
+<a href="http://www.dehub.edu.au/wp-content/uploads/2013/07/CQU_Report.pdf">Rossi et al (2013) </a>extended the Beer et al (2010) work and worked with the "Rossi" data sets drawing on the Interaction Equivalency Theorem (<a href="https://href.li/?http://www.uwex.edu/disted/conference/Resource_library/proceedings/46332_2011.pdf">Miyazoe and Anderson, 2011</a>). Hence increasing the theoretical connection with interaction/engagement.
+
+The additions in the "Rossi" data sets follow
+
+<strong>Proportion of clicks within LMS discussion forums (dhits)</strong>
+<table>
+<tbody>
+<tr>
+<th>CQU Moodle courses</th>
+<th>Non-forum clicks</th>
+<th>Forum clicks (dhits)</th>
+</tr>
+<tr>
+<td>n=12870 students</td>
+<td>68%</td>
+<td>32%</td>
+</tr>
+</tbody>
+</table>
+<strong># of forum hits (dhit), posts, and replies</strong>
+
+A "dhit" is a click on a forum. This includes navigation etc. The idea here is to compare dhits with posts and replies
+<blockquote>the posts and replies made within the forums are more representative of student and teacher engagement and interaction (Rossi et al 2013, p. 48)</blockquote>
+<table>
+<tbody>
+<tr>
+<th>Moodle CQU T1, 2011</th>
+<th>dhits</th>
+<th>Posts</th>
+<th>replies</th>
+</tr>
+<tr>
+<td>n=12870</td>
+<td>385113</td>
+<td>17154</td>
+<td>29586</td>
+</tr>
+</tbody>
+</table>
+<strong>learner-learner, learner-teacher and ratio</strong>
+
+# of forum posts that are learners replying to a learner post (learner-learner) or a learning responding to a teacher or vice versa (learner-teacher).
+<table>
+<tbody>
+<tr>
+<th>Average for T1, 2011 CQU courses</th>
+<th>Learner-learner</th>
+<th>Learner-teacher</th>
+<th>Ratio of LT to LL</th>
+</tr>
+<tr>
+<td>n=336</td>
+<td>86</td>
+<td>56</td>
+<td>.65</td>
+</tr>
+</tbody>
+</table>
+<strong>Comparison of learner-learner, learner-teacher and learner content interactions</strong>
+
+&nbsp;
+
+<img alt="Screen Shot 2016-04-12 at 12.36.46 pm.png" class="alignnone size-full wp-image-2093" height="554" src="https://digitalqilters.files.wordpress.com/2016/04/screen-shot-2016-04-12-at-12-36-46-pm1.png" width="785" />
+<h2>Networks and paths</h2>
+These analytics focus on the relationships and connections between people and the paths they follow while studying. Moving beyond numbers to starting to understand connections.
+
+This <a href="https://mashe.hawksey.info/2013/02/lak13-recipes-in-capturing-and-analyzing-data-using-sna-on-canvas-discussions-with-nodexl-for-when-its-not-a-snapp/">2013 post</a> from Martin Hawksey (found via his other post mentioned below) gives an overview of a range of uses and tools (including <a href="https://confluence.sakaiproject.org/pages/viewpage.action?pageId=84902193">SNAPP</a>) for social network analysis. It's the early SNAPP work that identifies some of what these visualisations can help identify
+<blockquote>
+<ul>
+	<li>isolated students</li>
+	<li>facilitator-centric network patterns where a tutor or academic is central to the network with little interaction occurring between student participants</li>
+	<li>group malfunction</li>
+	<li>users that bridge smaller clustered networks and serve as information brokers</li>
+</ul>
+</blockquote>
+The following is one of my first attempts generating such a graph. It shows the connections between individual student blogs (from EDC3100 2013). The bigger the line between dots (blogs), the more links.
+
+<a href="http://www.sciencedirect.com/science/article/pii/S0360131513001607">Romero et al (2013)</a> offers one example.
+
+<a href="https://www.flickr.com/photos/david_jones/8565340958/" title="001 - First Graph"><img alt="001 - First Graph" height="289" src="https://farm9.staticflickr.com/8237/8565340958_866b1928b3_n.jpg" width="320" /></a>
+
+A Sankey diagram is a method for representing flow in networks. It can be used to <a href="http://www.phillipburger.net/wordpress/website-path-analysis-with-sankey-diagram/">understand usage of websites</a>.  Martin Hawksey has just written <a href="https://mashe.hawksey.info/2016/04/pushing-canvas-lms-discussion-data-to-google-analytics-tips-on-google-analytics-api-integration-batch-collection-and-queue-time/">this post</a> (showing how to take LMS discussion data and send it through Google analytics) which includes the following screen shot of "event flow" (a related idea).  It shows (I believe) how a particular use has moved through a discussion forum. Looks like it provides various ways to interact with this information.
+
+<img alt="Google Analytics - Event Flow" border="0" height="366" src="http://mashe.hawksey.info/wp-content/uploads/2016/04/image_thumb-1.png" style="background-image: none; padding-top: 0; padding-left: 0; margin: 0 10px; display: inline; padding-right: 0; border-width: 0;" title="Google Analytics - Event Flow" width="660" />
+
+Hoping we might be able to leverage some of the work Danny Liu is doing.
+
+https://twitter.com/dannydotliu/status/719738094375686145
+<h2> Sentiment, content, and broader discourse analysis</h2>
+The previous cycles are focused on using clicks and links to understand what's going on. This cycle would start to play with natural language processing to analyse what the students and teachers are actually saying.
+
+This is a fairly new area for me. Initially, it might focus on
+<ul>
+	<li>readability/complexity analysis;
+Unpublished work from CQU has identified a negative correlation between the complexity of writing in assignment specifications and course satisfaction.</li>
+	<li>sentiment analysis
+How positive or negative are forum posts etc? The comments and questions on this <a href="http://meefen.github.io/notes/2014/05/01/Wen2014a/">blog post</a> about a paper using sentiment analysis on MOOC forums provides one place to start.</li>
+</ul>
+<h2>Learning design</h2>
+The plan here is to focus explicitly on the learning designs within the courses and explore what can be revealed using checkpoint and process analytics as outlined by <a href="https://davidtjones.wordpress.com/2013/08/14/aligning-learning-analytics-with-learning-design/">Lockyer et al (2013)</a>.
+<h2>Course specific</h2>
+Not explict planned here. The idea is that the explorations and reflections from each of the above cycles will identify a range of additional course specific questions that will be dealt with as appropriate.
+<h2>References</h2>
+Beer, C., Clark, K., &amp; Jones, D. (2010). Indicators of engagement. In <i>Curriculum, technology and transformation for an unknown future. Proceedings of ASCILITE Sydney 2010</i> (pp. 75–86). Sydney. Retrieved from <a href="https://href.li/?http://ascilite.org.au/conferences/sydney10/procs/Beer-full.pdf" rel="noreferrer">http://ascilite.org.au/conferences/sydney10/procs/Beer-full.pdf</a>
+
+Gašević, D., Dawson, S., Rogers, T., &amp; Gasevic, D. (2015). Learning analytics should not promote one size fits all: The effects of instructional conditions in predicating learning success. <i>The Internet and Higher Education</i>, <i>28</i>, 68–84. doi:doi:10.1016/j.iheduc.2015.10.002
+
+Lockyer, L., Heathcote, E., &amp; Dawson, S. (2013). Informing Pedagogical Action: Aligning Learning Analytics With Learning Design. American Behavioral Scientist. doi:10.1177/0002764213479367
+
+Rossi, D., Rensburg, H. Van, Beer, C., Clark, D., Danaher, P., &amp; Harreveld, B. (2013). <i>Learning interactions: A cross-institutional multi-disciplinary analysis of learner-learner and learner-teacher and learner-content interactions in online learning contexts</i>. Retrieved from <a href="https://href.li/?http://www.dehub.edu.au/wp-content/uploads/2013/07/CQU_Report.pdf" rel="noreferrer">http://www.dehub.edu.au/wp-content/uploads/2013/07/CQU_Report.pdf</a>
+
+&nbsp;
+<h2></h2></p>
+
+</body>
+</html>

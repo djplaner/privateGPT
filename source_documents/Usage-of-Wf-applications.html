@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Usage of Wf applications</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/08/04/usage-of-wf-applications/">Usage of Wf applications</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>Have spent the last day or so doing some more data munging of access logs trying to determine the level of usage of Wf applications within Webfuse.  Wf was the framework for developing dynamic web applications within Webfuse - the topic/outcome of my <a href="https://djon.es/blog/research/phd-thesis/">PhD</a>. The following is an initial summary of that munging with some initial reflection. This will get further polished and re-worked for inclusion in chapter 5 of the thesis.</p>
+
+<h3>Users and requests</h3>
+
+<p>The following table splits people using the Wf applications into students and staff. It shows the number of users of each type using Wf applications and the number of requests they made.</p>
+
+<table border="1">
+  <tr>
+    <th>Year</th><th colspan="2">   Students</th><th colspan="2">   Staff</th></tr>
+    <tr>
+      <th>&nbsp;</th><th>Users</th><th> Requests</th><th>   Users</th><th>  Requests</th></tr>
+  <tr>
+    <td align="right">
+2000 </td><td align="right">  538 </td><td align="right">   1888 </td><td align="right">  2    </td><td align="right">31
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2001 </td><td align="right">  3361 </td><td align="right">  27,936 </td><td align="right">    96 </td><td align="right">    4139
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2002 </td><td align="right">  4210 </td><td align="right">  39,805 </td><td align="right">    298 </td><td align="right">   57,864
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2003 </td><td align="right">  6115     </td><td align="right">206,884 </td><td align="right"> 575 </td><td align="right">   164,274
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2004     </td><td align="right">8664 </td><td align="right">    491,136 </td><td align="right">   633 </td><td align="right">   260,657
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2005     </td><td align="right">9937 </td><td align="right">    461,999 </td><td align="right">   782  </td><td align="right">311,080
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2006     </td><td align="right">11,994     </td><td align="right">1,033,619 </td><td align="right">   1159    </td><td align="right">656,609
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2007     </td><td align="right">10,810 </td><td align="right">  820,847  </td><td align="right">1289   </td><td align="right">748,107
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2008 </td><td align="right">  12,085   </td><td align="right">777,522 </td><td align="right"> 1234 </td><td align="right">  880,015
+    </td>
+  </tr>
+  <tr>
+    <td align="right">2009     </td><td align="right">12,342 </td><td align="right">  900,870 </td><td align="right"> 1169  </td><td align="right">1,157,987
+  </td>
+  </tr>
+</table>
+
+
+<h3>History and comments</h3>
+
+<p>The following is simply a collection of comments seeking to offer some meaning, context and reflection on the statistics in the above table.  </p>
+
+<h4>2000</h4>
+
+<p>The first Wf application was the standard dynamic application of any e-learning system, "take quiz".  The application students use to take an online quiz. It was developed in 2000, based on some earlier work, that was modified to fit within a mod_perl development environment to deal with the increased system load created by all those students taking the quiz at the same time, at the last minute.</p>
+<p>The only staff use of Wf applications was experiments taking a quiz. Staff wanting to know what the students would see.</p>
+
+<h4>2001</h4>
+
+<p>2001 saw the development of the first staff specific Wf application, the results upload app. This app allowed staff teaching a course to upload a CSV containing the final student results for entry into the institution's students records system.  It was developed after a particularly inefficient solution was proposed by the project implementing Peoplesoft at the institution.  The results upload application was responsible for 53.4% of the staff requests in 2001.  The other staff applications included:</p>
+<ul>
+  <li> various quiz management features - 15.4%; </li>
+  <li> an early online assignment submission system - 12.2%; </li>
+  <li> an app to download a course class list - 9%; and</li>
+  <li> an app to restrict access to portions of a class site - 6.9%. </li>
+</ul>
+<p>For students, the take quiz application accounts for over 99% of the student requests.</p>
+
+<h4>2002</h4>
+
+<p>This is where the staff "portal" applications: Staff MyInfocom and Staff MyCQU are developed. Both are extensions of the class list, results upload applications initially developed in 2001. The top 4 Wf applications based on staff requests (and accounting for almost 83% of staff Wf application requests) are:</p>
+<ol>
+  <li> Staff MyInfocom - 41.3%; </li>
+  <li> Online assignment management - 33.5%; </li>
+  <li> Quiz management applications - 4.5%; </li>
+  <li> Results upload - 3.5%.</li>
+</ol>
+<p>It is this year that online assignment management really starts being used heavily.</p>
+<p>For students, the take quiz application still accounts for over 99.5% of the Wf requests.</p>
+
+<h4>2003</h4>
+
+<p>In 2003 a student "portal", and a number of other Wf applications for students, were developed.  The major Wf applications by student use in 2003 were:</p>
+<ul>
+  <li> Student MyInfocom (the "portal") - 55.5%;<br />The portal includes the mechanisms by which students submit online assignments. </li>
+  <li> Take quiz - 43%; </li>
+  <li> The timetable generator - 1.1%. </li>
+</ul>
+<p>For staff, the "Staff MyCQU" portal - used by staff outside the original Webfuse faculty - starts to get heavy use. The top Wf applications by staff usage are:</p>
+<ul>
+  <li> Staff MyInfocom - 40%; </li>
+  <li> Staff MyCQU - 28.9%; </li>
+  <li> Assignment management - 15.9%; </li>
+  <li> Results upload - 4.3%; </li>
+  <li> Informal review of grade - 3%; </li>
+  <li> Quiz management - 2.9%. </li>
+</ul>
+<p>It is interesting to see the decreasing proportion of use of the quiz management facilities.</p>
+
+<h4>2004</h4>
+
+<p>Webfuse was developed within a particular faculty. 2004 is the year where usage by staff outside that faculty, starts to exceed usage by staff within that faculty.  Webfuse is becoming an institutional system, at least in use. It takes another couple of years before it is official.</p>
+<p>In terms of staff usage, the top Wf applications are:</p>
+<ul>
+  <li> Staff MyCQU - 41.1%; </li>
+  <li> StaffMyInfocom - 30.5%; </li>
+  <li> Assignment management - 15.9%; </li>
+  <li> Quiz - 4.8%. </li>
+</ul>
+<p>For students it is:</p>
+<ul>
+  <li> StudentMyInfocom - 78%; </li>
+  <li> Take Quiz - 20.4%; </li>
+  <li> Timetable generator - 1.3%. </li>
+</ul>
+
+<h4>2005</h4>
+
+<p>This is the first year I was no longer officially involved with Webfuse. It's also the year that the direction of Webfuse is officially being set more by faculty management. This is evident in the rise of the Academic Misconduct Database (AMD). A system for tracking incidents of academic misconduct by students.  </p>
+<p>For staff the top Wf applications by usage in 2005 were:</p>
+<ul>
+  <li> StaffMyCQU - 46%; </li>
+  <li> StaffMyInfocom - 26.3%; </li>
+  <li>Assignment management - 12.3%; </li>
+  <li> AMD - 8.1%. </li>
+</ul>
+<p>For students:</p>
+<ul>
+  <li> Student MyInfocom - 88.6%; </li>
+  <li> TakeQuiz - 9.6%; </li>
+  <li> Timetable generator - 1.2%. </li>
+</ul>
+
+<h4>2006</h4>
+
+<p>This is the year when an organisational restructure encouraged the broader adoption of Wf applications within the institution as parts of the faculty where Webfuse originated were broken up and spread around. You could say the infection that was Webfuse, spread. An example of this organisational restructure is the retirement of the "MyInfocom" brand. The faculty "Infocom" no longer existed and the brand morphed into MyCQU.</p>
+<p>For staff, the top Wf applications were:</p>
+<ul>
+  <li> StaffMyCQU - 71.1%; </li>
+  <li> Assignment management - 11.1%; </li>
+  <li> Plagiarism - 10.5%; </li>
+  <li> Results upload - 1.4%; </li>
+</ul>
+<p>This is also the year in which the timetable generator no longer existed, so the top student applications were:</p>
+<ul>
+  <li> StudentMyCQU - 92.2%; </li>
+  <li> Take quiz - 6.1%. </li>
+</ul>
+
+<h4>2007</h4>
+
+<p>I believe this is the year Webfuse and the Wf applications officially became institutional systems as the Webfuse team moved from sitting in a faculty into the central IT division. I found it interesting to see the emergence of the mail merge facility as an top staff application. </p>
+<p>The top applications by staff usage were:</p>
+<ul>
+  <li> StaffMyCQU - 73.7%; </li>
+  <li> Plagiarism - 9% ; </li>
+  <li> Assignment management - 7.6%; </li>
+  <li> Extension system - 1.6%;<br />This was a system by which students could request an extension for an assignment, and that request would be managed and tracked by staff. </li>
+  <li> Results upload - 1.6%; </li>
+  <li> Mail merge - 1.4%. </li>
+</ul>
+<p>2007 is also the year which the Topic Allocation Nomination System became heavily used. Used in only 1 course, the TANS allowed students to select topics they would use for assessment.</p>
+<p>The top applications by student usage were:</p>
+<ul>
+  <li> Student MyCQU - 88.1%; </li>
+  <li> take quiz - 7.8%;</li>
+  <li> Topic Allocation system - 2.9%. </li>
+</ul>
+
+<h4>2008</h4>
+
+<p>This is the first year in which staff requests are greater than student requests. This is probably a factor of students being increasingly served by other systems (another student portal was well underway by now), and the increasing number of applications aimed specifically at staff.</p>
+<p>Top applications by staff usage were:</p>
+<ul>
+  <li> Staff MyCQU - 77.6%;</li>
+  <li> Assignment management - 7.4%; </li>
+  <li> Plagiarism - 4.6%; </li>
+  <li> Extension - 2%; </li>
+  <li> Mail merge - 1.7%; </li>
+  <li> Results upload - 1.5%:</li>
+</ul>
+<p>For students:</p>
+<ul>
+  <li> Student MyCQU - 84.9%; </li>
+  <li> Take Quiz - 6.3%; </li>
+  <li> TANS - 5%; </li>
+  <li> Barometer - 1.4%; </li>
+  <li> Extension system - 1.3%; </li>
+  <li> BAM - .5%</li>
+</ul>
+<p>Amongst the student numbers, it is interesting to see the appearance (admittedly in a small way) of the barometer and BAM. I believe the barometer appears because of an institutional project aimed at encouraging more feedback from students. BAM appears because of it's broader use, especially in a large course or two, and the availability of a method for students to track and see their progress.</p>
+
+<h4>2009</h4>
+
+<p>2009 was essentially the final year of Webfuse. Though, the Wf applications continue to live on for a while in 2010, they will eventually disappear. Even though this is the first year in which staff usage of Wf applications breaks the million request barrier.</p>
+<p>Most interestingly for me amongst the staff usage, is the rise of BAM. The top applications by staff usage were:</p>
+<ul>
+  <li> Staff MyCQU - 79.8%;</li>
+  <li> Assignment management - 7.1%;</li>
+  <li> Plagiarism - 3.3%; </li>
+  <li> BAM - 2.4%;</li>
+  <li> Extension system - 1.4%;</li>
+  <li> MailMerge - 1.4%; </li>
+  <li> Results upload - 1.2% </li>
+</ul>
+<p>For the students, BAM continues to rise and the barometer drops (note: this is a comparison in percentage terms, but the overall number of student requests increased between 2008 and 2009, so it's a real change). It is my understanding that the "push" to use the barometer was not continued in 2009 and its use was left up to the academic staff, hence the drop. This mirrors lessons learned in <a href="https://djon.es/blog/?attachment_id=525">earlier work with the barometers</a>.</p>
+<p>For students, the top used Wf applications were:</p>
+<ul>
+  <li> Student MyCQU - 86.8%;</li>
+  <li> Take Quiz - 5.5%;</li>
+  <li> BAM - 2.8%, </li>
+  <li> TANS - 2.6%;</li>
+  <li> Extension system - 1.4%; </li>
+  <li> Barometer - 0.9%. </li>
+</ul>
+
+<h4>What's with the student portal?</h4>
+
+<p>From about 2006/2007 CQU had an official student portal, so why does StudentMyCQU still account for such a large percentage of student usage of Wf applications?</li>
+<p>The simple answer is that the StudentMyCQU application also embodies the interface students use to submit online assignments.  For example, of the 781,705 requests of the Student MyCQU application made in 2009, at least 76% of the requests were submitting, checking or viewing online assignments.</p>
+<p>Combining the student usage with the staff usage, and online assignment submission and management was amongst one of the most used features of Webfuse.</p></p>
+
+</body>
+</html>

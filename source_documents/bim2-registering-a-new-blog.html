@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: registering a new blog</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/06/bim2-registering-a-new-blog/">bim2: registering a new blog</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>The following continues the coding of the bim2 process for registering and processing a new student feed.
+It's taken a couple of weeks, but it is working with only a few minor tweaks and nudges remaining.
+
+Steps involved will be
+<ul>
+  <li> saving feed details to the database;<br />Not something I've in Moodle 2. yet.</li>
+  <li> figure out how to process the feed; </li>
+  <li> generate appropriate successful output; </li>
+  <li> generate useful errors. </li>
+</ul>
+
+Most of these are going to reuse basic algorithms from bim, but will have to be re-written to fit with the changes in Moodle 2 and also the OO design for bim2.
+
+<h3>Save feed details</h3>
+
+Main requirement is to update bimtwo_student_feeds with information about: number of entries, date of last post, blogurl and feedurl.
+
+That was surprisingly easy.
+
+<h3>Handling errors</h3>
+
+The possible situations with entry of new feeds include
+<ul>
+  <li> <strong>DONE</strong> It is a URL and a valid feed can be found;</li>
+  <li> <strong>DONE</strong> It isn't a URL;<br />This is handled by the form and Moodle.</li>
+  <li> <strong>DONE</strong>The URL points directly to a feed;<br />Handled using simplepie's features (e.g. get_permalink)</li>
+  <li> <strong>DONE</strong>It is a URL, but there is not feed associated with it;</li>
+  <li> <strong>DONE</strong>There is a feed, but there are problems retrieving it. </li>
+  <li> <strong>DONE</strong>There is a (purported) feed, but there are problems with the format of the feed.</li>
+  <li> <strong>DONE</strong>The possibility that the user has entered some known "bad urls".<br />e.g. http://wordpress.com/ is a common entry, while it has an associated feed it is unlikely that a student will be using that. </li>
+</ul>
+
+All of the remaining uncompleted tasks (except the last) are handled by simplepie.  The last one is a bim addition, which I think for now we'll postpone. So, have to update bim2 to display the simplepie errors "nicely".
+
+Next, is to get bim2 to check for some standard wordpress.com mistakes. This is primarily historical and should probably be expanded if folk become aware of other common mistakes.
+
+<h3>Processing the feed</h3>
+
+The factor that makes this task a little more difficult is that "processing the feed" will eventually be something bim will also have to do with all feeds.  Since this can be quite a large list, it would be good for it to be efficient to work on all feeds, but also not duplicate between the register single and process all requirements.
+
+Processing a feed basically means looking at what is already stored in the <em>bimtwo_marking</em> table and comparing that with what is in the most up to date version of the feed. If there are any new posts, then those posts need to be inserted into bimtwo_marking and the bimtwo_student_feeds entry needs to be updated (lastpost and num entries).
+
+In bim, this was done with a function bim_process_feed which takes the bim activity id, feed details and a list of the questions for the bim.  The function then
+<ul>
+  <li> Uses simplepie to get the most recent version of the feed; </li>
+  <li> Get the contents of the <em>marking</em> table for the user (what posts for this user are already in the database)</li>
+  <li> Creates a hash based on the link to each post within the database already that gives access directly to the contents of the marking database </li>
+  <li> Uses that hash to identify the questions that haven't been answered yet. </li>
+  <li> For each of the items in the feed
+          <ul>
+             <li> Checks to see if it is already in the database via the hash. </li>
+             <li> If not
+                  <ul>
+                       <li> Converts the content of the message to UTF-8</li>
+                       <li> Loops through all the questions to see if it is an answer to a question. </li>
+                       <li> Inserts it into the database. </li>
+                       <li> Updates the lastpost and numentries variables (for later update) </li>
+                  </ul>
+             </li>
+           </ul>
+  </li>
+</ul>
+
+There might be some speed increase if the database insertion was held off until the end and done all in one, but am not going to play that game.  Need to think about how this can be implemented.
+
+How's this
+[code lang="php"]
+$process = new bimtwo_process_feed( $this-&gt;bimtwo, $this-&gt;feed, $questions, $this-&gt;simplepie );
+$process-&gt;process_feed();
+$this-&gt;update_feed_details( $process );
+[/code]
+
+A new class solely for processing the feed.  This same code can be re-used when processing all feeds as when processing a single feed.  The first three parameters are necessary: the id of the bim activity (bimtwo), the URL for the feed, the array of questions set for this activity, and an optional simplepie object.
+
+The idea is that without the simplepie object, this class would construct its own simplepie object and use it to process the feed.  When registering a single student feed, we already have a simplepie object, so wish to avoid the overhead of re-creating it.  We won't have this when working on a list of feeds.
+
+Okay, that's all working.  In the end, the "update_feed_details" function is removed.
+
+<h3>Forms and redirection</h3>
+
+The question I'm looking at now is how to handle the "success" case.  i.e. the form with the new blog url is submitted and all the processing complete successfully. Want to display some sort of success message and then show the details of the results of the processing.  i.e. the normal default page for the student, but with a success message.
+
+It looks like I should use a redirect, but perhaps with an extra parameter to indicate successful registration which is then used by the existing code.  I think that's the way to go.  How to do the redirect/formulate the URL.</p>
+
+</body>
+</html>

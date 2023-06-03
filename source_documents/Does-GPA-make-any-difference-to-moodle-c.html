@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Does GPA make any difference to #moodle course usage?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/02/20/does-gpa-make-any-difference-to-moodle-course-usage/">Does GPA make any difference to #moodle course usage?</a></h1>
+
+<p>Tags: elearning, indicators, learningAnalytics, mav</p>
+
+<p><h2>Summary</h2>
+
+In short, there is definitely a pattern. In fact, there are two patterns evident:
+<ol>
+  <li> Students in higher GPA groups click on a range of different activities and resources at much higher rates than those in lower GPA groups. </li>
+  <li> A greater percentage of students in higher GPA groups will click on resources. </li>
+</ol>
+
+There are a few exceptions to this. Another less explored pattern is a drop off in usage as the semester progresses.
+
+This is in the context of a single offering of a course I teach with all students (n=~100) enrolled as online students.
+
+The pattern seems to exist across different types of resources from across the semester. Though there does appear to be a drop off toward the end of semester.
+
+This aligns with findings from prior work such as Dawson et al (2008) and Beer et al (2009).
+
+My next step is to see what reaction presenting this pattern to the next crop of students will have.
+
+<h2>Origins</h2>
+
+In just over a week a new semester starts. Institutional requirements mean that course sites need to be available 2 weeks prior to the start of semester. Consequently there's already been some activity on the new site for the course I teach. In response, I observed
+<blockquote class="twitter-tweet" lang="en"><p>2 weeks before semester start. Course sites available and the first keen <a href="https://twitter.com/search?q=%23edc3100&amp;src=hash">#edc3100</a> student engaging. Hope it’s a good sign.</p>&mdash; David Jones (@djplaner) <a href="https://twitter.com/djplaner/statuses/435214458500030464">February 17, 2014</a></blockquote>
+
+
+To which @s_palm replied
+<blockquote class="twitter-tweet" lang="en"><p><a href="https://twitter.com/djplaner">@djplaner</a> By and large, it&#039;s the ones that aren&#039;t so keen that you need to worry about.</p>&mdash; Stuart Palmer (@s_palm) <a href="https://twitter.com/s_palm/statuses/435215401924849664">February 17, 2014</a></blockquote>
+
+Which got me wondering. Is there a link between accessing the course site and GPA? Do "good" students use the LMS more? What happens if students are aware of this pattern?
+
+With the <a href="https://djon.es/blog/2014/02/02/moodle-activity-viewer-mav-and-the-promise-for-bricolage/">Moodle Activity Viewer installed</a>, I have one way to explore the usage question for a past course site. To be clear
+<ol>
+  <li> This is just an initial look to see if there are any obvious patterns. </li>
+  <li> As @s_palm has pointed out
+https://twitter.com/s_palm/status/436287172358836224
+  </li>
+</ol>
+
+To test this, I'm going to
+<ol>
+  <li> Create some new groups on my old Moodle course site based on student GPA.
+       <p>I could also do this based on the final grade in this course, might be an interesting comparison.</p><p>Glad I had access to the database, creating these groups through the Moodle interface would have been painful.
+  </li>
+  <li> I can then use MAV's "select a group" feature to view how they've accessed the course site.
+       <p>MAV will show the number of clicks or number of students who have visited every link on a Moodle course site. I don't expect the number of students to reveal too much - at least not on the home page - as completing activities/resources is part of the assessment. Comparing the number of links is not going to be straight forward given the different numbers in each group (and MAV not offering anyway to normalise this). </p>
+   </li>
+</ol>
+
+<h2>Explanation of the "analysis"</h2>
+
+The quick and dirty comparison is between the following groups
+<ul>
+  <li> 6 GPA (n=11) - all students with a GPA of 6 or above. </li>
+  <li> 5 GPA (n=49) - all students with a GPA of above 5, but less than 6. </li>
+  <li> 4 GPA (n=35) - GPA above 4, but less than 5. </li>
+  <li> Less than 4 GPA (n=28) - the remaining students, apart from a handful with a GPA of 0 (exemptions?) </li>
+</ul>
+
+The analysis will compare two usage "indicators" for a range of course resources/activities.
+
+The "indicators" being compared are
+<ul>
+  <li> Clicks / Students - the total number of clicks on the resource/activity by all students in a group divided by the number of students in the group. </li>
+  <li> Percentage - the percentage of students in that group who clicked on the activity/resource. </li>
+</ul>
+
+<h2>Assessment and Study Schedule</h2>
+
+The first resources compared are
+<ul>
+  <li> Assessment - a Moodle book that contains all details of the assessment for the course. </li>
+  <li> Study Schedule - a page that gives an overall picture of the schedule of the course with links to each week's block. </li>
+</ul>
+
+<table>
+  <tr>
+    <th> Group </th>
+    <th> Clicks / Student </th>
+    <th> % Students </th>
+  </tr>
+  <tr> <th colspan="3"> Study Schedule </th> </tr>
+  <tr>
+    <td> 6 GPA </td>
+    <td>	4.2</td>
+    <td>	100.0</td>
+  </tr>
+  <tr>
+    <td>5 GPA</td>
+    <td>	2.9</td>
+    <td>	75.5</td>
+  </tr>
+  <tr>
+    <td>4 GPA	</td>
+    <td>	2.8</td>
+    <td>	74.3</td>
+  </tr>
+  <tr>
+    <td>Less than 4	</td>
+    <td>	1.3</td>
+    <td>	53.6</td>
+  </tr>
+  <tr> <th colspan="3"> Assessment </th> </tr>
+  <tr>
+    <td>6 GPA</td>
+    <td>	22.7	</td>
+    <td>100.0</td>
+  </tr>
+  <tr>
+    <td>5 GPA</td>
+    <td>	12.2</td>
+    <td>	75.5</td>
+  </tr>
+  <tr>
+    <td>4 GPA	</td>
+    <td>	11.0</td>
+    <td>	74.3</td>
+  </tr>
+  <tr>
+    <td>Less than 4</td>
+    <td>	8.2	</td>
+    <td>64.3</td>
+</table>
+
+The pattern is established early. The higher GPA groups access these resources more.
+
+Unsurprisingly, the assessment information is used more than the study schedule.
+
+<h2>Forums</h2>
+
+Next comparison is two forums. Each assignment has it's own forum. There is a general discussion forum. Finally, there are a range of forums used for specific learning activities during the semester.  The two forums being compared here are
+<ul>
+  <li> Q&amp;A forum - is a forum for general questions and discussion. </li>
+  <li> Assignment 3 and Professional Experience Forum - assignment 3 is wrapped around the students' 3 weeks practical teaching period. </li>
+</ul>
+
+<table>
+  <tr>
+    <th> Group </th>
+    <th> Clicks / Student </th>
+    <th> % Students </th>
+  </tr>
+  <tr> <th colspan="3"> Q&amp;A Forum </th> </tr>
+  <tr>
+    <td>
+6 GPA </td>
+    <td>19.3	</td>
+    <td>90.9</td>
+  </tr>
+  <tr>
+    <td>
+5 GPA</td>
+    <td>	7.9</td>
+    <td>	65.3</td>
+  </tr>
+  <tr>
+    <td>
+4 GPA	</td>
+    <td>7.3	</td>
+    <td>54.3</td>
+  <tr>
+    <td>
+Less than 4	</td>
+    <td>	1.6</td>
+    <td>	35.7</td>
+		  </tr>
+  <tr> <th colspan="3"> A3 and PE forum </th> </tr>
+  <tr>
+    <td>
+6 GPA	</td>
+    <td>	16.0</td>
+    <td>	100.0</td>
+  </tr>
+  <tr>
+    <td>
+5 GPA</td>
+    <td>8.4	</td>
+    <td>73.5
+  <tr>
+    <td>
+4 GPA</td>
+    <td>5.5	</td>
+    <td>68.6</td>
+  </tr>
+  <tr>
+    <td>
+Less than 4	</td>
+    <td>	1.2	</td>
+    <td>35.7</td>
+  </tr>
+</table>
+
+The pattern continues. Particularly troubling is the significant reduction in use of the forums by the "Less than 4 GPA" group.  Only about a third of them use the forums as opposed to over half accessing the study schedule and even more accessing the assessment.
+
+I wonder how much of this percentage difference is due to students who have dropped out early?
+
+<h2>Week 1 activities</h2>
+
+In week 1 of the semester the students have to undertake a range of activities including the three compared here
+<ul>
+  <li> Register their blog - they are required to create and use a personal blog throughout the semester. This activity has them register and be able to view the registered blogs of other students. </li>
+  <li> Share introductions - post an introduction of themselves and look at others. An activity that has been <a href="https://djon.es/blog/2014/02/18/looking-for-a-new-icebreaker-for-edc3100/">recently revisited</a> for the coming semester. </li>
+  <li> PKM and reflection - a Moodle book introducing Personal Knowledge Management and reflection through a range of external resources. These two processes are positioned as key to the students' learning in the course. </li>
+</ul>
+
+<table>
+  <tr>
+    <th> Group </th>
+    <th> Clicks / Student </th>
+    <th> % Students </th>
+  </tr>
+  <tr> <th colspan="3"> Register your blog</th> </tr>
+  <tr>
+    <td>
+6 GPA	</td>
+     <td>	12.9		</td>
+     <td>100.0
+    </td>
+  </tr>
+  <tr>
+    <td>
+5 GPA		</td>
+     <td>	9.2		</td>
+     <td>75.5
+    </td>
+  </tr>
+  <tr>
+    <td>4 GPA		</td>
+     <td>	10.8	</td>
+     <td>	77.1
+    </td>
+  </tr>
+  <tr>
+    <td>Less than 4	</td>
+     <td>6.6	</td>
+     <td>	60.7
+
+    </td>
+  </tr>
+  <tr> <th colspan="3"> Share introductions forum </th> </tr>
+  <tr>
+    <td>6 GPA	</td>
+     <td>	6.6		</td>
+     <td>100.0
+    </td>
+  </tr>
+  <tr>
+    <td>5 GPA	</td>
+     <td>	4.6	</td>
+     <td>	75.5
+    </td>
+  </tr>
+  <tr>
+    <td>4 GPA	</td>
+     <td>	5.6	</td>
+     <td>	77.1
+    </td>
+  </tr>
+  <tr>
+    <td>Less than 4	</td>
+     <td>	2.2		</td>
+     <td>57.1
+
+    </td>
+  </tr>
+  <tr> <th colspan="3"> PKM and reflection </th> </tr>
+  <tr>
+    <td>6 GPA	</td>
+     <td>	3.8		</td>
+     <td>100.0
+    </td>
+  </tr>
+  <tr>
+    <td>5 GPA	</td>
+     <td>	2.3	</td>
+     <td>	75.5
+    </td>
+  </tr>
+  <tr>
+    <td>4 GPA		</td>
+     <td>	2.1	</td>
+     <td>	74.3
+    </td>
+  </tr>
+  <tr>
+    <td>Less than 4	</td>
+     <td>	1.4		</td>
+     <td>53.6
+    </td>
+  </tr>
+</table>
+
+Generally the pattern continues. The "4 GPA" group bucks this trend with the "Register your blog" activity. This generates at least two questions
+<ul>
+  <li> Are the increased clicks / students due to troubles understanding the requirements? </li>
+  <li> Or is it due to wanting to explore the blogs of others? </li>
+</ul>
+Given that the percentage of students in the "4 GPA" group also bucks the trend, it might be the former.
+
+<h2>Late semester resources</h2>
+
+Finally, three resources from much later in the semester to explore how folk are keeping up. The three resources are
+<ul>
+  <li> Overview and expectations - a Moodle book outlining what is expected of the students when they head out on their Professional Experience.  There is still four weeks of theory left in the course, followed by 3 weeks of Professional Experience. </li>
+  <li> Your two interesting points - a Moodle forum in the last week of new content. The last week before the students go on Professional Experience. The students are asked to share in this forum the two points that resonated most with them from the previous reading that was made up reflections of prior students about Professional Experience. </li>
+  <li> Pragmatic advice on assignment 3 - another Moodle book with fairly specific advice about how to prepare and complete the 3rd assignment (should generate some interest, you'd think). </li>
+</ul>
+
+<table>
+  <tr>
+    <th> Group </th>
+    <th> Clicks / Student </th>
+    <th> % Students </th>
+  </tr>
+  <tr> <th colspan="3"> Overview and expectations</th> </tr>
+  <tr>
+    <td>
+6 GPA
+    </td>
+    <td> 	1.7	    </td>
+    <td> 90.9 </td>
+  </tr>
+  <tr>
+    <td>
+5 GPA    </td>
+    <td> 2.4    </td>
+    <td> 	75.5</td>
+  </tr>
+  <tr>
+    <td>4 GPA    </td>
+    <td> 	1.6    </td>
+    <td> 	65.7</td>
+  </tr>
+  <tr>
+    <td>Less than 4    </td>
+    <td> 	0.8	    </td>
+    <td> 50.0</td>
+  </tr>
+
+  <tr> <th colspan="3"> Your two interesting points</th> </tr>
+    <td>6 GPA	    </td>
+    <td> 	1.2	    </td>
+    <td> 63.6</td>
+  </tr>
+  <tr>
+    <td>5 GPA	    </td>
+    <td> 1.0	    </td>
+    <td> 55.1</td>
+  </tr>
+  <tr>
+    <td>4 GPA	    </td>
+    <td> 0.6	    </td>
+    <td> 34.3</td>
+  </tr>
+  <tr>
+    <td>Less than 4    </td>
+    <td> 	0.2	    </td>
+    <td> 14.3</td>
+  </tr>
+
+  <tr> <th colspan="3"> Pragmatic A3 advice</th> </tr>
+    <td>6 GPA	    </td>
+    <td> 	1.5	    </td>
+    <td> 90.9</td>
+  </tr>
+  <tr>
+    <td>5 GPA    </td>
+    <td> 	1.4    </td>
+    <td> 	73.5</td>
+  </tr>
+  <tr>
+    <td>4 GPA	    </td>
+    <td> 	1.0    </td>
+    <td> 	60.0</td>
+  </tr>
+  <tr>
+    <td>Less than 4    </td>
+    <td> 0.6	    </td>
+    <td> 42.9 </td>
+  </tr>
+</table>
+
+The established pattern linking GPA with usage largely remains. However, the "5 GPA" students buck that pattern with the "Overview and Expectations" book. The "gap" between the top group and the others is also much lower with the other two resources (0.2 and 0.1 click / student) compared to some much larger margins with earlier resources.
+
+There is also a drop off in groups toward the end of semester as shown in the following table comparing the main Assesment link with the pragmatic A3 advice.
+
+<table>
+  <tr>
+     <th> Group </th>
+     <th colspan="2"> Assessment </th>
+     <th colspan="2"> Prag A3 advice</th>
+  </tr>
+  <tr> <th> &nbsp; </th>
+       <th> C / S </th> <th> % studs </th>
+       <th> C / S </th> <th> % studs </th>
+  </tr>
+  <tr>
+    <td> 6 GPA    </td>
+    <td> 22.7</td> <td>	100.0 </td>
+    <td> 1.5</td> <td>	 90.9 </td>
+  </tr>
+  <tr>
+    <td> 5 GPA    </td>
+    <td> 12.2</td> <td>	 75.5</td>
+    <td> 1.4</td> <td>	 73.5</td>
+  </tr>
+  <tr>
+    <td> 4 GPA
+    <td> 11.0</td> <td>	 74.3</td>
+    <td> 1.0</td> <td>	 60.0</td>
+    </td>
+  </tr>
+  <tr>
+    <td> Less than 4
+    </td>
+    <td> 8.2</td> <td>	64.3</td>
+    <td> 0.6	</td> <td> 42.9</td>
+  </tr>
+</table>
+
+Some "warnings". The 10% drop for the "6 GPA" group represents 1 student. There's a chance that by the end of semester, the students have worked out they can print out a Moodle book (can be used to produce a PDF). So they visit it, save the PDF and refer to that.  This might explain the drop off in clicks / students.
+
+<h2>References</h2>
+
+Beer, C., Jones, D., &amp; Clark, K. (2009). The indicators project identifying effective learning, adoption, activity, grades and external factors. Same places, different spaces. Proceedings ascilite Auckland 2009. Auckland, New Zealand. Retrieved from http://www.ascilite.org.au/conferences/auckland09/procs/beer.pdf
+
+Dawson, S., McWilliam, E., &amp; Tan, J. P. L. (2008). Teaching smarter: How mining ICT data can inform and improve learning and teaching practice. Melbourne. Retrieved from http://www.ascilite.org.au/conferences/melbourne08/procs/dawson.pdf</p>
+
+</body>
+</html>

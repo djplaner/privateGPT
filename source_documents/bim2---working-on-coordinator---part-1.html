@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - working on coordinator - part 1</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/04/11/bim2-working-on-coordinator-part-1/">bim2 - working on coordinator - part 1</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>More work on bim2, this one starting work on the <a href="https://djon.es/blog/2012/04/05/bim2-whats-working-for-coordinator/">previously identified tasks</a>. Find out what <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM is here</a>.
+
+<strong>Status:</strong> At this stage, the user screens from bim2 can be considered in alpha. i.e. they basically work, but there will be bugs and some of the underlying "infrastructure" (i.e. backups and restores, gradebook integration etc) need to be fixed.  The current code can <a href="https://github.com/djplaner/BIM/tree/bim2">be gotten here</a>.
+
+<h3>Configure BIM improvements</h3>
+
+<ul>
+  <li> Help buttons for configuration options. <strong>DONE</strong>
+  </li>
+  <li> <del>Have the “General Steps” actually link to the appropriate screen.</del>
+  </li>
+  <li> Change “provided below” link to something more human readable. <strong>DONE</strong> - well kind of.
+  </li>
+</ul>
+
+<h3>Problem with changing the configuration</h3>
+
+Ahh, this may be related to the gradebook issue.  When the configuration calls for adding an entry to the gradebook, we're getting an error. Confirmed, if I turn "grading" off, it works fine.
+
+This will/should be due to API changes in Moodle 2.x.  The question is do I fix it now or leave it until later?
+
+Well, as with most of the Moodle docs, it is incredibly hard to find the canonical answer. Instead, I'll have to revert to looking at the BIM code and comparing that with code in other modules.
+
+The changing of the grade entry for configuration is done in bim_grade_item_update
+
+[sourcecode lang="php"]
+require_once($CFG-&gt;libdir.'/gradelib.php');
+
+$item = array();
+$item['itemname'] = clean_param($bim-&gt;name, PARAM_NOTAGS);
+$item['gradetype'] = GRADE_TYPE_VALUE;
+$item['grademax']  = $bim-&gt;grade;
+$item['grademin']  = 0;
+
+grade_update('mod/bim', $bim-&gt;course, 'mod', 'bim', $bim-&gt;id, 0, null, $item);
+[/sourcecode]
+
+The error I'm getting is "Column 'grademax' cannot be null". Mm, that will take a while to solve.  Save it for later.
+
+<h3>Manage questions - add new not working</h3>
+
+Okay, this seems to boil down to some changes with how to work with the <a href="http://docs.moodle.org/dev/Using_the_File_API_in_Moodle_forms#Replace_old_htmleditor_with_editor">htmleditor in Moodle forms</a>.
+
+<h3>Manage questions - improvements</h3>
+
+<ul>
+   <li> help buttons for elements to add. <strong>DONE</strong> </li>
+   <li> Work on the introductory text. <strong>DONE</strong> </li>
+</ul>
+
+<h3>Allocate markers</h3>
+
+It was crashing, ended up being simple typo. Up and going.
+
+<h3>Manage marking</h3>
+
+Displaying the heading, but then crashing. Problem is in bim_get_all_marker_stats.  The in_or_equals needs to be used properly as it hasn't made the leap over...complex data structures
+
+Need to look into the problem with html editor within form not showing data in the database. Confirmed that it is getting the data from the database.
+
+Okay, this seems to be connected with the more complicated method for using the editor and passing data into and out of it.  Surely this has to be documented somewhere????  Can't find it but I've figured out how to fix it.
+
+<h3>Find student</h3>
+
+When actually doing the find generates an error in line 101 of find_student.
+
+get_records_select syntax has changed, fixed that up. Had to make some changes to the "where" part of the SQL used here.
+
+<strong>Note:</strong> wondering if this will make any difference to cross-platform operation
+
+Now the process for showing multiple users isn't working.  Problem with get_records_select..again.  Also problem with table display.  Need some rewriting to get the table display working well.
+
+Also some problems with the language strings, which look like they would've caused problems for bim 1.  That's fixed. Another problem if the search finds one student who hasn't been registerd. Another hang over from bim 1. That's fixed.</p>
+
+</body>
+</html>

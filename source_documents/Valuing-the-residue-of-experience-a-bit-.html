@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Valuing the "residue of experience" a bit more</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/08/05/valuing-the-residue-of-experience-a-bit-more/">Valuing the "residue of experience" a bit more</a></h1>
+
+<p>Tags: edc3100, edu8117, Uncategorized</p>
+
+<p>For a while now I have been drawing on the following quote from Riel and Polin (2004)
+<p style="padding-left: 30px;">Over time, the residue of these experiences remains available to newcomers in the tools, tales, talk, and traditions of the group. In this way, the newcomers find a rich environment for learning. (p. 18)</p>
+to explain why I encourage/require the use of various types of social media (blogs, social bookmarking, feed readers) in my courses. <a href="https://davidtjones.wordpress.com/2014/08/15/joining-the-swarm-what-a-course-might-be/">This 2014 post</a> identifies the problem (what happens in a course site, stays and dies in a course site) and how the social used in these courses helps address that problem.  If you do a Google search for <em>edc3100 blog</em>, you will get another illustration of how at least some of the residue of experience remains available to newcomers in at least one of the courses.
+
+The problem is that this year has revealed that the design of the course doesn't yet value that residue of experience, at least not in terms of the main value measure for many students - assessment. Students gain marks for writing blog posts that link to posts from other students, but the code that does this marking only recognises currently enrolled students. Linking to the broader residue of experience doesn't count.
+
+Interestingly, this has only become an issues this year. Only this year have students been asking why they missed out on marks for links to other ("old") student posts. Leaving aside why it's only started this year, this post documents the move to valuing the residue of experience.
+
+After implementing the code below, it appears that at least 28 (about 25%) students this semester have linked to blog posts from students in previous offerings of the course. Would be interesting to explore this further. See how prevalent the practice has been in previous courses. Update <a href="https://davidtjones.wordpress.com/2013/03/18/visualising-the-blog-network-of-edc3100-students/">these visualiations</a> to show the connections between offerings.
+<h3>What I need to do</h3>
+The process will be
+<ul>
+	<li>Refamiliarising myself with how the "valuing" is currently done.</li>
+	<li>Planning and implementing how to value the residue of experience.</li>
+	<li>Figuring out if/how to check how often the residue of experience has been used.</li>
+</ul>
+<h3>How it is currently valued</h3>
+Some perl code does the work.  Details follow.
+
+<em>BlogStatistics</em> class gathers all information about the blogs for students in the current course offering.  A method <em>generateAllStatistics</em> does some of the grunt work.
+
+But this class also creates a data member <em>MARKING</em> for each student. Based on the <em>Marking</em> class and its <em>GenerateStats </em>method. This class gets the content from the <em>bim_marking</em> table (i.e. all the posts by the student).
+
+<em>GenerateStats </em>accepts a reference to a hash that contains links to all the other blogs in the course (for the specific offering).  It calls <em>DoTheLinks</em> (gotta love the naming) passes it the hash ref to do the count.
+
+One question is how much old data do I currently have?  Seems like there's only the 2015 and 2016 data easily accessible.
+<h3>Planning and implementation</h3>
+One approach would be
+<ul>
+	<li><em>BlogStatistics</em> generates a list of old student blog URLs
+<ul>
+	<li>add <em>BlogStatistics::getOldStudentBlogs </em>that creates $%<em>BlogStatistics::OLD_BLOGS </em><strong>DONE</strong></li>
+</ul>
+</li>
+	<li><em>BlogStatistics </em>passes this into each call to <em>Marking::GenerateStats  </em><strong>DONE</strong></li>
+	<li><em>Marking::GenerateStats </em>would pass this onto <em>Marking::DoTheLinks</em> <em><strong></strong></em><strong>DONE</strong>
+<ul>
+	<li>also increment POSTS_WITH_STUDENT_LINKS if a link is to an old student blog <em><strong></strong></em><strong>DONE</strong></li>
+	<li>increment POSTS_WITH_OLD_STUDNET_LINKS if a link is to an old student blog <em><strong></strong></em><strong>DONE</strong></li>
+</ul>
+</li>
+	<li>Modify the report generator to show OLD links <strong>DONE</strong></li>
+</ul>
+&nbsp;
+
+&nbsp;</p>
+
+</body>
+</html>

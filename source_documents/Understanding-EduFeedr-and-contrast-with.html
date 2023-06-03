@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Understanding EduFeedr and contrast with BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/11/17/understanding-edufeedr-and-contrast-with-bim/">Understanding EduFeedr and contrast with BIM</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p>The following is an attempt to summarise an attempt to understanding <a href="http://www.edufeedr.net/">EduFeedr</a> a bit more. Especially to compare and contrast it with <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a>. I'm particularly interested in seeing what lessons can be learned from EduFeedr, not to mention what code and ideas can be borrowed.
+
+<h3>What</h3>
+
+<blockquote>EduFeedr is an educationally enhanced feed reader, designed specifically for courses that take place in a distributed learning environment where all students use their personal blogs and other social software.</blockquote> i.e. EduFeedr is aimed at open courses. The need for it arose out of experiences with such courses and the workload involved in tracking contributions.
+
+EduFeedr offers four main tasks
+<ol>
+  <li> setting up the course;<br />Each course has a <a href="http://www.edufeedr.net/pg/edufeedr/view_educourse/34">"site"</a>.   Each site has six sections: (1) course feed, (2) course info, (3) participants, (4) assignments, (5) progress, and (6) social network.
+   <p><em>BIM:</em> is a Moodle activity. Each Moodle course can have multiple BIM activities.</p>
+  </li>
+  <li> enrolling to the course,<br />Done via a simple form with name, email and blog url<p><em>BIM:</em> students have to be enrolled in the Moodle course containing the BIM activity.</p>
+  </li>
+  <li> aggregating blog posts and comments, and <br />
+  <p><em>BIM:</em> only aggregates posts</p>
+  </li>
+  <li> visualizing the progress and social network between the learners.<br /><a href="http://www.edufeedr.net/pg/edufeedr/view_educourse/41?filter=connections">Displayed</a> on EduFeedr and also able to be downloaded.  Information can be downloaded in various formats, including: OPML file containing all post and comment feeds; a vCard for email addresses of participants; HTML blogroll.
+  <p><em>BIM:</em> student details are available via various Moodle sources. BIM does provide an OPML file for teaching staff containing the URLs for their students' feeds.</p>
+  </li>
+</ol>
+
+<h3>Implementation</h3>
+
+EduFeedr is implemented on top of <a href="http://elgg.org/">Elgg</a> and uses <a href="http://simplepie.org/">Simplepie</a>, <a href="http://code.google.com/p/jsviz/">JSViz</a>.
+
+Actually, the retrieval of the feeds is done by a companion utility called EduSuckr. EduSuckr is run hourly.  <em>BIM:</em> mirroring also run via cron, but time is controlled via the Moodle configuration interface.  Mirroring of an individual student blog is also done when a student attempts to view their details.
+
+EduFeedr and EduSuckr appear to communicate via WSDL/SOAP.
+
+<h3>Lessons</h3>
+
+<ul>
+  <li> No standard way to locate comments feed.<br /><em>BIM:</em> doesn't look at comments, but I assumed this might be a problem. </li>
+  <li> Linking posts to assignments.<br />Appear that they expect students to link to the description of the assignment for the post.<p><em>BIM:</em> tries to compare the title  and content of the student blog post with the title/content of the assignment question using simple similarity comparison.  Teaching staff can also allocate a student post to a particular assignment question....future plan is to allow the students to do this as well. </li>
+  <li> Linking comments with participants.<br />Again lack of standards with identifying authors of comments, makes this difficult.<p><em>BIM:</em> doesn't look at comments, so not a problem.</li>
+  <li> Only recent items in feeds.<br />This is a problem with BIM as well. EduSuckr uses the same solution as BIM. It keeps a local archive of all posts. The teacher can specify a period when to archive posts.  BIM has the option for mirroring to be turned off.</li>
+</ul></p>
+
+</body>
+</html>

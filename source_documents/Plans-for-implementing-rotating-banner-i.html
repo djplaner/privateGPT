@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Plans for implementing rotating banner image</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2008/12/28/plans-for-implementing-rotating-banner-image/">Plans for implementing rotating banner image</a></h1>
+
+<p>Tags: Uncategorized, website</p>
+
+<p><p>
+<strong>Problem:</strong> Implement a <a href="https://djon.es/blog/2008/12/28/rotating-banner-images-in-wordpress-the-last-missing-puzzle-piece/">rotating banner image</a> on this blog which is hosted by <a href="http://wordpress.com/">Wordpress.com</a>. This means I cannot install any Wordpress themes that automatically support bnner rotation (e.g. the <a href="http://www.onehertz.com/portfolio/wordpress/">Mandigo</a> theme suggested by <a href="http://wt.similibus.org/">Will Taylor</a>.
+</p>
+<p>
+There is a <a href="http://en.forums.wordpress.com/topic/random-image-header-tutorial?replies=22#post-36298">known approach</a> that relies upon you having some disk space on a server that will let you run a PHP script. I'd like to avoid using that approach.
+</p>
+<p>
+Instead, my hope is to cobble something together using Flickr, Pipes and a bit of CSS. The following is an attempt to outline what steps are necessary to test this out.
+</p>
+
+<h3>Flickr constraints</h3>
+
+<p>First stop is to see if the conditions of use on Flickr will allow this.  Yep, the <a href="http://www.flickr.com/guidelines.gne">Flickr Community Guidelines </a> seems to indicate that you can use your content on other sites, just make sure that is a link back.</p>
+<p>
+So, I should be able to show a flickr photo in the banner as long as there is a link back to the page on Flickr it comes from.
+</p>
+
+<h3>Modify CSS to get image from pipes</h3>
+
+<p>Next step is to see if I can modify the CSS of the theme I'm using to include a banner image, and then perhaps to include a banner image from a <a href="http://pipes.yahoo.com/">Pipes</a>.</p>
+
+<h3>Use pipes to extract a single image from a gallery</h3>
+
+<p>Next step, would be to figure out how to write a pipe that will extract a single image from a Flickr gallery.  Once that's working figure out how to loop through the contents of the gallery so that rotation through the images is achieved.</p>
+
+<h3>Figure out the link back to the flickr photo page</h3>
+
+<p>If that's all working I need to figure out how to provide a link back to the original flickr page.  A banner image in a blog header usually returns back to the home page for the blog.  Thinking perhaps some additional text with the name of the image could be included with a link back to the flickr photo page.</p></p>
+
+</body>
+</html>

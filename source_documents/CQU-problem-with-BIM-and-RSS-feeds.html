@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CQU problem with BIM and RSS feeds</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/08/02/cqu-problem-with-bim-and-rss-feeds/">CQU problem with BIM and RSS feeds</a></h1>
+
+<p>Tags: bim, bimErrors, Uncategorized</p>
+
+<p><p>This is the first post in a new tradition. Any problems folk report with <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> and the subsequent diagnosis and solution I undertake will get reported here on the blog and hopefully mirrored in some way onto the BIM <a href="http://github.com/djplaner/BIM">github page</a>.</p>
+<p>It is somewhat ironic that the first problem in this tradition comes from the <a href="http://www.cqu.edu.au/">institution</a> I finished working at last Friday.</p>
+
+<h3>A problem with cron?</h3>
+
+<p>The problem becomes apparent during the BIM cron process, the error BIM is reporting is<blockquote>Error getting <em>url for feed here</em></blockquote></p>
+
+<h3>Locating the problem</h3>
+
+<p>This appears to be a problem with the BIM mirror process (the process by which BIM checks the feed for each registered blog feed to see if there are new posts). There's some problem retrieving the feed.</p>
+<p>Exactly where is the problem?</p>
+[sourcecode lang="bash"]
+$ cd moodle/mod/bim/lib
+$ grep "Error getting" *
+bim_rss.php:        mtrace( "Error getting $student_feed-&gt;feedurl" );
+[/sourcecode]
+<p>If I go look in bim_rss.php, this occurs in the function <em>bim_process_feed</em>.  This function is called for each registered blog feed and is meant to retrieve the feed, check it for new posts, and if detected, handle them. It does this using <a href="http://simplepie.org/">the Simplepie library</a>.</p>
+[sourcecode lang="php"]
+// get the RSS file
+$feed = new SimplePie();
+$feed-&gt;set_feed_url( $student_feed-&gt;feedurl );
+$feed-&gt;enable_cache( true );
+$feed-&gt;set_cache_location( $dir );
+$feed-&gt;init();
+
+if ( $feed-&gt;error() ) {
+    mtrace( "Error getting $student_feed-&gt;feedurl" );
+    return false;
+}
+[/sourcecode]
+<p>This function is not only called during cron.  It is also called every time a student visits the BIM activity.  In this situation, bim_process_feed is called only for the logging in student. This makes sure that bim always shows the student the most up to date information about their feed.</p>
+
+<h3>Diagnosing the problem</h3>
+
+<p>I'm guessing that the problem is one or more of the following, all associated with the failure of Simplepie to get the feed:</p>
+<ul>
+  <li> There's a problem with a proxy setting and the institutional network configuration preventing access to the feed url. </li>
+  <li> There's a problem with file permissions or similar on the institutional server preventing Simplepie writing to the cache directory. </li>
+  <li> The student's blog doesn't exist any more. </li>
+</ul>
+
+<h3>The problem</h3>
+
+<p>I have to admit, I was immediately thinking of some of the more complicated reasons for the problem.  Then I remembered the last one above and decided I'd better type in the URL for the student's blog and see if I could access it.  The following is what I found.</p>
+<a href="http://www.flickr.com/photos/david_jones/4851492241/" title="Deleted blog by David T Jones, on Flickr"><img alt="Deleted blog" height="225" src="http://farm5.static.flickr.com/4081/4851492241_dab3d06bd9.jpg" width="494" /></a>
+<p>So it appears that the student has removed the blog, this would seem to indicate that the student needs to re-register the blog or perhaps has simply moved on.</p>
+
+<h3>Potential Solutions</h3>
+
+<p>Is up to the institutional folk, the options I can see are:</p>
+<ul>
+  <li> Ignore it. </li>
+  <li> Find out what course/BIM activity the blog was registered for<br />
+   Look for the feedurl in the bim_student_feeds table. </li>
+  <li> Check the situation with the academic in charge of the course and perhaps do one of the following
+       <ul>
+          <li> Turn mirroring off for the BIM activity, if the course is finished. </li>
+          <li> Ask the teaching staff to follow up with the student. </li>
+          <li> Remove or modify the feed registration.<br />Check the table mdl_bim_student_feeds </li>
+       </ul>
+  </li>
+</ul></p>
+
+</body>
+</html>

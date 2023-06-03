@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding restore to BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/01/01/adding-restore-to-bim/">Adding restore to BIM</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>The following reports on the process to complete the backup/restore functionality for <a href="davidtjones.wordpress.com/research/bam-blog-aggregation-management/">BIM 2.0</a>. Backup is currently working. Time to add the ability to restore those backups. It draws on the process described in <a href="http://docs.moodle.org/dev/Restore_2.0_for_developers">this documentation - "Restore 2.0 for developers"</a>. Which doesn't appear anywhere as detailed/sequential as the backup 2.0 documentation.
+
+This and some simple mistakes on my part meant the following was spread over a couple of days, rather than a hours as I'd hoped.  Restore is currently working, at least according to the tests I've done.
+
+BIM 2.0 might officially be considered alpha code ready to play with.  I still need to work through the <a href="https://github.com/djplaner/BIM/issues">issue list</a> on GitHub before it's truly ready for action.
+
+Back to work tomorrow so BIM development will slow down a bit, though it does remain a priority. Most of the family is heading off on Friday/Saturday, so I might have a bit more time then.
+
+<h2>The process</h2>
+
+Two main files restore_bim_stepslib.php and restore_bim_activity_task.class.php. Skeleton code is provided. Create those and see if I can figure out what modifications are required.
+
+Confirmed these files are meant to go in the backup directory.
+
+stepslib.php changes
+<ul>
+  <li> replace choice with bim. </li>
+  <li> define_structure - replace choice components (option and answer) with bim components (allocation, question, feed, marking)
+[code lang="php"]        $paths[] = new restore_path_element('bim', '/activity/bim');
+        if ( $userinfo ) {
+            $paths[] = new restore_path_elements( 'bim_allocation',
+                               '/activity/bim/allocations/allocation'
+        }
+        $paths[] = new restore_path_element('bim_question',                                '/activity/bim/questions/question');        if ($userinfo) {
+            $paths[] = new restore_path_element('bim_student_feed',                                '/activity/bim/student_feeds/student_feed');
+            $paths[] = new restore_path_element('bim_marking',
+                               '/activity/bim/markings/marking');        }
+[/code]
+  </li>
+  <li> replace the methods process_choice, process_choice_option, process_choice_answer with bim equivalents<br />
+         These are responsible for inserting the data extracted from the XML back into the database.  There are three parts of this that need to be explored more
+       <ol>
+          <li> apply_activity_instance in process_choice, would appear to be used to convert the choiceid in the data to the new element inserted into the database. Apparently only called when adding initial information about the activity. </li>
+          <li> set_mapping appears to be used to convert the activity id for the subsequent elements inserted into the database. </li>
+          <li> add_related_files - part of a broader area that needs exploration. </li>
+        </ol>
+        Will need to put in code for the following bim methods, would appear to be a link between the method names and the first parameter in the restore_path_elements calls above.
+        <ul>
+           <li> process_bim  - done</li>
+           <li> process_bim_allocation - there's also a need to "get_mappingid" for user and group information </li>
+           <li> process_bim_question - done</li>
+           <li> process_bim_student_feed - done </li>
+           <li> process_bim_marking - done</li>
+        </ul>
+  </li>
+</ul>
+
+restore_choice_activity_task.class.php
+<ul>
+  <li> define_decode_contents - identify the elements that need to have the link decoded run.  Will stick for just the intro for BIM. </li>
+  <li> define_restore_log_rules - not sure. </li>
+  <li> define_restore_log_rules_for_course - purpose of this not real clear. Apparently choice specific? Leave it out for now. </li>
+</ul>
+
+<h3>Running it and failing</h3>
+
+The code except on the restore 2.0 page doesn't seem to work.  Tried a backup and restore via Moodle itself.  Backup apparently worked and the restore successfully created the new course.  However, the BIM activity was not there.
+
+So there is a problem. The limited nature of the documentation makes this an "interesting" problem to solve.
+
+Check the backup file to see if the bim information is there. Yes.  It definitely appears that backup is working.
+
+Time to do debug on restore and try and identify where the failure is occurring. Would be nice if the command-line script was working.  Having to do this by the Moodle web interface.  Will a Google search reveal anything?
+
+The restore picks up the presence of the bim activity in the confirm stage. Including the fact that it has userinfo saved.  But on the settings page (i.e. as part of the preparation for restore, it doesn't show the bim2 activity).  This is done by the moodle/backup/restore.php script.  Which is implemented using a fairly complex OO structure (compared to 1.9).  restore_ui.class.php does much of the work, drawing on other files.
+
+The bim activity is showing up in some aspects at the start of scheme, but there is something that is preventing it from being included when the sections are displayed.
+
+The "Confirm" stage of the restore is showing the BIM activity as part of Section 0. This appears to be extracting information straight from the MBZ (the Moodle backup file) using "backup_general_helper::get_backup_information" and then a renderer to show it.
+
+Idiot!
+
+After much wasted time I have figured out the silly mistake I made and can perhaps start making some progress.
+
+<h2>Debugging the completed restore</h2>
+
+So it now restores and the BIM activity is present, some problems though
+<ul>
+  <li> There are no questions brought across. </li>
+  <li> Nor marker allocations </li>
+  <li> Nor student feeds, all students are unregistered. </li>
+</ul>
+
+None of the data for the newly restored bim activity is getting restored into the database.  There is a new entry in the main bim database, but beyond that nothing.
+
+Essentially only the main configuration stuff has been done correctly. Will need to check
+<ol>
+  <li> Is this information in the backup? - in short yes, but<br />
+  Not sure about the nesting of some of the elements in the backup. It looks wrong
+[sourcecode lang="xml"]
+    &lt;feeds&gt;
+    &lt;/feeds&gt;
+    &lt;feed id="1"&gt;
+      &lt;bim&gt;1&lt;/bim&gt;
+      &lt;userid&gt;3&lt;/userid&gt;
+      &lt;numentries&gt;10&lt;/numentries&gt;
+      &lt;lastpost&gt;1355868586&lt;/lastpost&gt;
+      &lt;blogurl&gt;http://davidtjones.wordpress.com&lt;/blogurl&gt;
+      &lt;feedurl&gt;https://djon.es/blog/feed/&lt;/feedurl&gt;
+    &lt;/feed&gt;
+[/sourcecode]
+  Shouldn't the feed elements be nested within the feeds elements?  Need to check this.  Create some data in the forum and do a backup again. As expected, it should be nested.
+
+  The building of the tree in backup_bim_stepslib.php is incorrect. Fix that and do another test. Bingo. Now try a restore.
+
+ </li>
+  <li> Are there errors in my restore code causing the absence? <br />
+Mmm, now there is a missing method for bim_grade_item_delete in bim/lib.php. Mm, that was commented out.  Removed and now onto next error.
+
+'itemid' cannot be NULL on an insert into mdl_backup_ids_temp.  Again, this comes down to a problem with the backup not being done correctly, or some error in the restore.  It's a problem with a bim_question.  The backup looks fine.
+
+The problem is in restore.  The individual "process_" methods for each component is not complete.  Not setting up the variable $oldid.  Will also need to double check the mapping of each field in each of these. But first, does this fix the problem? Nope.
+
+Need to figure out where this is/isn't happening.  Ahh, a bit of debugging code and run it again and it appears to complete without the error.  A good sign I hope.
+
+Check the database. Nope, nothing being added in the student_feed, questions, allocations tables.  Clean up the database and try one more restore prior to re-checking the restore code.
+
+Okay the problem was with how the bim id was being used in each of the child element methods.  i.e. $data-&gt;bimid should have been $data-&gt;bim.  That fixed and much of it is now working.  Data is being placed into each of the bim tables from the backup.
+
+However, the problem now is that some of the necessary connections between tables is not being maintained in a consistent method.  For example
+<ul>
+  <li> question field in bim_marking is pointing to the question ids from the backed up bim activity and not the newly restored bim activity. <br />
+   So I need to figure out how to get the new id for a question after it has been inserted into the database and update the element for bim_marking on that basis.
+
+  The process_bim_question method does call set_mapping with bim_question and the old and new ids.  This would seem to be the mechanism for saving this information. The question now is how to retrieve and use it.
+
+  The discussion forum backup code reveals the expected get_mappingid.  And that works.
+
+</li>
+  <li> bim_student_feeds is not being updated.<br />Due to a problem in the specification of the XML....that's working. </li>
+</ul>
+
+</li>
+</ol>
+
+<h3>Final testing</h3>
+
+Due to the misc. problems with backup and restore the database is not exactly clean. I need to clean it up and then retest the backup and restore process.  This will also  provide an opportunity to do another set of tests on the other components of the bim activity.
+
+<ol>
+  <li> Delete all the restored courses - DONE</li>
+  <li> Delete the bim activity on the good course - DONE</li>
+  <li> Check the bim database tables. <br />
+<strong>Check:</strong> data left in bim_student_feeds bim_marking bim_questions bim_group_allocation<br />This may simply be left overs from prior testing gone wrong.  Will need to retest this below.</li>
+  <li> Create a new bim activity in the good course. - DONE </li>
+  <li> Allocate some marking. - DONE</li>
+  <li> Create some questions. - DONE</li>
+  <li> View the bim activity via a student account - DONE </li>
+  <li> Register a blog for that student via the coordinator interface - DONE </li>
+  <li> View the bim activity again as that student - DONE </li>
+  <li> Register a blog as another student - DONE </li>
+  <li> Allocate a question or two - DONE </li>
+  <li> Mark two questions - DONE</li>
+  <li> Release a question - DONE <br />Generates an error to be checked.  Added as an issue to github</li>
+  <li> Do a backup - DONE </li>
+  <li> Do a restore - DONE </li>
+  <li> Check the bim database tables - DONE<br />
+      REstored bim has id 15. All three questions there.  The two feeds are there. Group allocation and marking also seem good.
+ </li>
+  <li> Compare the restored bim activity with the original. - DONE</li>
+  <li> Repeat the first few steps to double check deletion from database. - DONE<br />
+<strong>Check:</strong> Deleting a course does not remove all of the data in the other bim tables (question, group_allocation, feeds, marking)</li>
+</ol>
+
+Will add a few things to the github issues list.</p>
+
+</body>
+</html>

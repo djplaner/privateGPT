@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2: Coordinator&#039;s manage marking tab</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/02/16/bim2-coordinators-manage-marking-tab/">bim2: Coordinator&#039;s manage marking tab</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>The next step in bim2 development is implementation of the manage marking tab.
+
+<h3>What is it?</h3>
+
+bim arises from an institutional context where it is common for courses to have at least a couple hundred students and greater than 10, sometimes greater than 20, teaching staff. The model at this institution was to have one or two of the teaching staff to take on the role of "coordinator". The one in charge. One of the tasks for a coordinator is to manage and moderate the marking performed by other staff. Moderation is intended to ensure some consistency in marking.
+
+To do this, the coordinator needs some way to observe how each other staff member is going with their marking and also to be able to access and view specific comments and marks awarded by the other staff. This is the purpose of the manage marking tab.
+
+Another bim specific task was the releasing of marked posts. Since the coordinator had to moderate all marking before release, bim was designed so that only a coordinator can release marked posts. Students cannot see the mark and comments for their post until it is released.
+
+In bim, the manage marking tab shows:
+<ul>
+  <li> Unregistered students.<br />This is a list of students who have not yet registered their feed with bim. bim provides a mechanism by which these unregistered students can be contacted via email using the Moodle bulk mail service.</li>
+  <li> Marking summary.<br />A table with a row for every marker and columns for each question. In each question column it would show how many of the marker's students have posts in the different states (i.e. submitted, marked, suspended, released, missing). Each of the different states is a link that will show the details of the students that have posts in that state. It also provides various links to release sets of posts.</li>
+</ul>
+
+<h3>What's required?</h3>
+
+There will four main pages for manage marking
+<ol>
+  <li> Main page.<br />This shows the information described above.</li>
+  <li> Results of release page.<br />Showing the success (or otherwise) of an attempt to release posts.</li>
+  <li> Details page.<br />Shows the details of students with posts that meet certain criteria.</li>
+  <li> Change blog registration.<br />A way in which the coordinator can register a blog for unregistered students. This will be a page used in a number of other spots.<li>
+</ol>
+
+Each of these will have to be implemented separately, will attack them in order.
+
+<h3>Main page</h3>
+
+This is going to be a fairly straight-forward typical model/view combination. No form processing with this one. The only "difficult" aspect will be on deciding exactly how to create the support classes to get some of this information, rather than build it straight into the Model.  Most of this data could/will be used elsewhere.
+
+<h4>Model</h4>
+
+The data required for this page includes
+<ul>
+  <li> To calculate unregistered students
+        <ul>
+           <li> List of all student users for the course. </li>
+           <li> List of all registered feeds. </li>
+       </ul>
+  </li>
+  <li> List of all questions for the activity. </li>
+  <li> List of all the markers for the course/activity and also a list of the students that are allocated to those markers.<br />This is quite a complex task requiring a combination of a range of information. In bim, this was implemented as a hash where the keys were the userid for the markers and the value was another hash consisting of
+         <ul>
+           <li> marker - the markers id. </li>
+           <li> students - a hash of user details for all students allocated to the marker keyed on user id. </li>
+           <li> details - the markers user details. </li>
+           <li> statistics - a hash of stats for markers progress. i.e. how many posts are in the various states.  The keys for this hash were either the question ids (which gave stats for that question) and "total" (which gave the overal total stats). </li>
+        </ul>
+    </li>
+</ul>
+
+Current planning is to implement the above using the following classes
+<ul>
+  <li> bimtwo_students - get all student details, including unregistered etc. </li>
+  <li> bimtwo_questions - this is an existing class. </li>
+  <li> bimtwo_markers - for the markers details. <br />It has the following data members
+          <ul>
+              <li> DATA - hash of hashes, key is marker id, each element contains
+                       <ul>
+                           <li> firstname/lastname </li>
+                           <li> students - hash of hashes, key is student id, value is entry groups_members </li>
+                           <li> statistics - hash of hashes, key is question id, value is status and num in that status. </li>
+                      </ul>
+             <li> questions point to questions for activity </li>
+  </li>
+</ul>
+
+<h4>View</h4>
+
+As implemented there are two main parts to the view
+<ol>
+  <li> Manage marking
+         <ul>
+             <li> Link to unregistered students and indication of how many there are. <strong>DONE</strong></li>
+             <li> Main table for overview of marking stats for each marker. <strong>DONE</strong> </li>
+        </ul>
+   </li>
+  <li> Unregistered students - implement this with new view class
+        <ul>
+            <li> Another message about how many there are. </li>
+            <li> A button to email unregistered students. </li>
+            <li> Table listing the unregistered students and their details. </li>
+       </ul>
+  </li>
+</ol>
+
+There are also some gotchas, cases where special displays are required
+<ul>
+  <li> No questions - the manage marking table doesn't come with question columns <strong>DONE</strong></li>
+  <li> No markers - no manage marking table <strong>DONE</strong></li>
+  <li> No students - can't do anything <strong>DONE</strong></li>
+</ul>
+
+<h4>Implementing unregistered students view</h4>
+
+This is a separate class as it will be used again.
+
+First, is there still a bulk email message service in Moodle 2?  Yep, hasn't changed.  Same place. That works.
+
+So, now for the message and details table. Done.  Here's what it looks like
+
+<a href="http://www.flickr.com/photos/david_jones/5450422292/" title="Manage marking by David T Jones, on Flickr"><img alt="Manage marking" height="240" src="http://farm6.static.flickr.com/5059/5450422292_8e24abb6f0_m.jpg" width="180" /></a>
+
+<h3>What's left</h3>
+
+In terms of display, Manage marking is done. What's left, however, are the various "services" which are linked to from manage marking. These include
+<ul>
+  <li> Releasing marked posts. </li>
+  <li> Displaying student details that match certain criteria. </li>
+  <li> Registering a blog. </li>
+</ul>
+
+I'll leave these until the next post.</p>
+
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Kludging an authoring process with Moodle books (almost)</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/02/08/kludging-an-authoring-process-with-moodle-books-etc/">Kludging an authoring process with Moodle books (almost)</a></h1>
+
+<p>Tags: edc3100, moodle</p>
+
+<p>The following outlines an attempt to evolve the authoring "process" I currently use with Moodle books into something a little more useful. It won't be the be all and end all of authoring process, just enough to solve the immediate problem I have.  i.e. <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/#badset">bricolage</a>
+
+I've essentially got this working on my end. The problem is that the Moodle book module has a <a href="#todo">few flaws</a> in how its import function works which means I can't really use this approach.  At least until the book module is fixed.  I've fixed most of it on my own install of Moodle. Will have to find out how that might happen.
+
+<h2>Some related work</h2>
+
+As it happens @abelardopardo wrote a post yesterday titled <a href="http://abelardopardo.blogspot.com.au/2015/02/re-visiting-authoring-reauthoring.html">Re-visiting authoring: Reauthoring</a> that touches on the broader problem and <a href="https://bitbucket.org/abelardopardo/reauthoring">offers a solution</a>. Many of the conditions he outlines align with mine, however, my need is more immediate and contextual than what would be need to explore and adopt his solution.
+
+And I remember @timklapdor  doing some work around this broader issue last year.  Yep, I even commented on <a href="https://timklapdor.wordpress.com/2014/01/31/an-academic-authoring-environment/">his post</a>. A comment that captures some of my disquiet about institutional approaches to solving the authoring problem (I know my institution will be having another go at this soon).
+
+Meaning I'm not trying to solve it at the institutional level.  I'm simply aiming to enhance my current practice a bit. An <a href="https://davidtjones.wordpress.com/2010/04/25/inside-out-outside-in-or-both/">"inside out" approach</a>, rather than outside in.
+
+<h2>A better idea</h2>
+
+If I had the time I might have modified the approach below so that rather than exporting the Moodle book into HTML files on my computer, I'd have it exporting to pages on my <a href="http://fedwiki.djon.es/">smallest federated wiki (SFW)</a> (and back into the Moodle book).  With this approach the SFW version would be the definitive version. It has version control built in at the paragraph level and opens up a range of possibilities of students (and others) being able to fork and work on their own versions of the content. An affordance that could potentially be much more interesting from a learning perspective and in terms of being "open".
+
+However, the SFW authoring environment doesn't feel quite as natural to what I plan to use below. That may simply be familiarity, but there's also the problem that SFW somewhat denigrates the use of HTML and is somewhat limited in terms of presentation and embedding. Why not use SFW, rather than Moodle books? Mainly because the course design currently (and perhaps problematically) relies on Moodle activity completion. Not a function that is available in SFW, nor a function that is sensible in the SFW world-view. It also appears - after a quick test - that SFW doesn't necessarily play all that nicely with search engines. Meaning that SFW doesn't solve my big bug bear with Moodle, no search capability.
+
+<h2>Deja vu all over again: why?</h2>
+
+I do this with some reservation due to a sense of deja vu. Almost 20 years ago as I prepared my <a href="http://web.archive.org/web/19970808204421/http://mc.cqu.edu.au/subjects/85321/">first totally web-based course</a> I wrote a <a href="https://davidtjones.wordpress.com/publications/solving-some-problems-of-university-education-a-case-study/#authoring">set of scripts</a> to help with authoring <a href="http://web.archive.org/web/19970809003757/http://mc.cqu.edu.au/subjects/85321/study-guide/chap1/index.html">the web-based study material</a> (thank you the web archive). Tools and an outcome not unlike the approach I'm working toward below and not that far removed (but far more primitive) than those mentioned above.
+
+Why?  Why after 20 years this authoring problem still hasn't been solved? Why do there remain a plethora of disjointed systems and no-one really good solution?
+
+Perhaps mainly because there is a plethora of disjointed systems in which the resources that are authored have to fit. Each of those disjointed systems have different world-views and subsequently sets of functionality.  Hence it's almost impossible for one authoring process to fit nicely into all of them. e.g. the talk above about integrating SFW and Moodle books. Adding more complexity, and touching on the comment I made on <a href="https://timklapdor.wordpress.com/2014/01/31/an-academic-authoring-environment/">@timklapdor's post</a>, the people who are likely to use, the people that will use these authoring systems come with their own set of world-views, preferences and peccadilloes. The gaps between all these world-views are perhaps just big enough to prevent the wide acceptance of a single approach.
+
+Suggesting that designing or selecting a single system (an outside-in approach) for everyone to use is destined to fail. There will always be gaps between the different world-views. Even if you can get everyone to agree, in a year or so another type of system will arise and there will be another gap to overcome. Perhaps a better approach is focus on what people are currently doing and bridge the gaps (an inside-out approach), which is sort of what I'm doing here.
+
+<h2>The problem and context</h2>
+
+As outlined in <a href="https://davidtjones.wordpress.com/2015/02/03/concrete-lounge-1-helping-learners-find-correct-up-to-date-course-information/">a previous post</a> and shown in the following screenshot my course uses <a href="https://docs.moodle.org/28/en/Book_module">"Moodle books"</a>. Each Moodle book tends to be focused on a specific task and generally is wrapped around external resources.
+
+<a href="https://www.flickr.com/photos/david_jones/16315335515" title="Week1 by David Jones, on Flickr"><img alt="Week1" height="188" src="https://farm8.staticflickr.com/7488/16315335515_b91c408c98_m.jpg" width="240" /></a>
+
+These books were originally written in HTML using the vi editor and manually imported into Moodle. Last year I made ad hoc changes by using the book module's "editing" interface. That's not a great process.
+
+The wish list for what I want from a process
+<ol>
+  <li> Have an authoritative source HTML file that contains all the content for the book. </li>
+  <li> Use directories and files to create a structure that mirrors the learning paths on Moodle.  </li>
+  <li> Perhaps in way that allows the content to be put on another website so it can be searched. </li>
+  <li> Have that structure under source control.  </li>
+  <li> Allow simple updating of the Moodle book. </li>
+  <li> Benefit from the Moodle migration smarts.
+The Moodle books point to additional Moodle activities (e.g. quizzes, discussion forums) etc that are used in learning activities in the books. When a new offering of the course is prepared, the old offering is migrated.  This migration process is smart enough to have the books in the new offering pointing to the activities that belong to the new offering.  The "books" in source control wouldn't be automatically updated this way.
+ </li>
+</ol>
+
+In essence, I'd like to edit the books using vi (or whatever HTML editor etc I end up using) on my local computer. When I'm happy with the book, commit it to source control and import it into Moodle.
+
+In a perfect world, at the start of a new term I'd have a process that dumps the migrated books from the new course site onto my local computer ready for editing and importing into source control.
+
+<h2>Exploration and Development</h2>
+
+The following documents some exploration of various possibilities that might help achieve the above.
+
+<h3>Import and export from a Moodle book</h3>
+
+When I started all this either I was aware of, or the Moodle books didn't have an import facility.  Time to play with that as it may be the foundation for putting content back into Moodle quickly.
+
+It appears it accepts each chapter as a HTML file.  Which is a bit of a bugger as I'd hoped to work with a single HTML file locally and upload that.  Appears I may need some sort of script to produce the format required by the Moodle book.  Let's test this out
+<ol>
+  <li> Download an existing book.
+      <p>I'm doing this by using the "print book" function.  This produces a fairly bare HTML file of the entire book that forms the basis for the local copy.</p> </li>
+  <li> Look at the HTML.
+        Diigo/Firefox has stuck a bunch of css etc into it. Remove that.
+        <ul>
+          <li> book_summary/title
+               classes book_summary and book_info use for entire book information.</li>
+          <li> class book_toc_numbered </li>
+          <li> Chapters are surrounded by a div with class book_chapter, heading 2 used for the title. </li>
+          <li> Sadly sub_chapters also appear to use class book_chapter but with heading 3 </li>
+          <li> A collection text/css files are created when saving the printed file. </li>
+       </ul>
+  </li>
+  <li> Import that single HTML file into another book.
+      Well that doesn't work.  Apparently an invalid file type.  Let's try removing all the diigo etc crud. Nope that doesn't help.
+     So what about a single section of HTML?
+    Of course, it has to be a zip file that you upload.  Idiot.  So zip file with two html files.  One the big HTML from the book itself, and the second a small excerpt.
+        So it does the import and presents some feedback - "Importing" "Relinking" and then a continue button.
+
+       Appears to be a very simple import.  Each HTML is create as a single chapter. Sequenced in the order found in the zip file.
+
+      What if I import again, but change one of the files to end in _sub.html.  This is meant to create a sub chapter.  That works as expected.  Another two chapters added to the book, exactly the same as the other two.  But the test_sub.html has been created as a sub-chapter.  i.e. the title of the chapter is taken from the title, but it isn't smart enough to remove the _sub, even though it knows what _sub at the end indicates.  <strong>Note:</strong> I really should do something about that, looks like it would only take the addition of a single line of code.
+ </li>
+  <li> Look at the content and develop the script.
+      Looks like the script will need to parse the HTML "print" version from the book by
+       <ul>
+         <li> Extract all the div class book_chapter </li>
+         <li> for all of those (in order that they are found in the HTML file)
+              <ul>
+                <li> create a new file with the following name format NUMBER TITLE{_sub}.html
+                    <ol>
+                      <li> NUMBER - A number such as 001 to ensure that the order stays the same. </li>
+                      <li> TITLE - the title from the heading 2 or three immediately inside the div. </li>
+                      <li> _sub - if it's a heading 3 - indicating a sub-chapter. </li>
+                    </ol>
+                 </li> <li> Add in the content of the div into that. </li>
+              </ul>
+          </li>
+        </ul>
+      Also appears like I'll need to have two separate functions, related to preparing the version of the file to
+      <ol>
+        <li> edit; and
+            This would be a single HTML file that I use to edit. </li>
+        <li> import.
+           The one outlined above that would imported into Moodle. </li>
+      </ol>
+
+     So which Perl HTML parsing module to use?  TreeBuilder::XPath was the most recent I've used. But I'm doing jquery a bit recently, so <a href="http://blogs.perl.org/users/tempire/2011/02/easy-dom-parsing-with-mojodom.html">Mojo::DOM</a> is interesting.
+
+     Yep that worked.  Script is now producing an EDIT.html file that I'll use to make changes.
+
+  </li>
+  <li> Import the broken up HTML files into another book
+        The aim here is to
+        <ol>
+         <li> extract all the book sections from the EDIT.html file </li>
+         <li> create a collection of separate HTML files containing the contents of each book section </li>
+         <li> zip up all those separate HTML files ready for importation </li>
+         <li> remove the files </li>
+        </ol>
+
+       Done.  Fairly simply.  Tried import into the book and it's sort of worked. The problems to solve are
+         <ol>
+            <li> The inclusion of ".html" in the chapter name. </li>
+            <li> The inclusion of "_sub" in the chapter name.
+                  These first two problems appear to be down to how the Moodle book import function works. i.e. it doesn't remove these, which is somewhat surprising.  Have made some initial changes to my local Moodle installation (about line 83 of mod/book/tool/importhtml/locallib.php), but which won't work on all uses of the module - e.g sub-directories, HTML files with .htm extensions etc.
+[code lang="php"]
+# DJ's changes
+if ( preg_match( "/.html$/", $chapter-&gt;title ) ) {
+    $chapter-&gt;title = preg_replace( "/.html$/", "", $chapter-&gt;title );
+}  # end DJ's changes
+
+if (preg_match('/_sub(/|.htm)/i', $chapter-&gt;importsrc)) { // If filename or directory ends with *_sub treat as subchapters
+# DJ's changes
+    // remove _sub from title, should be last given above replacement
+    if ( preg_match( "/_sub$/", $chapter-&gt;title ) ) {
+        $chapter-&gt;title = preg_replace( "/_sub$/", "", $chapter-&gt;title );
+    } # end DJ's changes
+[/code]
+            </li>
+            <li> The inclusion of #39; (i.e. html entities) in the chapter name.
+                   This appears to be due to the process I'm using to save and process the exported book files. I need to modify it to decode HTML entities.  Easy enough in Perl using HTML::Entities.  But I also have to update the heading back in the HTML.  Done.
+            </li>
+            <li> Chapters having no content.
+                My immediate guess is that the HTML files being imported still have some of the Moodle book divs etc and that this is clashing.  So remove those and test.  Nope, that didn't work. Time to look at the code
+[code lang="php"]
+    if (preg_match('/&lt;body[^&gt;]*&gt;(.+)&lt;/body&gt;/is', $html, $matches)) {
+        return $matches[1];
+[/code]
+       Oh dear, regular expression matching.  That's the problem. It requires a body tag around the outside. Have to love open source projects where you can look at the code.  That's fixed.
+            </li>
+            <li> Duplicate headings.
+                  The import file needs to have the heading title and the other book chapter remnants removed to prevent issues.  Done.
+            </li>
+            <li> The chapter numbers still present.
+                 The Moodle book import processes the collection of files in the order it sees them in the zip file. To make sure that the order is what I want, the filenames start with numbers.  The problem is that the import process doesn't remove the numbers, so you end up with stuff like <em>2 2 Diigo</em> where the first 2 is from the Moodle book module and the 2nd 2 is from the file name.
+                  I can't change the Moodle book module code quickly enough to help me.
+                  Can't remove the numbers in my export script as this would change the order of the files imported.
+                 Leaving exploring the zip function to see if I can specify the order the files should be zipped in the script, without relying on numbers in the file system.  Can do this with zip, however, the book module doesn't play nicely.  It looks like it just unzips the file, forgets about any order in the zip file and relies on the order from the file system.
+         </ol>
+  </li>
+  <li> Additional problems
+       Of course it's not going to be as simple as this.  A major problem will be that via this process I will lose the capability to correctly link between pages in a book. The import process back into the Moodle book will either actively change links to a Moodle book, or it will ignore them.
+     It will also play silly buggers with links to/from other Moodle books. i.e. modifying a book this way will break all other links to the original version of the book.
+
+    Some possible solutions
+       <ol>
+          <li> Have the import script look for and announce links to Moodle books.
+                Thereby allowing for manual intervention. </li>
+          <li> Run the institutional "check course" function to check for broken links </li>
+          <li> Modify the book module so that the import function supports some sort of variable for pages.
+              i.e. the ability to use <em>{TITLE_OF_PAGE}</em> as a link to a page within the current book. Where TITLE_OF_PAGE is the chapter title. </li>
+       </ol>
+</ol>
+
+
+<h3>Export all Moodle books</h3>
+
+This will have to wait until another day.
+
+<h3>A structure that works</h3>
+
+Looks like being something like
+<ul>
+  <li> Week folder
+      <ul>
+        <li> Book folder
+          <ul>
+            <li> ALL.html - the version imported from Moodle. </li>
+            <li> EDIT.html - output of "parseBook.pl ALL.html" ready to edit. </li>
+            <li> IMPORT.zip - output of parseBook.pl. A zip file ready to import into Moodle that contains ALL.html split up into the appropriate separate HTML files. </li>
+         </ul>
+       </li>
+        </ul>
+   </li>
+</ul>
+
+<h3>git{hub}</h3>
+
+Wait for another day.  But I assume the aim would be to have EDIT.html in git with the surrounding structure.
+
+<h2>Planned process</h2>
+
+<ol>
+  <li> Create a folder for each week. </li>
+  <li> In that create a folder for each book using 001 etc to get order correct </li>
+  <li> Save a HTML version of the book from Moodle into EXPORT.html in that directory </li>
+  <li> Run the script which will produce an EDIT.html file in that directory </li>
+  <li> Make the changes in the EDIT.html file </li>
+  <li> The EDIT.html file can be kept in github? </li>
+  <li> Run the script to produce the import version. </li>
+</ol>
+
+<h2 id="todo">To do</h2>
+
+<ul>
+  <li> Look into how to suggest/contribute the following changes to the Moodle book
+       <ul>
+         <li> Modify the chapter titles imported to remove the _sub and the .html.
+               Semi-done.
+         </li>
+         <li> Import chapters in the order they are contained in the zip file (if possible)
+             The zip stuff is done by lib/filestorage/zip_packer.php.  ATM, the book module is simply extracting files to storage.  Hence the problem with out of order.  zip_packer does have a list_files method that might just provide the list of in order file names that we're after.  This actually works and the book module does use this initially to get the filenames.  But it loses the order when it creates a hash with the pathName as the key.
+
+             That's fixed.
+         </li>
+         <li> Have an option to remove all existing chapters prior to import. </li>
+       </ul>
+  </li>
+  <li> Think about the implications of integrating SFW . </li>
+</ul></p>
+
+</body>
+</html>

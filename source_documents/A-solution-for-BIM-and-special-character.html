@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>A solution for BIM and special characters?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/12/10/a-solution-for-bim-and-special-characters/">A solution for BIM and special characters?</a></h1>
+
+<p>Tags: bim, bim2, bimErrors, Uncategorized</p>
+
+<p>The main long term issue in the use of BIM has been student's creating blog posts that contain <a href="https://djon.es/blog/2010/09/05/more-problems-with-bim-and-special-characters/">"special" characters</a>. This is typically done when they create their post in Word and then copy and paste it into their blog. The interaction between BIM, <a href="http://simplie.org">SimplePie</a> and database engines has not been a good one. It results in blog posts either not being stored in the Moodle database or being cut off at the special character.
+
+A couple of days ago I got a report of this type of problem from a course using BIM. Previously, all of the recent problems associated with special characters have been specific to this university's version of Postgres. I couldn't re-create the problems with my test Moodle install with MySQL or Postgres.  This latest report is different. It causes problems on my install using MySQL.
+
+More interestingly, it also doesn't cause a problem with Moodle 2's external blog feature. This is interesting because Moodle 2's feature is using SimplePie, just like BIM. It appears that Moodle and/or the install of Moodle 2 I have is doing something that addresses the special character problem. The aim is to investigate and identify what this is and see if it can be incorporate into BIM.
+
+In the end, this evolved into a solution for BIM v1 that has been put into the git repository. Now onto BIM v2.
+
+<h3>The problem</h3>
+
+Some evidence of the problem.  First, what the problem post looks like on the student's blog.  Note the little square.
+
+<a href="http://www.flickr.com/photos/david_jones/5245275498/" title="The problem post by David T Jones, on Flickr"><img alt="The problem post" height="142" src="http://farm6.static.flickr.com/5084/5245275498_f3d0808d50.jpg" width="265" /></a>
+
+This causes the a problem in BIM, once the special character is reached, nothing else is stored.  The same post above in BIM. (Click on the image to see a larger version).
+
+<a href="http://www.flickr.com/photos/david_jones/5244675363/" title="The problem post in BIM by David T Jones, on Flickr"><img alt="The problem post in BIM" height="40" src="http://farm6.static.flickr.com/5204/5244675363_414fe609fd_m.jpg" width="240" /></a>
+
+And evidence that it is working in Moodle 2.  Note: Moodle 2 only stores a sub-set of the post, not the complete content.  But you can see that it does include the square and some of what follows.
+
+<a href="http://www.flickr.com/photos/david_jones/5245275614/" title="Problem post in Moodle 2 by David T Jones, on Flickr"><img alt="Problem post in Moodle 2" height="63" src="http://farm6.static.flickr.com/5045/5245275614_c40672500d_m.jpg" width="240" /></a>
+
+<h3>Is Postgres making the difference?</h3>
+
+My Moodle 2 install is using Postgres, so there's a chance that this is the source of the different outcome.  Must test that.
+
+No, it appears that it does fail in Moodle 1.9 + BIM + Postgres.  However, it fails differently than for MySQL.  As above, MySQL only cuts off everything after the first special character. It still inserts an entry for the post.  Moodle 1.9 + BIM + Postgres doesn't create an entry at all for the post.
+
+So there appears to be a real difference in how Moodle 2 is doing this, what is it?
+
+<h3>How does Moodle 2 do it?</h3>
+
+So, the aim here is to go through the Moodle 2 code and try and determine what it is doing that is making this work.
+
+Registering an external blog is starts in Moodle 2 with the ~/blog/external_blog_edit.php file. This presents the form to enter the details of the external blog.  It also processes the form. It uses a Moodle class that wraps around SimplePie to get the data.
+
+The first step is to look at the data it gets to check if this is where the special character handling occurs?
+
+[code lang="php"]
+$rss = new moodle_simplepie($data-&gt;url);
+
+print "&lt;xmp&gt;";
+print_object( $rss );
+print "&lt;/xmp&gt;";
+die;
+[/code]
+
+Without the <em>die</em> this code simply updates the database and reports back success on a different page without giving a chance to see the dump.  Looking at the dump, you can see that SimplePie is getting the complete posts from the feed.
+
+Which is also what happens in Moodle 1.9 + BIM + Postgres.  So the question is what is different about the Moodle 2.0 database queries that result in ignoring the special characters?
+
+This is done in the function <em>blog_sync_external_entries</em>.  Which as expected, loops through the entries in the feed and inserts them in the database.  It does this by creating an object, setting up the fields and using the <em>insert_record</em>.  This is essentially the same as BIM. So where's the difference?
+
+Is it in the <em>insert_record</em> function?
+
+The abstract classs is in <em>~/lib/dml/moodle_database.php</em>. There are then separate implementations for each database type, including pgsql.
+
+It appears to be using a PHP function <a href="http://php.net/manual/en/function.pg-query-params.php">pg_query_params</a> to populate the parameters into the SQL statement, possibly handling quoting.  Two questions
+<ul>
+  <li> Is this where it happens? </li>
+  <li> Is it used in Moodle 1.9?</li>
+</ul>
+
+<h3>The final solution?</h3>
+
+This post has been on the go for a few days as real life intrudes on BIM v1.0 work.  In the end folk needed a solution for v1 and it looks like I found one and it has been committed into git.
+[code lang="php"]
+$content = iconv( "ISO-8859-1", "UTF-8//IGNORE", $raw_content );
+[/code]
+
+Which, as I understand it, essentially ensures that all the characters in the content string (content of a blog post) are in the UTF-8 character set.  i.e. the character set being used by the database. Doing this ensures that the database doesn't complain or fail on insert.
+
+The drawback of this solution is that when the content is displayed it shows up (on many?all? browsers with funny characters.  The advantage is that it appears to work. Even on the problem posts used above.
+
+Let me know if you have any problems. Am waiting for a local university to try this in production, if it works there, I'm hoping it will work anywhere.</p>
+
+</body>
+</html>

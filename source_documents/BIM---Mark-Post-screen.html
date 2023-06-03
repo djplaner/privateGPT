@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Mark Post screen</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/10/bim-mark-post-screen/">BIM - Mark Post screen</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>This post is meant to document the (hopefully short) process of getting the Mark Post screen implemented in BIM.</p>
+
+<h3>Required data</h3>
+
+<p>The screen is passed the various cm-&gt;id and the id for bim_marking.  It will need to get:</p>
+<ul>
+  <li> Contents of bim_marking - i.e. the post to mark. </li>
+  <li> Details about the student, including progress mark. </li>
+  <li> Information about the other questions - mostly to implement the "ReAllocate" drop box.  <br />This can borrow from the AllocatePost screen.</li>
+  <li> Information to generate the marking progress information - basically all of the student details stuff duplicated from AllocatePost. </li>
+</ul>
+
+<h3>Implementation questions</h3>
+
+<p>This will be implemented using a form and be very similar to the AllocatePost screen.  Should be able to borrow, reuse and re-factor most of that code.</p>
+<p>So, let's try that first.  Copy the allocate method and make the changes necessary for marking (if this works, it shows the design ain't that great).</p>
+<p>First change is that markingId is passed in, not user id.  That fixed, it's basically working. Now need to create the form.</p>
+<p>This is essentially a modification of the allocate posts form to deal with a single post and include a HTML editor for creating the comments.</p>
+<p>Some initial problems with setting the data, but that's more due to learning more about the forms processing/scripting in Moodle/PHP.  All fixed.  Just now fiddling with the proper logic in processing the form and displaying a decent message to the user.</p>
+
+<h3>What's been done</h3>
+
+<p>That seems to be working.  Marking is done. </p>
+
+<h3>What's left to be done</h3>
+
+<ul>
+  <li> BAM has the ability for the marker to navigate to the next/previous question for the same student.  BIM doesn't have that yet. </li>
+</ul></p>
+
+</body>
+</html>

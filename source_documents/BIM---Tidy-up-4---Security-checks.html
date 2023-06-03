@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Tidy up #4 - Security checks</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/03/bim-tidy-up-4-security-checks/">BIM - Tidy up #4 - Security checks</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>The last tidy up of BIM resulted in some fairly major code changes as early design assumptions were over-turned in favour of more PHP/Moodle like approaches, not to mention general better design/structure.  This tidy up turns to some of the more "housekeeping" types of tasks.  This one seeks to ensure that BIM follows all of the security guidelines as <a href="http://docs.moodle.org/en/Development:Security">suggested on the Moodle site</a></p>
+
+<h3>Auth and capabilities</h3>
+
+<ul>
+  <li> require_login course is used <strong>check</strong></li>
+  <li> has_capability called early.  <strong>check</strong></li>
+</ul>
+
+<h3>Forms</h3>
+
+<ul>
+  <li> Use moodleforms wherever possible  <strong>check</strong> <br />There are 7 forms in BIM
+<ul> <li>allocation_form.php</li>
+<li>coordinator/find_student_form.php</li>
+<li>coordinator/marker_allocation_form.php</li><li>coordinator/question_form.php</li>
+<li>marking_form.php</li>
+<li>mod_form.php</li>
+<li>./student/register_form.php</li>
+</ul>
+</li>
+  <li> setType method for each field
+<ul> <li>allocation_form.php <strong>check</strong></li>
+<li>coordinator/find_student_form.php <strong>check</strong></li>
+<li>coordinator/marker_allocation_form.php <strong>check</strong></li>
+ <li>coordinator/question_form.php <strong>check</strong></li>
+<li>marking_form.php <strong>check</strong></li>
+<li>mod_form.php <strong>check</strong></li>
+<li>./student/register_form.php <strong>check</strong></li>
+</ul>
+</li>
+  <li> use optional_param/required_param  <strong>check</strong></li>
+  <li> Clean data from external sources - RSS Feeds<br />I'm using SimplePie to retrieve all the feeds.  I'm assuming this does the job of cleaning.  I would hope so.  This will need confirmation </li>
+</ul>
+
+<h3>Output</h3>
+
+<p><a href="http://docs.moodle.org/en/Development:Output_functions"> more information</a></p>
+<ul>
+  <li> Use <strong>s</strong> or <strong>p</strong> to output plain text </li>
+  <li> use <strong>format_string</strong> for minimal HTML </li>
+  <li> use <strong>format_text</strong> for all other content </li>
+  <li> use stripslashes on data from option_param or required_param if being outputed </li>
+</ul>
+<p>There's also the question here of some of the internationalisation stuff that I need to include.</p>
+<p>Currently, I'm simply using "print".  Source files using print include:</p>
+<ul>
+  <li>coordinator/allocate_markers.php <strong>check</strong></li>
+  <li>coordinator/find_student.php <strong>check</strong></li>
+  <li>coordinator/manage_marking.php <strong>check</strong></li>
+  <li>coordinator/view.php <strong>check</strong></li>
+  <li> coordinator/question_form.php <strong>check</strong> </li>
+  <li>lib/bim_rss.php <strong>check</strong></li>
+  <li>lib/locallib.php <strong>check</strong></li>
+  <li>marker/view.php</li>
+  <li> marker/allocation_form.php <strong>check</strong></li>
+  <li>marking_form.php </li>
+  <li>student/view.php</li>
+</ul>
+
+<p>Adding in language support is interesting.  Not a lot of examples.  Having to use some arcane greps and finds to discover examples and try to deduce from there.</p>
+
+
+<h3>Log every request</h3>
+
+<p>Use <strong>add_to_log</strong></p>
+<p>The major requests for BIM are:</p>
+<ul>
+  <li> Coordinator  <strong>Check</strong>
+          <ul>
+             <li> Configure BIM</li>
+             <li> Manage and change questions </li>
+             <li> Allocate markers </li>
+             <li> Manage marking
+                     <ul>
+                        <li> View students in various states </li>
+                        <li> Release results </li>
+                     </ul>
+             </li>
+             <li> Find student </li>
+             <li> Your students
+                    <ul>
+                         <li> student details </li>
+                         <li> post details </li>
+                        <li>  reallocate post </li>
+                        <li> Mark post </li>
+                    </ul>
+         </ul>
+  </li>
+  <li> Marker  <strong>CHECK</strong>
+          <ul>
+              <li> student details </li>
+              <li> student post details </li>
+              <li> reallocate post </li>
+              <li> Mark post </li>
+          </ul>
+  </li>
+  <li> student  <strong>CHECK</strong>
+         <ul>
+             <li> view details </li>
+             <li> try to register feed </li>
+          </ul>
+  </li>
+</ul></p>
+
+</body>
+</html>

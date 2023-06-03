@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How might github and the Moodle book module work together</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/08/13/how-might-github-and-the-moodle-book-module-work-together/">How might github and the Moodle book module work together</a></h1>
+
+<p>Tags: moodle, moodleopenbook</p>
+
+<p>The <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">Moodle open book project</a> is attempting (not surprisingly) to modify the <a href="https://docs.moodle.org/29/en/Book_module">Moodle book module</a> to enable it to produce open resources (educational or otherwise). The main focus is on making the content of the books open in a way that enables modification and reuse. The plan is to do this by enabling a Moodle book resource to be linked to github.
+
+The following is an exploration of and an attempt to describe how this might work at a fairly high level.
+
+What do you think? Might this work? Are there better options?
+
+The next step will be to try some realistic technical explorations to see if this can be implemented.
+
+<h3>Why?</h3>
+
+The idea is that once in github different people (or courses) can use github to modify and collaborate around the same document.  e.g. a book I created for my course, might be useful for another course looking at ICT and Pedagogy.  Rather than play around with Moodle backups, I could create a github repository and the content of the book to that repository.  The author of the other course can then fork that repo and import the content of the book from their repo into Moodle.
+
+Any changes that either of us make to the book are stored in github. We can then use github's features to share and manage changes.
+
+Beyond this, I could make all of the books in my course available via github.  Who knows, some of my students might find them useful or may wish to make changes that might enhance the work.
+
+
+<h3>Implementation</h3>
+
+At this stage, the idea is to implement the github 'connection' as a <a href="https://moodle.org/plugins/browse.php?list=category&amp;id=56">book tool</a>. This means it can be installed by each Moodle site that wants it. When installed there will be a new link in the Book administration block through which you access the github functionality.
+
+The intent is that an individual Book resource will be linked to a single file hosted in a github repository.  The file would be a single HTML file (at least initially) with the different chapters and sub-chapters indicated in some yet to be defined way. The final format will aim to allow the HTML file to be edited by as many different editors as possible, but still allow simple importation into the Book module.
+
+As a future feature, it might be possible and useful to all the import/export of that single file from github into the Book to be done using the user's choice of other import/export tool. i.e. if I might want the file in github to be an epub file, I would configure the github tool to use the <a href="https://moodle.org/plugins/view/booktool_exportepub">Lucimoo EPUB export/import tools</a> to produce the file that is sent to/from github.
+
+<h3>What it might look like</h3>
+
+Initially, it might look like the following. The <em>(off)</em> is meant to be an indication that the connection to github is currently off. i.e. not being used.
+
+<a href="https://www.flickr.com/photos/david_jones/19910790803/in/dateposted-public/" title="001_off"><img alt="001_off" height="451" src="https://farm6.staticflickr.com/5666/19910790803_a09eb5e037.jpg" width="418" /></a>
+
+Clicking on the GitHub link would open up a form that would be used to configure the necessary information including:
+<ol>
+  <li> github repository - that contains the file. </li>
+  <li> file - the actual file being linked to. </li>
+  <li> github credentials - of the author (with the option that this might be left empty for repositories configured to allow that). </li>
+  <li> behaviour spec - i.e. how to import the file (replace existing content, append?), how to handle changes made in the book<p>Initially, this would probably be left to some default combination. It would also be dependent on the settings of the repository and the permissions of the github credentials.<p>More work required here.</p></li>
+</ol>
+
+Once this is configured, the administration link would change to indicate that a connection had been made. It would now have a link to the file on github and also some indication of the relationship between the book and the github file. In the following image "clean" implies the book and github file are a match.
+
+<a href="https://www.flickr.com/photos/david_jones/19909046764/in/dateposted-public/" title="002_on"><img alt="002_on" height="424" src="https://farm6.staticflickr.com/5706/19909046764_02b7de4273.jpg" width="465" /></a>
+
+If changes are made in the Moodle book this would mean that the book is "ahead" of the github file. The github link would change appropriately. It would also add an additional link "push". Clicking on that link should probably display a page that provides some details of the changes to be pushed and allows the author to make the choice whether to push or not.
+
+<a href="https://www.flickr.com/photos/david_jones/20344990589/in/dateposted-public/" title="003_push"><img alt="003_push" height="423" src="https://farm6.staticflickr.com/5639/20344990589_7fd2d01519.jpg" width="476" /></a>
+
+If the version of the file on the repository had been changed, then changes are also made.
+
+<a href="https://www.flickr.com/photos/david_jones/20344990349/in/dateposted-public/" title="004_out_of_date"><img alt="004_out_of_date" height="426" src="https://farm6.staticflickr.com/5664/20344990349_bdf9123aca.jpg" width="442" /></a>
+
+Leaving the question of what happens when both local and remote changes have been made? Both?  Some thought to be given here.
+
+<a href="https://www.flickr.com/photos/david_jones/20531711885/in/dateposted-public/" title="005_both"><img alt="005_both" height="459" src="https://farm6.staticflickr.com/5787/20531711885_3cf579c991.jpg" width="429" /></a>
+
+<h3>Assumptions</h3>
+
+This is all based on
+<ol>
+  <li> The Book author has the details and credentials to a GitHub respository that contains a file of the correct format;
+       This might be a challenge for some authors. </li>
+  <li> There is no local git repository.
+      Asking folk supporting a Moodle instance to install git on the server is a bit much. Instead, the content for the book will be stored in the Moodle database. No problems for Moodle, but raises questions about how to determine whether there have been changes. At least two current possibilities
+<ol>
+  <li> Store the date of last change on the repo in the Moodle database and compare dates for changes to the book. </li>
+  <li> Generate/store a version of the HTML file locally and do a compare (sounding very heavyweight). </li>
+</ol>  </li>
+
+   <li> That different books in a single course could be linked to entirely different github repositories. </li>
+  <li> That the idea of adding additional links and status information about github into the administration block doesn't break some Moodle style guide.</li>
+</ul>
+
+<h3>Outstanding questions</h3>
+
+Lots.
+
+More specifically
+<ul>
+  <li> How to handle links between chapters?
+         A book is made up of chapters (a single HTML page). When displayed in Moodle the Book module provides simple next/previous page navigation.  It's also fairly common for authors to hard-code links between chapters (and even into chapters in other books).  If the github version of a book stores all the chapters in a single file, what about these links?
+
+        How do the existing export/import plugins handle this?
+   </li>
+  <li> How to handle embedded resources (images, movies etc)?
+        Books also contain embedded images, movies etc.  The issue of how these are provided is a common one.  I tend to use external services, but others place them into Moodle, how to handle these?  How do the existing export/import plugins handle them?
+   </li>
+  <li> Is all of the above technically possible with github, the github API, PHP, Moodle etc. </li>
+  <li> Does all this need to be github specific? Is there a way (and a need) for this to git specific, but not github specific? </li>
+  <li> What might be the process for create a new file in a repository based on an existing Moodle book? </li>
+</ol></p>
+
+</body>
+</html>

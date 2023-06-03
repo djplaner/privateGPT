@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM #6 - Learning weblib.php</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/09/03/bim-6-learning-weblib-php/">BIM #6 - Learning weblib.php</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>It's been a while since I <a href="https://djon.es/blog/2009/08/20/bim5-getting-a-prototype-bim-going/">last did some work on BIM</a>, various other tasks getting in the way.  The main mid-term KPI is the delivery of a working prototype of BIM working within Moodle.  That's what I started in the last bit of work.</p>
+<p>The aim here is to get into <a href="http://docs.moodle.org/en/Development:lib/weblib.php">weblib.php</a> enough so I can get most/much of the prototype in place.  weblib.php contains PHP functions used in Moodle to generate output.  I could just output HTML but using weblib.php will make it easy for the prototype to look like Moodle.  weblib.php also brings other benefits, so better to start using it now, rather than later.  Just another step in learning Moodle.</p>
+
+<h3>weblib.php</h3>
+
+<p>The following is an attempt to understand and internalise the model/approach that underpins weblib.php - defined in the comments as<blockquote>Library of all general-purpose Moodle PHP functions and constants that produce HTML output</blockquote></p>
+<p>First, I'm simply going through the library file and getting a feel for the functions there.  The following is a list of those functions, in the order that they currently appear with some light categorisation applied. On the surface it's a mindless exercise, but it helps me see the "lay of the land".</p>
+<ul>
+  <li> Utility functions:
+      <ul>
+         <li>  s|p($var, $strip=false) - add quotes to HTML characters </li>
+         <li> addslashes_js( $var ) - quote javascript </li>
+         <li> strip_querystring( $url ) -  remove the query string from url</li>
+         <li> get_referer( $stripquery=true ) - return HTTP_REFERER </li>
+         <li> me() - return name of current script with querystring </li>
+         <li> qualified_me - me with a full URL </li>
+       </ul>
+  </li>
+  <li> class moodle_url - useful for dealing with URLs with multiple parameters.  Apparently mostly for pages that link to themselves. </li>
+   <li> More utility functions
+       <ul>
+          <li> data_submitted( $url='' ) - is there form data waiting to be processed </li>
+          <li> stripslashes_safe($mixed) - removes backslashes from string</li>
+          <li> stripslashes_recursive( $var ) - used on arrays/objects </li>
+           <li> addslashes_recursive( $var ) - reverse of above </li>
+           <li> break_up_long_words( $string, $maxsize=20, $cutchar='') - break up text ...</li>
+            <li> str_ireplace( $find, $replace, $string ) - search&amp;replace </li>
+           <li>  stripos($haystack, $needle, $offset=0 ) - find location of string.</li>
+         </ul>
+     </li>
+  <li> Popup windows
+      <ul>
+           <li> element_to_popup_window(.....) - the description is harder to understand than the function name. I'm assuming it displays something that leads to a popup window  </li>
+          <li> link_to_popup_window(....) -- seems to be a trend developing</li>
+          <li> button_to_popup_window(...) </li>
+          <li> close_window_button( .... ) </li>
+           <li> close_window($delay=0) </li>
+      </ul>
+  </li>
+  <li> Form elements
+    <ul>
+       <li> choose_from_menu(...)  - take an array and output HTML for select element </li>
+       <li> choose_from_menu_yesno(...) </li>
+       <li> choose_from_menu_nested(...) </li>
+       <li> choose_from_radio(....) - group of radio buttons </li>
+       <li> print_checkbox(...) - display html checkbox with optional label</li>
+        <li> print_textfield(...) </li>
+       <li> popup_form(...) - little popup form </li>
+    </ul>
+  </li>
+  <li> Misc utility functions
+     <ul>
+       <li> formerr($error) - print some red text</li>
+        <li> validate_email($address ) </li>
+       <li> get_file_argument( $scriptname) -- extract file argument</li>
+       <li> get_slash_arguments - get them from the environment variables</li>
+       <li> parse_slash_arguments - get the PATHINFO stuff at end of URL?</li>
+    </ul>
+  </li>
+  <li> text formats -
+    <ul>
+       <li> format_text_menu() - return array of text formats that can be used in  a popup menu</li>
+      <li> format_text(....) - take text in a variety of format codings and return it as safe HTML. </li>
+      <li> text_format_name( $key ) - get the name of the Moodle text format of a given selection of text in that format. </li>
+       <li> reset_text_filters_cache() </li>
+      <li> format_string(....) - take a string, return string after processing. Used for activity titles, post subjects etc.</li>
+      <li> format_text_email(...) - given text in variety of formats return it as normal text ready for email </li>
+       <li> filter_text( $text, $courseid=NULL) - HTML text is run through filters </li>
+       <li> filter_string( $string, $courseid=NULL ) </li>
+    </ul>
+  </li>
+  <li> Trusted text
+    <ul>
+      <li> trusttext_present( $text ) - is this text marked as trusted?</li>
+       <li> trusttext_strip( $text ) - called before clearning...?? </li>
+       <li> trusttext_mark( $text ) - mark text as trusted - without doing anything on it???</li>
+       <li> trusttext_after_edit(...) </li>
+       <li> trusttext_prepare_edit(...) </li>
+     </ul>
+  </li>
+  <li> cleaning up text and other stuff
+    <ul>
+       <li> clean_text( $text, $format ) - take raw text and remove nasty tags</li>
+       <li> purify_html( $text ) - cleaning function using HTML purifier</li>
+       <li> cleanAttributes() -  clean attributes of tags </li>
+       <li> cleanAttributes2() - another one?</li>
+       <li> replace_smilies() - replace text smilies with image one </li>
+     </ul>
+  </li>
+  <li> text conversion
+     <ul>
+        <li> text_to_html(...) </li>
+        <li> markdown_to_html(..) </li>
+        <li> html_to_text()</li>
+        <li> convert_urls_into_links(..) </li>
+      </ul>
+  </li>
+  <li> Misc other
+    <ul>
+        <li> highligh(...) - highlight words in a given string </li>
+        <li> highlightfast(...) - faster </li>
+        <li> get_html_lang() - return lang attributes in HTML </li>
+        <li> skip_main_destination() - an accessibility think to skip to main content </li>
+     </ul>
+  </li>
+  <li> standard web page parts
+     <ul>
+       <li> print_header(......) - header of HTML </li>
+       <li> require_js - include javascript libraries </li>
+       <li>get_require_js_code(..) - not called directly </li>
+       <li> force_strict_header($output) - debugging aid</li>
+       <li> print_header_simple </li>
+       <li> print_footer </li>
+       <li> current_theme - what's the current theme</li>
+       <li> current_category_theme</li>
+       <li> style_sheet_setup - called by style sheets </li>
+       <li> theme_setup </li>
+       <li> user_login_string - indicates login status of user </li>
+      <li> check_theme_arrows - have they been set?</li>
+       <li> link_arrow_right(...) - return the HTML for..</li>
+       <li> link_arrow_left(...) </li>
+       <li> get_accesshide(....) </li>
+       <li> get_separator(..) - return breadcrumb separator </li>
+       <li> print_navigation(...) - print breadcrumbs </li>
+       <li> build_navigation(...) - used by print_header etc.</li>
+        <li> print_headline(...) - retained for backward compatbility </li>
+         <li> print_heading($text, $align='',$size=2,$class='main',$return=false) - print text formatted for a heding </li>
+          <li> print_heading_with_help - centered heading with help button</li>
+          <li> print_heading_block(...) </li>
+         <li> print_continue( $link, $return) - print link to continue on another page </li>
+        <li> print_box($message, $classes, $ids, $return ) - print a message in a standard themed box </li>
+         <li> print_box_start(...) - starts a box with divs </li>
+          <li> print_box_end() </li>
+         <li> print_container(...) - print message in standard themed container </li>
+         <li> print_container_start|_end</li>
+         <li> open_containers - return # of open containers </li>
+         <li> print_container_end_all - close 'em all </li>
+          <li> print_single_button(...) - self-contained form with single submit</li>
+          <li> print_spacer(...) - print spacer image </li>
+          <li> print_file_picture(...) - include picture from file/url </li>
+           <li> print_user_picture(...) - print user's avatar </li>
+          <li> print_user(...) - print summary of user in a little box  (uses a table to get the box!!!)</li>
+           <li> print_group_picture(..) - show the group's avatar. </li>
+          <li> print_png - show png image </li>
+          <li> print_table( $table, $return=false ) - show nicely formatted table</li>
+          <li> print_recent_activity_note(....) </li>
+          <li> print_textarea(...) </li>
+           <li> use_html_editor(...) on all textareas in the current page</li>
+         <li> print_editor_config(...) </li>
+          <li> update_course_icon( $courseid) - show the edit button for courses </li>
+          <li> switchroles_form(...) </li>
+           <li> update_mymoodle_icon..</li>
+           <li> update_tag_button </li>
+            <li> update_module_button </li>
+          <li> update_categories_search_button</li>
+           <li> navmenu - return popup menu with course activity modules </li>
+           <li> navmenulist - similar to above&lt;/li
+            <li> print_date_selector - print form items for date entry</li>
+           <li> print_time_selector - </li>
+           <li> print_timer_selector </li>
+           <li> print_grade_menu </li>
+            <li> print_scale_menu </li>
+            <li> print_scale_menu_helpbutton </li>
+            <li> print_error - error page </li>
+            <li> editorhelpbutton() - print help icon linked to help page on a number of topics </li>
+            <li> helpbutton(....) print a help button </li>
+            <li> emoticonhelpbutton </li>
+           <li> editorshortcutshelpbutton </li>
+            <li> notice( ... ) print a message and exist </li>
+            <li> notice_yesno(....) print a message with yes or no options </li>
+            <li> redirect(...) - print notice and redirect </li>
+             <li> notify(...) message in bold in optional colour </li>
+           <li> obfuscate_email(..) </li>
+           <li> obfuscate_text() </li>
+            <li>obfuscate_mailto() </li>
+          <li> print_paging_bar(...) </li>
+           <li> print_side_block(..)/print_side_block_start|end</li>
+           <li> print_speller_code - code for spellchecking </li>
+            <li> print_speller_button </li>
+            <li> print_maintenance_message </li>
+           <li> adjust_allowed_tags </li>
+          <li> class tabobject ??</li>
+       <li> print_tabs </li>
+       <li> page_doc_link - string contining link to user docs </li>
+        <li> doc_link(..) </li>
+       <li> debugging/disable_debugging </li>
+         <li> frametarget </li>
+         <li> print_location_comment </li>
+         <li> print-arrow(...) - used to show up/down arrow for column sorting, can be given language string to save on dbase access</li>
+          <li> right_to_left - true if language is right to left </li>
+     </ul>
+  </li>
+</ul>
+
+<p>Some questions that arise out of that:</p>
+<ul>
+  <li> What's the difference between container and box? <br /> Haven't found an answer to that one....only a quick check. From experiments, the container is a HTML container - doesn't necessarily look like anything.  While the box is visual. </li>
+</ul>
+
+<h3>Getting into it</h3>
+
+<p>Time to get some hard-coded HTML in place.  Work on the default view for students that shows their details, blog posts and other stuff.  Working, alright for first step.  More next week.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3882960287/" title="BIM student details by David T Jones, on Flickr"><img alt="BIM student details" height="224" src="http://farm4.static.flickr.com/3438/3882960287_d817272c05_m.jpg" width="240" /></a></p>
+
+</body>
+</html>

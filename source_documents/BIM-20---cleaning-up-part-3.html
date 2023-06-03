@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM 2.0 - cleaning up part 3</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/01/06/bim-2-0-cleaning-up-part-3/">BIM 2.0 - cleaning up part 3</a></h1>
+
+<p>Tags: bim, bim2</p>
+
+<p>The third in a series of posts documenting necessary cleaning up of <a href="https://github.com/djplaner/BIM/issues?labels=immediate&amp;state=open">issues</a> with BIM. Getting closer and closer to release of 2.0b
+
+Issues being cleaned up here include
+<ul>
+  <li> <a href="https://github.com/djplaner/BIM/issues/56">#56</a> - "add an activity" help text </li>
+  <li> <a href="https://github.com/djplaner/BIM/issues/39">#39</a> - some more consideration of help text for BIM 2. </li>
+  <li>  <a href="https://github.com/djplaner/BIM/issues/58">#58</a> - getting a "do you want to leave" this page message on allocation. </li>
+  <li>  <a href="https://github.com/djplaner/BIM/issues/50">#50</a> - checking the BIM code against the Moodle coding style. </li>
+</ul>
+
+<h2>Add an activity help text</h2>
+
+In Moodle 2.4 (at least), when you selecting an activity to add the chooser will display a collection of help text for the plugin you've just chosen.  Need to put some text in for BIM.  Question, where is this specified? Trawling the Moodle docs for this might be difficult.  Will start with the code of some existing modules.
+
+Mmm, a quick find and grep didn't reveal what I thought would be there. At least not with assignment, search on forum reveals the <em>modulename_help</em> help string.  Provided one of these for BIM, two problems
+<ol>
+  <li> The help text isn't appearing.<br />
+     Viewing the source of the course page, it appears that the help text is added into this page.  It's not created/called after the add an activity link is clicked.  Seems it is being done in modchooser. course/renderer::course_modchooser_module_types is the function that seems to extract it.
+   <p>This method is using a set of objects for each module. Those with a help text have a help field.  Where is this being set?  It's passed into the original function.  It appears to be extracted by course/lib/get_module_metadata.  Which is in turn using <em>get_string_manager</em> to get an object that has a method <em>string_exists</em> which is used to see if <em>modulename_help</em> exists.  And I can confirm it's not working for bim.  </p><p>So obviously restarting the apache daemon wasn't sufficient, purge all caches in Moodle and it is working.</p>
+   </li>
+  <li> Where is the "more help" link coming from. <br /> The searching above suggests it is looking for an entry in the lang file for <em>modulename_link</em>.  But this is only for modules with entries in the moodle docs. i.e. not bim.  What do other contrib modules do?  For now will ignore this.  The <a href="http://docs.moodle.org/24/en/MoodleDocs:Guidelines_for_contributors">guidelines for Moodle docs</a> offers some suggestions for contributed code.</li>
+</ol>
+
+
+<h2>BIM help text</h2>
+
+Will move this to a future improvement. Will need to look at setting up a public website (perhaps in Moodle docs) once I have BIM up and running.
+
+<h2>Do you want to leave</h2>
+
+When a post is allocated to a question, selecting the question generates a form submission.  This is now resulting in the browser generating a do you want to leave the page message.
+<ol>
+  <li> Is this just chrome? <br />No, Firefox does it as well.</li>
+  <li> How is BIM actually doing "form submission" in this case?<br />The moodle_form object for allocation posts creates a SELECT element with a <em>onchange="this.form.submit()</em> attribute.
+  <p>It is done this way to avoid the complexity entailed with allowing a marker to allocate different questions at the one time. e.g. Javascript would have to prevent them from allocating more then one post to the one question (of course, this does raise the question of why BIM doesn't support allocating more than one post to a question, this would be more flexible and potentially useful) </li>
+  <li> Is this a known problem/feature of Moodle 2.x? <br />It appears this may be as a result of <a href="https://tracker.moodle.org/browse/MDL-31315">this issue</a> i.e. it's something they've explicitly added into Moodle 2.3. to prevent users from navigating away from pages with forms that have changed. Of course, the trouble is that in this case the code is actually doing a submit.  Changes will be processed.  </li>
+  <li> Can this be done without generating the message?<br />
+       The text of the message is defined in the lang/en/moodle.php file with the string <em>changesmadereallygoaway</em>.  This is used in a number of files including lib/formslib.php that has a check
+[sourcecode lang="php"]        if ($form-&gt;is_form_change_checker_enabled()) {
+            $PAGE-&gt;requires-&gt;yui_module('moodle-core-formchangechecker',
+                    'M.core_formchangechecker.init',[/sourcecode] in the startForm method.
+<p>Knowing some of the right terms to search for leads <a href="http://docs.moodle.org/dev/lib/formslib.php_Form_Definition#disable_form_change_checker">to this</a> and a method to turn it off.  ANd that does it.
+
+</li>
+
+  <li> Is there a better way to achieve the "form submission" on allocate? <br /> A suggestion from this <a href="https://tracker.moodle.org/browse/MDL-35395?page=com.atlassian.jira.plugin.system.issuetabpanels:all-tabpanel">tracker item</a> suggests<blockquote>pure js alternatives (nested elements... actions at distance...).</blockquote> Appears this old hacker may need to update some knowledge and modify some code.</li>
+</ol>
+
+<h2>The Moodle coding style</h2>
+
+Time to check the BIM code against the accepted Moodle code styles.
+
+<h3>Automated code checkers</h3>
+
+<a href="https://moodle.org/plugins/view.php?plugin=local_codechecker">Code-checker</a> is an install into Moodle that generates a web page with errors and warnings. Running it over the bim code finds quite a few, including:
+<ul>
+  <li> use of tab characters; </li>
+  <li> lines with over 180 chars;</li>
+  <li> apparent requirement to start all files with appropriate licence/comments. </li>
+  <li> whitespace at the end of lines; <br /> A bit of RE magic  "1,$s/^s$//g"  and/or "1,$s/s$//"<br /> Would appear to be an artifact of copy and paste.</li>
+  <li> Ending inline comments with punctuation!! </li>
+  <li> Indentation <br /> in vim, go to start of file and do <em>=G</em> </li>
+  <li> spaces after and before the start/end brackets of a foreach. </li>
+  <li> NULL TRUE FALSE should be lower case. </li>
+</ul>
+
+Now error free.
+
+And now onto <a href="https://github.com/marinaglancy/moodle-local_moodlecheck">moodlecheck</a> which checks the documentation - which should reveal numerous errors/oversights in BIM.
+
+Quite a few. Out-dated usage removed.</p>
+
+</body>
+</html>

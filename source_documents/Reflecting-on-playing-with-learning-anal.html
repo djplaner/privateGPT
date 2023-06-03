@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Reflecting on playing with learning analytics</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2017/03/10/reflecting-on-playing-with-analytics/">Reflecting on playing with learning analytics</a></h1>
+
+<p>Tags: indicators</p>
+
+<p><p>This is the 2nd in 3 posts thinking about learning analytics and how we might engage with it better. <a href="http://djon.es/blog/2017/03/08/thinking-about-more-reproducible-research-and-learning-analytics/">The first</a> rambled on about reproducible research and hunted for what we might do.
+
+This post is an attempt to reflect on some work I did last year trying to <a href="http://djon.es/blog/2016/04/14/designing-a-collection-of-analytics-to-explore-engagement/">design a collection of analytics to explore engagement</a>.  The aim is to remind myself what was done and try to distill what worked and what didn't. Hopefully to inform what we might do this year.
+
+<h2>Background</h2>
+
+<a href="http://djon.es/blog/2016/04/14/designing-a-collection-of-analytics-to-explore-engagement/">The work last year</a> was trying to work <blockquote>with a group of fellow teacher educators here at USQ to explore what is happening around student engagement with our online courses</blockquote>
+
+The aim was to generate a range of different engagement related analytics, show them to the teacher educators, explore what if anything was revealed about our courses and think about what that might mean for the courses, but also the exploration of analytics.  The hope was that the cycle would help identify more contextually useful analytics that could actually reveal something interesting.
+
+<h2>What was done</h2>
+
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/david_jones/26380443975/in/dateposted-public/" title="Version 1 of process"><img alt="Version 1 of process" height="320" src="https://c1.staticflickr.com/2/1461/26380443975_d89aeb5ff8_n.jpg" width="296" /></a></div>
+
+The aim was to generate and share analytics based on the diagram to the right (click on it the diagram to expand). The aim was to generate a website where those involved could see the different analytics applied to their respective courses (and each others).  This was intended to drive discussion.
+
+A website was generated to do this. Access was limited to those involved in the project. The following links illustrate the generated analytics using a course I taught.  
+
+You may see some menus with other course codes, there won't be any data for other courses. The menus - at times - don't work all that well.
+
+<ul>
+  <li> click/grade and other basic indicators
+       <ul>
+          <li> <a href="http://djon.es/EDC3100/2015_1/clickGrades/">average clicks grouped by grade</a> - with different views for different cohorts
+               <p>Ignore the explanation at the bottom, also a broken link with one of the modes</p>
+           </li>
+           <li> Split between clicks on forums versus content <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/">2015 S1</a> and <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/">2015 S2</a>
+             
+              <p>Compare the distribution for: <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/index.html">all students</a>, <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/mode=Online.html">just online students</a>, <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/mode=Springfield.html">students from one campus</a> and <a href="http://djon.es/qilters/EDC3100/2015_1/dhits/staff.html">the staff</a></li>
+             <li> Group by grade and show # hits divided into content and forum clicks: <a href="http://djon.es/qilters/EDC3100/2015_1/dhitsGrades/">Semester 1</a> and <a href="">Semester 2</a> <p>Roll your mouse over a bar to get the counts for clicks.</p></li>
+       </ul>
+  </li>
+  <li> time/grade - nada
+  </li>
+  <li> networks & paths 
+       <ul>
+          <li> Replies to posts network - <a href="http://djon.es/qilters/EDC3100/2015_1/postsNetwork/">normal Q&amp;A forum</a> or <a href="http://djon.es/qilters/EDC3100/2015_1/postsNetwork/forum=49765.html">announcements forum</a> or <a href="http://djon.es/qilters/EDC3100/2015_1/postsNetwork/forum=49752.html">ice-breaker activity</a>
+            <p>You can zoom in and out with trackpad.  Click on network map to move it around. </p>
+             <p>Click on the red (or any) hexagon and move it around to more clearly see the number of connections. </p>
+             <p>Should be able to see a significant difference between the different types of forums.</p>
+  </li>
+  <li> content & sentiment analysis - nada
+  </li>
+  <li> learning design - not a chance
+</ul>
+
+So only the simple ones done.
+
+The educators involved could navigate through the generated site and compare their course with others. This was scafolded lightly using a blog with links to specific analytics and questions.  It was never done well or in a concerted manner.
+
+<h2>How was it done</h2>
+
+At a high level, I had a perl script that would loop through an array that specified which type of analytic to perform (e.g. <em>clickGrades</em>, <em>dhits</em>, <em>dhitsGrades</em>) and for which course offerings and modes.  The array looked a bit like this
+
+<pre lang="perl">
+EDC3100 => {
+  "2015_1" => {
+    clickGrades => [ qw/ all mode=Online mode=Springfield mode=Toowoomba 
+mode=Fraser_Coast / ],
+    dhits => [ qw/ all mode=Online mode=Springfield mode=Toowoomba mode=F
+raser_Coast staff / ],
+    dhitsGrades => [ qw/ all mode=Online mode=Springfield mode=Toowoomba 
+mode=Fraser_Coast staff / ],
+</pre>
+
+The script would loop through these entries and execute the following code (modified just a little for clarity/space)
+
+<pre lang="perl">
+my $model = $factory->getModel( OFFERING => "${course}_$offering",
+                                ANALYTIC => $analytic );
+
+my $view = $factory->getView( MODEL => $model, VIEW => $analytic );
+
+my $string = $view->Display( SUBSET => $subset, COURSE => $course, 
+                             OFFERING => $offering, ANALYTIC => $analytic );
+
+writePage( OFFERING => "${course}_$offering",
+           ANALYTIC => $analytic, SUBSET => $subset,
+           STRING => $string );
+</pre>
+
+<h3>Analytics classes</h3>
+
+Underpinning the above were a collection of analytics classes that could also be called directly.  For example, the following.
+
+<pre lang="perl">
+my $model = QILTers::Analytics::dhits->new( OFFERING => "EDC3100_2015_1" );
+
+my $view  = QILTers::Analytics::dhits_View->new( MODEL => $model );
+
+my $string = $view->Display(
+                COURSE => "EDC3100", OFFERING => "2015_1",
+                            SUBSET => "mode=Toowoomba,grade=F" );
+print $string;
+</pre>
+
+This type of <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">MVC architecture</a> was used largely because I had a large code-base (and related experience) from my PhD.
+
+In this context, the model classes converted institutional specific notions.  This included <ul>
+  <li> that EDC3100_2015_1 could be used to identify a course </li>
+  <li> access to additional information about users (gpa, grade etc) not stored in Moodle. </li>
+  <li> support the <em>SUBSET</em> mechanism to allow focus on particular campuses, grades etc. </li>
+</ul>
+
+The view classes were responsible for translating the gathered data into a format that could be handed over to a couple of different client libraries (<a href="http://plot.ly/">plotly</a> and <a href="http://js.cytoscape.org/">cytoscape</a>)
+
+<h2>Reflections and lessons learned</h2>
+
+Misc reflections include
+<ul>
+  <li> It took time to get all this set up, hence the lack of progress. </li>
+  <li> The <em>subset</em> functionality was useful. </li>
+  <li> The production of the web pages was all a bit kludgy </li>
+  <li> Need better support for integrating the analysis into discussions with others. </li>
+  <li> Tightly integrating the navigation with the content was a mistake. </li>
+  <li> The client libraries were quite useful, but required some familiarisation. </li>
+  <li> The code here relies on quite out dated technologies. </li>
+  <li> Once the structure was in place, different analysis could be done fairly quickly (given time)</li>
+  <li> Exploration of different analytics or modes, still required intervention by a coder </li>
+</ul>
+
+Next step, what are others doing in this area?  What might be a better way to do this?</p>
+
+</body>
+</html>

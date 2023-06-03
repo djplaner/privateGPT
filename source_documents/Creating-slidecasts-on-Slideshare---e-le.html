@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Creating slidecasts on Slideshare - e-learning support?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2008/08/07/creating-slidecasts-on-slideshare-e-learning-support/">Creating slidecasts on Slideshare - e-learning support?</a></h1>
+
+<p>Tags: c2d2, oasis, ples@CQUni, Uncategorized</p>
+
+<p><h3>The problem</h3>
+
+The <a href="http://cddu.cqu.edu.au/">unit</a> I work with is responsible for helping staff (and to some extent students) of <a href="http://www.cqu.edu.au/">CQUniversity</a> with their learning and teaching. This is traditionally a fairly difficult task which is made more difficult at CQUniversity by a number of contextual factors. Perhaps the largest is the fact that staff and students are spread across at least 9 Australian campuses spread across almost the full length of the Australian east coast, a couple of overseas campuses and partners and throughout the world via distance education.
+
+Face-to-face support sessions, either one on one or in groups, is somewhat difficult when our small unit is entirely based on one of the campuses. We have to look at using technology and other strategies to address this geographic distribution.  We've been slowly developing our website using a Wiki and other Web 2.0 tools. This post talks about our early attempts at using Slidecasts - simple powerpoint presentations with a narration.  In our case designed to be short and sharp and focus on a particular need.
+
+In some vague, nascent and emergent way this work also links into and aims to continue the growth of our <a href="http://cddu.cqu.edu.au/index.php/PLEs%40CQUni">PLEs@CQUni project</a> which seeks to develop insights into how CQUniversity can effectively make use of the increasing number of social media services available out on the net.  We hope, that if this approach proves useful, we will develop much simpler and easier ways in which CQUniversity staff and students can make use of this sort of approach.
+
+<h3>What we've done</h3>
+
+Our initial experiments with slidecasts have been around the use of CQU's online assignment submission system - OASIS - and have been implemented using <a href="http://slideshare.net/">Slideshare</a>.
+
+The slidecasts that are in place at the moment cover the following topics
+<ul>
+  <li> <a href="http://cddu.cqu.edu.au/index.php/OASIS_Assignment_Configuration">Configuring OASIS</a>,
+  </li>
+  <li> <a href="http://cddu.cqu.edu.au/index.php/OASIS_Collecting_and_Marking_Assignments">Collecting and marking assignments with OASIS</a>
+  </li>
+  <li> <a href="http://cddu.cqu.edu.au/index.php/OASIS_Uploading_and_Moderating_Assignments">Uploading and moderating assignments with OASIS</a>
+  </li>
+</ul>
+
+<h3>How we did it</h3>
+
+The process currently being used involves the following steps
+<ol>
+  <li> Prepare a powerpoint presentation with an emphasis on showing what happens. </li>
+  <li> Use the "record narration" facility of either Powerpoint 2007/2008 to "deliver" the session in a room.
+       This is currently done
+       <ul>
+           <li> Using a simple usb headset/mic in my office.  </li>
+           <li> Without linking the audio files (this makes sure that Powerpoint creates a separate wav file for each slide - which is important for following steps). </li>
+           <li> On a Windows box - the times I've tried this on my Mac Powerpoint has cut arbritary lengths of audio off the end of each slide's narration. </li>
+       </ul>
+  </li>
+  <li> Save a copy of the presentation (without audio) in Office 2004 format and upload it to <a href="http://slideshare.net">Slideshare</a>. </li>
+  <li> Unzip the Office 2007 version of the presentation (with audio) and create a single MP3 file containing the whole narration.
+         This is done using the following steps (on the command line on my Mac)
+         <ul>
+             <li> Rename the audio files for the first 9 slides<br />
+                    Powerpoint names the first 9 slides audio1.wav audio2.wav etc.  This throws out the order of the slides.  i.e. echo audio*.wav - results in the following order of files: audio1.wav audio10.wav audio11.wav......audio2.wav audio20.wav audio21.wav.  Which is not good when you want to concatenate the files together <strong>in slide order</strong>.  I do this with a simple shell script
+<pre>
+for name in 1 2 3 4 5 6 7 8 9
+do
+  mv audio${name}.wav audio0${name.wave
+done
+</pre>
+  Appropriate use of sort could probably achieve the same thing, but I'm not keeping the unpacked files, so no problems here.
+              </li>
+              <li> Concatenate the individual wav files into one using <a href="http://sox.sourceforge.net/">SoX</a><br />
+    Very simply using "sox audio*wav all.wav"
+             </li>
+             <li> Convert the wav file into mp3<br />
+                SoX should be able to do this, but I haven't had time to nut it out (busy, busy) so I've fallen back on the approach I know that works - iTunes.
+            </li>
+       </ul>
+  </li>
+  <li> Upload the mp3 file to a <a href="http://webfuse.cqu.edu.au/Blackboard/audio_store/">public website</a></li>
+  <li> Use the audio linking slidecast facility on Slideshare to link slides to the corresponding bits of the audio <br />
+       The command soxi gives information about individual sound files.  I use that to identify the end of each individual slide audio which helps make using the Slidecast audio linker quicker.
+<pre>
+for name in *.wav
+do
+  echo $name
+   soxi $name | grep Duration
+done
+</pre>
+   </li>
+</ul>
+
+<h3>Long term aim</h3>
+
+Much of the above process can be automated.  I can see a process by which someone gives a presentation with the narration feature of Powerpoint turned on.  They then upload the complete (and usually very large) file to a CQUniversity web site (the size of the file and the specific requirements for CQUni would require an institutional system).  The CQUni system could then extract the audio, produce the mp3, upload to a public website, upload a version of the presentation to Slideshare and connect the audio with the slides.
+
+Perhaps the current major limitation with this idea, at least the last time I checked, is that the Slideshare API doesn't/didn't appear to provide support for providing timing data for the slides so that the MP3 audio synchronisation could be automated.
+
+The other major problem is whether or not this approach is actually useful, usable and used by staff and students.</p>
+
+</body>
+</html>

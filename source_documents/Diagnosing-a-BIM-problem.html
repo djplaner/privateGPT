@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Diagnosing a BIM problem</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/02/27/diagnosing-a-bim-problem/">Diagnosing a BIM problem</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>The following problem with using BIM has <a href="https://djon.es/blog/research/bam-blog-aggregation-management/#comment-6088">been reported</a> the following is a record of my attempt to recreate and fix the problem. The problem<blockquote> I installed BIM2 on my Moodle 2.3. The installation was successful and I even managed to create a BIM activity. There is only one problem — When I go to Mark posts and click on a post, the only thing that is shown on the screen is the Changing post allocation headline. The rest of the screen is empty.</blockquote>
+
+In the end, I haven't been able to recreate the error. It's all worked as expected.  Hopefully the following detail is sufficient to identify what I did differently.
+
+The process I plan to use is
+<ol>
+  <li> Install a fresh version of BIM2 on my local install of Moodle 2.3<br />The problem may arise from the version of the code or how it was installed. Making the process I use explicit may help identify any difference. This probably isn't where the problem is, but have to rule it out.</li>
+
+  <li> Create a new course, including students, staff and groups. </li>
+
+  <li> Create a BIM activity. </li>
+
+  <li> Try to mark posts often and early in between the following steps
+        <ul>
+           <li> Have a student subscribe a blog. <br />Being able to click on a post suggests that a student was at least able to subscribe. </li>
+           <li> Create some questions<br />I'm wondering if clicking on a post before specifying questions may be the cause of the problem. </li>
+           <li> Allocate students to a marker. <br />This shouldn't be a problem. BIM should tell you there's nothing to mark. </li>
+         </ul>
+  </li>
+</ol>
+
+<h2>Install BIM2</h2>
+
+There's already a version of BIM2 installed.  Let's see if the uninstall process works for BIM. Yes, all the database tables are gone.  Now to remove the bim directory. Done.
+
+Now, install the new version of BIM2. The BIM code is available <a href="https://github.com/djplaner/moodle-mod_bim">from github</a>. You do need to make sure to use <a href="https://github.com/djplaner/moodle-mod_bim/tree/bim2">the BIM2 branch</a> and not the old BIM1 code (which won't work for Moodle 2.x).
+
+Perhaps the easiest way for a non-coder to install the BIM2 code is to use the "ZIP" button on the <a href="https://github.com/djplaner/moodle-mod_bim/tree/bim2">BIM2 tree</a>. This downloads a file called moodle-mod_bim-bim2.zip. You simply unpack this in the mod directory of your moodle install.  For me this looks like
+
+[code lang="sh"]
+unzip moodle-mod_bim-bim2.zip
+mv moodle-mod_bim-bim2 bim
+[code]
+
+i.e. when you unzip the file it creates a directory called "moodle-mod_bim-bim2" with all the bim code in it. You need to rename this directory to bim.
+
+Now to install the module. Back to the site administration and the notifications page in Moodle and there's the message that bim needs to be installed. Click on the button and get the nice green Success message.
+
+&lt;h2&gt;Create a new course etc.&lt;/h2&gt;
+
+In order to create a BIM activity, you will need to have a course site in Moodle that includes
+&lt;ul&gt;
+  &lt;li&gt; Some enrolled students.
+  &lt;/li&gt;
+  &lt;li&gt; Some enrolled staff. &lt;/li&gt;
+  &lt;li&gt; The students organised into groups. &lt;/li&gt;
+&lt;/ul&gt;
+
+So, I'm going to
+&lt;ul&gt;
+  &lt;li&gt; Create a new course. &lt;br /&gt;Just a name and a number should be fine. &lt;/li&gt;
+  &lt;li&gt; Enrol some users.&lt;br /&gt;I typically start by enrolling the admin user account as a teacher.  I should probably create some teacher accounts, but not yet.
+       &lt;p&gt;I don't have any students in this test version of Moodle 2.3.  So I need to upload some before I can enrol them in the new course. To do this I have an text file I use with the "Upload Users" feature. The text file is looks like this.&lt;/p&gt;
+[code lang="sh"]
+username,password,firstname,lastname,email
+s001,fred,Fred,Nerf,s001@nowhere.org
+s002,fred,Nerf,Fred,s002@nowhere.org
+s003,fred,Dawn,Hay,s003@nowhere.org
+[/code]
+       <p>Now enrol them in the course.</p>
+  </li>
+  <li> Put the students into a group.<p>To mark posts in BIM, you need to allocate the students to a marker. Currently this is done by allocating Moodle groups to which the students belong. i.e. you can't allocate individual students to markers, only groups.  So, create some groups.
+      <p>I just create an "all" group and add my three students.</p>
+  </li>
+</ul>
+
+<h2>Create the BIM activity</h2>
+
+Click on the "Add an activity or resource" on the course site and there's BIM in the list of activities. Select it and click add.  Configure the BIM activity
+<ul>
+  <li> Provide a name (the only compulsory part). </li>
+  <li> A description. </li>
+  <li> Enable registration and mirroring<br />You don't have to but without these the activity is pretty useless. </li>
+  <li> Select whether you're going to integrate this into the gradebook, or not. <br />For this one, I wont'.</li>
+  <li> Click on "Save and display" </li>
+</ul>
+
+I can now see the "coordinators" interface for BIM.  "coordinator" == "teacher in charge". Since I create the BIM activity, it's what I see.
+
+I'm going to quickly click on each of the tabs in this interface
+<ul>
+  <li> Configure BIM<br />The default screen, shows a summary of the configuration and a link to change the configuration.  All good.
+  </li>
+  <li> Manage questions<br />Where add, edit or delete questions that the students are expected to respond to via their feeds.  <p>As expected, there are "No current questions". All good.</p>
+  </li>
+  <li> Allocate markers<br />Allocate markers to groups.  Nothing allocated yet.  It is showing all the teaching staff (just the admin account) and against those all of the groups (just the "All" group).
+  </li>
+  <li> Manage marking<br />Allows the coordinator to see marking progress for all markers. Currently showing no markers allocated and no registered students.
+  </li>
+  <li> Find student<br />Allows you to search for a specific student.  Just the search box currently. Let's search for "dawn". Finds the student and tells me "No registered feed". As expected.
+  </li>
+  <li> Your students <br />This is where the marking happens. Where I can see the students allocated to me to mark.  Nothing allocated, so it's showing no students allocated.
+  </li>
+</ul>
+
+So far, so good.
+
+<h2>Some testing</h2>
+
+<h3>Register a blog for a student</h3>
+
+I'm going to to this two ways
+<ol>
+  <li> Coordinator can register a blog for a student via the Manage marking page. <br />
+           Click on the "register blog" link, paste in the URL of my blog - http://davidtjones.wordpress.com, save changes......
+          <p>Error - curl couldn't connect to host.  Ahh, I'm doing this from my office. The university has a web proxy. I haven't configured Moodle with the details.</p>
+         <p>Go to site administration, search for proxy, enter the details. Try again to register.</p>  <p>A delay, back at home. No proxy and the blog is registered no problems.</p>
+        <p>Now try to view and mark posts.  I don't think this should work as no students are allocated to me as a marker.  That is as expected.</p>
+  </li>
+  <li> Have the "student" login and register a blog. <br />
+          Start up another browser, log in as the user and register another blog. Go to the course and the BIM activity. See the normal "register your blog" for the student. I'll use a random blogspot blog for this student.  Registered all ok from the student's perspective. All appropriate from the teacher's perpsective.
+  </li>
+</ol>
+
+<h3>Allocate the student group</h3>
+
+Use the allocate markers screen. Manage marking is no showing this.  Click on Your students and it all appears as I would expect.  I can click on the "mark posts" link and see the detail.
+
+There's nothing to mark at this stage, but I can click on a link that will show all of the student posts.  I wonder how this will work? Don't think I've done it in this order before.
+
+No worries. As expected, shows the list of posts.  Allows me to "change allocation" but the only option is unallocated. Which works, though perhaps isn't neat.  It should show a "Can't allocate because no questions" type error.  Add an issue in github so this can get fixed.
+
+<h3>Create some questions</h3>
+
+So create some questions so I can actually try some marking. Create two dummy questions.
+
+Now revisit the "Your students" tab to do the marking.  As expected, none of the registered students' posts have matched the questions.  I have to go to the Allocate posts page to manually allocate the posts to questions.
+
+Done. The "Mark it" link is there now. (Finally).   As expected I get the marking interface.
+
+All working.  Try the second student.  All working.</p>
+
+</body>
+</html>

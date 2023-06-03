@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Setting up the analysis of student submissions</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2016/03/29/setting-up-the-analysis-of-student-submissions/">Setting up the analysis of student submissions</a></h1>
+
+<p>Tags: bad, edc3100, Uncategorized</p>
+
+<p>A couple of weeks ago I wrote <a href="https://davidtjones.wordpress.com/2016/03/10/setting-up-an-excel-checklist/">this post</a> outlining the design of an Excel spreadsheet EDC3100 students were asked to use for their first assignment. They'll be using it to evaluate an ICT-based lesson plan. The assignment is due Tuesday and ~140 have submitted so far. It's time to develop the code that's going to help me analyse the student submissions.
+<h2>Aim</h2>
+The aim is to have a script that will extract each students responses from the spreadsheet they've submitted and place those responses into a database. From there the data can be analysed in a number of ways to help improve the efficiency and effectiveness of the marking process; and, explore some different practices (<a href="https://davidtjones.wordpress.com/2016/03/10/setting-up-an-excel-checklist/">the earlier post</a> has a few random ideas).
+
+The script I'm working on here will need to
+<ol>
+	<li>Be given a directory path containing unpacked student assignment submissions.</li>
+	<li>Parse the list of submitted files and identity all the spreadsheets</li>
+	<li>Exclude those spreadsheets that have already been placed into the database.
+Eventually this will need to be configurable.</li>
+	<li>For all the new spreadsheets
+<ol>
+	<li>Extract the data from the spreadsheet</li>
+</ol>
+</li>
+</ol>
+At this stage, I don't need to stick the data in a database.
+<h2>Steps</h2>
+<ol>
+	<li><del>Code that when given a directory will extract the spreadsheet names</del></li>
+	<li><del>Match the filename to a student #id.</del></li>
+	<li><del>Parse an individual Excel sheet</del>
+<ol>
+	<li><del>Rubric</del></li>
+	<li><del>About</del></li>
+	<li><del>What</del></li>
+	<li><del>How</del></li>
+	<li><del>Evaluation</del></li>
+	<li><del>RAT</del></li>
+</ol>
+</li>
+	<li><del>Mechanism to show the values associated with question number in the sheet.</del>
+Look at a literal data structure.</li>
+	<li><del>Implement a test sheet</del></li>
+	<li>See which student files will give me problems.</li>
+</ol>
+<h3>Extract spreadsheet names</h3>
+&nbsp;
+
+This is where the "interesting" naming scheme by the institutional system will make things interesting. The format appears to be
+
+<strong><em>SURNAME</em> <em>Firstname</em>_<em>idnumber</em>_assign</strong><strong>submission_file_<em>whateverTheStudentCalledTheFile.extension</em></strong>
+
+Where
+<ul>
+	<li><em>SURNAME Firstname </em>
+Matches the name of the student with the provided case (e.g. "JONES David")</li>
+	<li><em>idnumber</em>
+Appears to be the id for this particular assignment submission.</li>
+	<li>assignsubmission_file_
+Is a constant, there for all files.</li>
+	<li><em>whateverTheStudent...</em>
+Is the name of the file the student used on their computer. It appears likely that some students will have been "creative" with the naming schemes.  Appears at least one student has a file name <em><strong>something</strong></em><strong>.xlsx.docx</strong></li>
+</ul>
+<h3>Match the filename to a student id</h3>
+This is probably going to be the biggest problem area. I need to connect the file to an actual unique student id. The problem is that the filename doesn't contain a unique id that is associated with the student (e.g. the Moodle user id for the student, or the institutional student number).  All it has is the unique id for the submission.
+
+Hence I need to rely on matching the name.  This is going to cause problems if there are students with the same name, or students who have changed their name while the semester is under way. Thankfully it appears we don't currently have that problem.
+<h3>Test with 299 submitted files</h3>
+Assignment due this morning - let's test with the 299 submitted files.
+
+Ahh, issues with <a href="https://developers.slashdot.org/story/16/03/26/2017231/names-that-break-computers">people's names</a>: apostrophe
+<h3>Problem files</h3>
+Apparently 18 errors out of 297 files.  Where did the other 2 go?
+
+"Bad" submissions include
+<ol>
+	<li>10 with only 1 file submitted;
+All 10 only submitted the checklist. Not the cover sheet or the lesson plan.</li>
+	<li>26 with only 2 files submitted (3 total required)
+<ol>
+	<li>25 - Didn't submit the lesson plan</li>
+	<li>1 - Didn't submit the checklist</li>
+	<li>0 - Didn't submit the coversheet</li>
+</ol>
+</li>
+	<li>18 files that appear to have the bad xlsx version problem from below.</li>
+</ol>
+That implies that some of the people who submitted 3 files, didn't submit an excel file?
+<p id="nerdy">Oh, quite proud in a nerdy, strange way about this</p>
+&nbsp;
+
+[code lang="bash"]
+for name in `ls | cut -d_ -f2 | sort | uniq  -c | sort -r | grep ' 3 ' | sed -e '1,$s/^.*[0-9] //'`
+do
+    files=`ls *$name*`
+    echo $files | grep -q ".xls"
+    if [ $? -eq 1 ]
+    then
+        echo "found $name"
+    fi
+done
+[/code]
+
+I'm assuming there will be files that can't be read. So what are the problems.
+
+Seem they are all down to Microsoft's "Composite Document File V2 Format".  These files will open in Excel, but challenge the Perl module I'm using.
+
+Out of the 297 submitted so far, 18 have this problem.  Going to leave those for another day.</p>
+
+</body>
+</html>

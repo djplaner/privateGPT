@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Making and using an OPML feed of student blogs</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/04/04/making-and-using-an-opml-feed-of-student-blogs/">Making and using an OPML feed of student blogs</a></h1>
+
+<p>Tags: EDED20491, teaching</p>
+
+<p>The ICTs for Learning Design course requires each student to create a blog. The blog is then a key part of the assessment, it's actually how we're meant to submit assignments. The public nature of the blogs has caused some concern, but we are now being encouraged to read and comment on our peer's blogs.
+
+With the number of students approaching 100, this is not simple. Especially given that the main method of sharing blogs is via a Moodle wiki page. Most other students have used Blogger's/Blogspot's "follow" button (Blogger is the recommended platform), but I use Wordpress and like RSS/newsreaders. So the following documents the setting up of an OPML file with all the students' blogs and a brief bit about using it.
+
+The plan is to let the other students in the course know about this and see if any make use of it. Given time constraints, the apparently novelty of RSS/newsreaders, and the fact that we're about to start our placements, I imagine uptake might be limited.
+
+<h3>What is this RSS/OPML thing and why?</h3>
+
+The folk at <a href="http://www.commoncraft.com/rss_plain_english">Commoncraft</a> have a good video that gives the idea of RSS. The Youtube version is embedded below
+
+[youtube=http://www.youtube.com/watch?v=0klgLsSxGsU]
+
+<a href="http://en.wikipedia.org/wiki/OPML">OPML</a> is a way of gathering a large collection of feeds into one place. It's just a text file with a special format.
+
+But when you import an OPML file into a news reader, you get a single place to observe and track what is going on. The following image shows the OPML file generated here imported into my news reader (a Mac application called <a href="http://netnewswireapp.com/">NetNewsWire</a>). Click on the image to see it larger. The smudged areas represent where I've applied a bit of privacy to the blog URLs for other students.
+
+<a href="http://www.flickr.com/photos/david_jones/5587355582/" title="newsreader by David T Jones, on Flickr"><img alt="newsreader" height="189" src="http://farm6.static.flickr.com/5053/5587355582_21bc0847bf_m.jpg" width="240" /></a>
+
+I find this a useful way to keep track of who is posting what. I'm guessing that most of the other students in the course will probably use <a href="http://www.google.com/reader/view/">Google reader</a> as their news reader.
+
+So, now to generate the OPML file.
+
+<h3>Generate the OPML file</h3>
+
+I could have generated the OPML file by hand, but that would have been painful. A quick Google and I found <a href="http://reader.feedshow.com/goodies/opml/OPMLBuilder-create-opml-from-rss-list.php">OPML Builder</a>.  You give it a list of URLs for RSS feeds and it generates the OPML file for you.
+
+So, the process was
+<ul>
+  <li> Copy and paste the student blog URLs from the Moodle Wiki. </li>
+  <li> Remove all the extra content.</li>
+  <li> Modify the blog URLs so they point to RSS/Atom feeds. </li>
+  <li> Feed it into OPML Builder. </li>
+</ul>
+
+One of the blog URLs was password protected, so I've removed it from the final feed.  I'll share a copy of the file on the course Moodle site.
+
+Of course, if the course had been designed so that students used <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> to register their blogs, the academic staff could have just shared the OPML file that BIM generates.
+
+<h3>Use the OPML file</h3>
+
+To use the OPML file you have to import it into your news reader. This means your newsreader will examine the OPML file, extract all the URLs for blog feeds, retrieve them and analyse them to see what's been posted. The results of that analysis shows up the news reader interface.
+
+There <a href="http://www.google.com/support/reader/bin/answer.py?hl=en&amp;answer=69982">are some instructions</a> for importing an OPML file into Google reader.  If I follow those instructions I get an image like the following.
+
+<a href="http://www.flickr.com/photos/david_jones/5587398880/" title="Google reader and EDED20491 feeds by David T Jones, on Flickr"><img alt="Google reader and EDED20491 feeds" height="193" src="http://farm6.static.flickr.com/5062/5587398880_f4ef0fb30f_m.jpg" width="240" /></a>
+
+<h3>Further possibilities</h3>
+
+Feeds provide a standardised way of sharing information. Using them simply to keep track of people posting to a bunch of different blogs is only a start to what can be done.
+
+For example, Google reader allows people to share items they think are interesting in someway. The shared items are available, to some, as an RSS feed. One application of this would be for all the EDED20491 students to share all the posts (by other students) that they find interesting or good. A collection of all the students "shared" feeds could then be gathered. One way to see what is interesting.
+
+The Google sharing also allows the adding of comments and tags, so explanations about why it is interesting or good etc could be added.
+
+And that's only scratching the surface.</p>
+
+</body>
+</html>

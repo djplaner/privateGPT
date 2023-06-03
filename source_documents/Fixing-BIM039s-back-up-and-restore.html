@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Fixing BIM&#039;s back up and restore</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/27/fixing-bims-back-up-and-restore/">Fixing BIM&#039;s back up and restore</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>The following outlines steps to continue work on <a href="https://djon.es/blog/2010/02/07/bim-backup-and-restore/">BIM's backup and restore functionality</a>.  As per <a href="http://github.com/djplaner/BIM/issues#issue/1">this issue</a> the user part of the back up has errors.</p>
+<p>It appears that the code was actually working.</p>
+
+<h3>Re-create the problem</h3>
+
+<p>It's been a few months since I worked on this.  Have to re-create the problem first.</p>
+<p>Looking through the bim/backuplib.php code, the first evidence is that the user code is commented out in the function <tt>bim_backup_one_mod</tt>.  Let's uncomment that and try to back up a BIM.<p>
+<p>Okay, that seems to have completed.  No errors reported.  Is the Moodle debugging option set to the highest? Yep.  So the problem isn't a syntax error, it's an error in operation/implementation.  </p>
+<p>Let's look at the resulting backup and see where it is going wrong.</p>
+[sourcecode lang="bash"]
+david-joness-macbook-pro:tmp david$ unzip *
+Archive:  backup.zip
+   creating: course_files/
+   creating: course_files/1/
+  inflating: course_files/1/david.2.xml
+  inflating: course_files/1/david.xml
+   creating: group_files/
+   creating: group_files/60/
+   creating: group_files/61/
+  inflating: moodle.xml
+   creating: site_files/
+[/sourcecode]
+<p>Should there be BIM specific files here?  No, looks like the data is within the files.  Okay, there's no user data being saved.  Why?</p>
+<p>Ahh, there's more commented code to uncomment.  Mm, still getting the message "without user data". Missing something.</p>
+<p>Ahh, apparently not all users can back up user data.  I was logged in as my own account, no permission. Login as root, and there's the user stuff.</p>
+<p>Okay, BIM backup appears to work - no errors.  Let's look at the files.</p>
+<p>Yep, that seems to be working so far.  All three tables are being saved in the XML file and in apparently correct format.</p>
+
+<h3>Doing the restore</h3>
+
+<p>So, is the problem with the restore?  The restore looks to have worked.  The big question how do we test.  First, let's look at the restored BIM.  There are errors.  But also no students. Appears that the problem is that the students/users from the backed up course, aren't in the restored and separate course.</p>
+<p>What if we do the restore within the same course?</p>
+<p>Well the restore process didn't create any errors, but when using the newly restored BIM (in addition to the existing BIM activity) it has the same sorts of errors as when restored in a new course, there's a problem with manage marking.</p>
+<p>Let's look at the database and see what's been restored, check each BIM table.</p>
+<ul>
+  <li> bim - information about all BIM activities.<br />As expected.  3 BIMs on my test box.  The values are all as I'd expect.  <p>The original activity has id 1, 2 is the restore in a new course (course id 15) and id 3 is for the activity restored in the same course (course id 4)</li>
+  <li> bim_group_allocation - which groups are allocated to which staff.<br />Again, there are 3 BIMs listed. The same number of entries for each BIM. The userids of the markers are the same regardless of the course. The group ids are different between courses.  As expected (I think).</li>
+  <li> bim_questions - list of questions for the activity.<br />Ok, as expected as it's the user stuff I'm checking and this isn't user stuff. </li>
+  <li> bim_student_feeds - where are the students registered feeds?<br />All correct.  Each of the 3 bims have exactly the same data.  The userids are the same regardless of the course.  This indicates that the restore is making the right decisions about the students.</li>
+  <li> bim_marking - marking and other information about each student post (3 feeds registered, 10 posts per feed, 3 bims)<br />As expected there are 90 rows in this table. After a quick check, it appears that this is all good.</li>
+</ul>
+<p>This is somewhat strange.  Looks like it's all working, so why the problems? </p>
+<p>Is it because of the user I'm logged in as (admin user), what about a standard teacher?  Nope, same errors.  Time to look at the code.</p>
+<p>The errors being reported are in a Moodle library - tablelib.php.  Hence the data being passed in must be corrupt/wrong in some way.  If I compare the original BIM activity with the restored one (in the same course) there are differences in the manage marking output.  The restored one is missing one of the questions.  However, under manage questions all the questions are listed.</p>
+<p>The code generating the header of the table generates the same data. Okay, the problem is within the code that generates the contents of the table.</p>
+<p>Bugger, my problem here.  The function "bim_get_question_id" compares the title of a question to get the unique id of the question.  If questions have the same title, which they can and do in this example, then there's a problem.  Need to fix that.</p>
+
+<h3>Fixing get_question_id</h3>
+
+<p>This function is only used once.  In this section.  So, it looks like the solution is to remove the need to use it.</p>
+<p>Let's try simply adding the id of the question as the index for the array.</p>
+<p>Yep, that works.</p>
+
+<h3>Does it work now?</h3>
+
+<p>So, does that mean the back up and restore process is working? Checking through the restored BIM in the same course, it appears it does.  Some errors are there when restored to a new course.</p>
+<p>This appears to be because there are no students assigned to the course and the error checking in BIM ain't great.  Fix that and the error messages disappear, but there still appear to be users within BIM.  Which is probably what should happen because there are no students in the course, but there are in BIM.</p>
+<p>Okay, the problems appear to be not with backup/restore, but with courses not having students enrolled and the poor error checking in BIM.  If I fix up the error checking, we should be in action.</p>
+
+<h3>Required fixes</h3>
+
+<ul>
+   <li> bim_create_posts_display - another area where the same question title is causing problems. </li>
+</ul>
+
+<p>That's it.  Seems to be working</p>
+<p>Just need to remove the debug statements in the restore process and commit it.</p></p>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - getting capabilities working properly</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/10/bim-getting-capabilities-working-properly/">BIM - getting capabilities working properly</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Increasingly BIM development is getting to the stage where the functionality for BIM's  three different types of user (coordinator, markers and students) are just about complete.  I've been using a very naive, probably misleading interpretation of Moodle's capabilities system to distinguish between the different types of users and what they can do.  Yesterday, doing what I thought was some minor updates, it broke.  I'm currently having to use a kludge to get BIM to work for different users.  This post is documents my attempts to fix this problem.</p>
+
+<h3>The components of the problem</h3>
+
+<p>This task is complicated by the mixture of a number of different domains including:</p>
+<ul>
+  <li> <a href="http://www.cqu.edu.au/">CQU practice</a> and the origins of BAM; <br /> Must of the design of BAM is based around CQU practice, where BAM started.  The basic assumption of BAM/BIM (at the moment) is that there are three types of user:
+       <ol>
+          <li> Coordinator - the teacher in charge(s) of a course, can do just about anything. </li>
+          <li> Marker - any teacher who isn't a coordinator.  Normally responsible for marking the posts of a subset of students. </li>
+          <li> Students - people registering feeds with BIM.</li>
+      </ol>
+  </li>
+  <li> Moodle default roles; <br /> This is an area of confusion for many and in which I'm still somewhat limited in understanding.  My default installation of Moodle has the default user roles of:
+          <ol>
+             <li> Administrator - can do anything in all courses. </li>
+             <li> Course creator - can create courses and teach in them. </li>
+             <li> Teacher - can do anything within a course (sounds like a Coordinator) </li>
+             <li> Non-editing teacher - can teach in courses and grade students, but not alter activities (sounds like marker) </li>
+             <li> Student </li>
+             <li> Guests </li>
+          </ol>
+  </li>
+  <li> How those default roles are being applied at CQU; and <br />It looks like the CQU installation of Moodle has defined some Moodle roles that are more like the original CQU ones defined above.  With BIM I'm in the interesting situation of coming from the CQU context but having to create something that will have minimal CQU assumptions so that other institutions can use it.
+  </li>
+  <li> Moodle's roles, capabilities, permissions and contexts. <br />Moodle is moving (since 1.7) to a more <a href="http://docs.moodle.org/en/Roles_and_capabilities">flexible permissions system</a>.  This is what I need to actually use to achieve the melding of the above. <a href="http://docs.moodle.org/en/How_permissions_are_calculated">This seems</a> to be the best explanation of how permissions are calculated in this regime.
+  </li>
+  <li> How you define capabilities etc within an activity block like bim. </li>
+</ul>
+
+<h3>What I'm planning to do</h3>
+
+<p>With an activity module you are meant to define capabilities that exist for that module in the <code>db/access.php</code> file.  At the moment, I'm hoping to define the following capabilities:</p>
+<ul>
+  <li> <code>mod/bim:coordinator</code></li>
+  <li> <code>mod/bim:marker</code></li>
+  <li> <code>mod/bim:student</code></li>
+</ul>
+<p>Hopefully, there's a sensible link between these and the above.  In the module code I am using which of these capabilities a user has to drive which part of the code is executed.  That had been working.  It broke yesterday as I was making changes.</p>
+
+<h3>Testing it</h3>
+
+<p>I currently have different user accounts that take on each of the different default Moodle roles.  Each of these are configured to receive particular capabilities within BIM.  Time to test them and see what bim thinks they are. This is after a re-boot of the computer (separate reason) and so the outcome may be different.  I think there was some "caching" issues yesterday.</p>
+<ul>
+  <li> Administrator - coordinator (correct) </li>
+  <li> Course creator - appears to end up enrolled as a student through moodle.  Ignore for now.</li>
+  <li> Teacher - coordinator (correct) </li>
+  <li> Non-editing teacher - generates an error with no recognised capability</li>
+  <li> Student - student (correct)</li>
+</ul>
+<p>Okay, seems like non-editing teacher is the only problem.  Why?</p>
+<p>Dumping out the USER object doesn't give a lot of information, apart from the fact that this user has a value of -1000 for all the bim capabilities.  Which appears to imploy that they don't have the capability.  Yes, <code>lib/accesslib.php</code> defines </code>CAP_PROHIBIT</code> as -1000. Which implies the capbility I have set to CAP_ALLOW isn't working.</p>
+<p>Is it just this capability.  What if I change another?  Changing db/access.php doesn't seem to make any different.</p>
+<p>First, let's find out what role the user has, or at least Moodle thinks he has.</p>
+
+<h3>Working?</h3>
+
+<p>I think it's working now.  Seems that after changing <code>db/access.php</code> you have to:</p>
+<ul>
+  <li> increment the version in version.php </li>
+  <li> run the "admin notifications" </li>
+  <li> log the use out and then back in again. </li>
+</ul></p>
+
+</body>
+</html>

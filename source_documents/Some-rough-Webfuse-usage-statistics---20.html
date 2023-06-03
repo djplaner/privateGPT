@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Some rough Webfuse usage statistics - 2001 through 2009</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/06/17/some-rough-webfuse-usage-statistics-2001-through-2009/">Some rough Webfuse usage statistics - 2001 through 2009</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, indicators, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>In terms of the <a href="https://djon.es/blog/research/phd-thesis/">thesis</a>, my current focus is on chapter 5. This chapter seeks to describe what we did from 2000 through 2004 and beyond. I'm currently working on the evaluation section, a major component of the evaluation is looking at the usage statistics of Webfuse during this period. It's slow going and there is still a fair bit of analysis to go, but some initial figures are available.</p>
+
+<h3>What analysis has been done?</h3>
+
+<p>The statistics shown below show raw hit counts on various "parts" of Webfuse.  That is, I've taken the raw Apache access logs and extracted relevant hits into the following Webfuse "parts":</p>
+<ul>
+  <li> Course site access;<br />A request for a file from a course website. This could include images, documents and web pages.  This one needs to be refined the most.</li>
+  <li> Course updates;<br />To modify a course website a member of the teaching staff did a course update. This represents the number of times that happened.</li>
+  <li> FM;<br />To upload Word documents etc staff used FM - a file manager. </li>
+  <li> Wf applications;<br />From about 2000, a range of interactive web applications including a staff and student "portal", online assignment submission, quiz management, etc were developed. This represents the number of hits on those applications.  Each hit represents a single page. </li>
+  <li> Course profiles.<br />For a year or so, CQU course profiles were available from Webfuse as PDF documents. These numbers represent the number of times they were downloaded.</li>
+</ul>
+
+<h3>Course sites and updates</h3>
+
+<p>First, let's look at course sites, number of times data was requested, number of times updated and number of times the file manager was used.</p>
+<p>These figures are somewhat dependent on the number of courses and students.  The following table shows the raw figures and then a ratio with the number of course sites. i.e. in 2001, there were 244 course sites in Webfuse, there were almost 6.5M requests on those course sites for an average of about 26,000 per course site.   </p>
+<table border="1" cellpadding="2">
+  <caption align="bottom">
+    Webfuse course statistics 2001-2009<br />
+     <strong>*</strong> - 2005 logs for Jan through Apr are missing
+  </caption>
+  <tr>
+    <th> Year </th>
+    <th> # of courses </th>
+    <th> Site requests </th>
+    <th> Site updates</th>
+    <th> Fm </th>
+  </tr>
+  <tr>
+    <td valign="top">2001</td>
+    <td align="right" valign="top">244</td>
+    <td align="right" valign="top">6,491,238<br />
+                  26,603</td>
+    <td align="right" valign="top">4523<br />
+                  19</td>
+    <td align="right" valign="top">5679<br />
+                  23</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2002</td>
+    <td align="right" valign="top">313</td>
+    <td align="right" valign="top">5,346,867<br />
+                  17,082</td>
+    <td align="right" valign="top">19,483<br />
+                  62</td>
+    <td align="right" valign="top">37,874<br />
+                  121</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2003</td>
+    <td align="right" valign="top">304</td>
+    <td align="right" valign="top">4,686,393<br />
+                  15415</td>
+    <td align="right" valign="top">21,869<br />
+                  72</td>
+    <td align="right" valign="top">14,395<br />
+                  47</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2004</td>
+    <td align="right" valign="top">328</td>
+    <td align="right" valign="top">4,469,301<br />
+                  13,625</td>
+    <td align="right" valign="top">19,230<br />
+                  59</td>
+    <td align="right" valign="top">12,593<br />
+                  38</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2005 <strong>*</strong></td>
+    <td align="right" valign="top">299</td>
+    <td align="right" valign="top">2,422,395<br />
+                  8101*</td>
+    <td align="right" valign="top">11,217<br />
+                  38</td>
+    <td align="right" valign="top">7010<br />
+                  23</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2006</td>
+    <td align="right" valign="top">297</td>
+    <td align="right" valign="top">3,278,221<br />
+                  11,038</td>
+    <td align="right" valign="top">17,752<br />
+                  60</td>
+    <td align="right" valign="top">10,625<br />
+                  36</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2007</td>
+    <td align="right" valign="top">249</td>
+    <td align="right" valign="top">1,891,192<br />
+                  7595</td>
+    <td align="right" valign="top">9646<br />
+                  39</td>
+    <td align="right" valign="top">8296<br />
+                  33</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2008</td>
+    <td align="right" valign="top">225</td>
+    <td align="right" valign="top">1,848,491<br />
+                  8216</td>
+    <td align="right" valign="top">6448<br />
+                  29</td>
+    <td align="right" valign="top">8547<br />
+                  38</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top">2009</td>
+    <td align="right" valign="top">211</td>
+    <td align="right" valign="top">1,958,401<br />
+                  9281</td>
+    <td align="right" valign="top">9286<br />
+                  44</td>
+    <td align="right" valign="top">7963<br />
+                  38</td>
+  </tr>
+</table>
+<p>There needs to be more analysis on this data:</p>
+<ul>
+  <li> Why does 2001 have such a large number of requests per website?<br />My first guess is that there a small number of courses in that year were generating requests, or a drop in student numbers. </li>
+  <li> What is the spread of these requests per course site?<br />e.g. are one or two course sites dominating?  Do they go away after 2001?</li>
+  <li> Generate a ratio with student numbers<br />There was a drop in student numbers between 2001/2002.  Were there simply more students in 2001?</li>
+  <li> What's the source of the significant increase in site updates per site in 2002 and 2003, why?<br />The default course sites were introduced in the 2nd half of 2001, was this the reason?</li>
+  <li> What is the spread between staff in site updates and use of fm?</li>
+  <li> There's another spike in updates in 2006, why? </li>
+  <li> The drop in site request ratio drops after 2006, why?<br />Is this because of the movement of the "real course site" courses.  Sites liable to be used a great deal.</li>
+</ul>
+
+
+<h3>Wf applications</h3>
+
+<p>One of the major developments in Webfuse from 1999/2000 was the development <a href="https://djon.es/blog/2010/06/07/the-wf-framework/">of the Wf framework</a> which provided the basis for "Webfuse" interactive web applications.  There were a broad array of very different applications - ranging from a course barometer and BAM, through to an institutional academic misconduct system - that were implemented with this framework.</p>
+<p>The following graph (click on it to make it bigger) summarises requests for these application.  The 2009 figure of 6M+ requests, is a bit suspect and requires greater analysis (Further analysis reveals a lot of 401s - the real figure is just over 2M).</p>
+
+<a href="http://www.flickr.com/photos/david_jones/4707471993/" title="Wf application requests by David T Jones, on Flickr"><img alt="Wf application requests" height="145" src="http://farm5.static.flickr.com/4068/4707471993_ae75a6be50_m.jpg" width="240" /></a>
+
+<p>The increase in usage (doubling) in 2003 shows the spread of these applications into institutional systems.  More analysis needs to be done on these figures to:</p>
+<ul>
+  <li> Identify the reason for the drastic increase in 2009; </li>
+  <li> Identify how much each application is being used; </li>
+  <li> Examine the number of users of these applications and how heavy their use is. </li>
+</ul></p>
+
+</body>
+</html>

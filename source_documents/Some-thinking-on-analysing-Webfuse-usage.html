@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Some thinking on analysing Webfuse usage</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/03/07/some-thinking-on-analysing-webfuse-usage/">Some thinking on analysing Webfuse usage</a></h1>
+
+<p>Tags: Chapter 4, Chapter 5, design theory, elearning, indicators, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>I've been back working at the PhD thesis, hopefully down to months before submission.  At this stage, I need to work on the 2 chapters that are reflecting on the usage of Webfuse during two periods: 1996 through 1999 and 1999 through 2004 (and a bit later).  In doing some, the main tasks I need to achieve are:</p>
+<ul>
+  <li> Show the difference in usage between the first and second stages. </li>
+  <li> Show how usage in the second stage is, hopefully, different and "better" than that reported elsewhere. <li>
+</ul>
+<p>Now, I could do this in the same way I've been doing it in the past, an ad hoc collection of Perl scripts and spreadsheets.  The benefit of this approach is most of them already exist.  The drawback is, however, that this makes it more difficult to compare usage with other systems.  This is a problem that <a href="http://indicatorsproject.wordpress.com/">the indicators project</a> is attempting to address.  It might make sense to start thinking about something a little more platform independent.</p>
+<p>The following is an attempt to think about what I might be able to do that would progress both the PhD and the indicators project.  It eventually morphs into some rough initial design ideas of how I can implement something as a trial run.</p>
+
+<h3>Indicators in a box</h3>
+
+<p>A major aim of <a href="http://indicatorsproject.wordpress.com/">the Indicators Project</a> is to enable and engage in cross-platform, cross-institutional, longitudinal comparisons of LMS usage. The "indicators in a box" idea is one we've been talking about since at least November 2009.  Here's an attempt to give one description of what it might be.</p>
+<p>The indicators in a box is a zip file containing an application (probably a set of applications) that help an individual or institution examine LMS usage regardless of their LMS or institution.  In a perfect world, you would:</p>
+<ul>
+  <li> Download the zip file and unpack it on your system.<br />It would probably be a PHP web application so that it is broadly platform independent, simple enough for just about anyone to run and have a easy-to-use and useful interface. </li>
+  <li> Configure the indicators in a box for your context.<br />i.e. tell it which LMS you are using and where the usage data from the LMS is setting (typically, which type of database, and details of how to get a connection to it). </li>
+  <li> Configure additional information sources.<br />At the very least it would probably be useful to have some information about the students, courses, terms/semesters used at your institution. Some of this data might be put in configuration files, some in a database.</li>
+  <li> Choose which analysis you wish to do.<br />Eventually there would be a broad collection of different analyses and comparisons to perform.  You select the ones you want to implement. </li>
+  <li> Wait for the conversion and preparation.<br />It's likely, though not certain, that the indicators in a box would rely on a set of scripts that are abstracted away from the specific details of an LMS.  i.e. the data in your LMS usage database would need to be converted into another database so that comparisons could be made.  There are some drawbacks of this approach and some possible alternatives. The types of analysis you want to do would rive what conversions are done.</li>
+  <li> Use the indicators in a box user interface to view the results of the analysis.<br />At this stage, you should be able to use the web-based interface to view various analysis of the usage data and perhaps compare it with other institutions etc.  This is where <a href="http://www.flickr.com/photos/david_jones/4037668923/in/set-72157608613577424/">graphs like this</a> might get displayed.</li>
+  <li> Share the results.<br />The real aim is to allow you to specify what you want to share with others.  i.e. an aim is to allow different folk using the indicators to share their results, to enable more research. </li>
+  <li> Write your own analysis code and share it.<br />The aim of having a cross-platform foundation is that anyone could write their analysis code that could be shared with the other folk using the platform.</li>
+  <li> Incorporate the generated patterns into your LMS.<br />The idea is that academic staff and students need to be able to use the analysis and resultant patterns to inform what they do.  They do things within the LMS.  So, there needs to be a way to include the patterns/analysis into the LMS in a simple and visible way.</li>
+</ul>
+<p>This is still early days.  Lot's of options in the above.  But the basic aim is to have something that is easy to install and which will start generating useful stats and allowing all the people using it to share the data and the analysis in appropriate ways.</p>
+
+<h3>What do I need to do?</h3>
+
+<p>This should be needs driven.  I need to focus now on what I need for the PhD and hope it can be abstracted later.</p>
+<p>In terms of comparison between the two stages, I am interested in seeing changes in:</p>
+<ul>
+  <li> Percentage of staff and students using Webfuse.   </li>
+  <li> Overall amount of Webfuse usage by staff and students.    </li>
+  <li> Feature usage within Webfuse course sites. </li>
+</ul>
+<p>The first two could be viewed as total counts and counts by types of feature.  Which links to the feature usage within course sites.</p>
+<p>Currently, chapter 4 of the thesis has the following table for feature usage by course sites in Webfuse 1997-1999.  Like the <a href="http://indicatorsproject.wordpress.com/2009/10/09/the-indicators-project-identifying-effective-learning-adoption-activity-grades-and-external-factors/">Indicators ascilite paper</a> this categorisation depends on the work of Malikowski et al (2007) .</p>
+<table border="1" cellpadding="2">
+  <tr>
+    <th>Category</th> <th>Malikowski et al %</th><th>1997</th><th>1998</th><th>1999</th></tr>
+  <tr>
+    <td>Transmitting content</td>
+    <td>&gt;50%</td>
+    <td>45%</td>
+    <td>40.6%</td>
+    <td>41.2%</td>
+  </tr>
+  <tr>
+    <td>Class interactions</td>
+    <td>20-50%</td>
+    <td>1.8%</td>
+    <td>3.6%</td>
+    <td>7.9%</td>
+  </tr>
+  <tr>
+    <td>Evaluating students</td>
+    <td>20-50%</td>
+    <td>1.8%</td>
+    <td>1.5%</td>
+    <td>2.6%</td>
+  </tr>
+  <tr>
+    <td>Evaluating course and instructors</td>
+    <td>&lt;20%</td>
+    <td>9.2%</td>
+    <td>1%</td>
+    <td>9.5%</td>
+  </tr>
+</table>
+
+<h4>Feature usage calculation</h4>
+
+<p>This seems to suggest a need to:</p>
+<ol>
+  <li> Identify a way of categorising LMS features - such as  Malikowski et al (2007) - and mapping the LMS functionality into that feature set. <br />Malikowski doesn't include <a href="https://djon.es/blog/publications/class-management-the-forgotten-task/">class management</a>. Also, in a Webfuse context, the idea of a page update usage would be useful.  Implies some flexibility in the feature categorisation.  e.g. page Update might be a new category, course design and updating - it would be interesting to track the amount of time academics have to spend creating a course site over time.  I suspect the more times they teach a course, the less they edit it.</li>
+  <li> Calculating the percentage of a course site features which belong to each feature category. </li>
+  <li> Calculating the number of times each feature is used by a student and staff member. </li>
+  <li> Being able to examine some usage by date/time periods. </li>
+</ol>
+
+<h4>Overall statistics</h4>
+
+<ul>
+  <li> Total number of courses sites for a given period. </li>
+  <li> Total number of students and total number per course </li>
+  <li> Total number of staff and total per course. </li>
+</ul>
+<p>Implies need data from outside the LMS.  Also a way of specifying term/semester/period and grouping/recognising course offerings by that term/period/semester.  Also starts leading into generic demographic information about the students and perhaps the courses.</p>
+
+<h3>Design of feature usage</h3>
+
+<p>In order to track usage of features by staff/students it would be necessary to have a list of when they access features, who they are etc.  Something like:</p>
+<ul>
+  <li> username - unique id for the user</li>
+  <li> feature id - unique id for the feature</li>
+  <li> descriptor - might be the URL from the system or some other descriptor.  A connection back to the platform dependent data to help in debugging and understanding. </li>
+  <li> date time </li>
+  <li> course </li>
+  <li> period </li>
+  <li> year </li>
+</ul>
+<p>The feature id would be some unique id that connects to a feature categorisation table (as well as other things?):</p>
+<ul>
+  <li> feature id - link back to feature usage</li>
+  <li> feature category id</li>
+</ul>
+<p>Could also link to a category_descriptor table:</p>
+<ul>
+  <li> feature category id </li>
+  <li> category name </li>
+  <li> category scheme </li>
+</ul>
+<p>The idea of all of this is so that you can choose to perform the feature analysis using one of a number of different categorisation schemes.</p>
+
+<h3>Implementation with Webfuse</h3>
+
+<p>I have two main sources of data about Webfuse:</p>
+<ul>
+  <li> The Webfuse course sites; and <br />These are the actual files/directories from the web server, What is shown and used by students/staff.  This includes information about the types of feature a particular page is. </li>
+  <li> server logs.<br />These contain who accessed what and when.  Though, in the case of "who" is often anonymous because most of the Webfuse course sites were not restricted.</li>
+</ul>
+<p>To take the Webfuse data I have and put it into a set of tables like that described above, I would have to:</p>
+<ul>
+  <li> Come up with some way to categorise every URL in the server logs in a category scheme. </li>
+  <li> Read all the entries in the server logs and apply the categorise function to each entry and then populate the usage table. </li>
+</ul>
+<p>At this stage, other functions (mostly web-based) can be run on the resulting data to do the analysis.</p>
+<p>mmmm,  something to do.</p>
+
+<h3>References</h3>
+
+<p>Malikowski, S., M. Thompson, et al. (2007). "A model for research into course management systems: bridging technology and learning theory." Journal of Educational Computing Research 36(2): 149-173.</p></p>
+
+</body>
+</html>

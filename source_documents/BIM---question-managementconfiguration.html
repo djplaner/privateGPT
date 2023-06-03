@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - question management/configuration</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/01/13/bim-question-managementconfiguration/">BIM - question management/configuration</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>A central assumption in BIM is that student contributions to their feeds are, at least in some part, intended to respond to questions or activities that have been created to encourage reflection and other good stuff.  This requires that the teaching staff using BIM have a mechanism for creating and changing the questions students will respond to. This post describes the initial implementation of this screen.</p>
+<p>This will be implemented using Moodle's formslib and borrow on work already done.  It should be fairly straight forward.</p>
+
+<h3>Required data</h3>
+
+<p>Just about the only data required will be all the data associated with the particular BIM activity within the <code>bim_questions</code> table.</p>
+<p>Will also want to include some statistics about how many students have answered, marked and released responses to these questions.  This is to give staff some warning that they may not wish to delete a question for which people have already provided answers.</p>
+
+<h3>Get the data</h3>
+
+<p>Already have <code>bim_get_question_hash</code></p>
+<p>Need to generate stats about posts for a list of marking_details.  This isn't exactly what we want.  Need generate stats for each question.</p>
+<p>Add function <code>bim_get_question_response_stats</code> which will :</p>
+<ul>
+  <li> take an array of all the questions we're interested in. </li>
+  <li> add a field <code>response_stats</code> for each question which is an array with keys matching status and values matching number of responses in the bim_marking table. </li>
+</ul>
+
+<h3>Show the data</h3>
+
+<p>This is going to be a single form with a set of elements for each question.  For each question want:</p>
+<ul>
+  <li> The title as a text element. </li>
+  <li> The body of the question in a HTML editor. </li>
+  <li> The min and max marks in separate text elements. </li>
+  <li> Indication of the statistics of student posts for that question. </li>
+</ul>
+<p>Want the coordinator to be able to:</p>
+<ul>
+  <li> Add a new question. </li>
+  <li> Change the values for an existing question. </li>
+  <li> Delete a question?<br />In terms of safety, I don't think we actually want to delete data from the database in response to this.  Simply make it not visible to most users.</li>
+</ul>
+<p>Any changes to a question, once students have answered the question could be a bad thing, but it is something we want the user to be able to do.</p>
+<p>Okay, the form is up and showing the data.  Time to process the data when the form is updated.  The process for this will be something like:</p>
+<ul>
+  <li> If there is anything in the "add a question" then have to add a new entry into bim_questions. </li>
+  <li> If any of the existing questions have changed, then have to update those entries.
+        <ul>
+          <li> Loop through each question. </li>
+          <li> Compare the content of the question from the database with the content from the submitted form. </li>
+          <li> If there is a change, add the question (minus stats) to another array. </li>
+          <li> At the end of the loop use update_record with the other array to update the database. <strong>DONE</strong></li>
+      </ul>
+  </li>
+</ul>
+<p>Essentially got add working, but need to clear the form and re-load the questions afterwards to get correct performance this will require some re-factoring of the function to remove duplicated code.</p>
+<p>Well, according to <a href="http://moodle.org/mod/forum/discuss.php?d=123618">this thread</a> it appears that you can't do this.  So, I've had to go with the redirect route.  Done and working.</p>
+<p>Last steps to be done:</p>
+<ul>
+  <li> <del>Check that the addition and modification is working.</del> </li>
+  <li> Add in rules into the form for basic checking.  e.g. (complete this in the cleanup at the end)
+       <ul>
+          <li> All elements of a new post must be provided - also with existing. </li>
+           <li> min_mark must be less than max_mark </li>
+          <li> There shouldn't be duplicate questions (title and body)</li>
+          <li> Maybe treat duplicate title as a special exclusion. </li>
+         </ul>
+  </li>
+  <li> Add the capability to delete a question.
+       <ul>
+          <li> <del>Add a check box to each question.</del> </li>
+          <li> <del>Detect the check box on submit and delete the question.</del> </li>
+          <li> Ask for confirmation? </li>
+       </ul>
+  </li>
+</ul>
+
+<h3>What's been done</h3>
+
+<p>Essentially the management of questions is working.  It's not tidy and complete in terms of full validation of inputs and a few other niceties, but those can wait.</p>
+<p>On to the "Manage Marking" screen I believe - viewing markers, marking progress and releasing results.</p></p>
+
+</body>
+</html>

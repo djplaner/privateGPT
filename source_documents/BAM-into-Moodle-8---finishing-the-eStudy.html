@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BAM into Moodle #8 - finishing the eStudyGuide building block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/07/30/bam-into-moodle-8-finishing-the-estudyguide-building-block/">BAM into Moodle #8 - finishing the eStudyGuide building block</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>The <a href="https://djon.es/blog/2009/07/28/bam-into-moodle-7-an-estudyguide-block/">last post</a> in this series described the start of a little project to learn more about PHP/Moodle programming in order to get <a href="">BAM</a> into <a href="http://www.moodle.org/">Moodle</a>. Essentially everything is done, there are two main tasks left:</p>
+<ul>
+  <li> Identify how to "properly" retrieve a file over http in PHP/Moodle and figure out how to use it. </li>
+  <li> Confirm the phpxml is the best way to parse XML in PHP/Moodle and figure out how to use it.</li>
+</ul>
+<p>Once those are done, a rudimentary eStudyGuide block will be complete and I'll have filled in two of the main holes in my knowledge necessary to put BAM into Moodle.</p>
+
+<h3>How to retrieve a file over http in PHP/Moodle</h3>
+
+<p>What a difference some time makes.  I spent a bit of time Tuesday hunting the web and Moodle for information on this.  This morning, apparently, it took 5 minutes.  <a href="http://au2.php.net/curl">curl</a> seems to be the go.</p>
+<p>Starting with this <a href="http://blog.unitedheroes.net/curl/">curl tutorial</a> - not to mention <a href="http://au2.php.net/manual/en/curl.examples-basic.php">the examples here</a></p>
+<p>Here's a list of questions I think I need to answer around the use of curl, and hopefully the answers I've found:</p>
+<ul>
+  <li> How do you use curl to get through basic auth?<br />
+<pre> curl_setopt($curl_handle,CULTOPT_HTTPAUTH,CURLAUTH_ANY);
+curl_setopt($curl_handle,CURLOPT_USERPWD,'username:password');</pre>CURLAUTH_ANY is a ?constant? that says use any HTTP auth method.</li>
+  <li> How do you set a mime-type on what's going back to the client? <br />The simplest examples simply get the remote file and return it to the browser. If you do this with a non-HTML file there appears to be some issues around the client handling it appropriately.<p>One solution I've found is to use the CURLOPT_FILE option to save what is returned by curl to the file system.  Then use the header and readfile functions to set everything up appropriately i.e.
+<pre>header("Content-type: image/jpeg");
+header("Content-Disposition: attachment; filename=imageName.jpg");
+readfile("tmpfile");</pre>
+<p>Would imagine you'd have to use some sort of session variable to keep the filename unique and also remember to remove the file.</p><p>Wonder if you can use header without the need for readfile?  Yep, the works, use the CURLOPT_RETURNTRANSFER option so that the file is returned as a string and then use the following</p>
+<pre>header("Content-type: image/jpeg");
+header("Content-Disposition: attachment; filename=imageName.jpg");
+print $buffer;</pre>
+<p>Of course the question now becomes what if you are transferring really large files. Won't that consume "RAM" for the web server and on a heavily used site cause some "issues"?  So maybe the file option is better.</p></li>
+  <li> What are the necessary checks etc you should do when using curl?<br />Seem to be all fairly standard ones, check return values etc, don't do horrible security stuff. That said, there seems to be some variability within the existing Moodle code that is using curl - some seems to be quite anal about checks.</li>
+  <li> What's TRUE in php?<br />CURLOPT_BINARYTRANSFER needs to be set to TRUE for transferring binary files.  What's the numeric value for TRUE in PHP? Okay, 0 is false. Somewhat familiar.</li>
+</ul>
+
+<h3>Parsing XML</h3>
+
+<p>Appears, at the moment that the "xmlize" library in Moodle is the simplest method to parse XML.  Produces a nested data structure with the content.  Pretty similar to what is done at the moment.  Is there something better?</p>
+<p>Given that parsing XML isn't a main requirement for BAM, I won't bother going any further.  I think I'll be using Magpie to parse the RSS that BAM needs to manipulate.</p>
+<p>xmlize is simple to use, looks like it is time for lunch.  After lunch will be trying to code all this up. I want a working eStudyGuide block by the end of the day.</p></p>
+
+</body>
+</html>

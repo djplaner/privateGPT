@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Can I roll my own federated wiki? (not yet)</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/12/18/can-i-roll-my-own-federated-wiki-not-yet/">Can I roll my own federated wiki? (not yet)</a></h1>
+
+<p>Tags: fedwikihappening, thesis</p>
+
+<p>So I now have a federated wiki of <a href="http://david.au.fedwikihappening.net/view/welcome-visitors">my own</a>. Rolled by the good folk of #fedwikihappening.
+
+But it doesn't feel like it's mine.  It's on someone else's server. Which sort of defeats the purpose of a federated wiki a little.  Though I do recognise it makes it easier for folk to get started, which <a href="http://cogdogblog.com/2014/12/16/over-easy/">may not be a good thing</a>?
+
+The question this post is attempting to answer is, can I roll my own federated wiki?
+
+<h2>Easy but not quite a good fit</h2>
+
+There are some easy methods for installing the tool
+
+https://twitter.com/holden/status/544975687988166657
+
+However, it assumes a certain type of environment. One that I don't have at the moment.  I may have to get such an environment, but let's see if I can kludge it into the environment I do have.
+
+<h2>Use the source</h2>
+
+Kludging will require playing with <a href="https://github.com/WardCunningham/Smallest-Federated-Wiki">the source</a>. So download that.
+
+A source that would appear not destined for command line installation.  Not a lot of suggestions how to do that. At least until you find the <a href="https://github.com/WardCunningham/Smallest-Federated-Wiki/wiki/Hosting-and-Installation-Guide">installation guide</a>.
+
+Will use this to install it locally and explore what is required.  Will figure out if and what might be required for hosting in the cloud later.
+
+Ahh, it appears that the installation guide is slightly out of date. The following doesn't work with the current code
+[code lang="sh"]cd Smallest-Federated-Wiki/server/express[/code]
+
+But the first step of that installation guide was to install NodeJS, which provides the npm command which is used to do the default installation approach.
+[code lang="sh"]npm install -g wiki[/code]
+But that breaks if you don't have write access to /usr/local/lib/node_modules.  Suggesting I'd need to install NodeJS in my user account on the remote site.
+
+That appears to have worked.  With everything in /usr/local/lib/node_modules
+
+<h2>Installing locally</h2>
+
+It appears that NodeJS can be <a href="http://increaseyourgeek.wordpress.com/2010/08/18/install-node-js-without-using-sudo/">installed locally</a> by using the source.  However, I wonder if I can run the wiki as a stand alone server on the host?  Only one way to find out (short of asking).
+
+Bugger, get a "virtual memory exhausted" error when compiling NodeJS.  Initial searching appears to suggest that the problem is with a <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=23190#p97352">bug in the version of gcc</a> - 4.4.x
+
+<h2>Next steps?</h2>
+
+Options include
+<ul>
+  <li> Still need to answer the question whether or not I could run the wiki as a server on a different port. <p>The docs might say.</p></li>
+  <li> Ask the good folk at reclaim hosting for some insights. </li>
+  <li> Follow @holden's advice and go with another host that's known to support fedwiki. </li>
+</ul></p>
+
+</body>
+</html>

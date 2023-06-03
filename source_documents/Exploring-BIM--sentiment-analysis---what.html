@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Exploring BIM + sentiment analysis - what might it say about student blog posts</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/06/16/exploring-bim-sentiment-analysis-what-might-it-say-about-student-blog-posts/">Exploring BIM + sentiment analysis - what might it say about student blog posts</a></h1>
+
+<p>Tags: 4paths, bad, bim, indicators</p>
+
+<p>The following documents some initial exploration into why, if, and how sentiment analysis might be added to the <a href="https://davidtjones.wordpress.com/research/bam-blog-aggregation-management/">BIM module</a> for Moodle. BIM is a tool that helps manage and mirror blog posts from individual student blogs. <a href="https://en.wikipedia.org/wiki/Sentiment_analysis">Sentiment analysis</a> is an application of algorithms to identify the sentiment/emotions/polarity of a person/author through their writing and other artefacts. The theory is that sentiment analysis can alert a teacher if a student has written something that is deemed sad, worried, or confused; but also happy, confident etc.
+
+Of course, the promise of analytics-based approaches like this may be oversold. <a href="http://www.slideshare.net/mcieliebak/deep-learning-for-sentiment-at-sgaico-2014-by-mark-cieliebak">There's a suggestion</a> that some approaches are wrong 4 out of 10 times. But I've seen other suggestions that human beings can be wrong at the same task 3 out of 10 times. So the questions are
+<ol> <li> Just how hard is it (and what is required) to add some form of sentiment analysis to BIM? </li>
+  <li> Is there any value in the output? </li>
+</ol>
+
+<h3>Some background on sentiment analysis</h3>
+
+Tends to assume a negative/positive orientation. i.e. good/bad, like/dislike. The polarity. There are various methods for performing the analysis/opinion mining. There are challenges in analysing text (my focus) alone.
+
+Lots of research going on in this sphere.
+
+Of course there also folk building and some selling stuff. e.g. <a>Indico</a> is one I've heard of recently. Of course, they all have their limitations and sweet spots, Indico's sentiment analysis is apparently good for<blockquote>Text sequences ranging from 1-10 sentences with clear polarity (reddit, Facebook, etc.) </blockquote>
+
+That is perhaps starting to fall outside what might be expected of blog posts.  But may fit with this collection of data.  Worth a try in the time I've got left.
+
+<h3>Quick test of indico</h3>
+
+indico provides a REST based API that includes sentiment analysis.  Get an API key and you can throw data at it and it will give you a number between 0 (negative) and 1 (positive).
+
+You can even try it out manually.  Some quick manual tests
+<ul>
+  <li> "happy great day fantastic" generates the result 0.99998833 </li>
+  <li> "terrible sad unhappy bad" generates 0.000027934347704855157 </li>
+  <li> "tomorrow is my birthday. Am I sad or happy" generates 0.7929542492644698 </li>
+  <li> "tomorrow is my birthday. I am sad" generates 0.2327375924840286 </li>
+  <li> "tomorrow is my birthday. I am somewhat happy" 0.8837247819167975 </li>
+  <li> "tomorrow is my birthday. I am very happy" 0.993121363266806 </li>
+</ul>
+
+With that very ill-informed testing, there are at least some glimmers of hope.
+
+Does it work on blog posts.......actually not that bad.   Certainly good enough to play around with some more and as a proof of concept in my constrained circumstances. Of course, indico is by no means the only tool available (e.g. <a href="https://www.meaningcloud.com/developer/sentiment-analysis/doc/2.0/what-is-sentiment-analysis">meaningcloud</a>).
+
+But for the purpose of the talk I have to give in a couple of weeks, I should be able to use this to knock up something that works with the <a href="https://davidtjones.wordpress.com/2014/11/13/adding-more-student-information-to-a-moodle-course/">more student details script</a>.</p>
+
+</body>
+</html>

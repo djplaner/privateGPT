@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Analysing Moodle community forum discussions about the Moodle book module</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/06/09/analysing-moodle-community-forum-discussions-about-the-moodle-book-module/">Analysing Moodle community forum discussions about the Moodle book module</a></h1>
+
+<p>Tags: bad, elearning, moodle, moodleopenbook</p>
+
+<p>As part of the <a href="https://davidtjones.wordpress.com/research/the-moodle-open-book-module-project/">"Moodle open book" project</a> I'm hoping to increase my knowledge of what the Moodle community has already discussed about the <a href="https://docs.moodle.org/28/en/Book_module">Book module</a>. The following is a summary of the process I'm using to analyse those discussions.
+
+Not finished, but the story so far. Just over 2400 posts extracted from Moodle community forums that appear to mention "Book module".  About 250 posts (very roughly) coded so far.  The following is a very early summary of the features discussed in those posts is
+<ul>
+  <li> 43 - navigation and interface </li>
+  <li> 33 - export and import </li>
+  <li> 15 - printing </li>
+  <li> 13 - integrating activities (mostly quizzes) into the midst of the book. </li>
+  <li> 6 - page visibility </li>
+  <li> 3 - version control </li>
+</ul>
+
+Though a little interesting, I wouldn't read to much into those figures yet.  There are some more statistics on the 2400+ posts below.
+
+<h3>Obtain the data</h3>
+
+The process for obtaining the data was
+<ol>
+  <li> Global search for "book module".
+      <p>Use the "Search forum" functionality in the <a href="https://moodle.org/course/view.php?id=5">"Moodle in English" community</a> to search for posts that mentioned "book module". This gave 144 pages of forum posts. These were than saved to my laptop.</p>
+ </li>
+  <li> Get all the posts from the Book module forum.
+       <p>Got a copy of all the forum posts to <a href="https://moodle.org/mod/forum/view.php?f=466">Book module forum</a></p> </li>
+</ol>
+
+<h3>Parse the data</h3>
+
+Need to write a Perl script that will extract that information from the HTML files.
+
+The potentially useful data in this set includes
+<ul>
+  <li> Post
+      <ul>
+         <li> the subject line for the post (parsed)</li>
+         <li> body of the post  (parsed)</li>
+         <li> date string when posted  (parsed)</li>
+         <li>
+       </ul>
+  </li>
+  <li> Forum
+        <ul>
+          <li> link  (parsed) </li>
+          <li> name  (parsed)</li>
+         </ul>
+   </li>
+  <li> Author
+       <ul>
+          <li> User id </li>
+          <li> Author name  (parsed)</li>
+          <li>  link to their profile  (parsed) </li>
+       </ul>
+  </li>
+</ul>
+
+<h3>Stick it in (a) database table(s)</h3>
+
+Next step is to have the script stick it all in a database table to ensure that there are no duplicates.  moodle_book_forum_posts
+
+That appears to be working.  Now to try and get it all the forum posts inserted.
+
+Done, some quick stats from SQL
+<ol>
+  <li> 2442 forum posts </li>
+  <li> 870 authors </li>
+  <li> 146, 71, 41, 41, 41, 41, 36 - the number of posts (in descending order) by the most prolific authors. </li>
+  <li> the posts are from 40 forums.
+       As you would expect, most in the book forum.
+       <ul>
+          <li> Book - 1774 posts </li>
+          <li> General help - 143 </li>
+          <li> General developer - 86 </li>
+          <li> Themes - 46 </li>
+          <li> General plugins - 38 </li>
+          <li> Gradebook - 37 </li>
+       </ul>
+       The presence of the gradebook forum potentially points to the biggest flaw with the data so far.  i.e. search for "book module" my return posts that include "gradebook module" or similar.  This will get ironed out in the later analysis.
+ </li>
+
+<h3>Content analysis - into NVivo</h3>
+
+The plan is to use NVivo to do a content analysis on the posts.  The aim is to to identify the nature of the posts about the Book module. i.e. are the posts how to use, bug reports, feature requests etc. As part of that what types of features have been requested and when.
+
+The plan was to import the data from the database, but apparently the  Mac version of NVivo cannot import data from a database.  Meaning I need to go via a spreadsheet/CSV file.
+
+Sadly, Nvivo seems a little constrained.  e.g. you can't add to or change a dataset.
+
+But at least Perl and <a href="http://search.cpan.org/~jmcnamara/Spreadsheet-WriteExcel-2.40/lib/Spreadsheet/WriteExcel.pm">WriteExcel</a> provide some flexibility.
+
+Of course, it appears that I have to load the Excel file produced by Perl into Excel and then save it from Excel before NVivo will import it properly.
+
+<h3>Initial analysis with NVivo</h3>
+
+First run through I think I'll use these nodes
+<ul>
+  <li> Book or NotBook - to indicate whether a post is related to the book module. </li>
+  <li> NewFeature - indicate something to do with new feature
+       <ul>
+          <li> Request - asking for a new feature </li>
+          <li> Announce - Announce a new feature </li>
+       </ul>
+  </li>
+  <li> Bug - indicate a bug has been identified
+        <ul>
+          <li> Request - asking for help with a bug </li>
+          <li> Announce - announcing a fix for a bug </li>
+       </ul>
+  </li>
+  <li> Help - getting help with using book
+      <ul>
+         <li> Request - asking for help </li>
+         <li> Announce - answering please for help </li>
+      </ul>
+  </li>
+</ul>
+
+Each of the book related nodes will have nodes indicating what is being helped with  e.g. export, import, navigation, authoring, permissions, display. Wonder if there's a list of these already.
+
+It's taking a while to do this coding.  Pity about the absence of decent keyboard shortcuts in NVivo.
+
+Will probably need to revisit these categories. Such as there are a few categories where the distinction is questionable - e.g. export/print, bug/new feature</p>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - What&#039;s working for coordinator</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/04/05/bim2-whats-working-for-coordinator/">bim2 - What&#039;s working for coordinator</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>More detail on what BIM is <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">can be found here</a>
+
+The following documents initial forays into getting the coordinator view of bim. The aim is to summarise what is or isn't working in Moodle 2.1
+
+<h3>What's working, what's not</h3>
+
+The main aim in this section is to identify what's working, what's not and ideas for minor improvement.
+
+The coordinator (lead teacher role) is the most complex of the roles.  It's major screens and their related activities include
+<ul>
+  <li> Configure BIM - set up basics of a BIM activity
+       <ul>
+         <li> Display configuration - Basically working <br />
+              Improvements that could be made
+              <ul>
+                <li> Help buttons for configuration options. </li>
+                <li> Have the "General Steps" actually link to the appropriate screen. </li>
+                <li> Change "provided below" link to something more human readable. </li>
+              </ul>
+         </li>
+         <li> Change configuration - not working
+              <ul>
+                <li> Problems on inserting data into the database. Some insertions seem to be putting data in/modifying database, but errors happening </li>
+              </ul>
+         </li>
+       </ul>
+  </li>
+  <li> Manage questions
+     <ul>
+        <li> Display existing - Working<br />
+             Improvements
+             <ul>
+               <li> help buttons for elements to add. </li>
+               <li> Work on the introductory text. </li>
+             </ul>
+        </li>
+        <li> Add new - <strong>NOT WORKING</strong>
+             <ul>
+                <li> All seems to be working, but the text of the question isn't appearing in the form and may not be placed into the database. The text is being added when changing an existing question. </li>
+                <li> The pause while displaying results of add new/delete etc is not waiting long enough. </li>
+             </ul>
+        </li>
+        <li> Delete existing - Working </li>
+        <li> Change existing - Working </li>
+     </ul>
+  </li>
+  <li> Allocate markers
+       <ul>
+          <li> display - Working<br />
+             Improvements
+             <ul>
+               <li> Layout of the submit buttons. </li>
+               <li> Rethink intro text </li>
+               <li> Addition of some help buttons </li>
+               <li> Links to show current course groups and change them. </li>
+             </ul>
+          </li>
+          <li> Change - <strong>NOT WORKING</strong> <br />
+              Seems to process the change, but an error prevents it from finishing. Perhaps when deleting/removing any group allocations that have changed.   When simply adding a group where none is currently allocated, this does work.
+          </li>
+       </ul>
+  </li>
+  <li> Manage marking - <strong>NOT WORKING</strong><br />
+        Doesn't display, crashes and burn after displaying heading.
+  </li>
+  <li> Find student
+     <ul>
+       <li> Display - works</li>
+       <li> Find student - <strong>NOT WORKING</strong> <br />
+            Error in SQL command, will need fixing.
+       </li>
+     </ul>
+  <li> Your students - much the same interface as for the markers, so hopefully will work
+     <ul>
+       <li> View student details
+           <ul>
+             <li> Display - working </li>
+             <li> OPML feed - working </li>
+             <li> change blog - working <br />
+                  <strong>Improvements</strong>
+                  <ul>
+                    <li> Once changed, navigation to return to "Your students" is impossible. Need to improve.</li>
+                  </ul>
+             </li>
+           </ul>
+       </li>
+       <li> Mark posts - working </li>
+       <li> Allocate questions - basically working but...
+           <strong>improvements</strong>
+           <ul>
+              <li> The progress message after allocating a question occasionally pops up this "[[marker_change_alloc_descriptor]]" indicating a missing language string. </li>
+            </ul>
+       </li>
+       <li> Mark post - working </li>
+    </ul>
+  </li>
+</ul>
+
+Time to watch a horse race.</p>
+
+</body>
+</html>

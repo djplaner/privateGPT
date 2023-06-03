@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Installing Moodle - first step in BAM/MoodleAM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/07/16/installing-moodle-first-step-in-bammoodleam/">Installing Moodle - first step in BAM/MoodleAM</a></h1>
+
+<p>Tags: bam, Uncategorized</p>
+
+<p><p>Having received <a href="https://djon.es/blog/2009/07/16/bam-into-moodle-approved-starting-the-process/">approval</a> to port BAM into Moodle, the first step is to get a Moodle development environment installed on my laptop. I'm meant to be getting a new one this week, however, local IT hasn't been forthcoming in when this is going to be available.  Can't wait, I only have two days a week to work on this, and today is the last one this week.</p>
+
+<h3>What's the advice</h3>
+
+<p>So, what's the advice from the Moodle community for getting started?  I'm going to follow the process embedded in the <a href="http://dev.moodle.org/course/view.php?id=2">Intro to Moodle Programming</a> course. What follows is some ad hoc reflections as I'm working through the course.</p>
+
+<h3>Unit 1</h3>
+
+<p>Found the default text size on the information for "Getting started and General concepts" quite small.  Must be getting old.</p>
+<p>Okay, at least this has some description of the terminology and "structure" of Moodle, stuff I've been looking for for some time.</p>
+<ul>
+   <li> Divides Moodle into "system level" and "course level". </li>
+   <li> The interface consists of
+          <ul>
+              <li> sections, and<br />This is the stuff that goes down the middle of the interface and ends up with a Moodle page being one long list of stuff (bad IMHO). The content of these sections contain text or activities.</li>
+              <li> blocks. <br /> Created by programmers, installed at a system level and then can be chosen by teaching staff to be added to a course site, usually down the left/right hand side of the page.</li>
+          </ul>
+  </li>
+  <li> Moodle modules provide the code to control instructional activities - a bit different from a block.  The course focuses on block development. </li>
+</ul>
+<p>Apparently Moodle is big on accessibility and there is a call for developers to pay attention to this. Not sure it's quite as big on simplicity and design....</p>
+<p>Seems to suggest that Moodle is OO, at least points folk to OOP descriptions.</p>
+<p>Points to a couple of tutorials that I'll need to review (mostly PHP): </p>
+<ul>
+  <li> <a href="http://docs.moodle.org/en/Coding">Moodle coding guidlines</a> </li>
+  <li> <a href="http://www.w3schools.com/php/default.asp">PHP</a>;<br /> </li>
+  <li> <a href="http://sqlcourse.com/">SQL</a>. </li>
+</ul>
+<p>The navigation interface to/back from this overview is not great.  Using the breadcrumbs I've ended up in a different place than from where I started.</p>
+
+<h3>Unit 2 - creating and working in the dev environment</h3>
+
+<p>:) Vim is included in the <a href="http://dev.moodle.org/file.php/2/pictures/Unit2screenshots/vennUnit2nored.gif">Integrated development Environment diagram</a>.  At least some of the Moodle folk are real men!. There's even <a href="http://docs.moodle.org/en/Development:vim">guidlines for settting Vim</a> up for Moodle development.  Funny how small things make you feel better about a system.</p>
+<p>Time to install a bunch of stuff - much of which shows how long it's been since I was a "developer":</p>
+<ul>
+  <li> <a href="http://getfirebug.com/">Firebug</a> </li>
+  <li> <a href="http://seleniumhq.org/projects/ide/">Selenium</a> and <a href="https://addons.mozilla.org/en-US/firefox/addon/4149">Molybdenum</a> - though I'm not sure how much I'll use these. </li>
+  <li> <a href="http://www.apachefriends.org/en/xampp-macosx.html">XAMMP</a><br /> Not sure if I really want/need this. I already have versions running, perhaps this is time to move on, or at least keep Webfuse and Moodle totally separate. Yep, didn't like that MySQL was already running - mysqladmin shutdown, shutdown Apache and all is good.. </li>
+</ul>
+<p>Misc information</p>
+<ul>
+  <li> Document root - /Applications/XAMPP/htdocs </li>
+  <li> http://localhost/phpmyadmin/ </li>
+</ul>
+<p>vim configured for Moodle/PHP - first hello Moodle script created.  Time for lunch.</p></p>
+
+</body>
+</html>

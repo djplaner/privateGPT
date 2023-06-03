@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>How might a Book module search function work?</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/07/19/how-might-a-book-module-search-function-work/">How might a Book module search function work?</a></h1>
+
+<p>Tags: moodleopenbook</p>
+
+<p>What follows is some explorations of the technology behind Moodle to see how <a href="https://davidtjones.wordpress.com/2015/07/19/mocking-up-a-search-facility-for-the-moodle-book-module/">the mockups of a Book module search function</a> might be implemented. Building my own knowledge of how it works and testing whether it might be possible.  It's largely an exploration of how the Search forum block works on the assumption that mirroring that will be a reasonable way to implement a search facility for the Book module.
+
+Two parts to this. First, a look at how the Search forum block is implemented.  Second, some rough exploration of how what might need to be done for the Search book block.
+
+<strong>Update:</strong> It does appear that there was <a href="https://moodle.org/mod/forum/discuss.php?d=130569">some work done</a> on this. <a href="https://github.com/stronk7/moodle-block_search_books">Some working code</a> as a block, but doesn't appear to have made it into the Moodle plugins database. Will need to chase this up.
+
+<h2>Search forum</h2>
+
+<h3>The Search block</h3>
+
+~/moodle/blocks/search_forums implements the search block.  The main purpose of this seems to be to generate the HTML necessary to display the block.
+
+All the actual work appears to be passed over to the actual Forum activity module (the file search.php).
+
+<h3>Forum activity module - search</h3>
+
+<a href="https://github.com/djplaner/moodle/blob/master/mod/forum/search.php">~/moodle/mod/forum/search.php</a> is one of those ugly PHP scripts. Apparently hasn't been changed in almost a year (as you'd kind of expect).
+
+<ol>
+  <li> Handle the parameters. </li>
+  <li> Look at the parameters and attempt to figure out what the search terms will be. </li>
+  <li> Clear the search terms
+  </li>
+  <li> check access. </li>
+  <li> generate an appropriate event </li>
+  <li> Show the form if we're not doing a search. </li>
+  <li> Use forum_search_form to populate the form </li>
+  <li> Use forum_search_posts to do the search
+       <ul>
+         <li> If there aren't any posts, show an empty form and exit</li>
+       </ul>
+  </li>
+  <li> Display the results
+       <ul>
+         <li> Show the start of the response with all search terms entered appropriately </li>
+         <li> Loop through each post and display it (using a long bit of code) </li>
+         <li> Show the footer</li>
+       </ul>
+  </li>
+</ol>
+
+Support functions in search.php
+<ul>
+  <li> forum_print_big_search_form </li>
+  <li> forum_clean_search_terms - removes any search strings less than 2 characters long and returns a space-separated search terms</li>
+  <li> forum_menu_list - what is the list of forums the user can view? </li>
+</ul>
+
+<h3>forum/lib.php</h3>
+
+Contains some other functions used.
+<ul>
+  <li> forum_search_form - generates the much smaller search form. </li>
+  <li> forum_search_posts - returns the list of posts matching the search terms
+       Involves the following steps
+       <ol>
+          <li> get the readable forums for the user. </li>
+          <li> for each of the forums
+               <ul>
+                 <li> generate different SQL statements based on different types of forums. </li>
+                 <li> users search_parser and search_lexer to do some checks on the search strings. </li>
+                 <li> further updates the SQL </li>
+                 <li> query the database to get the number of matching records. </li>
+                 <li> query the database to get a subset (if large) of the records
+               </ul>
+</ul>
+
+<h2>Search book</h2>
+
+Given that the Book module doesn't have the same variety and complexity in terms of different types of forums etc, implementing the search would seem to be quite easy. Hidden chapters perhaps the main added "complexity".
+
+<h3>Block</h3>
+
+Would seem to be fairly straight forward and easy to implement.
+
+<a href="https://www.flickr.com/photos/david_jones/19196124183/in/dateposted-public/" title="001_SearchBooks"><img alt="001_SearchBooks" height="201" src="https://farm1.staticflickr.com/370/19196124183_54971e07a7_o.jpg" width="370" /></a>
+
+<h3>Advanced search form</h3>
+
+<a href="https://www.flickr.com/photos/david_jones/19791024836/in/dateposted-public/" title="003_searchShowingBooks.tiff"><img alt="003_searchShowingBooks.tiff" height="499" src="https://farm1.staticflickr.com/561/19791024836_c51305ddbb.jpg" width="500" /></a>
+
+The main additional complexity here would be to generate the list of course topics and the books that belong to each topic.
+
+What I'm calling "topics" are stored in the table <strong>course_sections</strong>.
+<ul>
+  <li> Can be visible or not. </li>
+  <li> Can be available or not.
+       <strong>Important:</strong> Only search sections the user can see.
+  </li>
+  <li> Name is included. </li>
+</ul>
+
+The modules (activities) that are included in each course section is stored in <strong>course_modules</strong>
+<ul>
+  <li> module = 3 suggests a book </li>
+  <li> course is the moodle id for the course. </li>
+  <li> section is the section id </li>
+  <li> will be a question of whether or not the user can see the book
+       <strong>Important:</strong> ensuring that only the books the user is able to see are searched will be important. </li>
+</li>
+</ul>
+
+<h3>Searching and displaying the book and its chapters</h3>
+
+
+<a href="https://www.flickr.com/photos/david_jones/19195121204/in/dateposted-public/" title="004_results"><img alt="004_results" height="397" src="https://farm1.staticflickr.com/313/19195121204_5d57647079.jpg" width="500" /></a>
+
+<strong>book</strong> table includes the name and introduction to the book.  No indication of who created it.
+
+<strong>Important:</strong> Is it possible (somewhat easily) to identify someone as the author of a book?
+
+<strong>book_chapters</strong> table contains information about each of the chapters, including
+<ul>
+  <li> Is it hidden or not </li>
+  <li> Where the chapter was imported from.
+        <strong>Important:</strong> This would be a way of identifying people who have used the import facility </li>
+  <li> The actual content, chapter title, whether it's a sub chapter or not. </li>
+  <li> pagenum - indicates the order of the chapters/pages
+      <strong>Important:</strong> Use this to order the search results within a book in order of appearance in the book. </li>
+</ul>
+</ul></p>
+
+</body>
+</html>

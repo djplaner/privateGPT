@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Thinking about (more) reproducible research and learning analytics</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2017/03/08/thinking-about-more-reproducible-research-and-learning-analytics/">Thinking about (more) reproducible research and learning analytics</a></h1>
+
+<p>Tags: indicators</p>
+
+<p>There are moves afoot to revisit some of the earlier research arising from <a href="http://indicatorsproject.wordpress.com/">Indicators project</a> and hopefully move beyond. To do that well we need to give some thought to updating the methods we use to analyse, share and report what we're doing. In particular, because we're now a cross-institutional project. The following captures some early exploration of this problem.  
+
+This has actually become the first of 2 or 3 blog posts.  This one was getting too large. The sequence of post looks likely to be 
+<ol>
+  <li> (this post) Think a bit more about the requirements: what do we want to share? with whom? </li>
+  <li> Reflecting on some recent past experience. </li>
+  <li> Looking at some possibilities </li>
+</ol>
+
+After that, hopefully, we'll actually do something.
+
+<h2>Requirements</h2>
+
+So what would we like to be able to do?  In a perfect world we might be aiming for <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383002/">reproducible research</a>. But that's beyond the scope of what we need right now. At the very least we want to develop a research method/environment that helps make the research that we're doing <em>more</em> reproducible. 
+
+<h3>What will be more reproducible?</h3>
+
+The <em>Reproducibility spectrum</em> provided by <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383002/">Peng (2011)</a> appears to include the following components
+<ol>
+  <li> data;
+      <p>The data from institutional systems that is in put into the analysis</p></li>
+  <li> code;
+       <p>What actually does that analysis.</p> </li>
+  <li> <del datetime="2017-03-11T23:54:42+00:00">results</del> indicators/patterns; and,  
+      <p>The final correlations, patterns etc produced by the analysis. Back in the day we used the term <a href="https://indicatorsproject.wordpress.com/patterns/"><em>pattern</em></a> </p></li>
+  <li> interpretations/hypotheses/conclusions.
+       <p>We'll be layering upon the results we'll be layering our own interpretations/conclusions.</p> </li>
+</ol>
+
+These components could be thought of being circular, especially if learner and/or teacher action in response to interpretations is added. Learners and teachers may take action in response to interpretations, which in turn generates more data to be analysed by code...  Researcher action also plays a part, through going back to re-analyse the data with a different lens, or designing experiments to generate new data.  Echoes of the Siemens (2013, p. 13) data loop, but with a slightly different focus.
+
+<a href="https://www.flickr.com/photos/david_jones/9662456144/" title="Siemens (2013) Learning Analytics Model"><img alt="Siemens (2013) Learning Analytics Model" height="334" src="https://c1.staticflickr.com/3/2814/9662456144_51b12d6057.jpg" width="500" /></a>
+
+Making this cycle more reproducible would be useful.
+
+For example, the following graph has the following components
+<ol>
+  <li> data;
+       <p>Data from a Blackboard LMS over numerous years showing the number of times students had clicked on discussion forums. The data was limited to courses where staff participation (measured by clicks on the course site) was high.  Combined with student final result (HD, D, C, P, F). </p></li>
+  <li> code;
+       <p>Either some messy PHP code written by @beerc, some better structured but still messy Perl code written by me, or a combination of both.  Probably with the addition of Excel spreadsheets for visualisation. </p></li>
+  <li> results; 
+       <p>The graph below indicating that that average # of clicks on a discussion forum tends to increase the better a student's final grade is. </p></li>
+  <li> interpretations/hypotheses/conclusions.
+        <p>One interpretation is that students get better grades by being more dilligent/expending more effort.  Hence they click more. Of course this is a hypothesis.</p> </li>
+</ol>
+
+<a href="https://www.flickr.com/photos/david_jones/4037668845/in/album-72157608613577424/" title="Average student hits on course site/discussion forum for high staff participation courses"><img alt="Average student hits on course site/discussion forum for high staff participation courses" height="301" src="https://c1.staticflickr.com/3/2790/4037668845_dab85a9db1.jpg" width="500" /></a>
+
+
+<h3>To whom?</h3>
+
+<a href="https://www.flickr.com/photos/david_jones/33125653321/in/dateposted-public/" style="float: right;" title="Indicators architecture"><img alt="Indicators architecture" height="388" src="https://c1.staticflickr.com/4/3912/33125653321_191ba4e6f8.jpg" width="347" /></a>
+
+Way back in 2009, <a href="https://www.slideshare.net/davidj/introducing-the-indicators-project">the presentation</a> for the <a href="https://indicatorsproject.wordpress.com/2009/10/09/the-indicators-project-identifying-effective-learning-adoption-activity-grades-and-external-factors/">first indicators project paper</a> included the following image to the right as an early explanation of what we were doing.
+
+
+This image can be mapped somewhat onto the components of <em>what</em> from the previous section
+<ul>
+  <li> data = the institutional databases and the LMS independent data. 
+    <p>   At this point in time, I'm guessing we'll be working with our institutional data.  The LMS independent data idea will have to wait</p>
+     <p> That said, the recently announced <a href="https://moodle.org/mod/forum/discuss.php?d=348308">Project Inspire</a> from Moodle HQ might provide some assistance here.</p> 
+</li>
+  <li> code = typically the arrows between components. </li>
+  <li> results = useful data/information </li>
+  <li> intepretations = useful data/information </li>
+</ul>
+
+The <em>T&amp;L practice</em> and <em>Research</em> 'clouds' in the above image point to the <em>Who</em> question
+<ul>
+  <li> T&amp;L practice
+     <ol>
+        <li> Teaching staff - interested in reproducing the research on their course, students, learning designs. </li>
+        <li> Teaching support staff/leadership - interested in reproducing the research on groups of courses. </li>
+      </ol>
+      <p>Largely interested in working with the results/interpretations.
+  </li>
+  <li> Research
+         <p>Could divide research into various groups based on research interests, methods etc. </p>
+         <p>Would potentially be interested in accessing the data, code and results/interpretations. </p>
+  </li>
+</ul>
+
+The useful data/information captures results and interpretations aspects of the <em>what</em> from the previous section.  
+
+Potentially, we'd like aspects of this work to be <em>more</em> reproducible (/accessible) for the following broad groups
+<ol>
+  <li> researchers within the project; 
+       <p>Given we're at different institutions. We wouldn't be sharing data, at least not until a lot more necessary work is done.</p>
+       <p>However, we would like to share code, results (suitably anonymised), and interpretations. </p>
+       <p>The sharing here also includes co-construction/modification of these artefacts. Suggesting a need for version control and collaboration.</p>
+  </li>
+  <li> researchers outside the project; 
+        <p>If we take a more open approach, probably the same sharing as with ourselves. However, early on some of us might like to share more final conclusions of what we do. </p>
+        <p>Sharing code tends to imply we're using the same technology. We might be able to agree to this within the project, but outside is never going to happen. But we should perhaps allow for the possibility.</p>
+  </li>
+  <li> teaching academics </li>
+  <li> misc. support groups </li>
+</ol>
+
+<h3>What about the learner?</h3>
+
+I'm very aware that the above discussion (and much of what I've written previously) suffers from the learner being absent. At some level, this is for pragmatic reasons and linked to the problem that the <em>placing some limits</em> section tries to deal with.  That said, however, the above would be enhanced by broadening consideration to the student. Something which this project - <a href="http://www.de.ed.ac.uk/project/learning-analytics-report-card">The Learning Analytics Report Card</a> appears to be giving a lot of thought to.
+
+I came to that project from <a href="http://redpincushion.us/blog/i-cant-categorize-this/it-should-be-necessary-to-start-critical-digital-pedagogy-in-troubled-political-times/">this talk</a> by Amy Collier. A talk which offers <em>Lesson 2: Solutionism decomplexifies too much</em>. Much of what I do likely comes across as solutionism (given my closeness to the subject, I'm not a reliable judge, what do you think?). However, my conception of this post and the purpose of this project is to start a process that results in methods, tools and thinking that allow more people to be engaged with the work we do.
+
+The title of the talk - It should be necessary to start: Critical digital pedagogy in troubled political times - arises from a book <a href="https://books.google.com.au/books/about/We_Make_the_Road_by_Walking.html?id=zU8uFA4hlY0C&amp;redir_esc=y"><em>We Make the Road by Walking</em></a> and Collier makes this connection<blockquote>In the early stages of the book, as Freire and Horton are discussing the spoken format of the book, Freire remarks that they will make the road by walking, meaning that the book will emerge from their conversations, and he adds what seems like an offhand remark that “in order to start, it should be necessary to start.” </blockquote>
+
+This quote connects with my views on this work in two ways. First, this is just a start. Second, and perhaps more importantly, the rationale behind being able to more easily share how and what we do is to make it easier for us and others to "make the road by walking".
+
+
+<h2>Placing some limits</h2>
+
+<div style="float: right;"><a href="https://www.flickr.com/photos/newhousedesign/3377185004/" target="_blank"><img alt="Ben Hur - 1959_01 by newhousedesign, on Flickr" border="0" href="http://purl.org/dc/dcmitype/StillImage" rel="dct:type" src="https://farm4.static.flickr.com/3435/3377185004_9cd00b33e1_m.jpg" title="Ben Hur - 1959_01 by newhousedesign, on Flickr" /></a><br />"<a href="https://www.flickr.com/photos/newhousedesign/3377185004/" target="_blank">Ben Hur - 1959_01</a>"<br />(<a href="https://creativecommons.org/licenses/by-nc-sa/2.0/" rel="license" target="_blank">CC BY-NC-SA 2.0</a>) by<br /><a href="https://www.flickr.com/people/newhousedesign/" rel="cc:attributionurl" target="_blank">newhousedesign</a></div>
+
+Trying to support all of the above would be bigger than Ben Hur. Picking up on this being a start and we'll make the road by walking, the first step is to focus on a subset.  The subset we'll start with - I think - should be
+<ol>
+  <li> Practices that help the researchers two different institutions share code, results and interpretations.
+        <p>In theory, this could eventually expand beyond our little project and be used by others.  But that will/may come. </p> </li>
+  <li> Practices that help the researchers share (appropriately anonymous) results and interpretation with others.
+       <p>Initially, this is liable to be limited to people within our respective institutions, but may extend more broadly.</p>
+       <p>Actually, I'm thinking there's value institutionally and from a research perspective in setting up some sort of mechanism by which we can engage more people in asking questions and drawing conclusions about what is found.  A platform that helps analysis, but promotes sharing and collaboration around interpretation.<p> </li>
+</ol>
+
+So maybe we'll start there.
+
+Next post should reflect back on what was done last year.
+ 
+<h2>References</h2>
+
+Siemens, G. (2013). Learning Analytics: The Emergence of a Discipline. American Behavioral Scientist, (August). doi:10.1177/0002764213498851</p>
+
+</body>
+</html>

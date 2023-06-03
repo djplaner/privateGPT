@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM, Moodle, Simplepie, curl and HTTP proxy issue</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2013/07/26/bim-moodle-simplepie-curl-and-http-proxy-issue/">BIM, Moodle, Simplepie, curl and HTTP proxy issue</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>Good news this week.  <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> got into the institution's testing site for Moodle.  One step close to going live. The bad news is that there were a couple of issues to resolve.  This post is a record of the attempt to address the big one (successfully as well).
+
+<h2>The problem</h2>
+
+When you attempt to register the blog for a student, BIM/Moodle generates this error
+<blockquote>
+Unable to access the URL you provided
+
+http://davidtjones.wordpress.com
+The error created was
+cURL error 28: connect() timed out!
+</blockquote>
+
+It appears that it doesn't play nicely with the institutional HTTP proxy.  I had noticed this same problem with the development install of Moodle on my laptop, but had thought that was simply my bad practice.
+
+Seems the problem may be a little more than that.
+
+<h2>The plan</h2>
+
+The rough plan is
+<ol>
+  <li> Find out if this a known problem? </li>
+  <li> Does this problem effect other Moodle tools that rely on SimplePie? </li>
+  <li> Is there an identifiable difference between what BIM and those other tools? </li>
+</ol>
+
+<h3>A known problem</h3>
+
+A search for "moodle simplepie proxy" and similar doesn't reveal a lot. (Simplepie is the 3rd party library that used to search for, parse and generally work with feeds.
+
+You get <a href="https://github.com/moodle/moodle/blob/master/lib/simplepie/moodle_simplepie.php">this from GitHub</a> which shows the Moodle modified version of GitHub.  It includes evidence of modifications to SimplePie to <blockquote>make sensible configuration choices, such as using the Moodle cache directory and curl functions/proxy config for making http requests in line with moodle configuration</blockquote>
+
+There is also <a href="https://tracker.moodle.org/browse/MDL-30648">this closed issue</a> on the Moodle tracker where there was a problem with a proxy that requires authentication.   It's been fixed and the fix should be in the versions of Moodle we're using here.  Also, I don't believe the institutional proxy fits this problem.  In fact, the error is very different.
+
+<h3>Does it effect other Moodle tools?</h3>
+
+There's a "register an external blog" facility in Moodle.  It connects the external blog to the users Moodle blog (I believe).
+
+I do find it interesting that this asks the user to enter the Feed URL and not the blog URL.  SimplePie does a good job of finding feeds from a blog URL (in my experience).  Have just checked the code and it does use SimplePie.
+
+Using this to register a URL without having configured the HTTP proxy results in a long period of waiting and then the error "This feed is invalid".  Seems to suggest some limitations of the code.  Wish I had the time to look at this more.
+
+Configure my box with the proxy details and try again. Oops, that didn't work.  Ahh, "Some settings were not changed due to an error" an error message when saving the HTTP proxy that didn't exactly leap out at me. Not immediately obvious what the error was.
+
+Checking the database (mdl_config) reveals that the proxyhost wasn't set, apparently you don't need the "http://" and the error doesn't identify that.  Fixed.
+
+Okay, that works.  External blog registered. And posts from the blog showing up in my Moodle "blog".
+
+Let's try BIM now. Nope.  The timeout problem again.  Implying there's something different going on here.
+
+<h3>Is there a difference?</h3>
+
+Yes, eventually tracked down one of the calls to SimplePie is using the normal SimplePie class and not the moodle simple pie class.  Hence not using the proxy setup.
+
+Tested it with the student registering process and that works as well.</p>
+
+</body>
+</html>

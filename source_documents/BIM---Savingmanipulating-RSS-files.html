@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Saving/manipulating RSS files</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/20/bim-savingmanipulating-rss-files/">BIM - Saving/manipulating RSS files</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>In the <a href="https://djon.es/blog/2009/12/17/bim-getting-show-student-details-working/">last post</a> I'd gotten started having the show student details screen actually getting data from the database. One data source this screen needs is not in the database, it's in the RSS file from the student's blog that is mirrored on the Moodle site.  This post talks about the process about how BIM will be saving, reading and using that RSS file in its operation.</p>
+<p>There will be at least two parts:</p>
+<ol>
+  <li> Identifying the location for the RSS file (and putting some dummy ones there). </li>
+  <li> Manipulating the RSS files. </li>
+</ol>
+
+<h3>Location</h3>
+
+<p>As discovered <a href="https://djon.es/blog/2009/12/17/bim-getting-show-student-details-working/">in the last post</a> Moodle works with a directory referred to as moodledata as the file system store.  Each course has its own area in a sub-directory based on the course id.</p>
+<p>So, the obvious plan would be to put a <code>bim</code> directory in the course sub-directory.  Since there may be the case that more than one BIM activity could be added to a course, I'll put another layer of sub-directories in place based on the bim id.  At that stage, we can use the <del>userid</del>, actually, I'm going to go with username (I'm still of the opinion that a support person may still look at the file structure and that the username - which @ my institution is the student number - will be more meaningful than the uid) as the filename and put a <code>.xml</code> extension on the end.</p>
+<p>So, the path for my test user (username=david) on my test course (cid=4) and my test BIM activity (bim id=1) would be<blockquote><code>$CFG-&gt;dataroot/4/1/david.xml</code></blockquote></p>
+<p>Which means I can put some test data into the file.</p>
+
+<h3>Manipulating RSS</h3>
+
+<p>Sadly, at this stage, the RAW book I've been using only has information about using a Moodle API for constructing RSS files from scratch.  For BIM, we need to be able to use existing RSS files (also ATOM and other type of feeds) from existing blogs.  So I don't think this is appropriate.  Need to find what alternatives exist within the Moodle community.</p>
+<p>I had <a href="https://djon.es/blog/2009/07/28/bam-into-moodle-7-an-estudyguide-block/">originally found</a> the magpie rss library.  However, <a href="http://tracker.moodle.org/browse/MDL-7946">it now appears</a> that Magpie is deprecated and <a href="http://simplepie.org/">SimplePie</a> is preferred. So, looks like I'll use that.</p>
+<p>This won't be the only place I'll have to manipulate a student's feed.  So I should abstract this out.  Straight procedural and into a library?  Or, go object oriented?  All my recent experience has been OO, but new to PHP.  Might stick with procedural for now.</p>
+<p>Next problem is getting SimplePie to parse the <a href="https://djon.es/blog/">feed</a> for this blog as a test.  It appears that SimplePie doesn't like control characters in a feed.  The problem here.  Remove those and it works fine. <strong>To do</strong>: Figure out how to handle these cleanly. Need to make this robust. </p>
+<p>The <a href="http://simplepie.org/wiki/reference/start">SimplePie API</a> is documented online.  It has a <code>get_feed_tags</code> function that should fulfill one of the needs for the registration process.</p>
+
+<h3>Current status</h3>
+
+<p>The show student details screen is now almost fully working - sans any of the normal sanity checking and a few bits to tidy up.  Some progress being made.</p></p>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - minor fixes to show student details</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/12/24/bim-minor-fixes-to-show-student-details/">BIM - minor fixes to show student details</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>This post follows on from <a href="https://djon.es/blog/2009/12/22/bim-cron-and-view-student-details-screen/">the last post</a> in doing some minor improvements to the show student details screen in BIM. This includes:</p>
+<ul>
+  <li> Link between the question ID and the question name </li>
+  <li> Double check the display of the “All posts”.</li>
+   <li> Add in the link to posts for Marked Answers.</li>
+   <li> Re-do the interface to be Moodle like.</li>
+</ul>
+
+<h3>Question ID and question name</h3>
+
+<p>In a couple of places on the screen there is a need to take the question id and return the question title.  Basic solution is:</p>
+<ul>
+  <li> Create a hash with question id as key and title as value (possibly with other things).<br /><code>bim_get_question_hash( $bim )</code> seems like the go.</li>
+  <li> Use the hash in the appropriate places. </li>
+</ul>
+<p>Done and working nicely. The link for posts is also done.  The all posts is working as currently designed. This means, apart from look and feel, this screen is essentially working.</p>
+
+<h3>Make it Moodle</h3>
+
+<p>Moodle has a particular style/approach to HTML/look and feel.  At this point in time, I haven't used it for this screen.  Time to start doing it.</p>
+
+<h3>Where I'm up to</h3>
+
+<p>Did a bunch of work on the view student details screen, tidied up a bunch of stuff.  Still not happy with the look, but will leave that till later. Time to move onto some of the staff screens.</p>
+<p>A screen dump of the screen is <a href="http://www.flickr.com/photos/david_jones/4209851502/">available on Flickr</a>.  It's based on real data so identifying information has been blurred out.  But you get the idea, boring, ugly. Needs to be better.</p></p>
+
+</body>
+</html>

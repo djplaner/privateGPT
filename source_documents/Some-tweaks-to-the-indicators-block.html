@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Some tweaks to the indicators block</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/05/14/some-tweaks-to-the-indicators-block/">Some tweaks to the indicators block</a></h1>
+
+<p>Tags: indicators, Uncategorized</p>
+
+<p><p>Yesterday's <a href="https://djon.es/blog/2010/05/13/getting-started-with-cols-indicators-block/">post</a> introduced Col's initial work on the indicators block.  This post reports on some minor tweaks I've been doing this afternoon, trying to find escape in something concrete.</p>
+
+<h3>Setting the title</h3>
+
+<p>As reported in the last post, the block ended up having a title <em>[[Indicators]]</em>.  This was because get_string was being used to set the title but the necessary language file (from which to source the string) was not created.</p>
+<p>First fix is to just hard code the title.</p>
+[sourcecode lang="php"]
+$this-&gt;title = "Indicators"; //get_string('Indicators','block_indicators');
+[/sourcecode]
+<p>That works. But the proper solution would be to figure out where the "lang" file should go for a block.  According to <a href="http://moodle.org/mod/forum/discuss.php?d=41061">this</a>, it should be lang/en/block_BLOCKNAME.php. Small problem, that should be lang/en_utf8, not lang/en (as per <a href="http://moodle.org/mod/forum/discuss.php?d=149971">here</a>).</p>
+[sourcecode lang="php"]
+$this-&gt;title = get_string("indicators","block_indicators");
+[/sourcecode]
+<p>Will commit those changes.</p>
+
+<h3>How to distinguish user roles?</h3>
+
+<p>The block was using roleid=5 as a way to identify students.  I believe this is a deprecated approach. So need to find a better way.  In my wonderings, I came across an approach that users the has_capability function along with some "legacy" capabilities for student, staff, guest and admin.  The following is an early example from the block</p>
+[sourcecode lang="php"]
+if ( has_capability( 'moodle/legacy:teacher', $context )) {
+    print "This is a teacher&lt;br /&gt;";
+} else if ( has_capability( 'moodle/legacy:student', $context )) {
+    print "This is a student&lt;br /&gt;";
+    $canview=0;
+}
+[/sourcecode]
+
+<h3>What's next</h3>
+
+<p>At least in my head, the plan is to enable different groups of users to see different sets of "indicators".  Where an "indicator" is a single graphic.  This means that we need an good way to:</p>
+<ul>
+  <li> distinguish between different users; </li>
+  <li> call different code to generate the indicators for the different users; </li>
+  <li> distinguish which indicator a user wishes to see; </li>
+  <li> call different code based on the indicator.</li>
+</ul>
+<p>A nice structure to do that, might be next on the list. If I was in Perl, I'd be doing this with a factory class.  Should we go OO in PHP?</p>
+<p>  Some other tasks:</p>
+<ul>
+  <li> I'm getting errors when running the block as a teacher.
+[sourcecode lang="bash"]
+Table 'moodle.m_course' doesn't exist
+
+select (count(*)/count(distinct(userid))) from mdl_log where course='4' and userid='3' and action in ('add discussion','add post','update post') and course in (select id from m_course where idnumber like '%2010') and userid in ( select userid from m_role_assignments where roleid !='5' and contextid in (select id from m_context where contextlevel='50'))
+line 686 of lib/dmllib.php: call to debugging()
+line 379 of lib/dmllib.php: call to get_recordset_sql()
+line 71 of blocks/indicators/block_indicators.php: call to count_records_sql()
+line 317 of blocks/moodleblock.class.php: call to block_indicators-&gt;get_content()
+line 341 of blocks/moodleblock.class.php: call to block_base-&gt;is_empty()
+line 338 of lib/blocklib.php: call to block_base-&gt;_print_block()
+line 276 of course/format/weeks/format.php: call to blocks_print_group()
+line 229 of course/view.php: call to require()
+
+Warning: Division by zero in /Applications/XAMPP/xamppfiles/htdocs/moodle/blocks/indicators/block_indicators.php on line 80
+
+Warning: Division by zero in /Applications/XAMPP/xamppfiles/htdocs/moodle/blocks/indicators/block_indicators.php on line 86
+[/sourcecode]
+ </li>
+  <li> What should an admin user see when they view the block? </li>
+  <li> Check the performance of the existing SQL code and think about how/what we might need to do to significantly reduce that. </li>
+</ul></p>
+
+</body>
+</html>

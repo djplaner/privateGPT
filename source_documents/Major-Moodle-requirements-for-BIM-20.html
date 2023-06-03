@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Major (Moodle) requirements for BIM 2.0</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/12/29/major-moodle-requirements-for-bim-2-0/">Major (Moodle) requirements for BIM 2.0</a></h1>
+
+<p>Tags: bim</p>
+
+<p>The next step in the development of <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM 2.0</a> is identifying the list of major (Moodle) requirements that need to be implemented.  BIM is a Moodle <a href="http://docs.moodle.org/dev/Activity_modules">activity module</a>. Moodle has a range of expectations that such modules are meant to meet.  The following is an attempt to identify what needs to be done.
+
+It has resulted in a renewed effort to use the github <a href="https://github.com/djplaner/BIM/issues">issue list</a> to record and manage what needs to be done. Not only have I started adding issues for BIM 2.0, I've also been through the old issues and decided which apply to BIM 2.0
+
+In short, some major work to be done to get backup/restore migrated. Some minor tweaks (it appears) to get gradebook integration working. Logging is working as is.
+
+<h2>Summary of the requirements</h2>
+
+A summary of what was found follows. It includes some compulsory/important type requirements:
+<ul>
+  <li> <a href="http://docs.moodle.org/dev/Backup_2.0_for_developers">Back up</a> and <a href="http://docs.moodle.org/dev/Restore_2.0_for_developers">restore</a>. </li>
+  <li> <a href="http://docs.moodle.org/dev/Gradebook_API">Gradebook API</a>. </li>
+  <li> New icons for <a href="http://docs.moodle.org/dev/Moodle_icons_2.4">Moodle 2.4</a><br /> </li>
+  <li> Logging.<br />Need to check that the <a href="http://docs.moodle.org/dev/Logging_API">logging API</a> hasn't changed dramatically and think about what additional/different logging needs to be added. </li>
+</ul>
+
+And also some that would be nice future additions:
+<ul>
+   <li> New icons for <a href="http://docs.moodle.org/dev/Moodle_icons_2.4">Moodle 2.4</a><br /> </li>
+  <br />This appears to require some changes to the question data. i.e. the due date is associated with each questions rather than perhaps the BIM activity. </li>
+  <li> Use of the <a href="http://docs.moodle.org/dev/Message_API">message API</a> </li>
+  <li> <a href="http://docs.moodle.org/dev/Activity_completion_API">Activity completion</a>. </li>
+  <li> <a href="http://docs.moodle.org/dev/Conditional_activities_API">Conditional availability</a> </li>
+  <li> The <a href="http://docs.moodle.org/dev/RSS_API">RSS API</a> is used to generate "secure" RSS feeds by modules. Theoretically this could be useful for merging various feeds. I wonder what "secure" means? Obscurity? </li>
+  <li> <a href="http://docs.moodle.org/dev/Unit_test_API">Unit test API</a> </li>
+  <li> <a href="http://docs.moodle.org/dev/Advanced_grading_API">Advanced grading</a> which is meant to support rubrics. It's still a bit early for this to be finalised. </li>
+  <li> <a href="http://docs.moodle.org/dev/Plagiarism_API">Plagiarism checking</a> including how to add it to <a href="http://docs.moodle.org/dev/How_to_add_support_for_a_Plagiarism_Plugin_to_my_activity_module">an activity module</a></li>
+  <li> Even a chance that the questions should be managed via the <a href="http://docs.moodle.org/dev/Question_API">question API</a> </li>
+  <li> Should also revisit the <a href="http://docs.moodle.org/dev/Coding_style">Moodle coding style</a> to ensure BIM isn't a great departure. There are now some tools to check code available. </li>
+  <li> Not to mention the <a href="http://docs.moodle.org/dev/Guidelines_for_contributed_code">guidelines for CONTRIB code</a>. </li>
+</ul>
+
+<h2>What has changed?</h2>
+
+Now to find out what has changed in the requirements that have to be addressed now.
+
+<h3>Backup and restore</h3>
+
+This has definitely been changed.  It's listed in the <a href="http://docs.moodle.org/dev/Migrating_contrib_code_to_2.0">migrating CONTRIB code document</a>.
+
+backuplib.php is now replaced with a backup directory. It also appears to be a more OO-based approach. Some major re-work to be done here.  Will leave this to another post.
+
+<h3>Gradebook</h3>
+
+This isn't working. Any attempt to turn on the BIM gradebook integration generates an error on line 313 of lib.php due to a problem with a database insert<blockquote>Debug info: Column 'grademax' cannot be null
+INSERT INTO mdl_grade_items </blockquote>
+
+The question will be whether this is a problem in BIM or evidence that the Gradebook API has changed significantly.
+
+According to the <a href="http://docs.moodle.org/dev/Gradebook_API">Gradebook API</a> there should be a mod/bim/grade.php file.  Certainly not one in BIM 1.0. But then the forum module doesn't have one either and yet it does use the gradebook, so it would appear to be optional.
+
+grademax can be changed in the gradebook, but the help text located there suggests it should be set on the activity settings page.  i.e. I need to add the ability to set grademax on the BIM config screen.
+
+This has identified that the problem is because the existing BIM code is does not have a value for the grademax field for the gradebook. It appears that the Moodle 2.x code has required that this be not null.
+
+Actually, the BIM 1.0 code doesn't seem to have this set.  A mystery change? Perhaps some boilerplate with a search and replace I put in place when setting up BIM 2.0? Moodle 1.9 doesn't seem to have required a grademax value.  So what does grademax imply?
+
+Common sense would seem to imply the maximum value that can be entered into the gradebook for this component.  BIM currently asks for maximums for each question, so a grademax could be calculated.  The problem is that BIM only uses the maximums to generate a warning, it doesn't enforce it.  If the gradebook enforces grademax, then this could create some dissonance with BIM's operation.
+
+As it happens the hard coding of grademax to 10 results in gradebook integration. Or at least the activity being added to the gradebook.  When I try to release some results (which includes adding marks to gradebook) I get a coding error which I'll need to fix.  Have added this to the to do list.
+
+Will leave working on this until later.
+
+It also suggests that in lib.php the bim_supports function should report that it has FEATURE_GRADE_HAS_GRADE.  I'll add that for now.
+
+There are also a few examples that provide some extra code missing from BIM.  Will add that as well.
+
+<h3>Logging</h3>
+
+The logging API in Moodle is likely to be replaced in a <a href="http://docs.moodle.org/dev/Logging_2">little while</a> as part of an increasing importance of logging, analytics etc. The new work includes some references which could be used to inform a rethinking about BIM logging.  This is one of my areas of interest.
+
+But at the moment, the current BIM logging is working.  At least there are BIM entries being added into the dummy course that I've been testing with.</p>
+
+</body>
+</html>

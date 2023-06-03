@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM - Tidy up #3</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/02/01/bim-tidy-up-3/">BIM - Tidy up #3</a></h1>
+
+<p>Tags: bim, Uncategorized</p>
+
+<p><p>Next step in tidying up is to clean up the checking, calculation and setting of the blog and feed URLs as students register their blogs.</p>
+<p>First, fix up some problem with markers without any students.</p>
+
+<h3>Unregistered students</h3>
+
+<p>Which highlights a problem with coordinator seeing unregistered students.  Add this information to the Manage Marking page.</p>
+<p>Process is: get all student details, call the appropriate functions.  </p>
+<p>Now there is a bim_get_all_students, but it currently relies on bim_markers_students.  Need to replace that.</p>
+<p>Let's use it first and get that bit working.  Done.</p>
+<p>Now time to replace the kludge with something that will actually get all students in a course.  I'm guessing that <code>get_users_by_capbility</code> is the one to use here.  Done.</p>
+
+<h3>Checking of blog URLs</h3>
+
+<p>One of the biggest areas for work is students who make mistakes when registering their blog.  BAM does a range of tests including:</p>
+<ul>
+  <li> Can the URL actually be retrieved. </li>
+  <li> Does the URL include a link to RSS feed - done via auto-discovery. </li>
+  <li> Can the feed (any one of them) be retrieved. </li>
+  <li> Can the feed be parsed as XML </li>
+</ul>
+<p>At the very least these checks need to be made.</p>
+<p>Additional checks that need to be made, based one experience:</p>
+<ul>
+  <li> The feed is not the wordpress.com feed<br />Students can choose to register something a bit too early in the blog creation process that returns the main feed from wordpress.com.  </li>
+  <li> They register the edit screen of Wordpress e.g. http://myblog.wordpress.com/wp-admin/edit.php.
+</ul>
+<p>The checking is one stage, the other is how to communicate these problems back to the students.</p>
+<p>So, checks to implement:</p>
+<ul>
+  <li> <del>Is it even a valid URL.</del> </li>
+  <li> Can the URL be retrieved </li>
+  <li> Can we get some auto discovery feeds </li>
+  <li> If not, is the URL itself a feed? </li>
+  <li> If there are feeds, loop through each one, and work with the first one that
+          <ul>
+              <li> We can retrieve </li>
+              <li> Is a feed </li>
+              <li> And doesn't break any of the exclusions we know of</li>
+         </ul>
+  </li>
+</ul>
+<p>Interestingly, <a href="http://simplepie.org/">SimplePie</a> makes this process much simpler in that it does much of the checking itself.  </p>
+<p>Should also look at client side checking i.e. make the form stop if the student hasn't put in a URL. Do that later.</p>
+
+<h4>Testing SimplePie</h4>
+
+<ul>
+  <li> User enters blog url (not RSS) - e.g. http://davidtjones.wordpress.com - then permalink is blog and subscribe url is feed for both Wordpress and blogger </li>
+  <li> User enters feed URL - e.g. https://djon.es/blog/feed/ - permalink is blog and subscribe url is feed.  Wordpress and blogger.
+</ul>
+<p>So, it seems I can trust SimplePie to do this and simply check permlink/link and the subscribe link.  Need to check that both URLs are gettable and that the subscribe url is actually RSS.</p>
+<p>Simply getting a page that doesn't have a feed, will generate an error.</p>
+<p>So the logic appears to be:</p>
+<ul>
+  <li> Create SimplePie object with URL provided by user. </li>
+  <li> Any errors, crash out. </li>
+  <li> Compare the permalink and subscribe URLs </li>
+  <li> If the value passed in is not the subscribe URL, get it???  <strong>No</strong>, it looks like SimplePie automatically gets the RSS, so if it can't it would generate an error.  Will need to test that.   Yes, that's what happens</li>
+</ul>
+
+<h3>Client side validation of URL</h3>
+
+<p>The form for registration uses Moodles formslib which in turn is based on the Pear library which has <a href="http://pear.php.net/manual/en/package.html.html-quickform.intro-validation.php">some documentation</a> around validation.</p>
+<p>Client side validation is generally done (I think) with the <code>addRule</code> method.  Pear doesn't seem to support a URL type, but Moodle does.</p>
+<p> That seems to have too much difficulty for now.</p>
+
+<h3>Processing and allocating the feed elements</h3>
+
+<p>The last major task is to process and allocate items in the feed.  This needs to be called on an individual blog when it is first registered, but also via cron at the fixed time.</p>
+<p>Given a single student feed, the process is:</p>
+<ul>
+  <li> Get the elements in the feed. </li>
+  <li> For each element in the feed
+         <ul>
+             <li> Check to see if there is an existing feed in the database for this item, this is based on the permalink for the item stored in bim_marking </li>
+             <li> If there isn't an entry, prepare to put one in. </li>
+             <li> Loop through each unallocated question for this student
+                   <ul>
+                       <li> If the post seems to match the question, modify the entry for the post.</li>
+                   </ul>
+             <li> Insert the new entry </li>
+         </ul>
+  </li>
+</ul>
+<p>Implementation and a need to re-use this code for the cron job that mirrors/processes registered blogs has resulted in a bit a re-factor.   bim_process_feed( $bim, $student_feed, $questions ) is up and going.</p>
+<p>In terms of text similarity there appear to be a few in-built <a href="http://www.php.net/manual/en/function.levenshtein.php">PHP functions</a> that might be helpful later on.  This <a href="http://www.go4expert.com/forums/showthread.php?t=4189">Pear class</a> could also be a great help.</p>
+
+<h3>Get and test the cron updating</h3>
+
+<p>Okay, the cron code has been updated with the new methods.  Rather than run from cron I want to see what's going on. So going to modify the default "config" page for a coordinator to run the cron function.</p>
+<p>It seems to be working, but to be truly sure I need to start looking at some individual student entries and how they change.  For that, I need to add the student search facility that is currently missing.</p>
+<p>Delete a small number of entries from bim_marking for students. </p>
+<p>Run the cron thing to see if it works.  Done.</p>
+
+<h3>Student search facility</h3>
+
+<p>Coordinators need to be able to search through all students and view their details.  A marker doesn't need to do this as they have a list of all their students shown and they can simply use the browser find facility.  A coordinator, theoretically, has their own students as well as a responsibility to look after all students.  Hence they need to be able to enter a student number and see their details.</p>
+<p>Implementation plan:</p>
+<ul>
+  <li> Add a "Find student" tab. </li>
+  <li> Implement a simple form that takes details about students (try to do something like MyCQU in terms of making it simple). </li>
+  <li> Display specific student details or a list of potentials to search from. </li>
+  <li> Use the standard "student details" function to show the details. </li>
+</ul>
+<p>Done, which is now bringing us back to the question of the item titles which is problematic because of the changes in what's being stored in the database...</p>
+
+<h3>Limiting use of xml files - all in database</h3>
+
+<p>A difference between BIM and BAM is that BIM will be storing all posts made to the student feed in the database.  BAM only stored posts allocated to questions.  This caused two issues:</p>
+<ul>
+  <li> The ability for markers to "unallocate" posts meant that there were some unallocated posts in the database.  This starts to create a duplication/difference.  Some unallocated posts are in the database, some are.</li>
+  <li> Feeds don't always provide a history of all the posts.  So some might be lost. Not really a problem with current use as most students didn't make enough posts. </li>
+</ul>
+<p>By making the decision to put all posts in the database, there's a need to update some early design decisions that were made on the basis of the BAM design.</p>
+
+<h4>Add post title to bim_marking</h4>
+
+<p>Because all the posts are going into the database.  Need to add the title into the database table bim_marking.</p>
+<p>Done.</p></p>
+
+</body>
+</html>

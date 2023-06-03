@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Adding some learning process analytics to EDC3100</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/01/23/adding-some-learning-process-analytics-to-edc3100/">Adding some learning process analytics to EDC3100</a></h1>
+
+<p>Tags: bad, edc3100, irac, learningAnalytics</p>
+
+<p>In <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/">Jones and Clark (2014)</a> we drew on Damien's (Clark) development of the Moodle Activity Viewer (MAV) as an example of how bricolage, affordances and distribution (the BAD mindset) can add some value to institutional e-learning. My empirical contribution to that paper was talking about how I'd <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/#extending">extended MAV</a> so that when I was answering a student query in a discussion forum I could quickly see relevant information about that student (e.g. their major, which education system they would likely be teaching into etc).
+
+A major point of that exercise was that it was very difficult to actually get access to that data at all. Let alone get access to that data within the online learning environment for the course. At least if I had to wait upon the institutional systems and processes to lumber into action.
+
+As this post evolved, it's become also an early test to see if the <a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/">IRAC framework</a> can offer some guidance in designing the extension of this tool by adding some learning process analytics.  The result of this post
+<ol>
+  <li> Defines learning process analytics. </li>
+  <li> Applies that definition to my course. </li>
+  <li> Uses the IRAC framework to show off the current mockup of the tool and think about what other features might be added. </li>
+</ol>
+
+Very keen to hear some suggestions on the last point.
+
+At this stage, the tool is working but only the student details are being displayed. The rest of the tool is simply showing the static mockup.  This afternoon's task is to start implementing the learning process analytics functionality.
+
+Some ad hoc questions/reflections that arise from this post
+<ol>
+  <li> How is the idea of learning process analytics going to be influenced by the inherent tension between the tendency for e-learning systems to be generic and the incredible diversity of learning designs? </li>
+  <li> Can generic learning process analytics tools help learners and teachers understand what's going on in widely different learning designs? </li>
+  <li> How can you the diversity of learning designs (and contexts) be supported by learning process analytics? </li>
+  <li> Can a bottom-up approach work better than a top-down? </li>
+  <li> Do I have any chance of convincing the institution that they should provide me with
+      <ol type="a">
+        <li> Appropriate access to the Moodle and Peoplesoft database; and, </li>
+        <li> A server on which to install and modify software? </li>
+      </ol>
+  </li>
+</ol>
+
+<h2>Learning process analytics</h2>
+
+The following outlines the planning and implementation of the extension of that tool through the addition of process analytics. <a href="http://edutechwiki.unige.ch/en/Learning_process_analytics">Schneider et al (2012)</a> (a new reference I've just stumbled across) define learning process analytics<blockquote>as a collection of methods that allow teachers
+and learners to understand what is going on in a learning scenario, i.e. what participants work(ed) on, how they interact(ed), what they produced(ed), what tools they use(ed), in which physical and virtual location, etc. (p. 1632)</blockquote>and a bit later on <em>learning scenario and learning process analytics</em> are defined as<blockquote>as the measurement and collection of learner actions and learner productions, organized to provide feedback to learners, groups of learners and teachers during a teaching/learning situation. (p. 1632)</blockquote>
+
+This is a nice definition in terms of what I want to achieve. My specific aim is to <blockquote>collect, measure, organise and display learner actions and learner productions to provide feedback to the teacher during a teaching/learning situation</blockquote>
+
+Two main reasons for the focus on providing this information to the teacher
+<ol>
+  <li> I don't have the resources or the technology (yet) to easily provide this information to the learners.
+      The method I'm using here relies on servers and databases residing on my computer (a laptop). Not something I can scale to the students in my class.  I could perhaps look at using an external server (the institution doesn't provide servers) but that would be a little difficult (I haven't done it before) and potentially get me in trouble with the institution (not worth the hassle just yet).
+
+      As it stands, I won't even be able to provide this information to the other staff teaching into my course.
+ </li>
+  <li> It's easier to see how I can (will?) use this information to improve my teaching and hopefully student learning.
+       It's  harder to see how/if learners might use any sort of information to improve their learning.
+</li>
+</ol>
+
+Providing this information to me is the low hanging fruit. If it works, then I can perhaps reach for the fruit higher up.
+
+<h2>Learner actions and productions</h2>
+
+What are the learner actions and productions I'm going to generate analytics from?
+
+The current course design means that students will be
+<ol>
+  <li> Using and completing a range of activities and resources contained on the course site and organised into weekly learning paths.
+         These actions are in turn illustrated through a range of data including
+         <ul>
+           <li> Raw clicks around the course site stored in system logs. </li>
+           <li> Activity completion.
+               i.e. if a student has viewed all pages in a resource, completed a quiz, or posted the required contributions to a discussion forum they are counted as completing an activity. Students get marks for completing activities. </li>
+           <li> Data specific to each activity.
+               i.e. the content of the posts they contributed to a forum, the answers they gave on a quiz. </li>
+          </ul>
+  </li>
+  <li> Posting to their individual blog (external to institutional systems) for the course.
+       Students get marks for # of posts, average word count and links to other students and external resources. </li>
+  <li> Completing assignments. </li>
+  <li> Contributing to discussions on various forms of social media.
+        Some officially associated with the course (e.g. <a href="https://groups.diigo.com/group/icts-and-pedagogy/">Diigo</a> and others unofficially (student Facebook groups). </li>
+</ol>
+
+I can't use some of the above as I do not have access to the data.  Private student Facebook groups is one example, but the more prevalent is institutional data that I'm unable to access. In fact, the only data I can easily get access to is
+<ul>
+  <li> Student blog posts; and, </li>
+  <li> Activity completion data. </li>
+</ul>
+
+So that's what I'll focus on. Obviously there is a danger here that what I can measure (or in this case access) is what becomes important. On the plus side, the design of this course does place significant importance on the learning activities students undertake and the blog posts. It appears what I can measure is actually important.
+
+Here's where I'm thinking that <a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/">the IRAC framework</a> can scaffold the design of what I'm doing.
+
+<h2>Information</h2>
+
+<a name="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/#I">Is all the relevant Information and only the relevant information available? </a>
+
+Two broad sources of information
+<ol>
+  <li> Blog posts.
+       I'll be running a duplicate version of <a href="http://bit.ly/bambim">the BIM module</a> in a Moodle install running on my laptop. BIM will keep a mirror of all the posts students make to their blogs.  The information in the database will include
+         <ul>
+           <li> Date, time, link and total for each post. </li>
+           <li> A copy of the HTML for the post. </li>
+           <li> The total number of posts made so far, the url for the blog its feed. </li>
+         </ul>
+  </li>
+  <li> Activity completion.
+      I'll have to set up a manual process for importing activity completion data into a database on my computer.  For each activity I will have access to the date and time when the student completed the activity (if they have). </li>
+</ol>
+
+What type of analysis or manipulation can I perform on this information?
+
+At the moment, not a lot.  I don't have a development environment that will allow me to run lots of complex algorithms over this data.  This will have to evolve over time. What do I want to be able to do initially? An early incomplete list of some questions
+<ol>
+  <li> When was the last time the student posted to their blog? </li>
+  <li> How many blog posts have they contributed? What were they titled? What is the link to those posts?
+</li>
+  <li> Are the blog posts spread out over time? </li>
+  <li> Who are the other students they've linked to? </li>
+  <li> What activities have they completed? How long ago? </li>
+  <li> Does it appear they've engaged in a bit of task corruption in completing the activities?
+        e.g. is there a sequence of activities that were completed very quickly?</li>
+</ol>
+
+<a name="r"></a>
+<h2>Representation</h2>
+
+<a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/#R">Does the representation of the information aid the task being undertaken?</a>
+
+The task here is basically giving me some information about the student progress.
+
+For now it's going to be a simple extension to the approach talked about <a href="https://davidtjones.wordpress.com/2014/09/21/breaking-bad-to-bridge-the-realityrhetoric-chasm/#extending">in the paper</a>.  i.e. whenever my browser sees on a course website a a link to a user profile, it will add a link <strong>[Details]</strong> next to it. If I click on that link I see a popup showing information about that student.  The following is a mockup (click on the images to see a larger version) of what is currently partially working
+
+<a href="https://www.flickr.com/photos/david_jones/16318561876" title="001 - Personal Details by David Jones, on Flickr"><img alt="001 - Personal Details" height="162" src="https://farm8.staticflickr.com/7474/16318561876_1939d6aa87_n.jpg" width="320" /></a>
+
+By default the student details are shown.  There are two other tabs, one for activity completion and one for blog posts.
+
+<strong>Requirement suggestion:</strong> Add into the title of each tab some initial information. e.g. Activity completion should include something like "(55%)" indicating the percentage of activities currently completed. Or perhaps it might be the percentage of the current week's activities that have been completed (or perhaps the current module).
+
+The activity completion tab is currently the most complicated and the ugliest.  Moving the mouse of the Activity Completion tab brings up the following.
+
+<a href="https://www.flickr.com/photos/david_jones/16342764001" title="002 - Activity completion by David Jones, on Flickr"><img alt="002 - Activity completion" height="314" src="https://farm8.staticflickr.com/7463/16342764001_4d091aa053_n.jpg" width="320" /></a>
+
+The red, green and yellow colours are ugly and are intended to indicate a simple traffic light representation.  Green means all complete, red is not, yellow means in progress for some scale.
+
+The course is actually broken up into 3 modules.  The image above shows each module being represented. Open up a module and you see the list of weeks for that module - also with the traffic light colours. Click on a particular week and you see the list of activities for that week. Also with colours, but also with the date when the student completed the activity.
+
+<strong>Requirement suggestion:</strong> The title bars for the weeks and modules could show the first and last time the student completed an activity in that week/module.
+
+<strong>Requirement suggestion:</strong>  The date/time when an activity was completed could be a roll-over. Move the mouse over the date/time and it will change the date/time to how long ago that was.
+
+<strong>Requirement suggestion:</strong> What about showing the percentage of students who have completed activities? Each activity could show the % of students who had completed it. Each week could show the percentage of students who had completed that week's activities. Each module could....
+
+<strong>Requirement suggestion:</strong> Find some better colours.
+
+The blog post tab is the most under-developed.  The mockup currently only shows some raw data that is used to generate the students mark.
+
+<a href="https://www.flickr.com/photos/david_jones/16318561616" title="003- blog posts by David Jones, on Flickr"><img alt="003- blog posts" height="148" src="https://farm9.staticflickr.com/8619/16318561616_ab8d877ab9_n.jpg" width="320" /></a>
+
+<strong>Update</strong> The following screen shot shows progress on this tab.  The following is from the working tool.
+
+<a href="https://www.flickr.com/photos/david_jones/16198089029" title="BlogProcessAnalytics by David Jones, on Flickr"><img alt="BlogProcessAnalytics" height="320" src="https://farm8.staticflickr.com/7370/16198089029_063faaa24f_n.jpg" width="226" /></a>
+
+<strong>Requirement suggestions:</strong>
+<ul>
+  <li> <del>Show a list of recent blog post titles that are also links to those posts.</del>
+       Knowing what the student has (or hasn't) blogged recently may give some insight into their experience.
+        <strong>Done:</strong> see above image.
+  </li>
+  <li> Show the names of students where this student has linked to their blog posts. </li>
+  <li> Organise the statistics into Modules and show the interim mark they'd get.
+       This would be of immediate interest to the students. </li>
+</ul>
+
+<h2>Affordances</h2>
+
+<a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/#A">Are there appropriate Affordances for action? </a>
+
+What functionality can this tool provide to me that will help?
+
+Initially it may simply be the display of the information. I'll be left to my own devices to do something with it.
+
+Have to admit to being unable to think of anything useful, just yet.
+
+<h2>Change</h2>
+
+<a href="https://davidtjones.wordpress.com/2013/10/03/the-irac-framework-locating-the-performance-zone-for-learning-analytics/#C">How will the information, representation and the affordances be Changed? </a>
+
+Some quick answers
+<ol>
+  <li> ATM, I'm the only one using this tool and it's all running from my laptop. Hence no worry about impact on others if I make changes to what the tool does.  Allows some rapid experimentation. </li>
+  <li> Convincing the organisation to provide an API or some other form of access directly (and safely/appropriately) to the Moodle database would be the biggest/easiest way to change the information. </li>
+  <li> Exploring additional algorithms that could reveal new insights and affordances is also a good source. </li>
+  <li> Currently the design of the tool and its environment is quite kludgy. Some decent design could make this particularly flexible.
+        e.g. simply having the server return JSON data rather than HTML and having some capacity on the client side to format that data could enable some experimentation and change. </li>
+</ol>
+
+<h2>References</h2>
+
+Schneider, D. K., Class, B., Benetos, K., Lange, M., Internet, R., Developer, A., &amp; Zealand, N. (2012). Requirements for learning scenario and learning process analytics. In World Conference on Educational Multimedia, Hypermedia and Telecommunications (pp. 1632–1641).</p>
+
+</body>
+</html>

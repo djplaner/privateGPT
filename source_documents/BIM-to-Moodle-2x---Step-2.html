@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BIM to Moodle 2.x - Step 2</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/02/04/bim-to-moodle-2-x-step-2/">BIM to Moodle 2.x - Step 2</a></h1>
+
+<p>Tags: bim2</p>
+
+<p><em>Disclaimer:</em> I started this post in November 2011 and never posted it. It is essentially a development diary for some initial steps in development <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> for Moodle 2.x.
+
+It is probably of almost no value to anyone but me.
+
+<em>Current status:</em> A BIM activity can be added in Moodle 2.x and some of the functionality works, but not all.  A fair bit of porting has to occur to ensure BIM uses all the Moodle 2.x APIs.
+
+So I have a version of the old bim code ported to be recognised by Moodle 2.1. I doubt very much that it actually does anything as much of the code still needs to be modified to run properly in the new version of Moodle. That's the story that the following development journal entry tells.
+
+The first step is, of course, to make sure the changes I've made are <a href="https://github.com/djplaner/BIM/tree/bim2">saved on github</a> these remain unusable, but at least the changes are somewhat safe.
+
+<h3>Create a course</h3>
+
+With Moodle 2.1 running on my laptop, I need to create a course in which to create bim activities. Easy enough and now to create some friendly users
+<ul>
+  <li> s00[123] - students. </li>
+  <li> t00[123] - teaching staff. </li>
+</ul>
+
+And they are enrolled and all with different roles.
+
+<h3>Create a BIM activity</h3>
+
+And now to try and create a BIM activity.  Turn editing on, add a BIM activity....and error
+<blockquote>Coding error detected, it must be fixed by a programmer: Url parameters values can not be arrays!</blockquote> in the course/modedit.php file.
+
+Time to see if the server is configured to give me all the gory details about errors. Nope.  Ahh, that's better
+<blockquote>line 60 of /mod/bim/mod_form.php: call to MoodleQuickForm-&gt;addHelpButton()</blockquote>A <a href="http://docs.moodle.org/dev/lib/formslib.php_Form_Definition#addHelpButton">quick check</a> reveals the new signature. Some code changes and....
+
+The BIM configuration screen is shown....problems to fix, include
+<ul>
+  <li> Help icons not showing help.<br />Problem with new signature usage. Fixed. </li>
+  <li> The Heading is quite large.<br />Seems to be out of my hands. Will leave for now. </li>
+  <li> The "About BIM activity" is showing up as "empty" even when data entered, which prevents submission. <br /> Remove the requirement and use the intro editor</li>
+</ul>
+
+Bugger, that actually works.  It is displaying the activity I've created. I have commented out all the code in view.php. But that's still a bit of a win.
+
+At this stage, there is a bunch of code that isn't even being included in bim when Moodle 2.1 runs it. There is certain to be problems there.  The current plan is to slowly uncomment and fix bits of this code. The order will, hopefully, be
+<ul>
+  <li> Coordinator - the teacher role configuring the activity. </li>
+  <li> Marker - at least the subset that can be done without student feeds. </li>
+  <li> Student. </li>
+</ul>
+
+<h3>Coordinator</h3>
+
+The idea here is to remove the "Yay it works" and get Moodle to run the coordinator code.
+<ul>
+  <li> Update ~/view.php </li>
+  <li> Mmm, the "has_capability" thing isn't working.<br />In the short-term, turn this off and see what the code might do.</li>
+  <li> show_coordinator doesn't produce any output.<br />Ahh, problem in my debugging code. Remove that and it seems to be working. Even the tabs are generated, woot.
+  </li>
+  <li> bim_configuration_screen is generating some errors, probably due to inappropriate headers etc.<br />Yes, there was a print_footer where it wasn't needed.  Actually, I can see the need to remove the header stuff from ~/view.php and push it down - as per bim.  Initially this has been done.  Seems to work.</li>
+  <li> Still using print_string and print_heading in a lot of the code.<br /><a href="http://docs.moodle.org/dev/Deprecated_functions_in_2.0#print_heading_.280.29">print_heading</a> is deprecated. </li>
+  <li> Each of the tabs in coordinator nav not producing output<br />This is because the code is commented out and for each one there is/will be errors. </li>
+  <li> get_all_students (part of manage marking)<br />Uses an IN SQL approach that is deprecated.<br />This is something common used in a couple of places.  Time to fix it.  Here's a one off solution (so I remember)
+[code lang="php"]
+list( $usql, $params ) = $DB-&gt;get_in_or_equal( $ids );
+$student_details = $DB-&gt;get_records_select( "user", 'id ' . $usql, $params );
+[/code]
+  </li>
+</ul>
+
+At this stage, the initial pages for each of the tabs for Coordinator are working. There remains additional work, but time to move onto marker.
+
+<h3>Marker</h3>
+
+<ul>
+  <li> <strong>TO DO</strong> - The help icons are not being placed nicely, nor generating the appropriate text. </li>
+  <li> The View/Mark posts links aren't really looking like tabs<br /> Add a box around it. Need to make this pretty in the next round.  </li>
+</ul>
+
+<h3>Student</h3>
+
+<ul>
+  <li> Use of record_exists, doesn't have array. </li>
+  <li> Remove bim's simplepie stuff and go to the Moodle default ....all working. </li>
+</ul>
+
+<h3>Capabilities</h3>
+
+Most of the basic code for bim2 is working, but the capabilities aren't. i.e. identifying the type of user and sending them to the right function.
+
+Mmm, all are working, but not the coordinator.</p>
+
+</body>
+</html>

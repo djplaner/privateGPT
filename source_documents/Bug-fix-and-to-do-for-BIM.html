@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Bug fix and to do for BIM</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/12/28/bug-fix-and-to-do-for-bim/">Bug fix and to do for BIM</a></h1>
+
+<p>Tags: bim</p>
+
+<p>After a short Xmas break it's time to continue work on getting <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM 2.0</a> up and going. In this post I'm trying to continue the work from <a href="https://djon.es/blog/2012/12/19/bim-another-restart/">a week or so ago</a>. The main aim is to fix a bug with the manage marking page.
+
+<strong>Status:</strong> The manage marking bug has been fixed.  Mostly related to further migration work from Moodle 1.9 to Moodle 2.x
+
+<h2>The manage marking bug</h2>
+
+The bug is summarised nicely by the following screen short from the last post.
+
+<a href="http://www.flickr.com/photos/david_jones/8285799460/" title="Manage marking has an error by David T Jones, on Flickr"><img alt="Manage marking has an error" height="160" src="http://farm9.staticflickr.com/8070/8285799460_e2bec760f1_n.jpg" width="320" /></a>
+
+There appears to be a problem with one of the data structures that results in the BIM crashing and burning. There's some evidence of an earlier attempt to investigate this, so time to revisit prior posts on BIM development.  <a href="https://djon.es/blog/2012/04/11/bim2-working-on-coordinator-part-1/">This post</a> identifies the location of the problem.
+
+The problems are all related to the changes in the database API from 1.9 to 2.x
+
+These are fixed.  get_all_marker_stats is working, however, the displaying of the data also needs to be fixed.  Replacing flexible table with HTML table.
+
+To do
+<ul>
+  <li> Table of unregistered students is showing some number (student id?) that shouldn't be there. </li>
+  <li> It isn't showing the left hand column. <br />A broken div</li>
+</ul>
+
+<h3>Unregistered students</h3>
+
+A few of the pages display a table of students who have not registered their blogs. This needs to be updated to html_table.
+<ol>
+  <li> Find where it is shown. <br /> Done using the bim_setup_details_table with the last parameter being unregistered.  Once with the marker code and twice in the coordinator code.
+  </li>
+  <li> Identify the fix
+      <ul>
+        <li> replace add keyed data with similar to
+[code lang="php"]$table-&gt;data[] = array( $row['username'], $row['name'], $row['email'], $row['register'] );[/code]
+         </li>
+        <li> replace table..print_html with
+[code lang="php"]echo html_writer::table( $table );[/code]
+        </li>
+      </ul>
+  </li>
+  <li> Fix each of those. <br /> Fixed.</li>
+</ol>
+
+<h3>Help text for Manage Marking</h3>
+
+The problem with manage marking seems to have delayed the provision of the help text.  Need to add that in.
+
+Only the one, but there does appear to be some scope to provide more detailed help messages throughout.
+
+
+<h2>To do list</h2>
+
+<a href="https://djon.es/blog/2012/04/05/bim2-whats-working-for-coordinator/">This post</a> has a list of what was working and not with the coordinator interface and <a href="https://djon.es/blog/2012/04/11/bim2-working-on-coordinator-part-1/">a later post</a> updates some of this. Need to revisit these and start a list in basecamp.
+
+Misc to do
+<ul>
+  <li> Manage marking
+       <ul>
+          <li> view students with the missing status appears to be showing a student who has 1 question that has been marked.  <em>What is the meaning of the MISSING status?</em> </li>
+        </ul>
+  </li>
+  <li> Re-visit the use of tables and how implemented. </li>
+  <li> Help messages
+      <ul>
+        <li> Check out other help icons in coordinator views. </li>
+        <li> Think about provide more detailed help via sprinkling help icons throughout all of the views. </li>
+        <li> Look into how some of the older help text can be reused. </li>
+      </ul>
+</ul></p>
+
+</body>
+</html>

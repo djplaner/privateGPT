@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>BAM - making e-learning technology more protean</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2009/02/11/bam-making-e-learning-technology-more-protean/">BAM - making e-learning technology more protean</a></h1>
+
+<p>Tags: bam, Chapter 5, design theory, elearning, missingPs, ple, ples@CQUni, thesis, Uncategorized, webfuse</p>
+
+<p><p>In <a href="https://djon.es/blog/2009/02/09/the-protean-nature-of-modern-technology-another-limitation-of-most-views-of-e-learning/">a post</a> yesterday I talked about how most applications of e-learning within universities seems to actively prevent students and staff leveraging the protean nature of information technology.  That is the nature of computer software to be flexible, malleable and customisable.</p>
+<p>The rise of "web 2.0" and related concepts has made it easier to put in place elearning technology that is designed to be more protean. In this post I talk about the <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">Blog Aggregation Management (BAM) project</a> and reflect on some of its ideas and implications for making e-learning technology more protean.</p>
+
+<h3>What is BAM?</h3>
+
+<p>It's a research project aimed at extending ideas around how to implement e-learning technology at universities, particularly with an emphasis on what the rise of "web 2.0", software as a service and other related concepts might mean for this practice. </p>
+<p>BAM is a set of Perl scripts that aggregates RSS feeds, it matters little from where those RSS feeds originate, registered to individual students and then provides a range of additional services required by university educators.  For example, (click on the screenshots to see larger images)</p>
+<ul>
+  <li> Link with the institutional teaching responsibilities database so that staff can see which of their students have (or haven't) registered their RSS feed.<br />
+<a href="http://www.flickr.com/photos/david_jones/3268716654/" title="BAM show student blog details by David T Jones, on Flickr"><img alt="BAM show student blog details" height="204" src="http://farm4.static.flickr.com/3342/3268716654_2b726c85f8_m.jpg" width="240" /></a>  </li>
+  <li> Show how many posts each staff member's students have made.<br />
+<a href="http://www.flickr.com/photos/david_jones/3268716836/" title="BAM show all student posts page by David T Jones, on Flickr"><img alt="BAM show all student posts page" height="161" src="http://farm4.static.flickr.com/3384/3268716836_2dc450e632_m.jpg" width="240" /></a></li>
+  <li> If required, award a mark and make comments on a student's posts.<br />
+<a href="http://www.flickr.com/photos/david_jones/3267891725/" title="BAM mark post page by David T Jones, on Flickr"><img alt="BAM mark post page" height="170" src="http://farm4.static.flickr.com/3439/3267891725_a7a21af026_m.jpg" width="240" /></a></li>
+</ul>
+<p>Because of the original context in which BAM was designed (explained in some of the publications and presentations listed in the next section) there are also some scripts to detect plagiarism between student posts.</p>
+
+<h3>Origins of BAM</h3>
+
+<p>BAM started life as a more flexible way of implementing student journals in a particular course with the intent of encouraging reflection, increasing interactions between students and staff and hopefully increasing student performance. The initial use of BAM for this purpose is talked about in a number of places including:</p>
+<ul>
+  <li> Two presentations given at <a href="http://www.cqu.edu.au">CQUniversity</a> in 2006 that are available on Google Video.  The <a href="http://video.google.com/videoplay?docid=965377384627246106#3m50s">first</a> talks about the initial design ideas while <a href="http://video.google.com/videoplay?docid=961814934919323661#3m30s">the second</a> reflects on the experience about half way through the course. </li>
+  <li> <a href="https://djon.es/blog/publications/blogs-reflective-journals-and-aggregation-an-initial-experiment/">A paper</a> describing the use in the initial course. </li>
+  <li> This initial use was also covered in the <a href="http://www.educause.edu/eli/guidetoblogging/13558">ELI Guide To Blogging</a> as <a href="http://www.educause.edu/eli/guidetoblogging/13558">one</a> of the three case studies.</li>
+</ul>
+
+<h3>System usage - examples of the protean nature</h3>
+
+<p>The initial application of BAM was intended to encourage student reflection and interaction between staff and students. It succeeded to varying levels of success depending on the staff involved.  BAM has been used in all 8 offerings of that course from 2006 to 2008.</p>
+<p>It has also been used in 8 other course offerings for a variety of different purposes. The most different was in the course <a href="http://webfuse.cqu.edu.au/Courses/EDED11448/">EDED11448, Creative Futuring</a>. EDED11448 was CQUni's first <a href="">"Web 2.0 course site"</a> where all of the services used by students and staff in the courses were hosted on external services including <a href="http://del.ico.us">del.icio.us</a>, <a href="http://wordpress.com/">Wordpress.com</a>, <a href="http://www.wetpaint.com/">Wetpaint</a>, and <a href="http://redbubble.com/">RedBubble</a>. </p>
+<p>For EDED11448, BAM was used, in conjunction with <a href="http://pipes.yahoo.com/">Yahoo Pipes</a> to create the <a href="http://webfuse.cqu.edu.au/Courses/EDED11448/Portfolio/">Portfolio</a> and <a href="http://webfuse.cqu.edu.au/Courses/EDED11448/Weblog/">Weblog</a> pages. This was done by</p>
+<ul><li> Students create <a href="http://redbubble.com/">RedBubble</a> accounts and using this to create their portfolio and their blog. </li>
+   <li> Students register their RedBubble account with BAM. </li>
+   <li> BAM aggregates both the portfolio and blog and produces aggregated RSS feeds. </li>
+  <li> Pipes is used to turn those RSS feeds into a bit of JSON data that can be used by the Javascript on the course website to present the data. </li>
+</ul>
+<p>The same idea has been used to create RSS feeds from BAM that aggregate all a staff members students' posts into one feed. A number of the courses that use BAM can have hundreds of students and tens of staff.  </p>
+<p>These application of BAM have moved beyond the original design. The protean nature of BAM includes the following:</p>
+<ul>
+  <li> There is choice in what application they use to generate the RSS feeds.<br />In some courses that choice is left to the student. In EDED11448 the course designer made a specific choice - RedBubble - for her purpose.</li>
+  <li> There is choice in what BAM is used for.<br />The original use was aimed specifically at individual student reflective journals reviewed and marked by staff. EDED11448 aggregated and made public to all students the work of individual students. In some cases the blog posts haven't been marked. </li>
+</ul>
+
+<h3>Implications</h3>
+
+<p>I think BAM and the way it operates has the following implications for the practice of e-learning within universities.</p>
+<ul>
+  <li> Increase efficacy and agility while liberating institutional resources.<br />This isn't my view.  It's the one expressed by the authors of the ELI Guide to Blogging. When talking about <a href="http://www.educause.edu/eli/guidetoblogging/13558">BAM they say</a><blockquote>One of the most compelling aspects of the project was the simple way it married Web 2.0 applications with institutional systems. This approach has the potential to give institutional teaching and learning systems greater efficacy and agility by making use of the many free or inexpensive—but useful—tools like blogs proliferating on the Internet and to liberate institutional computing staff and resources for other efforts.</blockquote></li>
+  <li> There is no need to pre-determine and specify all of the technology that staff and students must use.<br />Most of the students who have used BAM haven't really known what a blog is and very few have already had a blog. This lack of knowledge is not a reason to say we must use the blog provided by our LMS in order to minimise confusion. With BAM we recommend that students, who aren't sure what to do, should make use of <a href="http://wordpress.com/">Wordpress.com</a> to create a blog. But we enable those with more knowledge to be able to use their own. </li>
+  <li> <a href="http://www.smallpieces.com/">Small pieces loosely joined</a> works.<br />To me this is a fundamental characteristic of Web 2.0, the ability to create something larger out of a bunch of small pieces that are all loosely joined. Where each small piece can be replaced or re-tasked depending on the contextual needs. This is simply not possible with traditional enterprise software such as a course management system.</li>
+  <li> There are potential problems but they can be solved, and generally cheaper and easier with this approach. <br />The most common question that is asked about BAM is "What happens if a student's blog provider goes belly up and we can't access the student's work?". This is the "can we depend on external providers" question. The assumption is that organisationally provided systems are more reliable. While that is somewhat questionable, the concern can be mitigated quite easily. <p>In BAM's case, this is done by mirroring. Every hour BAM </p><ul><li>Visits each student's RSS feed. </li><li>If there have been any changes it creates/updates a local copy of the RSS feed.&lt;/li</ul><p>If the external blog provider ever disappears, we have a copy. These types of problems can be solved.</p> </li>
+  <li> Making existing systems more protean is a good thing.<br />A number of benefits arise from systems being more protean. For example, the tools are able to be used for a number of unintended applications and the users are able to use tools that they are familiar with and have a sense of ownership over. For me, this means that making existing systems more protean is a good and worthy thing to do. </li>
+</ul>
+
+<h3>Future work</h3>
+
+<p>Future work might include:</p>
+<ul>
+  <li> Making BAM more self-serve.<br />Currently setting up BAM requires some additional input from technical folk. Wouldn't be too hard to make this self-serve. </li>
+  <li> Extending the RSS generation capabilities in BAM.<br /> These are still fairly limited in terms of capabilities. The need some extension in capabilities, especially in increasing the protean nature of such capabilities. </li>
+  <li> Improvements to the BAM interface.<br />It was designed by me. Enough said. </li>
+  <li> Enabling more complex group-based manipulation, tagging and commenting within BAM.<br />Beyond simple aggregation there is little that can be done.  Even marking is not performed with RSS but with databases.  One extension might be to create RSS feeds that include comments/marks from markers. Enabling peer marking, commenting and tagging and a range of more complex approaches might also be useful. </li>
+  <li> Looking at supporting privacy capabilities in BAM.<br />At the simplest form adding the ability for the student's RSS feed to be password protected might be useful. At the moment the RSS feed fed into BAM must be freely available. Supporting broader privacy settings makes the tool more flexible. </li>
+  <li> Making existing systems more protean. <br />Add RSS feeds to the discussion forums and other features of a learning management system to enable staff and students to start mashing up.</li>
+  <li> Integrating BAM into an existing LMS. <br />BAM's current use is limited to CQUniversity.  BAM, at the moment, is essentially a set of scripts that integrate RSS feeds with several CQUniversity systems (online assignment marking, results processing, staff teaching responsibilities, student enrollment etc). This means it doesn't make sense to sell or release BAM's code (beyond having people look at it). Another institution would have to rewrite all of BAM to fit with its systems and practices.<p>One solution to this might be to integrate BAM with a system like <a href="http://moodle.org/">Moodle</a>.  These systems already should have data about which staff are responsible for which students, which students are in which course etc.</p></li>
+  <li> Working closely with a range of different staff to explore and enable different applications of BAM, to extend its protean capabilities and leverage them to improve the learning and teaching experience.<br />This is where the real benefit is. Working with staff with different purposes and problems to collaboratively identify approaches and necessary changes to BAM. </li>
+</ul></p>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Refining a visualisation</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2015/08/21/refining-a-visualisation/">Refining a visualisation</a></h1>
+
+<p>Tags: 4paths</p>
+
+<p>Time to <a href="https://davidtjones.wordpress.com/2015/08/18/visualising-locations-of-students-etc/">refine the visualisation</a> of students by postcodes started earlier this week.  Have another set of data to work with.
+
+
+<ol>
+  <li> Remove the identifying data. </li>
+  <li> Clean the data.
+       I had to remind myself the options for the sort comment - losing it.  The following provide some idea of the mess.
+[code lang="sh"][/code]
+:1,$s/"* Sport,Health&amp;PE+Secondry.*"/HPE_Secondary/
+:1,$s/"* Sport, Health &amp; PE+Secondry.*"/HPE_Secondary/
+:1,$s/Health &amp; PE Secondary/HPE_Secondary/
+:1,$s/* Secondary.*/Secondary/
+:1,$s/* Secondry.*/Secondary/
+:1,$s/* Secondy.*/Secondary/
+:1,$s/Secondary.*/Secondary/
+:1,$s/* Secdary.*/Secondary/
+:1,$s/* TechVocEdu.*/TechVocEdu/
+ </li>
+  <li> Check columns
+        Relying on a visual check in Excel - also to get a better feel for the data.
+  <li> Check other countries
+        Unlike the previous visualisation, the plan  here is to recognise that we actually have students in other countries.  The problem is that the data I've been given doesn't include country information.  Hence I have to manually enter that data.  Giving for one of the programs, the following.
+
+<table>
+<tr>
+  <td>
+        4506 </td> <td> Australia
+    </td>
+</tr>
+<tr>
+  <td>
+           8 </td> <td> United Kingdom
+    </td>
+</tr>
+<tr>
+  <td>
+           3  </td> <td>Vietnam
+    </td>
+</tr>
+<tr>
+  <td>
+           3  </td> <td>South Africa
+    </td>
+</tr>
+<tr>
+  <td>
+           3  </td> <td>China
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Singapore
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Qatar
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Japan
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Hong Kong
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Fiji
+    </td>
+</tr>
+<tr>
+  <td>
+           2  </td> <td>Canada
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>United States of America
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Taiwan
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Sweeden
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Sri Lanka
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Philippines
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Papua New Guinea
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>New Zealand
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Kenya
+    </td>
+</tr>
+<tr>
+  <td>
+           1  </td> <td>Ireland
+  </td>
+</tr>
+</table>
+
+
+</ol>
+
+
+And all good.</p>
+
+</body>
+</html>

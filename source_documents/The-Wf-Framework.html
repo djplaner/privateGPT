@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Wf Framework</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/06/07/the-wf-framework/">The Wf Framework</a></h1>
+
+<p>Tags: Chapter 5, design theory, elearning, phd, thesis, Uncategorized, webfuse</p>
+
+<p><p>Yet another section from Chapter 5 of <a href="https://djon.es/blog/research/phd-thesis/">the thesis</a> describing the various changes made to Webfuse in the period from 2000 onwards.  This one (very briefly) describes the Webfuse framework for dynamic web applications.</p>
+<p>You can see the impact of this experience in the development practices I'm bringing to my work in PHP and Moodle.  There are early glimmers of MVC and the Wf Framework in <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">BIM</a> and the <a href="https://djon.es/blog/2010/05/17/moving-the-indicators-moodle-block-a-factory-class/">indicators block</a>.</p>
+
+<h4>The Wf Framework</h4>
+
+<p>The absence of support for dynamic web applications is the second lesson identified in Chapter 4 from the development and use of Webfuse from 1997 through 1999. Rather than just being a publishing environment the Web was becoming an application development environment. An external consultancy during 1999 that required the development of a web-based helpdesk interface, led to the development of the Wf framework for Webfuse. The Wf framework was based on the Model-View-Controller (MVC) framework, made use of the data mapper pattern described in the previous section, and was used to develop 65 dynamic web applications. </p>
+<p>Originally proposed during the 1980s for the development of graphical user interfaces, the MVC framework allows a single object to be presented in multiple ways with each presentation having a separate style of interaction (Sommerville 2001). Gamma et al (1995) describe MVC as a triad of classes used to build user interfaces in Smalltalk-80 and draws on a number of patterns including Strategy, Factory, Observer, Composite and Strategy. The MVC architectural pattern has since become widespread through its use in a number of web application frameworks.</p>
+<p>All dynamic web applications using the Wf framework used a URL of the format<div align="center">
+http://hostname/object/objectName/method/methodName/?param=value</div>
+For example, the URL for the "Staff MyCQU" application's course history method for the CQU course COIS12073 was accessed using the following URL<div align="center">
+https://webfuse.cqu.edu.au/wf/object/StaffMyCQU/method/CourseHistory/?COURSE=COIS12073</div></p>
+<p>To parse and handle this URL the Apache web server was configured to use a Perl module. That module used the WebfuseFactory class to identify and call the appropriate application controller (i.e. matching the objectName – StaffMyCQU - from the URL) and calls the appropriate method (i.e. matching the methodName – CourseHistory – from the URL) of that controller class. Any parameters (e.g. COURSE=COIS12073) would be passed to that method and the controller would also perform authentication and access control checks to ensure that the user had permission to perform the requested method. The method in turn would normally consist of creating a model class (CourseHistory), a view class (CourseHistory_View), passing the model to the view, and using the view to generate the HTML to send back to the browser.</p>
+<p> Sommerville (2001) argues that the inherent complexity of frameworks mean that it takes time to learn how to use them and that this can limit their use. Experience within Webfuse in the early 2000s reinforced this perspective as new developers, familiar with the simpler coding approaches of web "scripting" common at this time, took some time to grasp and see the value of this complexity. The consistent metaphor provided by the Wf framework also clashed somewhat with the Perl (the scripting language used to implement Webfuse) ethos of "There is more then one way to do it" and the tendency for Perl developers to "do it their way" (Jones 2003). However, as shown below (especially in Section 5.3.6 on Workarounds), the consistent metaphor and other advantages provided by this additional, initial complexity provided an important part of the ability of Webfuse to respond quickly and effectively to organisational requirements and changes.</p>
+
+<h3>References</h3>
+
+<p>Gamma, E., R. Helm, et al. (1995). <u>Design Patterns: Elements of Reusable Object-Oriented Software</u>. Reading, Massachusetts, Addison-Wesley.</p> <p>Jones, D.  (2003). <u>How to live with ERP systems and thrive</u>. 2003 Tertiary Education Management Conference, Adelaide.</p> <p>Sommerville, I. (2001). <u>Software Engineering</u>, Addison-Wesley.</p></p>
+
+</body>
+</html>

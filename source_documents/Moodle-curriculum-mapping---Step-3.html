@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Moodle curriculum mapping - Step 3</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2010/04/02/moodle-curriculum-mapping-step-3/">Moodle curriculum mapping - Step 3</a></h1>
+
+<p>Tags: curriculumMapping, Uncategorized</p>
+
+<p><p>This will be a brief extension of <a href="https://djon.es/blog/2010/03/30/moodle-curriculum-mapping-step-2/">previous work</a> around <a href="https://djon.es/blog/2010/04/01/elevator-pitch-for-curriculum-mapping/">this project</a>. The main aim is to start identifying some of the methods used by Moodle with its current outcomes approach and how those might be harnessed and modified to support curriculum mapping.  In particular, some specific questions include: What's necessary to</p>
+<ul>
+  <li> allow the outcomes to be grouped and displayed as such when showing an activity/resource? <strong>IDENTIFIED</strong></li>
+  <li> include a "help" link for each outcome or other means to explain? <strong>IDENTIFIED</strong></li>
+  <li> allow the outcome scale to be used on the activity/resource to indicate how well the activity/resource meets the outcome etc? <strong>IDENTIFIED</strong></li>
+  <li> display the curriculum map for a course?<strong>IDENTIFIED</strong> </li>
+  <li> add "outcome mapping" to those elements that currently don't have it? <strong>IDENTIFIED</strong></li>
+  <li> prevent curriculum mapping outcomes showing up in the gradebook?<strong>IDENTIFIED</strong></li>
+</ul>
+<p>This is a work in progress and will be updated over the next couple of days.</p>
+
+<h3>The association - where in code and the database</h3>
+
+<p>Moodle tracks which outcomes apply to activities and resources, the question is where in the code does this happen and where in the database is this information stored?</p>
+
+<h4>The code</h4>
+
+<p>The association appears as part of the edit screen for an activity or resource. This is implemented by moodle/course/modedit.php.  This script:</p>
+<ul>
+  <li> Is given various params, including section and course, including the module being used to "edit" the activity/resource. </li>
+  <li> Is fairly typical PHP spaghetti code with little or no comments. </li>
+  <li> Acts has a harness/factory getting the module code to generate part of the form.</li>
+  <li> Has a section of code that retrieves and display the outcomes, all embedded in this enormous file - ugly.</li>
+</ul>
+<p>The outcomes code seems to consist of (this is actually the handling of submission of the form, not display of the form - more on this <a href="#store">below</a>)</p>
+<ul>
+   <li> Get all the outcomes for the course (whether or not to display them, is left till then)<br />
+<tt>if ($outcomes = grade_outcome::fetch_all_available($COURSE-&gt;id))</tt><p>
+fetch_all_available is implemented in moodle/lib/grade/grade_outcome.php.  And basically defines a class that represents a grade outcome.  fetch_all_available gets all course related outcomes listed in grade_outcomes (the detail of the outcomes) and grade_outcomes_courses (which outcomes are being used in the course). </p>
+  </li>
+  <li> Build array of grade_items<br />It then loops through each outcome from above and uses moodle/lib/grade/grade_item.php to create a grade_item object for each outcome.  This uses the grade_items table to store information.  Am not 100% sure where this fits in.  </li>
+  <li>  The actual display is done using a "form" display...more on this below.</li>
+</ul>
+<p>So the display is done using the form class defined by the module, which is an extension of moodleform_mod.  As the specific modules won't know about outcomes, the outcomes display would theoretically be done in course/moodleform_mod.php.  Yep.<br />
+[sourcecode lang="php"]
+if ($this-&gt;_features-&gt;gradecat) {
+    $gradecat = false;
+    if (!empty($CFG-&gt;enableoutcomes) and $this-&gt;_features-&gt;outcomes) {
+[/sourcecode]
+</p>
+<p>The process seems to be:</p>
+<ul>
+  <li> Get grade outcomes for the course, again<br />Seems there is some duplication here, as it gets the grade outcomes for the course, all over again.</li>
+  <li> Get's all grade items for the course, it any of them have an outcome set, then set this in the form? </li>
+  <li> A couple of other steps here, not immediately clear. </li>
+</ul>
+<p>The above only seems to be preparatory.  There's a later section of code that adds the form elements for the outcomes.  Again, there's a fetch all available outcomes.  This seems more directly related as it simply adds the elements.</p>
+
+<a name="store"></a>
+<h4>Where does it store "mapping"</h4>
+
+<p>The next question is where does it store the fact that a particular activity/resource is using/assigned a particular set of outcomes? </p>
+<p>This should be set in the code that processes the submission of the form. Which should be moodle/course/modedit.php.  Ahh, this is done with grade_item as described above.</p>
+<p>i.e. when you map an activity/resource in a course to an outcome or three, that mapping gets stored in the grade_items table.  The fields in that table are (the descriptions are tentative):</p>
+<ul>
+  <li> id  - the unique id for the mapping of activity/resource to a single outcome.</li>
+  <li> courseid - the id for the course that "owns" this mapping. </li>
+  <li> itemname - this is the actual name of the outcome assigned</li>
+   <li> itemtype - I believe this describes the type of object you've mapped the outcome to.  Possible known values are currently mod, course. </li>
+   <li> itemmodule - the name of the specific module that implements the object.  Possible values include: forum, bim (i.e. name of any module), assignment, resource.</li>
+    <li> iteminstance - I believe this is the id for this particular instance of the module.  i.e. the id for the table course_modules.  The pathway to more information about this instance. </li>
+    <li> itemnumber - for outcomes, this seems to start at 1000.  It is used to give the sequence with which outcomes are assigned to the item.  i.e. the first outcome assigned is 1000, the second 1001, the 3rd 1002 .... It appears that a value of 0, might indicate something important</li>
+    <li> iteminfo - currently set to NULL for all the entries I've seen so far.  So, not currently sure what it is used for. </li>
+  <li>  idnumber and  calculation - also set to NULL or empty for the contents of my database - which doesn't include a lot of real courses. </li>
+  <li>  gradetype - integer, currently with value of 1 or 2.  With outcomes I've set being 2. </li>
+  <li> grademax and  grademin - fairly obvious.  Seems to be set by scale and/or other stuff. </li>
+  <li> scaleid - the scale being used. </li>
+   <li> outcomeid - the id of the outcome </li>
+  <li> gradepass   multfactor  plusfactor   aggregationcoef - various factors used for grade calculation, I believe. </li>
+  <li> sortorder - different integer values - purpose not immediately obvious. </li>
+  <li> display - big int, currently all set to 0.  Not sure of purpose. </li>
+  <li> decimals  hidden locked  locktime   needsupdate - various flags ? </li>
+  <li>  timecreated   timemodified - time stamps.  Could be useful for identifying outcomes that need to be re-checked. </li>
+</ul>
+<p>It appears that grade items and outcome items are treated the same, hence their use of the same table.  The full view of categories and items give a good overview of this table.</p>
+<p>There is the concept of categories of grades/items, this might be one avenue.  i.e. a category for curriculum mapping.</p>
+
+<h4>What is the implication of this?</h4>
+
+<p>The next question is what are the implications to the rest of Moodle.  If I map all the activites/resources within a course against a complex set of outcomes, does it have an effect on the gradebook? Any where else?</p>
+<p>So, I've set outcomes for a number of activities/resources in a course.  Does this show up anywhere else?  Two ways of looking:</p>
+<ul>
+  <li> Check the gradebook from web interface. </li>
+  <li> Look for use of grade_item class/object. </li>
+</ul>
+<p>Mmmm, not good.  It appears that every time you add an outcome, it get's added to the gradebook.  In terms of curriculum mapping, not what is desired. This is perhaps the first obvious example that curriculum mapping and tracking student performance, while to some extent similar, serve different purposes.</p>
+<p>The column in the gradebook for each outcome that is added, has a header that is a link.  The link is to a script that shows some detail of the resource or activity that it the outcome is associated with.</p>
+<p>Need to turn this off.</p>
+<p>Now, you can hide an element in the gradebook.  But that just greys it out, doesn't remove it entirely from consideration, which is what is wanted here.</p>
+
+<h3>Adding a description/help</h3>
+
+<h4>Problem</h4>
+
+<p> At least initially the outcomes etc shown are not going to make much sense to a teacher.  Moodle currently only displays the name of the outcome.  The teacher would have to somewhere else to read up on the outcome before they can determine if it applies. It would be helpful if additional assistance was provided there and then.</p>
+<p>Some options in terms of what could be displayed, include:</p>
+<ul>
+  <li> The description of the outcome.<br />As it stands Moodle allows each outcome to have a textual description.  Displaying this as a roll-over or in a new window could provide a minimal level of assistance.</li>
+  <li> Link to institutional area for discussion and description of outcomes.<br />The assumption being that most institutions would have a website in which institutional outcomes etc are discussed or described.  Providing a link to this area, especially to the context specific to the a particular outcome might be useful. </li>
+  <li> Link to other examples.<br />Many of the forms of outcomes etc. are likely to be used in other courses. e.g. institutional graduate attributes.  It might be useful to give the option to see other examples of how these attributes are used in other courses.  Even to the extent of link directly to those courses and/or reflections/discussion from other teachers using this outome.</li>
+</ul>
+<p>These ideas range from the simple and static through to something you'd want to have some curating.</p>
+
+<h3>Possible solutions</h3>
+
+<p>The outcomes are displayed around line 220 in moodle/course/moodleform_mod.php.  This is where the change would have to happen.  Some possibilities include:</p>
+<ul>
+  <li> Using a Moodle helpbutton.<br />Moodle forms have a function - setHelpButton - which associates a help button with an element.  Very easy to make this modification.  However, the problem is that the helpbutton is typically a call to open a new, small browser window to display HTML file.  <p>This is problematic as the outcomes are added via the Moodle interface and doesn't provide support for adding a help file.  So, outcome specific would be difficult.  However, an institutional area/approach could be possible.  It would require the institution to create HTML files for each outcome.
+<p>Let's do a simple test, put the Moodle code under git so I can manage this.  And add a help button for each outcome. As expected, works easily.  There is the question of how to create the filename for the HTML file.  Most outcomes will have spaces and other characters that don't necessarily play nicely with a filename.  The language translation side of Moodle could help there, convert the complete outcome name into something more file system friendly.</p>
+</li>
+  <li> More complicated HTML<br />Another approach would be to add roll overs, additional links etc to the outcomes.  This would require a more radical modification of the Moodle core but not much more than the above.  Not to mention the desire to separate attributes up into groups. </li>
+</ul>
+
+<h3>Groupings of outcomes</h3>
+
+<h4>Problem</h4>
+
+<p>It is likely that a course may have multiple different types of outcomes etc to map against.  e.g institutional graduate attributes, discipline graduate attributes, course learning outcomes, program learning outcomes etc.  There are two possible solutions (possibly complementary):</p>
+<ol>
+  <li> Show outcomes grouped by category. <br />To allow the mapping of an activity/resource against all these different groupings, it would be useful to separate out the different outcomes by category.  So you could have a visible separation.
+  </li>
+  <li> Have a separate cross mapping. <br />Mapping against all of these different outcomes might be somewhat tiresome, especially given a large amount of overlap between them.  An approach that has been used is to produce a mapping between the different outcomes and a single point, and then only map activities/resources against that single point.  Which of the different outcomes applies, can then be derived from the single point. </li>
+</ol>
+
+<h4>Possible solutions</h4>
+
+<p>Showing outcomes by category is going to need:</p>
+<ul>
+  <li> Some way of specifying categories/groups of outcomes.<br />Which probably implies an additional database table and an additional interface or modification to an existing interface (e.g. the import outcome process) to specify which category an outcome belongs to.<p>A separate interface minimises changes to core Moodle code, modifying existing interfaces is probably a more user friendly approach, depending on how widespread this need is.</p> </li>
+  <li> Modification to the form display to recognise the categories.<br />This should/would be a fairly simple thing to do, given the information above and Moodle's form library.<p>Let's try a simple test.  Create two boxes of outcomes that contain a copy of the same outcomes.  Mainly to test if nested header/boxes work.  No, they don't.  You'd have to use a separate header label and then have separate boxes for each,  perhaps a table?  Though Moodle dislikes table for layout.....</p></li>
+</ul>
+
+<h3> Display a curriculum map for a course</h3>
+
+<h4>Problem</h4>
+
+<p>One of the basic functions for curriculum mapping is to get a report that shows how widely (or not) the outcomes are represented within the course in terms of resources, activities and assessments. i.e. you want a visual representation of the outcome mappings.</p>
+
+<h3>Possible solutions</h3>
+
+<p>Well, it's basically a report, but you might want it more interactive than that.</p>
+<p>Well, the existing outcomes report can do this to some extent.  So an extension of this, or the additional of a mapping report might fill the bill.</p>
+<p>To a large extent this is a fairly standard web application.  Get the data from the database and display it in an appropriate form.</p>
+<p>You'll be needing data from the following tables:</p>
+<ul>
+  <li> grade_items - given a course id, this will give you all the outcomes for the course that have been mapped to activities/resources and the ids of those activities and resources. </li>
+  <li> grade_outcomes - will give you details about the outcomes - name, description, and scale id. </li>
+  <li> scale - details about the scales </li>
+  <li> course_modules - more information about the module/activity, most importantly perhaps the section of the course in which it appears. </li>
+  <li> resource - for the same reason as modules</li>
+</ul>
+
+<h3>Show outcome scale on activity/resource</h3>
+
+<h4>Problem</h4>
+
+<p>Rather than simply "mapping" an outcome to a particular activity/resource, it may be useful to indicate how well/to what level does the activity/resource map to the outcome.  i.e. use a scale, rather than a simple check box.</p>
+<p>This is a fairly major distinction between outcomes for curriculum mapping and outcomes for student progress.</p>
+
+<h4>Possible solutions</h4>
+
+<p>It's looking like a separate set of "Mapping outcomes" might be the way to go.  This would also get around the problem with the gradebook from above.  This might mean duplicating the items table, or at least adding a flag to differentiate between mapping and progress outcomes.</p>
+<p>Similarly, could probably still use the standard outcomes "creation/import" process for both purposes.</p>
+<p>Adding separate support would also help make it a bit easier to add curriculum mapping to an instance of Moodle by minimising disruption to the Moodle core.  </p>
+
+<h3>Elements that don't have outcomes</h3>
+
+<h4>Problem</h4>
+
+<p>As <a href="https://djon.es/blog/2010/03/23/first-step-in-moodle-curriculum-mapping/">outlined earlier</a> there are some elements of a Moodle course site to which you can't map outcomes.  The outcomes don't appear on the "edit" page.  Those identified so far are labels and sections.</p>
+<p>Sections might be useful, if you wanted to map a course by weeks, rather than by item.  But perhaps not, you can generate such a map by aggregating the mapping of the contents.</p>
+<p>Labels are way of inserting HTML into sections. Currently they don't have support for outcomes.  I've already seen in one course how such labels can be used to specify tasks, such as reading.</p>
+
+<h4>Possible solutions</h4>
+
+<p>Well, labels are the only real problem.  The form for labels is generated using moodle/course/modedit.php.  The same for anything else.  It is the place where outcomes are shown.  So, perhaps it's just a switch that needs setting.  Perhaps, outcomes aren't here as it isn't expected that these will be used in grades - i.e. student progress tracking.</p>
+<p>Nope.  The mod_form.php file for label actively turns off outcomes in a setting.  Yep, set that to true and outcomes are there.  </p>
+<p>In light of the above, you'd probably have a separate set of outcomes for mapping, have this defined as a feature that modules can turn on/off and go down that route.</p></p>
+
+</body>
+</html>

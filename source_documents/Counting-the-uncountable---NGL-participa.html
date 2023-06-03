@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Counting the uncountable - NGL participation</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2014/09/01/counting-the-uncountable-ngl-participation/">Counting the uncountable - NGL participation</a></h1>
+
+<p>Tags: edu8117</p>
+
+<p>The following documents the writing of a script to perform simple counts of what the <a href="http://netgl.wordpress.com/">NGL participants</a> have been doing on their blog.  Another post on the course blog will offer an explanation of the emails that will be sent to participants real soon now.
+
+<h3>What?</h3>
+
+There are 10+ participants in NGL. The indicators of participation being looked for are
+<ul>
+  <li> Number of posts. </li>
+  <li> Average word count per post. </li>
+  <li> % of posts with links to blog posts from other participants. </li>
+  <li> % of posts with links to other online resources. </li>
+  <li> % of posts from the blog that appear on the blog first (out of all participants). </li>
+</ul>
+
+<h3>Starting point</h3>
+
+Will start with the EDC3100 script and modify from there. That script currently calculates the following relevant
+<ul>
+  <li> Posts per week - not needed, but total posts will be available</li>
+  <li> average word count </li>
+  <li> # of links </li>
+  <li> # of links to other participants </li>
+</ul>
+
+<h3>Changes</h3>
+
+Remove activity completion
+
+Get Moodle user information - are we only including currently enrolled students, is now.
+
+What about blog posts? Yep.
+
+Calculate the stats for each participant
+<ul>
+  <li> NUM_POSTS - done. </li>
+  <li> (AVG_)POST_LENGTH - done. </li>
+  <li> POSTS_WITH_STUDENT_LINKS - done. </li>
+  <li> POSTS_WITH_LINKS - done. </li>
+  <li> LINKS_HERE_FIRST - to do.
+        <p>This is the more difficult task.  The requirement here is for each link (not to another participant blog) made in a blog, check to see if it's the first time the link has appeared in a participant post.</p>
+         <p>At the moment the function counting links does have the timepublished for the blog post. It also creates array containing a hash for each link. But that's all links, but maybe that doesn't matter.</p>
+         <p> What we need here is probably a hash with key on the link and the value being a reference to the hash about the post (which has timepublished).</p>
+          <p>With each student object having this, BlogStatistics object can then generate stats for LINKS_HERE_FIRST.</p>
+         <p>DoTheLinks updated to do this in Marking.pm</p>
+ -- See below --
+  </li>
+</ul>
+
+Assign a standard and show the report
+<ul>
+  <li> NUM_POSTS - DONE </li>
+    <li> (AVG_)POST_LENGTH - DONE </li>
+  <li> POSTS_WITH_STUDENT_LINKS - DONE </li>
+  <li> POSTS_WITH_LINKS - DONE </li>
+  <li> LINKS_HERE_FIRST  </li>
+</ul>
+
+Currently the report only assigns percentages for each stat, need to translate that into a mark for the assignment.  This would have to
+<ul>
+  <li>  average the percentage for each descriptor for a criteria.
+       The current descriptors/criteria relationship is
+       <ul>
+          <li> Posts (10 marks)
+             <ul>
+                <li> # posts </li>
+                <li> # words per post </li>
+             </ul> </li>
+          <li> Connections (5 marks)
+             <ul>
+               <li> % posts with links to other participant blog posts </li>
+             </ul> </li>
+          <li> Other links (5 marks)
+              <ul>
+                <li> % posts with links to other resources </li>
+                <li> % of posts where links occur first - not calculated yet</li>
+              </ul> </li>
+        </ul>
+  </li>
+  <li> calculate the mark per criteria
+         <p>The above are stored in a hash where the key is the unique id for the descriptor</p>
+         <ul>
+            <li> LENGTH = # words per post </li>
+            <li> NUM_POSTS = # posts </li>
+            <li> LINKS = % posts with links to other resources </li>
+            <li> STUDENT_LINKS = % posts with links to other participant blog posts </li>
+         </ul>
+   </li>
+  <li> add them up </li>
+</ul>
+
+<h1>Calculating first blogs</h1>
+
+The task here is for each student, calculate the percentage of links included in their blog posts that appear there first (amongst all the other student blogs)
+
+What we need here is probably a hash with key on the link and the value being a reference to the hash about the post (which has timepublished).
+
+There is a function createBlogMapping that loops through each post for each student and creates a hash ref MAPPING that maps out who links to who.
+
+A similar function that only works on external links (or perhaps all links) and uses the timepublished to create the necessary hashref.
+
+Perhaps something like
+[code lang="perl"]
+  $whenShared-&gt;{$link} = { EARLIEST =&gt; "unix timestamp when published",
+                           POST =&gt; $link_to_blog_post_in_data structure };
+[/code]
+
+This hash would allow a loop for each student that would count the number of times a the POST value is the user's post.
+
+Exclude any link that isn't to the student's actual post, the first link to another student's post is counted the same as a link elsewhere
+
+So we're looking at two methods
+<ol>
+  <li> constructWhenShared - create the hash ref </li>
+  <li> calculateEarliestPercent - add to {MARKING}-&gt;{STATS} the percentage of links first here. </li>
+</ol></p>
+
+</body>
+</html>

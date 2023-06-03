@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The model underpinning blackboard and how ACCT19064 uses it</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2008/11/19/the-model-underpinning-blackboard-and-how-acct19064-uses-it/">The model underpinning blackboard and how ACCT19064 uses it</a></h1>
+
+<p>Tags: elearning, lmsEvaluation, lmsreview, Uncategorized</p>
+
+<p><p>
+As <a href="https://djon.es/blog/2008/11/18/evaluating-an-lms-by-understanding-the-underpinning-model/">proposed earlier</a> this post is the first step in attempting to evaluate the differences between three learning management systems.  This post attempts to understand and describe the model underpinning Blackboard version 6.3.
+</p>
+
+<h3>Hierarchical</h3>
+
+<p>
+Blackboard like most web-based systems of a certain vintage (mid-1990s to early/mid 2000s) tend to structure websites as a hierarchical collection of documents and folders (files and directories for those of us from the pre-desktop metaphor based interface days). This approach has its source in a number of places, but most directly it comes from <a href="http://en.wikipedia.org/wiki/File_system">computer file systems</a>
+<p>
+<a href="http://www.webopedia.com/TERM/H/hierarchical.html">Webopedia</a> has a half way decent page explaining the concept.  The mathematicians amongst you could talk on in great detail about the plusses and minuses of this approach over other structures.
+</p>
+<p>
+In it's simplest form a hierarchical structure starts with
+</p>
+<ul>
+  <li> A single root document or node. <br />
+         Underneath this will be a sequence of other collections/folders/drawers.
+         <ul>
+            <li> Like this one </li>
+            <li> And yet another one <br />
+                   Each of these collections can in turn contain other collections.
+                   <ul>
+                       <li> Like this sub-collection. </li>
+                       <li> And this one. <br />
+                              This hierarchical structure can continue for quite some time. Getting deeper and deeper as you go.
+                        </li>
+                    </ul>
+             </li>
+            <li> And probably another one. <br />
+                   Best practice guidlines are that each collection should never contain much more the 7+/-2 elements as this is a known limitation of short term memory.
+            </li>
+         </ul>
+  </li>
+</ul>
+
+<h3>Blackboard's idea of hierachy</h3>
+
+<p>
+One of the problems with Blackboard is that it's underpinning models don't always match what people assume from their what they see in the interface.  This applies somewhat to the hierarchical model underpinning Blackboard.
+</p>
+<p>
+Normally in a hierarchical structure there is one root document or node that is at the "top" of the pyramid of content.  What Blackboard does is that each course site has a collection of content areas and then you nominate one of those as the "home" page.  i.e. the one that appears when people first login.  It's not really the top of the pyramid.
+</p>
+<p>
+Let's get to an example, the image is the home page for the ACCT19064 course.
+</p>
+<a href="http://www.flickr.com/photos/david_jones/3039002667/" title="ACCT19064 home page by David T Jones, on Flickr"><img alt="ACCT19064 home page" height="170" src="http://farm4.static.flickr.com/3201/3039002667_ed55623456_m.jpg" width="240" /></a>
+
+<p><strong>Note:</strong> I currently have "admin" access on this installation of Blackboard.  Some of what appears in the interface is based on that access and is not normally seen by student or other staff users.</p>
+<p>
+The links in the course menu on the left hand side of the image are (mostly) the top levels of the hierarchical structure of the Blackboard course.  There are 13 main areas
+</p>
+<ul>
+  <li> Machinimas </li>
+  <li> Hird &amp; Co
+  </li>
+  <li> Feedback
+  </li>
+  <li> Notice Board
+  </li>
+  <li> Discussion Board
+  </li>
+  <li> Group Space
+  </li>
+  <li> Resources Room
+  </li>
+  <li> Assessment Room
+  </li>
+  <li> Instructor Resources
+  </li>
+  <li> Teaching Team
+  </li>
+  <li> External Links
+  </li>
+  <li> Library
+  </li>
+  <li> Helpdesk
+  </li>
+</ul>
+
+<p>
+The "home page" in the large right hand frame, which would be at the top of the hierarchy if Blackboard followed this practice, is the Announcements page.  The link to the announcements page in ACCT19064 is provided by the "Notice board" course menu link.
+</p>
+<p>
+The other complicating factor is that the course menu links for Helpdesk and Library aren't really part of the Blackboard course site.  They are links to other resources.
+</p>
+<p>
+<blockquote><strong>Feature:</strong> Blackboard allows top level folders to be links to external resources and also ad hoc elements within the course site.
+</blockquote>
+</p>
+<p>The bit above is a new strategy.  Everytime I come to something that I think is somewhat strange/unique or a feature of Blackboard I am going to record it in the text and also on <a href="http://cddu.cqu.edu.au/index.php/LMS_Features">this page</a>.
+</p>
+<p>
+<blockquote><strong>Feature:</strong> The course home page can be set to a selection of "pages" within the site.
+</blockquote>
+</p>
+
+<p><strong>Other bits that don't fit</strong></p>
+
+<p>
+Underneath the course menu links there are a couple of panels.  The content of some of these can be controlled by the coordinator.  In the example above the designer has removed as many of the links on these panels as possible.  Normally, there would be two links
+</p>
+<ul>
+  <li> Communication; and <br />
+       Links to a page of the default communication tools Blackboard provides each course including: announcements, collaboration, discussion board, group pages, email and class roster.</li>
+  </li>
+  <li> Course tools<br />
+        Links to a page of the default course tools (not communication tools) Blackboard provides including: address book, calendar, journal, dictionary, dropbox, glossary.....  This list can be supplemented.
+  </li>
+</ul>
+
+<p>
+The links to these tools are not part of the hierarchical structure of the course.  They are always there, though the designer can remove the links.  Confusingly, most staff leave these links and so students waste time checking the tools out, even if they aren't used in the course (and most aren't).
+</p>
+<p>
+<strong>Feature:</strong> Blackboard does not maintain the hierarchy metaphor at all well. Confuses it with "tools" which sit outside the hierarchy.
+</p>
+
+<p><strong>The course map feature</strong></p>
+
+<p>To really reinforce the hierarchical nature of a Blackboard course site, Blackboard provides a course map feature which provides a very familiar "Windows explorer" link representation of the structure of a course website.  The following image is of a part of the course map for the ACCT19064 course site.
+</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3039280293/" title="Blackboard course map for the ACCT19064 site by David T Jones, on Flickr"><img alt="Blackboard course map for the ACCT19064 site" height="240" src="http://farm4.static.flickr.com/3024/3039280293_a3a521ea81_m.jpg" width="227" /></a>
+<h3>What's do the course menu links point to?</h3>
+
+<p>The links in the course menu can point to the following items
+</p>
+<ul>
+  <li> Content area<br />
+This is the default content holder in Blackboard.  If the designers wants to create a collection of content (HTML, uploaded files, tools etc.) they create a content area.  More on these below.
+  </li>
+  <li> Tool link<br />
+      This is a link to one of the communication or course tools mentioned above.
+  </li>
+  <li> Course link<br />
+      A link to some other page/item within the course, usually within a content area.
+  </li>
+  <li> External link<br />
+       A URL to some external resource.
+  </li>
+</ul>
+
+<p>The course menu link for ACCT19064 points the following</p>
+<ul>
+  <li> Machinimas - content area with 5 elements</li>
+  <li> Hird &amp; Co - content area with 3 elements </li>
+  <li> Feedback - content area with 3 elements </li>
+  <li> Notice Board - link to the announcements tool </li>
+  <li> Discussion Board - direct link to the course level discussion conference </li>
+  <li> Group Space - a content area with 5 elements </li>
+  <li> Resources Room - a content area with 15 or so elements </li>
+  <li> Assessment Room - a content area with 6 elements </li>
+  <li> Instructor Resources - a content area with 1 element (see below)</li>
+  <li> Teaching Team - a link to the "Staff Information" tools </li>
+  <li> External Links - a content area with a number of links </li>
+  <li> Library - a direct link to the <a href="http://library.cqu.edu.au/">Library website</a>. </li>
+  <li> Helpdesk - a mailto: link for the helpdesk  </li>
+</ul>
+
+<p>The number of elements I mention in each content area might be wrong.  Blackboard supports the controlled release of content in a content area.  Some people may not be able to see all of the content in a content area - explained more in the "Controlling Access" section below.
+</p>
+
+<h3>What's in a content area?</h3>
+
+<p>A content area consists of a number of items.  The items are displayed one under the other. The following image is of the Assessment Room in the ACCT19064 course site.  It has 6 items.  Not the alternating background colour to identify different items.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3040032380/" title="ACCT19064 assessment room by David T Jones, on Flickr"><img alt="ACCT19064 assessment room" height="143" src="http://farm4.static.flickr.com/3284/3040032380_052d6a9150_m.jpg" width="240" /></a>
+
+<p>The edit view link in the top right hand corner appears when the user has permission to edit the content area.  This is how you add, modify or remove an item from the content area.</p>
+
+<p>An item in a content area can be one of the following</p>
+<ul>
+  <li> A "content" item<br />
+  i.e. something that contains some text, perhaps links to an uploaded file.
+  </li>
+  <li> A folder<br />
+  This is how you get the hierarchical structure.  A folder creates another level in the hierarchy within/underneath the current content area.  This folder contains another content area.</li>
+  <li> An external link.
+  </li>
+  <li> A course link. </li>
+  <li> A link to various tools or services. <br />
+e.g. to tests or a range of different services and tools provided by Blackboard and its add ons.
+  </li>
+</ul>
+
+<p>Each item is associated with a particular "icon".  A folder item will have a small folder icon.  A content item will have a simple document.</p>
+
+<p><strong>Feature:</strong> The icon associated with each item cannot easily be changed, especially for an individual course.  It can also not be made invisible (easily) and causes problems for designers. </p>
+
+<p>For example, the following image is from what was intended to be the home page for a Blackboard course.  A nice image and text ruined by the document icon in the top left hand corner.</p>
+
+<h3>Controlling access</h3>
+
+<p>Blackboard provides a facility to limit who can see and access items within a content area and also what links can be seen in the course menu. However, it's done consistently.</p>
+
+<p><strong>Feature:</strong> Different approaches with different functionality is available to restrict access/viewing of  the course menu links (very simple) and individual items in content areas (very complex and featured). Restrictions on discussion forums also appear some what limited.</p>
+
+<p>The following image is of the "Instructor Resources" content area of the ACCT19064 course site.  It is being viewed as a user who is not a member of the staff for this course.  Actually not a member of the blackboard group "Teaching Staff".</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3039233695/" title="ACCT19064 - Instructor Resources - not staff by David T Jones, on Flickr"><img alt="ACCT19064 - Instructor Resources - not staff" height="89" src="http://farm4.static.flickr.com/3146/3039233695_99621fd35b_m.jpg" width="240" /></a>
+
+<p>What follows is the same page with the same content area.  However, it is now viewed as a user who is a member of the "Teaching staff" group.</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3039246103/" title="ACCT19064 Instructors Resources - as staff by David T Jones, on Flickr"><img alt="ACCT19064 Instructors Resources - as staff" height="160" src="http://farm4.static.flickr.com/3253/3039246103_368aa6a769_m.jpg" width="240" /></a>
+
+<p>Access to items can be restricted in the following ways</p>
+<ul>
+  <li> Visible or not<br />
+ A simple switch which says everyone can see it, or they can't.
+  </li>
+  <li> Date based ranges <br />
+ Specify a date/time range in which it is visible.
+  </li>
+  <li> Group based membership<br />
+You can see it if you are part of the right group or in a specified list of users.
+  </li>
+  <li> Assessment related<br />
+You can only see if if you have attempted a piece of assessment or achieved a grade within a specific range.</li>
+</ul>
+
+<p>The specification of rules to restrict access can be combined.</p>
+
+<p><strong>Feature:</strong> Access to items can be restricted based on simple on/off, date, group membership, assessment.</p>
+
+<h3>A description of the ACCT19064 site</h3>
+
+<p>At initial look the course site is designed as a container for the content and tools used within the course.  The design of the course site itself does not inherently provide any guidance to what the students are meant to do.  i.e. there is no study schedule or similar showing up in the course menu links.
+</p>
+<p>
+However, looking at the announcements for the course.  It appears that this type of guidance and support for the students is given by an announcement from the course coordinator on the Sunday at the start of each week.  This announcement is very specific.  It outlines the individual and team-based tasks which the on-campus and off-campus students are meant to complete.  There is also some additional comments, sometimes errata and sometimes the odd big of advice.
+</p>
+<p>
+Interestingly, these guidance announcements didn't link students directly to the tasks.
+</p>
+<p><strong>Breaking down the content of the site</strong></p>
+
+<p>The following describes in more detail the content within each of the course menu links, at least those that point to content areas.
+</p>
+<ul>
+  <li> Machinimas - content area with 5 elements. There is no adaptive release.<br />
+      <ul>
+         <li> Description of the machinimas and their purpose. </li>
+         <li> Four external links to web pages that contain video of the machinima.</li>
+     </ul>
+<p><blockquote><strong>Feature:</strong> Blackboard uses breadcrumbs for navigation. Including external web pages can be made more transparent if the breadcrumbs can be re-created on those external pages.</blockquote>
+</p>
+<p>   The machinima pages, with the video playing, look like the following image</p>
+
+<a href="http://www.flickr.com/photos/david_jones/3040141988/" title="ACCT19064 machinima page by David T Jones, on Flickr"><img alt="ACCT19064 machinima page" height="170" src="http://farm4.static.flickr.com/3233/3040141988_d4fe96a66f_m.jpg" width="240" /></a>
+  </li>
+  <li> Hird &amp; Co - content area with 3 elements. No adaptive release
+     This is meant to represent the imaginary audit company used throughout the course
+       <ul>
+           <li> External link to a "intranet" site for an imaginary audit company. </li>
+           <li> External link to an external discussion forum used by AIC campuses for discussion about questions prior to face-to-face classes. </li>
+           <li> A link to a Blackboard discussion forum used by the Audit Partner (the coordinator) </li>
+      </ul>
+ </li>
+  <li> Feedback - content area with 3 elements <br />
+      Actually it's 4 elements.  One is not visible due to adaptive release.  The missing element is a course experience survey.  This section is entirely set aside to getting feedback from students about the course.  I'm guessing it was added late in the term.
+       <ul>
+           <li> Content item linking to an information sheet </li>
+          <li> Content item linking to a consent form </li>
+           <li> A link to survey tool for the actual survey </li>
+           <li> An external link with help on an issue with the survey. </li>
+       </ul>
+</li>
+  <li> Notice Board - link to the announcements tool </li>
+  <li> Discussion Board - direct link to the course level discussion conference </li>
+  <li> Group Space - a content area with 5 elements
+       <ul>
+           <li> Link to a folder for the "Group Space for Audit Teams" - content area with 3 elements
+                 <ul>
+                     <li> Link to the groups page for the course<br />
+       This is one of the Blackboard communication tools that is supported by a group allocation/management system.  It allows each group to have a collection of pages/tools which are unique and only accessible by members of the group.
+          <p>
+          Typically this includes a group discussion conference, collaboration, file exchange and email.</p>
+                     </li>
+                     <li> Content item containing an announcement about groups </li>
+                     <li> Content item containing details of group allocation - group names and student members </li>
+                </ul>
+           </li>
+           <li> Content item linking to a document explaining problems faced by Vista users</li>
+           <li> Link to the Blackboard drop box tool </li>
+           <li> Folder containing feedback for submitted tasks </li>
+           <li> Folder containing declarations for each quiz </li>
+        </ul>
+  </li>
+  <li> Resources Room - a content area with 15 or so elements <br />
+  Apart from a content item describing solutions to problems for users of Vista, this content area consists entirely of folders used to group resources associated with a particular week or activity.  There are
+      <ul>
+         <li> 12 folders for each week of term<br />
+       These are a collection of folders and content items providing access to various weekly materials such as: eLectures, powerpoint lecture slides, activity sheets as Word docs, weekly quizzes and solutions (available only after a specified time).
+         </li>
+         <li> one containing feedback and facts from previous students,<br />
+            A simple collection of content items with pass results and qualitative student feedback.
+          </li>
+          <li> one containing general course materials (e.g. course profile and study guide), <br />
+    Two external links to the course profile and study guide.
+          </li>
+          <li> one on auditing standards<br />
+       Two external links to the auditing standards applicable to the course.
+           </li>
+          <li> One containing a course revision presentation </li>
+        </ul>
+  </li>
+  <li> Assessment Room - a content area with 6 elements
+        <ul>
+           <li> Team membership - content item links to a word doc that students must complete and return </li>
+           <li> Personal journal - link to Blackboard journal tool that is used for personal reflection and integrated into assessment and weekly activities. </li>
+           <li> Resources for assessment items 1, 2a and 2b<br />
+               Each contains a range of content items, folders and external links pointing to resources specific to each assessement item.
+           </li>
+           <li> Exam information  - collection of information about the exam </li>
+         </ul>
+   </li>
+  <li> Instructor Resources - a content area with 7 elements, a number under adaptive release
+        <ul>
+           <li> Staff discussion forum - external link to an external discussion forum
+           </li>
+          <li> Snapshots for teaching team - collection of word documents explainining activities/tasks for the various weeks.
+         </li>
+         <li> Teaching materials for lectures - collection of materials for staff to give lectures
+          </li>
+          <li> Teaching materials for the tutorials - ditto for tutorials
+           </li>
+          <li> Teaching materials for the workshops - ditto for workshops
+           </li>
+           <li> Information on Assessment item 2a - misc additional background on assessment item
+           </li>
+           <li> Information on assessment item 2b
+           </li>
+         </ul>
+   </li>
+  <li> Teaching Team - a link to the "Staff Information" tools </li>
+  <li> External Links - a content area with a number of links </li>
+  <li> Library - a direct link to the <a href="http://library.cqu.edu.au/">Library website</a>. </li>
+  <li> Helpdesk - a mailto: link for the helpdesk  </li>
+</ul>
+
+<h3>Overview</h3>
+
+<p>A fairly traditional hierarchical design for a course website.  Students receive direction on what tasks to do from weekly announcements, not from some fixed "schedule" page.</p>
+<p>
+Heavy use is made of groups.
+</p>
+<p>
+There are some significant differences between tasks/activities for on-campus versus off-campus students.  While educationally appropriate this does tend to make things more difficult for the coordinator and students.  i.e. there has to be two sets of instructions created by the coordinator and students have to discern which they should follow.
+</p>
+<p>
+Some use of external discussion forums. Probably due to the limitation in how Blackboard allows discussion forums to be configured.  i.e. one discussion conference per course and one discussion conference per group.
+</p>
+<p>
+Staff information not integrated with CQU systems, require duplication of effort.  Same applies for the provision of links to course profile and to some extent lectures.
+</p></p>
+
+</body>
+</html>

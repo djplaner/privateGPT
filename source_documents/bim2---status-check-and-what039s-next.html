@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - status check and what&#039;s next</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2012/03/30/bim2-status-check-and-whats-next/">bim2 - status check and what&#039;s next</a></h1>
+
+<p>Tags: bim2</p>
+
+<p>So it appears that bim2.0 is increasingly needed (if you don't know what bim is, check <a href="https://djon.es/blog/research/bam-blog-aggregation-management/">this out</a>). University of Canberra have gone to Moodle 2 and CQU are about to, the only two places I know that bim is being used. Most importantly, I'm now teaching at a Moodle Uni and am seriously thinking about using bim, and my Uni is about to move to Moodle 2.
+
+In keeping with my practice, this post is another in <a href="https://djon.es/blog/category/bim/bim2/">a list of posts</a> that serve as a development journal (mainly because I'm coding so infrequently now I need to remember how to do this stuff). The aim here is to figure out where the porting is up to and perhaps identify where next.
+
+The current code for bim2 can be found <a href="https://github.com/djplaner/BIM/tree/bim2">in this branch</a> on github.  I'll try to keep it up to date.
+
+<h3>Current status</h3>
+
+The last work reported<blockquote>Most of the basic code for bim2 is working, but the capabilities aren’t. i.e. identifying the type of user and sending them to the right function.
+<p>
+Mmm, all are working, but not the coordinator.</p></blockquote>
+
+As it stands the coordinator stuff is working. I wonder if that's because of a hard-coded kludge.  Mmm, no. It seems to be coded as required.
+
+I did have earlier problems because of versioning, it appears that's fixed now.
+
+Let's test the other user types and make sure they are working
+<ul>
+  <li> Student - working, at least the redirect, the display leaves something to be desired.</li>
+  <li> Marker - working as well. </li>
+  <li> Coordinator (as a teacher, not as admin user) - bugger, that's not working "error/No capability to access this page" </li>
+</ul>
+
+<h3>To do list</h3>
+
+Which leads me to this basic to do list
+<ol>
+  <li> Test out the marker and student views of BIM and find out what's not working. </li>
+  <li> Fix what's not working for marker and student </li>
+  <li> Figure out why the "coordinating" teacher is not being identified as such. </li>
+</ol>
+
+<h3>Not identifying "coordinating" teacher</h3>
+
+I can feel this being a bugger to identify where it's going wrong, mostly because my knowledge of the Moodle capability system (let alone the Moodle 2.x capability system) is close to non-existent.
+
+Ha! Noticed that the teacher account only had the role "Coordinator" set and that the access.php file was not looking for "Coordinator" as a role to treat as a bim "coordinator".  Added "teacher" as a role and it's working.
+
+Is "coordinator" a standard Moodle 2 role? No, it doesn't <a href="http://docs.moodle.org/22/en/Standard_roles">look like it</a>.
+
+Amazing what some time away will do for perspective and clarity.
+
+<h3>What's working for the student role?</h3>
+
+First, why aren't the header/footer being displayed properly.  Thinking I haven't added appropriate stuff in "show_student".  Yep, have to call the print_header functions.  Add that in, fix up the call to print the footer and we're working.
+
+So, what can a student do and what do I need to check
+<ul>
+  <li> No feed registered
+    <ul>
+      <li> View bim - WORKS </li>
+      <li> Register invalid feed
+           <ul>
+             <li> URL is not a URL - WORKS </li>
+             <li> URL is not accessible - WORKS</li>
+             <li> URL is not a feed - WORKS </li>
+           </ul>
+       <li> Register a valid feed - WORKS </li>
+     </ul>
+  </li>
+  <li> Feed registered
+      <ul>
+        <li> view current details - with no new blog posts added. - WORKS </li>
+        <li> View current details - with new blog post added - Not working so well</li>
+      </ul>
+  </li>
+</ul>
+
+<h3>Status for now</h3>
+
+Most of the student functionality is working. However, every time the student is viewing their bim activity, the number of mirrored posts is going up by 10.  Needs to be fixed.
+
+Some potential causes to investigate
+<ul>
+  <li> The caching/operation of the Moodle 2 version of Simplepie and bim. </li>
+  <li> Left over database entries not cleaned up appropriately during testing. </li>
+  <li> Errors crept into the mirroring code due to Moodle 2 database API changes. </li>
+</ul></p>
+
+</body>
+</html>

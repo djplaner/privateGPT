@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>bim2 - Registering a new student feed</title>
+</head>
+<body>
+<h1><a href="https://djon.es/blog/2011/01/31/bim2-registering-a-new-student-feed/">bim2 - Registering a new student feed</a></h1>
+
+<p>Tags: bim, bim2, Uncategorized</p>
+
+<p>Apart from the many todos, the <a href="https://djon.es/blog/2010/12/30/progressing-the-student-interface-for-bim2/">last post covering bim2 development</a> left off at the task of registering a new student feed. Summarising/recording the development of bim2 to complete that task is the purpose of this post.
+
+Finally getting back into bim2 development (30 Jan), this post dormant for weeks.
+
+<h3>What has to happen</h3>
+
+The process for bim, which I'd like to re-create in bim2, goes something like this
+<ol>
+  <li> Student submits the URL for a blog or a feed; </li>
+  <li> Display error messages and advice if the URL is not a URL, can't be retrieved, or a valid ATOM/RSS feed can't be obtained from the URL. </li>
+  <li> For a valid URL, retrieve the feed and cache it </li>
+  <li> Compare the posts in the feed with the set questions for the activity. </li>
+  <li> Update the bim_marking table with any posts that match. </li>
+  <li> Update the bim_student_feeds table with the details of the feed. </li>
+</ol>
+
+In bim this was done with a bim specific version of <a href="http://simplepie.org/">Simplepie</a>. In Moodle 2, simplepie is included and Moodle 2 also has a wrapper around simplepie that is used by the Moodle external blogging functionality.  bim2 should use this wrapper as much as possible.
+
+<h3>How does the Moodle 2 simplepie wrapper work?</h3>
+
+It's located in <em>~/lib/simplepie/</em> and implemented as a class called <em>moodle_simplepie</em>.  Methods include
+<ul>
+  <li> constructor that takes a feedurl </li>
+  <li> get_cache_directory and reset_cache<br />By default this is a central cache, wonder if bim should reset this to a course specific/bim specific cache? </li>
+</ul>
+
+There's another class <em>moodle_simplepie_file</em>, am wondering if this is the one to actually use, it knows about Moodle's version of curl. Its methods include
+<ul>
+  <li> constructor;<br />Takes a url, timeout value, redirects, headers, useragen...</li>
+</ul>
+
+I wasn't aware of it, but simplepie does have a class (or two), which the above two extend.
+
+Some sample code from Moodle and its external blog feature follows.
+
+[code language="php"]
+$rssfile = new moodle_simplepie_file($data['url']);
+$filetest = new SimplePie_Locator($rssfile);
+
+if (!$filetest-&gt;is_feed($rssfile)) {
+    $errors['url'] = get_string('feedisinvalid', 'blog');
+} else {
+    $rss = new moodle_simplepie($data['url']);
+    if (!$rss-&gt;init()) {
+        $errors['url'] = get_string('emptyrssfeed', 'blog');
+    }
+}
+[/code]
+
+SimplePie_Locator is being used to test if there is a valid feed. It appears that moodle_simplepie_file might do some auto-detection.  Should check that.
+
+No, it doesn't.  Assumes that the url is for the rss feed rather than using simplepie's autodetect.
+
+Now, if I use moodle_simplepie, instead of moodle_simplepie_file, there is the possibility of getting a feed.  However, it seems to be getting the wrong one.  In my testing I am using this blog as the test, and instead of the posts feed, moodle_simplpie is returning the comments feed.
+
+Does this happen if I use simplepie directly?  No, if I use the version of simplepie included with Moodle 2 correctly, I can auto-detect.
+
+[code language="php"]
+
+$url = 'http://davidtjones.wordpress.com';
+
+//$rssfile = new moodle_simplepie($url);
+$rssfile = new SimplePie();
+$rssfile-&gt;set_feed_url( $url );
+$rssfile-&gt;init();
+print "&lt;h1&gt; feed is " . $rssfile-&gt;subscribe_url() . "&lt;/h1&gt;";
+[/code]
+
+Gives the appropriate output <em>feed is https://djon.es/blog/feed/</em> (though it also gives a couple of warnings about the cache.   Change it to
+[code language="language="]
+
+$url = 'http://davidtjones.wordpress.com';
+
+$rssfile = new moodle_simplepie($url);
+print "&lt;h1&gt; feed is " . $rssfile-&gt;subscribe_url() . "&lt;/h1&gt;";
+[/code]
+
+And I'm getting <em>feed is https://djon.es/blog/feed/</em>.  This isn't right.
+
+Okay, getting an error at the moment with the operation timing out, the joys of a slow network connection.  And that's the problem......  Still a problem with moodle_simplepie_file, nothing really explains the difference
+
+<h3>Re-starting</h3>
+
+Okay, a few weeks have gone by while I finish the thesis etc. Time to get back into it again. During the break, I did hear via a tweet that the RSS client block does do auto-discovery. So that gives another place to look for example code.
+
+This looks like is
+[code language="php"]
+$rss =  new moodle_simplepie();
+// set timeout for longer than normal to try and grab the feed
+$rss-&gt;set_timeout(10);
+$rss-&gt;set_feed_url($data['url']);
+$rss-&gt;set_autodiscovery_cache_duration(0);
+$rss-&gt;set_autodiscovery_level(SIMPLEPIE_LOCATOR_NONE);
+$rss-&gt;init();
+[/code]
+
+Actually, that's the wrong stuff. Instead of <em>_NONE</em> it should be <em>_ALL</em> and that works.
+
+Gotta love it when a plan comes together.  Now to remove the debug stuff I stuck in the Moodle simplepie code.
+
+<h3>Using this in bim2</h3>
+
+Now to figure out how this should work within bim2. It's been a while since I've been looking at this code, this should prove an interesting test.  Ahh, surprisingly painless. Started work on a new_student_feed class.
+
+Okay, that's working. The feed is being found and bim2 is able to manipulate the feed using essentially the same simplepie functions as bim was able to.
+
+This means I can start a new post aimed solely at the bim2 aspect.</p>
+
+</body>
+</html>
